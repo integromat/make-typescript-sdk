@@ -1,0 +1,11 @@
+{
+    "dataStore": {
+        "id": 137,
+        "name": "Customers",
+        "records": 5,
+        "size": "1024",
+        "maxSize": "1048576",
+        "teamId": 123,
+        "datastructureId": 123
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "key": {
+        "id": 17,
+        "name": "Basic Auth",
+        "typeName": "basicauth",
+        "teamId": 22,
+        "packageName": null,
+        "theme": "#007ee5"
+    }
+}

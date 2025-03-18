@@ -1,0 +1,16 @@
+{
+    "authUser": {
+        "id": 1,
+        "name": "Awesome Maker",
+        "email": "noreply@make.com",
+        "language": "en",
+        "timezoneId": 113,
+        "localeId": 18,
+        "countryId": 1,
+        "features": {},
+        "avatar": "...",
+        "lastLogin": "2025-03-08T23:07:17.897Z",
+        "timezone": "Europe/Prague",
+        "locale": "cs"
+    }
+}

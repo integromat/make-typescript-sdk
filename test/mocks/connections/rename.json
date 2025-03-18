@@ -1,0 +1,22 @@
+{
+    "connection": {
+        "id": 93,
+        "name": "New Name",
+        "accountName": "imap",
+        "accountLabel": "Others (IMAP)",
+        "packageName": null,
+        "expire": null,
+        "metadata": {
+            "value": "tom@example.com",
+            "type": "email"
+        },
+        "teamId": 4,
+        "theme": "#eb5768",
+        "upgradeable": false,
+        "scopesCnt": 0,
+        "scoped": true,
+        "accountType": "basic",
+        "editable": true,
+        "uid": 123456
+    }
+}

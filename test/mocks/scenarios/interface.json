@@ -1,0 +1,14 @@
+{
+    "interface": {
+        "input": [
+            {
+                "name": "email",
+                "type": "text",
+                "default": null,
+                "required": false,
+                "multiline": false
+            }
+        ],
+        "output": null
+    }
+}

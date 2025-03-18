@@ -1,0 +1,106 @@
+{
+    "scenarios": [
+        {
+            "id": 418339,
+            "name": "Engineering Workshop Enrollment",
+            "teamId": 18,
+            "hookId": 222895,
+            "deviceId": null,
+            "deviceScope": null,
+            "concept": false,
+            "description": "",
+            "folderId": 99,
+            "isinvalid": false,
+            "islinked": false,
+            "isActive": false,
+            "islocked": false,
+            "isPaused": false,
+            "usedPackages": [
+                "gateway",
+                "util",
+                "builtin",
+                "google-calendar",
+                "gateway",
+                "builtin",
+                "gateway",
+                "gateway",
+                "builtin",
+                "builtin",
+                "app#google-calendar",
+                "gateway",
+                "gateway",
+                "datastore",
+                "gateway",
+                "gateway"
+            ],
+            "lastEdit": "2022-10-13T13:27:45.109Z",
+            "scheduling": {
+                "type": "immediately"
+            },
+            "iswaiting": false,
+            "dlqCount": 0,
+            "createdByUser": {
+                "id": 11,
+                "name": "...",
+                "email": "..."
+            },
+            "updatedByUser": {
+                "id": 11,
+                "name": "...",
+                "email": "..."
+            },
+            "nextExec": null,
+            "operations": 5748,
+            "transfer": 40236,
+            "customProperties": {
+                "owner": "Patrik"
+            }
+        },
+        {
+            "id": 723615,
+            "name": "Trigger Test",
+            "teamId": 19,
+            "hookId": null,
+            "deviceId": null,
+            "deviceScope": null,
+            "concept": false,
+            "description": "",
+            "folderId": null,
+            "isinvalid": false,
+            "islinked": true,
+            "isActive": true,
+            "islocked": false,
+            "isPaused": false,
+            "usedPackages": ["util"],
+            "lastEdit": "2023-01-17T08:37:27.619Z",
+            "scheduling": {
+                "type": "on-demand"
+            },
+            "iswaiting": false,
+            "dlqCount": 0,
+            "createdByUser": {
+                "id": 11,
+                "name": "...",
+                "email": "..."
+            },
+            "updatedByUser": {
+                "id": 11,
+                "name": "...",
+                "email": "..."
+            },
+            "nextExec": null,
+            "operations": 0,
+            "transfer": 0,
+            "customProperties": {
+                "owner": "German"
+            }
+        }
+    ],
+    "pg": {
+        "sortBy": "proprietal",
+        "limit": 10,
+        "sortDir": "desc",
+        "offset": 0,
+        "returnTotalCount": false
+    }
+}

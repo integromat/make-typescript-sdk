@@ -1,0 +1,25 @@
+{
+    "records": [
+        {
+            "key": "8f7162828bc0",
+            "data": {
+                "price": 600
+            }
+        }
+    ],
+    "spec": [
+        {
+            "name": "price",
+            "label": "Price",
+            "type": "number",
+            "default": null,
+            "required": true
+        }
+    ],
+    "strict": false,
+    "count": 2,
+    "pg": {
+        "limit": 10,
+        "offset": 0
+    }
+}

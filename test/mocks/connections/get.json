@@ -1,0 +1,49 @@
+{
+    "connection": {
+        "id": 93,
+        "name": "Google",
+        "accountName": "google",
+        "accountLabel": "Google",
+        "packageName": null,
+        "expire": null,
+        "metadata": {
+            "value": "tom@example.com",
+            "type": "email"
+        },
+        "teamId": 4,
+        "theme": "#fecd5f",
+        "upgradeable": false,
+        "scopesCnt": 5,
+        "scoped": true,
+        "accountType": "oauth",
+        "editable": false,
+        "uid": 123456,
+        "scopes": [
+            {
+                "id": "https://www.googleapis.com/auth/userinfo.email",
+                "name": "View user's email address",
+                "account": "google"
+            },
+            {
+                "id": "https://mail.google.com/",
+                "name": "Access to Gmail.",
+                "account": "google"
+            },
+            {
+                "id": "openid",
+                "account": "google"
+            },
+            {
+                "id": "https://www.googleapis.com/auth/spreadsheets",
+                "account": "google"
+            },
+            {
+                "id": "https://www.googleapis.com/auth/drive",
+                "name": "Access to Google Drive.",
+                "account": "google"
+            }
+        ],
+        "connectedSystemId": "4244156b-88cc-43cf-a5e9-e94bd0304745",
+        "organizationId": 3
+    }
+}

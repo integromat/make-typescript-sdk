@@ -1,0 +1,16 @@
+{
+    "function": {
+        "id": 16,
+        "name": "symmetricDifference",
+        "description": "A function which returns an array with items unique across two arrays.\n",
+        "code": "function symmetricDifference(array1, array2){difference = array1.filter(x => !array2.includes(x)).concat(array2.filter(x => !array1.includes(x))) return difference}",
+        "args": "(array1, array2)",
+        "updatedAt": "2023-02-06T14:09:37.834Z",
+        "createdAt": "2023-02-06T14:09:37.834Z",
+        "createdByUser": {
+            "id": 22,
+            "name": "John Doe",
+            "email": "john@doe.com"
+        }
+    }
+}

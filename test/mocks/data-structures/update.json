@@ -1,0 +1,31 @@
+{
+    "dataStructure": {
+        "id": 9,
+        "name": "Data structure 1",
+        "teamId": 1,
+        "spec": [
+            {
+                "type": "text",
+                "name": "txt",
+                "label": "Text field",
+                "default": "default string",
+                "required": true
+            },
+            {
+                "type": "number",
+                "name": "num",
+                "label": "Number field",
+                "default": "2,",
+                "required": false
+            },
+            {
+                "type": "boolean",
+                "name": "bool",
+                "label": "Boolean field",
+                "default": true,
+                "required": false
+            }
+        ],
+        "strict": true
+    }
+}

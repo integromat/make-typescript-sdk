@@ -1,0 +1,24 @@
+{
+    "hook": {
+        "id": 46,
+        "name": "jotform hook 2",
+        "teamId": 4,
+        "udid": "ukkxypkmrcgufv8xmc9xumbvh8bfh69d",
+        "type": "web",
+        "packageName": null,
+        "theme": "#ffa500",
+        "editable": false,
+        "queueCount": 0,
+        "queueLimit": 10000,
+        "enabled": true,
+        "gone": false,
+        "typeName": "jotform",
+        "data": {
+            "__IMTCONN__": 96,
+            "formId": "91282545501352",
+            "teamId": 4,
+            "url": "https://local.make.cloud/wh/ukkxypkmrcgufv8xmc9xumbvh8bfh69d"
+        },
+        "url": "https://local.make.cloud/wh/ukkxypkmrcgufv8xmc9xumbvh8bfh69d"
+    }
+}

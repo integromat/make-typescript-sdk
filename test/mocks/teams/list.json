@@ -1,0 +1,15 @@
+{
+    "teams": [
+        {
+            "id": 5,
+            "name": "My Team",
+            "organizationId": 5
+        }
+    ],
+    "pg": {
+        "sortBy": "name",
+        "sortDir": "asc",
+        "limit": 10000,
+        "offset": 0
+    }
+}

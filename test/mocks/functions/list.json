@@ -1,0 +1,30 @@
+{
+    "functions": [
+        {
+            "id": 2,
+            "name": "checkType",
+            "args": "(param)",
+            "description": "Returns the data type of the argument.\n",
+            "updatedAt": "2023-02-06T09:10:40.643Z",
+            "createdByUser": {
+                "id": 22,
+                "name": "John Doe",
+                "email": "john@doe.com"
+            },
+            "createdAt": "2023-02-06T09:09:16.063Z"
+        },
+        {
+            "id": 3,
+            "name": "numberOfWorkingDays",
+            "args": "()",
+            "description": "Calculate how many working days are between the two provided dates.\n",
+            "updatedAt": "2023-01-25T12:49:51.601Z",
+            "createdByUser": {
+                "id": 22,
+                "name": "John Doe",
+                "email": "john@doe.com"
+            },
+            "createdAt": "2023-01-25T12:49:51.601Z"
+        }
+    ]
+}

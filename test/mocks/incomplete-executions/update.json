@@ -1,0 +1,10 @@
+{
+    "dlq": {
+        "failer": 1,
+        "blueprint": {
+            "flow": [],
+            "name": "Integration of failing scenario",
+            "metadata": {}
+        }
+    }
+}

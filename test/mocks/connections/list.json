@@ -1,0 +1,45 @@
+{
+    "connections": [
+        {
+            "id": 2,
+            "name": "My Airtable connection",
+            "accountName": "airtable2",
+            "accountLabel": "Airtable",
+            "packageName": null,
+            "expire": null,
+            "metadata": null,
+            "teamId": 22,
+            "theme": "#18bfff",
+            "upgradeable": false,
+            "scopesCnt": 0,
+            "scoped": true,
+            "accountType": "basic",
+            "editable": false,
+            "uid": null,
+            "connectedSystemId": "c5d8e134-d2f8-480d-9838-119a54f65d3e",
+            "organizationId": 3
+        },
+        {
+            "id": 15,
+            "name": "My Google connection",
+            "accountName": "google",
+            "accountLabel": "Google",
+            "packageName": null,
+            "expire": null,
+            "metadata": {
+                "type": "email",
+                "value": "test@mydomain.com"
+            },
+            "teamId": 22,
+            "theme": "#fecd5f",
+            "upgradeable": false,
+            "scopesCnt": 4,
+            "scoped": true,
+            "accountType": "oauth",
+            "editable": false,
+            "uid": 225874569526501080000,
+            "connectedSystemId": "4244156b-88cc-43cf-a5e9-e94bd0304745",
+            "organizationId": 2343
+        }
+    ]
+}

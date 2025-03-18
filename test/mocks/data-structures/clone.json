@@ -1,0 +1,24 @@
+{
+    "dataStructure": {
+        "id": 2547,
+        "name": "Cloned data structure",
+        "teamId": 22,
+        "spec": [
+            {
+                "type": "text",
+                "name": "txt",
+                "label": "Text field",
+                "default": "default string",
+                "required": true
+            },
+            {
+                "type": "number",
+                "name": "num",
+                "label": "Number field",
+                "default": "1,",
+                "required": false
+            }
+        ],
+        "strict": true
+    }
+}

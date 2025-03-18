@@ -1,0 +1,14 @@
+{
+    "code": "OK",
+    "response": {
+        "1": {
+            "error": {
+                "type": "InvalidConfigurationError",
+                "message": "IP address is not valid."
+            }
+        },
+        "3": {
+            "value": "Example error text."
+        }
+    }
+}

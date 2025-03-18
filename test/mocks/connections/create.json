@@ -1,0 +1,22 @@
+{
+    "connection": {
+        "id": 90,
+        "name": "Slack test",
+        "accountName": "slack",
+        "accountLabel": "Slack",
+        "packageName": null,
+        "expire": null,
+        "metadata": {
+            "value": "Make User",
+            "type": "string"
+        },
+        "teamId": 2,
+        "theme": "#4a154b",
+        "upgradeable": false,
+        "scopes": 0,
+        "scoped": true,
+        "accountType": "oauth",
+        "editable": false,
+        "uid": 3243125312
+    }
+}

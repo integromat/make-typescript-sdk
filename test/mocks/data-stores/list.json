@@ -1,0 +1,19 @@
+{
+    "dataStores": [
+        {
+            "id": 137,
+            "name": "Customers",
+            "records": 0,
+            "size": "0",
+            "maxSize": "1048576",
+            "teamId": 123,
+            "datastructureId": 123
+        }
+    ],
+    "pg": {
+        "sortBy": "name",
+        "sortDir": "asc",
+        "offset": 0,
+        "limit": 10
+    }
+}

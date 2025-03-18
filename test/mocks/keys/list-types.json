@@ -1,0 +1,170 @@
+{
+    "keysTypes": [
+        {
+            "name": "aes-key",
+            "label": "AES",
+            "parameters": [
+                {
+                    "name": "key",
+                    "type": "text",
+                    "label": "Key",
+                    "required": true
+                },
+                {
+                    "name": "keyEncoding",
+                    "label": "Key Encoding",
+                    "type": "select",
+                    "required": true,
+                    "default": "hex",
+                    "options": [
+                        {
+                            "label": "Base 64",
+                            "value": "base64"
+                        },
+                        {
+                            "label": "Hexadecimal",
+                            "value": "hex"
+                        },
+                        {
+                            "label": "Plain Text",
+                            "value": "plain"
+                        }
+                    ]
+                }
+            ],
+            "componentType": "key",
+            "author": "Patrik Simek",
+            "version": "3.0.12",
+            "theme": "#fa6f57",
+            "icon": "/img/packages/aes-key.png"
+        },
+        {
+            "name": "apikeyauth",
+            "label": "API Key Auth",
+            "parameters": [
+                {
+                    "name": "key",
+                    "label": "Key",
+                    "type": "password",
+                    "required": true
+                },
+                {
+                    "name": "placement",
+                    "label": "API Key placement",
+                    "help": "Define where to place the API Key.",
+                    "type": "select",
+                    "required": true,
+                    "default": "header",
+                    "options": [
+                        {
+                            "label": "In the header",
+                            "value": "header"
+                        },
+                        {
+                            "label": "In the query string",
+                            "value": "qs"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "label": "API Key parameter name",
+                    "type": "text",
+                    "default": "X-API-Key",
+                    "required": true
+                }
+            ],
+            "componentType": "key",
+            "author": "Petr Malimanek",
+            "version": "3.31.4",
+            "theme": "#007ee5",
+            "icon": "/img/packages/apikeyauth.png"
+        },
+        {
+            "label": "Apple Push Notifications",
+            "name": "apn",
+            "parameters": [
+                {
+                    "label": "Private Key",
+                    "multiline": true,
+                    "required": true,
+                    "type": "pkey",
+                    "name": "privateKey",
+                    "help": "If you're using Provider Authentication Tokens, insert content of acquired .p8 file."
+                },
+                {
+                    "label": "Authentication method",
+                    "name": "method",
+                    "type": "select",
+                    "default": "tokens",
+                    "options": [
+                        {
+                            "label": "Provider Authentication Tokens",
+                            "value": "tokens",
+                            "nested": [
+                                {
+                                    "label": "Key ID",
+                                    "required": true,
+                                    "type": "text",
+                                    "name": "keyId"
+                                },
+                                {
+                                    "label": "Team ID",
+                                    "required": true,
+                                    "type": "text",
+                                    "name": "teamId"
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Certificate",
+                            "value": "cert",
+                            "nested": [
+                                {
+                                    "label": "Certificate",
+                                    "required": true,
+                                    "multiline": true,
+                                    "type": "cert",
+                                    "name": "certificate"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "required": true,
+                    "label": "Production",
+                    "default": false,
+                    "name": "production",
+                    "type": "boolean"
+                }
+            ],
+            "componentType": "key",
+            "author": "Patrik Simek",
+            "version": "1.1.6",
+            "theme": "#666666",
+            "icon": "/img/packages/apn.png"
+        },
+        {
+            "name": "basicauth",
+            "label": "HTTP Basic Auth",
+            "parameters": [
+                {
+                    "name": "authUser",
+                    "label": "Username",
+                    "type": "text"
+                },
+                {
+                    "name": "authPass",
+                    "label": "Password",
+                    "type": "password"
+                }
+            ],
+            "componentType": "key",
+            "author": "Petr Malimanek",
+            "version": "3.31.4",
+            "theme": "#007ee5",
+            "icon": "/img/packages/basicauth.png"
+        }
+    ]
+}

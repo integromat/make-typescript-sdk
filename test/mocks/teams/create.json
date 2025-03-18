@@ -1,0 +1,15 @@
+{
+    "team": {
+        "id": 26,
+        "name": "New Team",
+        "organizationId": 1,
+        "operationsLimit": 1,
+        "transferLimit": "536870"
+    },
+    "userTeamRole": {
+        "usersRoleId": 1,
+        "userId": 1,
+        "teamId": 26,
+        "changeable": false
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "keys": [
+        {
+            "id": 1,
+            "name": "My HTTP Basic Auth key"
+        },
+        {
+            "id": 2,
+            "name": "My HTTP Basic Auth key"
+        }
+    ]
+}

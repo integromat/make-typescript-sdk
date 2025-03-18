@@ -1,0 +1,51 @@
+{
+    "hooks": [
+        {
+            "id": 11,
+            "name": "My gateway-webhook webhook 1",
+            "teamId": 4,
+            "udid": "1gqnexkk1vwxg2wpj39kg30pzp6uhe7h",
+            "type": "web",
+            "packageName": null,
+            "theme": "#c73a63",
+            "editable": true,
+            "queueCount": 0,
+            "queueLimit": 10000,
+            "enabled": true,
+            "gone": false,
+            "typeName": "gateway-webhook",
+            "data": {
+                "headers": false,
+                "method": false,
+                "stringify": false
+            },
+            "scenarioId": 1,
+            "url": "https://local.make.cloud/wh/1gqnexkk1vwxg2wpj39kg30pzp6uhe7h"
+        },
+        {
+            "id": 58,
+            "name": "Test 1",
+            "teamId": 4,
+            "udid": "d4ezzfwgyav7qaukv8dbh3l21eru0fld",
+            "type": "web",
+            "packageName": null,
+            "theme": "#c73a63",
+            "editable": true,
+            "queueCount": 0,
+            "queueLimit": 10000,
+            "enabled": true,
+            "gone": false,
+            "typeName": "gateway-webhook",
+            "data": {
+                "ip": null,
+                "udt": null,
+                "headers": false,
+                "method": false,
+                "stringify": false,
+                "teamId": 4
+            },
+            "scenarioId": 112,
+            "url": "https://local.make.cloud/wh/d4ezzfwgyav7qaukv8dbh3l21eru0fld"
+        }
+    ]
+}

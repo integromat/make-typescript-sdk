@@ -1,0 +1,16 @@
+{
+    "function": {
+        "id": 48,
+        "name": "greeter",
+        "description": "Greet user instead of greeting the World.\n",
+        "code": "function greeter(name){return concat('Hello ', name)",
+        "args": "(name)",
+        "updatedAt": "2023-02-06T14:09:37.834Z",
+        "createdAt": "2023-02-06T14:09:37.834Z",
+        "createdByUser": {
+            "id": 22,
+            "name": "John Doe",
+            "email": "john@doe.com"
+        }
+    }
+}

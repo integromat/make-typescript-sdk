@@ -1,0 +1,38 @@
+{
+    "scenario": {
+        "id": 925,
+        "name": "New scenario",
+        "teamId": 215,
+        "hookId": null,
+        "deviceId": null,
+        "deviceScope": null,
+        "concept": false,
+        "description": "\n",
+        "folderId": null,
+        "isinvalid": false,
+        "islinked": false,
+        "isActive": false,
+        "islocked": false,
+        "isPaused": false,
+        "usedPackages": ["json"],
+        "lastEdit": "2021-09-22T06:40:56.692Z",
+        "scheduling": {
+            "type": "indefinitely",
+            "interval": 900
+        },
+        "iswaiting": false,
+        "dlqCount": 0,
+        "createdByUser": {
+            "id": 985,
+            "name": "John Doe",
+            "email": "j.doe@example.com"
+        },
+        "updatedByUser": {
+            "id": 986,
+            "name": "John Foo",
+            "email": "j.foo@example.com"
+        },
+        "nextExec": "2021-09-22T06:41:56.692Z",
+        "created": "2021-10-22T06:41:56.692Z"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "team": {
+        "id": 1,
+        "name": "Team 1",
+        "organizationId": 1,
+        "scenarioDrafts": false
+    }
+}

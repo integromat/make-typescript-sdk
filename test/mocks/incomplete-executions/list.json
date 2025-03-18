@@ -1,0 +1,22 @@
+{
+    "dlqs": [
+        {
+            "id": "ada87173334b44d1907270064edbd7dd",
+            "reason": "IP address is not valid.",
+            "created": "2019-11-04T10:52:57.260Z",
+            "size": 5,
+            "resolved": false,
+            "retry": true,
+            "attempts": 1
+        },
+        {
+            "id": "c29c4bf027c74bfc848e1803bf764447",
+            "reason": "IP address is not valid.",
+            "created": "2019-11-04T10:52:12.276Z",
+            "size": 5,
+            "resolved": false,
+            "retry": true,
+            "attempts": 0
+        }
+    ]
+}
