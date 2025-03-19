@@ -84,5 +84,4 @@ export type {
     RunScenarioResponse,
 } from './endpoints/scenarios.js';
 export type { Team, Teams, CreateTeamBody, ListTeamsOptions, GetTeamOptions } from './endpoints/teams.js';
-export type { Users } from './endpoints/users.js';
-export type { User } from './endpoints/users.js';
+export type { User, Users } from './endpoints/users.js';

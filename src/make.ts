@@ -13,7 +13,7 @@ import { Connections } from './endpoints/connections.js';
 import { Functions } from './endpoints/functions.js';
 import { buildUrl, createMakeError } from './utils.js';
 import type { FetchOptions } from './types.js';
-
+import { VERSION } from './version.js';
 /**
  * The main Make SDK class that provides access to all Make API endpoints.
  */
@@ -23,6 +23,8 @@ export class Make {
     public readonly zone: string;
     /** The API version to use */
     public readonly version: number;
+    /** The protocol to use (defaults to https) */
+    public protocol: string;
 
     /** Access to user-related endpoints */
     public readonly users: Users;
@@ -61,6 +63,7 @@ export class Make {
         this.#apiKey = apiKey;
         this.zone = zone;
         this.version = version;
+        this.protocol = 'https';
 
         this.users = new Users(this.fetch.bind(this));
         this.scenarios = new Scenarios(this.fetch.bind(this));
@@ -84,16 +87,16 @@ export class Make {
     public async fetch<T = unknown>(url: string, options?: FetchOptions): Promise<T> {
         options = Object.assign({}, options, {
             headers: Object.assign({}, options?.headers, {
-                'user-agent': 'MakeTypeScriptSDK/0.1.0',
+                'user-agent': `MakeTypeScriptSDK/${VERSION}`,
                 authorization: `Token ${this.#apiKey}`,
             }),
         });
 
         if (url.charAt(0) === '/') {
             if (url.charAt(1) === '/') {
-                url = `https:${url}`;
+                url = `${this.protocol}:${url}`;
             } else {
-                url = `https://${this.zone}/api/v${this.version}${url}`;
+                url = `${this.protocol}://${this.zone}/api/v${this.version}${url}`;
             }
         }
 
