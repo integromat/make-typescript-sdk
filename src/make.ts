@@ -18,7 +18,8 @@ import { VERSION } from './version.js';
  * The main Make SDK class that provides access to all Make API endpoints.
  */
 export class Make {
-    readonly #apiKey: string;
+    readonly #tokenType: string;
+    readonly #token: string;
     /** The Make zone (e.g. eu1.make.com) */
     public readonly zone: string;
     /** The API version to use */
@@ -55,12 +56,13 @@ export class Make {
 
     /**
      * Create a new Make SDK instance
-     * @param apiKey Your Make API key
+     * @param token Your Make API key or OAuth2 access token
      * @param zone The Make zone (e.g. eu1.make.com)
      * @param version API version to use (defaults to 2)
      */
-    constructor(apiKey: string, zone: string, version = 2) {
-        this.#apiKey = apiKey;
+    constructor(token: string, zone: string, tokenType: 'apiKey' | 'OAuth2' = 'apiKey', version = 2) {
+        this.#token = token;
+        this.#tokenType = tokenType;
         this.zone = zone;
         this.version = version;
         this.protocol = 'https';
@@ -88,7 +90,7 @@ export class Make {
         options = Object.assign({}, options, {
             headers: Object.assign({}, options?.headers, {
                 'user-agent': `MakeTypeScriptSDK/${VERSION}`,
-                authorization: `Token ${this.#apiKey}`,
+                authorization: `${this.#tokenType === 'apiKey' ? 'Token' : 'Bearer'} ${this.#token}`,
             }),
         });
 
