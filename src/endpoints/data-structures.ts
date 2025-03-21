@@ -26,12 +26,12 @@ export type DataStructure = {
 
 export type ListDataStructuresOptions<C extends keyof DataStructure = never> = {
     cols?: C[];
-    pg?: Partial<Pagination>;
+    pg?: Partial<Pagination<DataStructure>>;
 };
 
 type ListDataStructuresResponse<C extends keyof DataStructure = never> = {
     dataStructures: PickColumns<DataStructure, C>[];
-    pg: Pagination;
+    pg: Pagination<DataStructure>;
 };
 
 export type CreateDataStructureBody = {

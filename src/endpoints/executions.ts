@@ -14,7 +14,7 @@ export type Execution = {
 };
 
 export type ListExecutionsOptions = {
-    pg?: Partial<Pagination>;
+    pg?: Partial<Pagination<Execution>>;
 };
 
 type ListExecutionsResponse = {

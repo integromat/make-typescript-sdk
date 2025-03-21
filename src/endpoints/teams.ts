@@ -51,7 +51,7 @@ export type ListTeamsOptions<C extends keyof Team = never> = {
     /** Specific team fields to return */
     cols?: C[];
     /** Pagination options */
-    pg?: Partial<Pagination>;
+    pg?: Partial<Pagination<Team>>;
 };
 
 /**
@@ -61,7 +61,7 @@ type ListTeamsResponse<C extends keyof Team = never> = {
     /** List of teams */
     teams: PickColumns<Team, C>[];
     /** Pagination information */
-    pg: Pagination;
+    pg: Pagination<Team>;
 };
 
 /**

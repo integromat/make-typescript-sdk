@@ -24,9 +24,9 @@ export type FetchOptions = {
 
 export type FetchFunction = <T = unknown>(url: string, options?: FetchOptions) => Promise<T>;
 
-export type Pagination = {
-    sortBy: string;
-    sortDir: string;
+export type Pagination<T> = {
+    sortBy: keyof T;
+    sortDir: 'asc' | 'desc';
     offset: number;
     limit: number;
 };

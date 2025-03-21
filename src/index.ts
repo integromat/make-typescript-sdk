@@ -77,6 +77,7 @@ export type {
     Scenarios,
     ScenarioInteface,
     ListScenariosOptions,
+    GetScenarioOptions,
     CreateScenarioBody,
     CreateScenarioOptions,
     UpdateScenarioBody,
