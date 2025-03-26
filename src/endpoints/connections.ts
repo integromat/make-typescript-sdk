@@ -1,4 +1,4 @@
-import type { FetchFunction, JSONValue, PickColumns } from '../types.js';
+import type { FetchFunction, JSONValue, Pagination, PickColumns } from '../types.js';
 
 export type Connection = {
     /** The connection ID */
@@ -47,6 +47,7 @@ export type ListConnectionsOptions<C extends keyof Connection = never> = {
     cols?: C[];
     type?: string[];
     teamId?: number;
+    pg: Partial<Pagination<Connection>>;
 };
 
 export type GetConnectionOptions<C extends keyof ConnectionWithScopes = never> = {

@@ -13,12 +13,12 @@ export type DataStore = {
 
 export type ListDataStoresOptions<C extends keyof DataStore = never> = {
     cols?: C[];
-    pg?: Partial<Pagination>;
+    pg?: Partial<Pagination<DataStore>>;
 };
 
 type ListDataStoresResponse<C extends keyof DataStore = never> = {
     dataStores: PickColumns<DataStore, C>[];
-    pg: Pagination;
+    pg: Pagination<DataStore>;
 };
 
 export type CreateDataStoreBody = {

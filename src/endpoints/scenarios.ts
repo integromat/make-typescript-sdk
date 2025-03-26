@@ -31,14 +31,18 @@ export type Scenario = {
     customProperties?: Record<string, unknown>;
 };
 
+export type GetScenarioOptions<C extends keyof Scenario = never> = {
+    cols?: C[];
+};
+
 export type ListScenariosOptions<C extends keyof Scenario = never> = {
     cols?: C[];
-    pg?: Partial<Pagination>;
+    pg?: Partial<Pagination<Scenario>>;
 };
 
 type ListScenariosResponse<C extends keyof Scenario = never> = {
     scenarios: PickColumns<Scenario, C>[];
-    pg: Pagination;
+    pg: Pagination<Scenario>;
 };
 
 export type ScenarioInteface = {
@@ -139,8 +143,13 @@ export class Scenarios {
      * @param scenarioId The scenario ID to get details for
      * @returns Promise with the scenario details
      */
-    async get(scenarioId: number): Promise<Scenario> {
-        return (await this.#fetch<GetScenarioResponse>(`/scenarios/${scenarioId}`)).scenario;
+    async get<C extends keyof Scenario = never>(
+        scenarioId: number,
+        options?: GetScenarioOptions<C>,
+    ): Promise<PickColumns<Scenario, C>> {
+        return (
+            await this.#fetch<GetScenarioResponse<C>>(`/scenarios/${scenarioId}`, { query: { cols: options?.cols } })
+        ).scenario;
     }
 
     /**

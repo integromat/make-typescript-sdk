@@ -1,4 +1,4 @@
-import type { FetchFunction, JSONValue } from '../types.js';
+import type { FetchFunction, JSONValue, Pagination } from '../types.js';
 
 export type Hook = {
     id: number;
@@ -63,6 +63,7 @@ export type ListHooksOptions = {
     typeName?: string;
     assigned?: boolean;
     viewForScenarioId?: number;
+    pg?: Partial<Pagination<Hook>>;
 };
 
 export class Hooks {

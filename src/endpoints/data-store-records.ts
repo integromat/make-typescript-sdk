@@ -7,13 +7,13 @@ export type DataStoreRecord = {
 };
 
 export type ListDataStoreRecordsOptions = {
-    pg?: Partial<Pick<Pagination, 'offset' | 'limit'>>;
+    pg?: Partial<Pick<Pagination<DataStoreRecord>, 'offset' | 'limit'>>;
 };
 
 type ListDataStoreRecordsResponse = {
     records: DataStoreRecord[];
     spec: DataStructure;
-    pg: Pick<Pagination, 'offset' | 'limit'>;
+    pg: Pick<Pagination<DataStoreRecord>, 'offset' | 'limit'>;
 };
 
 export type CreateDataStoreRecordBody = Record<string, JSONValue>;
