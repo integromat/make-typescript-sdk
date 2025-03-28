@@ -47,7 +47,7 @@ export type ListConnectionsOptions<C extends keyof Connection = never> = {
     cols?: C[];
     type?: string[];
     teamId?: number;
-    pg: Partial<Pagination<Connection>>;
+    pg?: Partial<Pagination<Connection>>;
 };
 
 export type GetConnectionOptions<C extends keyof ConnectionWithScopes = never> = {
