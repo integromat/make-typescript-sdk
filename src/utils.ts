@@ -1,7 +1,13 @@
 import type { QueryValue } from './types.js';
 
+const UUIDv4_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export function isObject(value: unknown): value is object {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+export function isAPIKey(value: string): boolean {
+    return UUIDv4_RE.test(value);
 }
 
 export function buildUrl(baseUrl: string, params: Record<string, QueryValue> = {}): string {

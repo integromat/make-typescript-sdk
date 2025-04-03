@@ -11,14 +11,13 @@ import { IncompleteExecutions } from './endpoints/incomplete-executions.js';
 import { Keys } from './endpoints/keys.js';
 import { Connections } from './endpoints/connections.js';
 import { Functions } from './endpoints/functions.js';
-import { buildUrl, createMakeError } from './utils.js';
+import { buildUrl, createMakeError, isAPIKey } from './utils.js';
 import type { FetchOptions } from './types.js';
 import { VERSION } from './version.js';
 /**
  * The main Make SDK class that provides access to all Make API endpoints.
  */
 export class Make {
-    readonly #tokenType: string;
     readonly #token: string;
     /** The Make zone (e.g. eu1.make.com) */
     public readonly zone: string;
@@ -60,9 +59,8 @@ export class Make {
      * @param zone The Make zone (e.g. eu1.make.com)
      * @param version API version to use (defaults to 2)
      */
-    constructor(token: string, zone: string, tokenType: 'apiKey' | 'OAuth2' = 'apiKey', version = 2) {
+    constructor(token: string, zone: string, version = 2) {
         this.#token = token;
-        this.#tokenType = tokenType;
         this.zone = zone;
         this.version = version;
         this.protocol = 'https';
@@ -90,7 +88,7 @@ export class Make {
         options = Object.assign({}, options, {
             headers: Object.assign({}, options?.headers, {
                 'user-agent': `MakeTypeScriptSDK/${VERSION}`,
-                authorization: `${this.#tokenType === 'apiKey' ? 'Token' : 'Bearer'} ${this.#token}`,
+                authorization: `${isAPIKey(this.#token) ? 'Token' : 'Bearer'} ${this.#token}`,
             }),
         });
 
