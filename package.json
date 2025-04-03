@@ -1,6 +1,6 @@
 {
     "name": "@makehq/sdk",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Make TypeScript SDK",
     "license": "MIT",
     "author": "Make",
@@ -16,7 +16,7 @@
         "build:version": "node scripts/build-version.mjs",
         "test": "jest --coverage --coverageReporters=\"text\" --runInBand --forceExit --verbose false --testMatch \"**/test/**/*.spec.ts\"",
         "test:integration": "jest --coverage --coverageReporters=\"text\" --runInBand --forceExit --verbose false --testMatch \"**/test/**/*.integration.test.ts\"",
-        "publish:jsr": "npx jsr publish",
+        "publish:jsr": "npx jsr publish --allow-dirty",
         "lint": "tsc && eslint --quiet .",
         "format": "npx prettier . --write"
     },
