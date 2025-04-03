@@ -14,43 +14,108 @@ import { Functions } from './endpoints/functions.js';
 import { buildUrl, createMakeError, isAPIKey } from './utils.js';
 import type { FetchOptions } from './types.js';
 import { VERSION } from './version.js';
+
 /**
  * The main Make SDK class that provides access to all Make API endpoints.
+ * Acts as the entry point for interacting with the Make API.
  */
 export class Make {
     readonly #token: string;
-    /** The Make zone (e.g. eu1.make.com) */
+
+    /**
+     * The Make zone (e.g. eu1.make.com)
+     * Identifies the region of the Make servers to connect to
+     */
     public readonly zone: string;
-    /** The API version to use */
+
+    /**
+     * The API version to use
+     * Default is version 2 of the Make API
+     */
     public readonly version: number;
-    /** The protocol to use (defaults to https) */
+
+    /**
+     * The protocol to use (defaults to https)
+     * Can be changed to http for testing in local environments
+     */
     public protocol: string;
 
-    /** Access to user-related endpoints */
+    /**
+     * Access to user-related endpoints
+     * Provides methods to get current user information
+     */
     public readonly users: Users;
-    /** Access to scenario-related endpoints */
+
+    /**
+     * Access to scenario-related endpoints
+     * Scenarios allow you to create and run automation tasks
+     */
     public readonly scenarios: Scenarios;
-    /** Access to blueprint-related endpoints */
+
+    /**
+     * Access to blueprint-related endpoints
+     * Blueprints define the structure and workflow of scenarios
+     */
     public readonly blueprints: Blueprints;
-    /** Access to data store-related endpoints */
+
+    /**
+     * Access to data store-related endpoints
+     * Data stores allow you to store and retrieve data within Make
+     */
     public readonly dataStores: DataStores;
-    /** Access to execution-related endpoints */
+
+    /**
+     * Access to execution-related endpoints
+     * Executions represent the running instances of scenarios
+     */
     public readonly executions: Executions;
-    /** Access to data structure-related endpoints */
+
+    /**
+     * Access to data structure-related endpoints
+     * Data structures define the structure of data being used in Make
+     */
     public readonly dataStructures: DataStructures;
-    /** Access to folder-related endpoints */
+
+    /**
+     * Access to folder-related endpoints
+     * Folders help organize scenarios
+     */
     public readonly folders: Folders;
-    /** Access to webhook-related endpoints */
+
+    /**
+     * Access to webhook-related endpoints
+     * Hooks (webhooks and mailhooks) notify you when certain changes occur in connected apps or services
+     */
     public readonly hooks: Hooks;
-    /** Access to team-related endpoints */
+
+    /**
+     * Access to team-related endpoints
+     * Teams control access to Make scenarios, connections, data stores, and other resources
+     */
     public readonly teams: Teams;
-    /** Access to incomplete execution-related endpoints */
+
+    /**
+     * Access to incomplete execution-related endpoints
+     * Incomplete executions are scenario runs that didn't complete successfully
+     */
     public readonly incompleteExecutions: IncompleteExecutions;
-    /** Access to API key-related endpoints */
+
+    /**
+     * Access to key-related endpoints
+     * Keys store secrets that can be used in apps
+     */
     public readonly keys: Keys;
-    /** Access to connection-related endpoints */
+
+    /**
+     * Access to connection-related endpoints
+     * Connections link Make to external apps and services
+     */
     public readonly connections: Connections;
-    /** Access to function-related endpoints */
+
+    /**
+     * Access to function-related endpoints
+     * Functions are custom code snippets that can be used in scenarios
+     */
     public readonly functions: Functions;
 
     /**
@@ -81,7 +146,16 @@ export class Make {
     }
 
     /**
-     * Internal method to make API requests
+     * Make API requests with authentication
+     *
+     * Handles URL construction, authentication, and error handling for all API calls.
+     * This method is used internally by all endpoint classes.
+     *
+     * @template T The expected response type
+     * @param url The endpoint URL (relative or absolute)
+     * @param options Request options (method, headers, body, query parameters)
+     * @returns Promise resolving to the parsed response data
+     * @throws {MakeError} If the API returns an error response
      * @internal
      */
     public async fetch<T = unknown>(url: string, options?: FetchOptions): Promise<T> {

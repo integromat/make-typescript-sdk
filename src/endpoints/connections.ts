@@ -1,121 +1,207 @@
 import type { FetchFunction, JSONValue, Pagination, PickColumns } from '../types.js';
 
+/**
+ * Represents a connection in Make.
+ * Connections link Make to external apps and services, allowing scenarios
+ * to interact with them through APIs.
+ */
 export type Connection = {
-    /** The connection ID */
+    /** Unique identifier of the connection */
     id: number;
-    /** The connection name */
+    /** User-defined name of the connection */
     name: string;
-    /** The connection type name */
+    /** The connection type name (internal identifier) */
     accountName: string;
-    /** The connection type label */
+    /** Human-readable label for the connection type */
     accountLabel: string;
-    /** The connection app name */
+    /** The app name this connection belongs to */
     packageName: string | null;
-    /** The connection expire date */
+    /** Expiration date of the connection credentials, if applicable */
     expire: string | null;
-    /** The connection metadata */
+    /** Additional metadata about the connection */
     metadata: Record<string, JSONValue> | null;
-    /** The team ID */
+    /** ID of the team that owns the connection */
     teamId: number;
-    /** The connection theme */
+    /** Theme color for the connection in UI */
     theme: string;
-    /** Whether the connection is upgradeable */
+    /** Whether the connection can be upgraded to a newer version */
     upgradeable: boolean;
-    /** The number of scopes (only for OAuth connections) */
+    /** Number of OAuth scopes the connection has */
     scopesCnt: number;
-    /** Whether the connection is scoped (only for OAuth connections) */
+    /** Whether the connection has specific scopes provided with the request */
     scoped: boolean;
-    /** The connection authorization type (`basic`, `oauth`) */
+    /** Authentication type used by the connection (basic, oauth) */
     accountType: string;
-    /** Whether the connection is editable */
+    /** Whether the connection can be edited */
     editable: boolean;
-    /** The connection UID */
+    /** Unique identifier of the user in the connected system */
     uid: number | null;
-    /** The connected system ID */
+    /** External identifier of the connected system */
     connectedSystemId: string | null;
 };
 
+/**
+ * Extended connection type that includes scope information.
+ * Used when retrieving detailed connection information.
+ */
 export type ConnectionWithScopes = Connection & {
+    /** OAuth scopes that the connection has access to */
     scopes: Array<{
+        /** Identifier of the scope */
         id: string;
+        /** Human-readable name of the scope */
         name?: string;
+        /** Account/service the scope belongs to */
         account: string;
     }>;
 };
 
+/**
+ * Options for listing connections.
+ * @template C Keys of the Connection type to include in the response
+ */
 export type ListConnectionsOptions<C extends keyof Connection = never> = {
+    /** Specific columns/fields to include in the response */
     cols?: C[];
+    /** Filter connections by type */
     type?: string[];
+    /** Team ID to filter connections by (can override the main parameter) */
     teamId?: number;
+    /** Pagination options */
     pg?: Partial<Pagination<Connection>>;
 };
 
+/**
+ * Options for retrieving a connection.
+ * @template C Keys of the ConnectionWithScopes type to include in the response
+ */
 export type GetConnectionOptions<C extends keyof ConnectionWithScopes = never> = {
+    /** Specific columns/fields to include in the response */
     cols?: C[];
 };
 
+/**
+ * Options for renaming a connection.
+ * @template C Keys of the Connection type to include in the response
+ */
 export type RenameConnectionOptions<C extends keyof Connection = never> = {
+    /** Specific columns/fields to include in the response */
     cols?: C[];
 };
 
+/**
+ * Parameters for creating a new connection.
+ */
 export type CreateConnectionBody = {
+    /** Name for the connection */
     name: string;
+    /** Type of the connection */
     accountName: string;
+    /** OAuth scopes to request, if applicable */
     scopes?: string[];
+    /** ID of the team where the connection will be created */
     teamId: number;
+    /** Connection-specific configuration data */
     data?: Record<string, JSONValue>;
 };
 
+/**
+ * Parameters for updating a connection.
+ */
 export type UpdateConnectionBody = {
+    /** Connection-specific configuration data to update */
     data?: Record<string, JSONValue>;
 };
 
+/**
+ * Response format for listing connections.
+ */
 type ListConnectionsResponse<C extends keyof Connection = never> = {
+    /** List of connections matching the query */
     connections: PickColumns<Connection, C>[];
 };
 
+/**
+ * Response format for getting a connection.
+ */
 type GetConnectionResponse<C extends keyof ConnectionWithScopes = never> = {
+    /** The requested connection with scope information */
     connection: PickColumns<ConnectionWithScopes, C>;
 };
 
+/**
+ * Response format for creating a connection.
+ */
 type CreateConnectionResponse = {
+    /** The created connection */
     connection: Connection;
 };
 
+/**
+ * Response format for updating a connection.
+ */
 type UpdateConnectionResponse = {
+    /** Whether the connection was changed */
     changed: boolean;
 };
 
+/**
+ * Response format for renaming a connection.
+ */
 type RenameConnectionResponse<C extends keyof Connection = never> = {
+    /** The updated connection */
     connection: PickColumns<Connection, C>;
+    /** The new name that was applied */
     newName: string;
 };
 
+/**
+ * Response format for verifying a connection.
+ */
 type VerifyConnectionResponse = {
+    /** Whether the connection was successfully verified */
     verified: boolean;
 };
 
+/**
+ * Response format for updating connection scopes.
+ */
 type ScopedConnectionResponse = {
+    /** Connection scope status information */
     connection: {
+        /** Whether the connection is now scoped */
         scoped: boolean;
     };
 };
 
+/**
+ * Response format for getting editable parameters.
+ */
 type EditableParametersResponse = {
+    /** List of parameter names that can be edited */
     editableParameters: string[];
 };
 
+/**
+ * Class providing methods for working with Make connections.
+ * Connections link Make to external apps and services, allowing
+ * scenarios to interact with them through APIs.
+ */
 export class Connections {
     readonly #fetch: FetchFunction;
 
+    /**
+     * Create a new Connections instance.
+     * @param fetch Function for making API requests
+     */
     constructor(fetch: FetchFunction) {
         this.#fetch = fetch;
     }
 
     /**
-     * List connections
-     * @param teamId The team ID
-     * @param options Optional parameters for filtering
+     * List connections for a team.
+     * @param teamId The team ID to list connections for
+     * @param options Optional parameters for filtering and pagination
      * @returns Promise with the list of connections
      */
     async list<C extends keyof Connection = never>(
@@ -134,10 +220,10 @@ export class Connections {
     }
 
     /**
-     * Get a connection
-     * @param connectionId The connection ID
-     * @param options Optional parameters
-     * @returns Promise with the connection details
+     * Get details of a specific connection.
+     * @param connectionId The connection ID to get
+     * @param options Optional parameters for filtering the returned fields
+     * @returns Promise with the connection details including scope information
      */
     async get<C extends keyof ConnectionWithScopes = never>(
         connectionId: number,
@@ -153,8 +239,8 @@ export class Connections {
     }
 
     /**
-     * Create a new connection
-     * @param body The connection data including name, teamId, accountName, accountType, and optional parameters
+     * Create a new connection.
+     * @param body Parameters for the connection to create
      * @returns Promise with the created connection
      */
     async create(body: CreateConnectionBody): Promise<Pick<Connection, 'id' | 'name' | 'accountName' | 'accountType'>> {
@@ -166,7 +252,7 @@ export class Connections {
                 },
                 body: Object.assign({}, body.data, {
                     /**
-                     * We're fixing inconsitencies in the API by swapping some parameters, making
+                     * We're fixing inconsistencies in the API by swapping some parameters, making
                      * the function interface more consistent with the rest of the API.
                      */
                     name: undefined,
@@ -179,10 +265,10 @@ export class Connections {
     }
 
     /**
-     * Update a connection
-     * @param connectionId The connection ID
+     * Update a connection's configuration data.
+     * @param connectionId The connection ID to update
      * @param body The connection parameters to update
-     * @returns Promise indicating if the connection was updated
+     * @returns Promise with a boolean indicating success
      */
     async update(connectionId: number, body: UpdateConnectionBody): Promise<boolean> {
         return (
@@ -194,10 +280,10 @@ export class Connections {
     }
 
     /**
-     * Rename a connection
-     * @param connectionId The connection ID
+     * Rename a connection.
+     * @param connectionId The connection ID to rename
      * @param name The new name for the connection
-     * @param options Optional parameters
+     * @param options Optional parameters for filtering the returned fields
      * @returns Promise with the updated connection
      */
     async rename<C extends keyof Connection = never>(
@@ -219,9 +305,10 @@ export class Connections {
     }
 
     /**
-     * Verify a connection
-     * @param connectionId The connection ID
-     * @returns Promise indicating if the connection was verified
+     * Verify if a connection is working correctly.
+     * Tests the connection credentials and configuration.
+     * @param connectionId The connection ID to verify
+     * @returns Promise with a boolean indicating if the connection is valid
      */
     async verify(connectionId: number): Promise<boolean> {
         return (
@@ -232,10 +319,10 @@ export class Connections {
     }
 
     /**
-     * Get the scoped status of a connection
-     * @param connectionId The connection ID
-     * @param scope The list of scopes to check
-     * @returns Promise with the scoped status
+     * Update the OAuth scopes for a connection.
+     * @param connectionId The connection ID to update scopes for
+     * @param scope Array of scope identifiers to set
+     * @returns Promise with a boolean indicating if the connection is now scoped
      */
     async scoped(connectionId: number, scope: string[]): Promise<boolean> {
         return (
@@ -249,9 +336,9 @@ export class Connections {
     }
 
     /**
-     * List editable parameters for a connection
-     * @param connectionId The connection ID
-     * @returns Promise with the list of editable parameters
+     * List editable parameters for a connection.
+     * @param connectionId The connection ID to get editable parameters for
+     * @returns Promise with an array of parameter names that can be edited
      */
     async listEditableParameters(connectionId: number): Promise<string[]> {
         return (await this.#fetch<EditableParametersResponse>(`/connections/${connectionId}/editable-data-schema`))
@@ -259,8 +346,8 @@ export class Connections {
     }
 
     /**
-     * Delete a connection
-     * @param connectionId The connection ID
+     * Delete a connection.
+     * @param connectionId The connection ID to delete
      */
     async delete(connectionId: number): Promise<void> {
         await this.#fetch(`/connections/${connectionId}`, {
