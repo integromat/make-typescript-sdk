@@ -124,6 +124,6 @@ export class Make {
 
         const contentType = res.headers.get('content-type');
         const result = contentType?.includes('application/json') ? await res.json() : await res.text();
-        return result;
+        return result as T;
     }
 }

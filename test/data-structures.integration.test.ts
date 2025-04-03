@@ -124,7 +124,7 @@ describe('Integration: Data Structures', () => {
         expect(dataStructure.name).toBe(updatedName);
         expect(dataStructure.spec).toBeDefined();
         expect(dataStructure.spec?.length).toBe(6);
-        expect(dataStructure.spec?.[0].label).toBe('Full Name');
+        expect(dataStructure.spec?.[0]?.label).toBe('Full Name');
     });
 
     it('Should list data structures', async () => {

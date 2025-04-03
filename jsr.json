@@ -4,6 +4,6 @@
     "exports": "./src/index.ts",
     "publish": {
         "include": ["LICENSE", "README.md", "src/**/*.ts"],
-        "exclude": ["test/*"]
+        "exclude": ["test/*", "scripts/*"]
     }
 }

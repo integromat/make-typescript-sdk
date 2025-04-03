@@ -1,9 +1,18 @@
 {
-    "extends": "./tsconfig.cjs.json",
     "compilerOptions": {
-        "types": ["node", "jest"],
         "noEmit": true,
-        "resolveJsonModule": true
-    },
-    "include": ["src/**/*.ts", "test/**/*.ts"]
+        "target": "es2022",
+        "resolveJsonModule": true,
+        "moduleDetection": "force",
+        "isolatedModules": true,
+        "strict": true,
+        "alwaysStrict": true,
+        "strictFunctionTypes": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "module": "Preserve",
+        "lib": ["es2022"]
+    }
 }

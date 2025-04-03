@@ -1,6 +1,5 @@
 {
     "name": "@makehq/sdk",
-    "private": true,
     "version": "0.1.0",
     "description": "Make TypeScript SDK",
     "license": "MIT",
@@ -8,29 +7,37 @@
     "repository": "github:integromat/make-typescript-sdk",
     "homepage": "https://www.make.com",
     "type": "module",
-    "main": "./dist/cjs/index.js",
-    "module": "./dist/esm/index.js",
-    "types": "./dist/esm/index.d.ts",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.cts",
     "scripts": {
         "watch": "tsc -w",
-        "build": "npm run build:esm && npm run build:cjs",
-        "build:esm": "tsc -p tsconfig.esm.json",
-        "build:cjs": "tsc -p tsconfig.cjs.json",
+        "build": "tsup",
         "build:docs": "typedoc src/index.ts",
         "build:version": "node scripts/build-version.mjs",
         "test": "jest --coverage --coverageReporters=\"text\" --runInBand --forceExit --verbose false --testMatch \"**/test/**/*.spec.ts\"",
         "test:integration": "jest --coverage --coverageReporters=\"text\" --runInBand --forceExit --verbose false --testMatch \"**/test/**/*.integration.test.ts\"",
         "publish:jsr": "npx jsr publish",
-        "lint": "eslint --quiet .",
+        "lint": "tsc && eslint --quiet .",
         "format": "npx prettier . --write"
     },
     "exports": {
         ".": {
-            "import": "./dist/esm/index.js",
-            "require": "./dist/cjs/index.js",
-            "types": "./dist/esm/index.d.ts"
+            "import": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
         }
     },
+    "engines": {
+        "node": ">=18"
+    },
+    "files": [
+        "dist"
+    ],
     "devDependencies": {
         "@eslint/js": "^9.22.0",
         "@jest/globals": "^29.7.0",
@@ -45,6 +52,7 @@
         "prettier": "^3.5.3",
         "ts-jest": "^29.2.6",
         "ts-node": "^10.9.2",
+        "tsup": "^8.4.0",
         "typedoc": "^0.28.0",
         "typescript": "^5.8.2",
         "typescript-eslint": "^8.26.1"

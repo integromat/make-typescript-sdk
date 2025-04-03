@@ -1,5 +1,6 @@
 import { enableFetchMocks } from 'jest-fetch-mock';
 import type { JSONValue } from '../src/types';
+import { isObject } from '../src/utils';
 enableFetchMocks();
 
 type Mock = [string, unknown, number | Asserts | undefined];
@@ -52,7 +53,7 @@ export function mockFetch(...args: unknown[]): void {
             const contentType = req.headers.get('content-type');
             const body = contentType?.includes('application/json') ? await req.json() : await req.text();
             mock.asserts({
-                body,
+                body: isObject(body) ? (body as Record<string, JSONValue>) : String(body),
                 headers: req.headers,
                 method: req.method,
                 url: req.url,
