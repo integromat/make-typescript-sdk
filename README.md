@@ -33,10 +33,7 @@ npm install @makehq/sdk
 import { Make } from '@makehq/sdk';
 
 // Initialize the Make client
-const make = new Make({
-    apiKey: 'your-api-key',
-    zone: 'eu2.make.com',
-});
+const make = new Make('your-api-key', 'eu2.make.com');
 
 // Example: Get user information
 const user = await make.users.me();
