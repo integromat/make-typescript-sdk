@@ -1,0 +1,20 @@
+{
+    "organizations": [
+        {
+            "id": 5,
+            "name": "New organization",
+            "timezoneId": 113
+        },
+        {
+            "id": 6,
+            "name": "New organization",
+            "timezoneId": 113
+        }
+    ],
+    "pg": {
+        "sortBy": "name",
+        "sortDir": "asc",
+        "limit": 10000,
+        "offset": 0
+    }
+}

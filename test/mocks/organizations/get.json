@@ -1,0 +1,38 @@
+{
+    "organization": {
+        "id": 10,
+        "name": "Organization 10",
+        "serviceName": "unlimited",
+        "nextReset": null,
+        "operations": "0",
+        "transfer": "0",
+        "operationsExt": "0",
+        "transferExt": "0",
+        "unusedOperations": "0",
+        "unusedTransfer": "0",
+        "isPaused": false,
+        "countryId": 1,
+        "timezoneId": 113,
+        "deleted": false,
+        "license": {
+            "apps": ["T2", "T3"],
+            "users": 50,
+            "dslimit": 40,
+            "fslimit": 2147483648,
+            "iolimit": 10000,
+            "dsslimit": 524288000,
+            "fulltext": true,
+            "interval": 1,
+            "transfer": 1099511627776,
+            "operations": 800000000
+        },
+        "features": {},
+        "zone": "local.make.cloud",
+        "teams": [
+            {
+                "id": 16,
+                "name": "My Team"
+            }
+        ]
+    }
+}

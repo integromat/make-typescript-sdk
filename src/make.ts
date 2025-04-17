@@ -11,6 +11,7 @@ import { IncompleteExecutions } from './endpoints/incomplete-executions.js';
 import { Keys } from './endpoints/keys.js';
 import { Connections } from './endpoints/connections.js';
 import { Functions } from './endpoints/functions.js';
+import { Organizations } from './endpoints/organizations.js';
 import { buildUrl, createMakeError, isAPIKey } from './utils.js';
 import type { FetchOptions } from './types.js';
 import { VERSION } from './version.js';
@@ -119,6 +120,12 @@ export class Make {
     public readonly functions: Functions;
 
     /**
+     * Access to organization-related endpoints
+     * Organizations are top-level entities that contain teams and manage overall account settings
+     */
+    public readonly organizations: Organizations;
+
+    /**
      * Create a new Make SDK instance
      * @param token Your Make API key or OAuth2 access token
      * @param zone The Make zone (e.g. eu1.make.com)
@@ -143,6 +150,7 @@ export class Make {
         this.keys = new Keys(this.fetch.bind(this));
         this.connections = new Connections(this.fetch.bind(this));
         this.functions = new Functions(this.fetch.bind(this));
+        this.organizations = new Organizations(this.fetch.bind(this));
     }
 
     /**

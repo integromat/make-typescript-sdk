@@ -1,30 +1,19 @@
 # Make TypeScript SDK
 
-A TypeScript SDK for interacting with the Make API. This SDK provides a type-safe way to interact with Make's API endpoints for managing scenarios, teams, data stores, and more.
-
-## Project Structure
-
-```
-make-sdk/
-├── src/                       # Source code
-│   ├── endpoints/             # API endpoint implementations
-│   ├── index.ts               # Main entry point
-│   ├── make.ts                # Core Make client
-│   ├── types.ts               # Common type definitions
-│   └── utils.ts               # Utility functions
-├── test/                      # Test files
-│   ├── mocks/                 # Test mocks
-│   ├── *.spec.ts              # Unit tests
-│   ├── *.integration.test.ts  # Integration tests
-│   └── test.utils.ts          # Test utilities
-├── dist/                      # Compiled output
-└── docs/                      # Documentation
-```
+A TypeScript SDK for interacting with the Make API. This SDK provides a type-safe way to interact with [Make's API](https://developers.make.com/api-documentation) endpoints for managing scenarios, teams, data stores, and more.
 
 ## Installation
 
+Via NPM (Node.js)
+
 ```bash
 npm install @makehq/sdk
+```
+
+Via JSR (Deno)
+
+```bash
+deno add jsr:@make/sdk
 ```
 
 ## Basic Usage
@@ -51,6 +40,25 @@ const dataStore = await make.dataStores.get(/* DataStore ID */);
 - Support for majority of Make API endpoints
 - Built-in error handling and response typing
 - Comprehensive test coverage
+
+## Project Structure
+
+```
+make-sdk/
+├── src/                       # Source code
+│   ├── endpoints/             # API endpoint implementations
+│   ├── index.ts               # Main entry point
+│   ├── make.ts                # Core Make client
+│   ├── types.ts               # Common type definitions
+│   └── utils.ts               # Utility functions
+├── test/                      # Test files
+│   ├── mocks/                 # Test mocks
+│   ├── *.spec.ts              # Unit tests
+│   ├── *.integration.test.ts  # Integration tests
+│   └── test.utils.ts          # Test utilities
+├── dist/                      # Compiled output
+└── docs/                      # Documentation
+```
 
 ## Testing
 

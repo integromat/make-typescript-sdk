@@ -66,5 +66,10 @@ export type Pagination<T> = {
  * Used to request only specific fields from API responses.
  * @template T The object type to pick columns from
  * @template K The keys to pick from the object
+ * @template D The default columns to pick if K is never (all if not specified)
  */
-export type PickColumns<T, K extends keyof T | never> = [K] extends [never] ? T : { [P in K]-?: NonNullable<T[P]> };
+export type PickColumns<T, K extends keyof T | never, D extends keyof T | never = never> = [K] extends [never]
+    ? [D] extends [never]
+        ? T
+        : Pick<T, D>
+    : { [P in K]-?: NonNullable<T[P]> };

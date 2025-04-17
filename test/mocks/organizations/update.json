@@ -1,0 +1,29 @@
+{
+    "organization": {
+        "name": "Organization 10",
+        "countryId": 1,
+        "timezoneId": 113,
+        "license": {
+            "apps": "T2",
+            "users": 50,
+            "dslimit": 40,
+            "fslimit": 2147483648,
+            "iolimit": 10000,
+            "dsslimit": 524288000,
+            "fulltext": true,
+            "interval": 1,
+            "transfer": 1099511627776,
+            "operations": 800000000
+        },
+        "zone": "local.make.cloud",
+        "serviceName": "limit1",
+        "teams": [
+            {
+                "id": 10,
+                "name": "My Team"
+            }
+        ],
+        "isPaused": false,
+        "id": 10
+    }
+}
