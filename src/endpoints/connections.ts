@@ -214,6 +214,7 @@ export class Connections {
                     teamId,
                     type: options?.type,
                     cols: options?.cols,
+                    pg: options?.pg,
                 },
             })
         ).connections;
