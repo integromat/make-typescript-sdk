@@ -32,4 +32,22 @@ describe('Make SDK', () => {
 
         await expect(make.users.me()).rejects.toThrow('Bad Request');
     });
+
+    it('Should allow overriding user-agent header', async () => {
+        const makeWithCustomHeaders = new Make(MAKE_API_KEY, MAKE_ZONE, { headers: { 'user-agent': 'CustomUserAgent' } });
+        mockFetch('GET https://make.local/api/v2/users/me', { authUser: null }, req => {
+            expect(req.headers.get('user-agent')).toBe('CustomUserAgent');
+        });
+
+        expect(await makeWithCustomHeaders.users.me()).toBe(null);
+    });
+
+    it('Should allow passing custom headers to all requests', async () => {
+        const makeWithCustomHeaders = new Make(MAKE_API_KEY, MAKE_ZONE, { headers: { 'x-custom-header': 'FooBar' } });
+        mockFetch('GET https://make.local/api/v2/users/me', { authUser: null }, req => {
+            expect(req.headers.get('x-custom-header')).toBe('FooBar');
+        });
+
+        expect(await makeWithCustomHeaders.users.me()).toBe(null);
+    });
 });

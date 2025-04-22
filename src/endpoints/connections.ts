@@ -1,4 +1,4 @@
-import type { FetchFunction, JSONValue, Pagination, PickColumns } from '../types.js';
+import type { FetchFunction, JSONValue, PickColumns } from '../types.js';
 
 /**
  * Represents a connection in Make.
@@ -67,8 +67,6 @@ export type ListConnectionsOptions<C extends keyof Connection = never> = {
     type?: string[];
     /** Team ID to filter connections by (can override the main parameter) */
     teamId?: number;
-    /** Pagination options */
-    pg?: Partial<Pagination<Connection>>;
 };
 
 /**
@@ -214,7 +212,6 @@ export class Connections {
                     teamId,
                     type: options?.type,
                     cols: options?.cols,
-                    pg: options?.pg,
                 },
             })
         ).connections;

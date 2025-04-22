@@ -165,6 +165,7 @@ export class Hooks {
                     typeName: options?.typeName,
                     assigned: options?.assigned,
                     viewForScenarioId: options?.viewForScenarioId,
+                    pg: options?.pg,
                 },
             })
         ).hooks;
