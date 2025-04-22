@@ -167,12 +167,14 @@ export class Make {
      * @internal
      */
     public async fetch<T = unknown>(url: string, options?: FetchOptions): Promise<T> {
-        options = Object.assign({}, options, {
-            headers: Object.assign({}, options?.headers, {
+        options = {
+            ...options,
+            headers: {
                 'user-agent': `MakeTypeScriptSDK/${VERSION}`,
+                ...options?.headers,
                 authorization: `${isAPIKey(this.#token) ? 'Token' : 'Bearer'} ${this.#token}`,
-            }),
-        });
+            },
+        };
 
         if (url.charAt(0) === '/') {
             if (url.charAt(1) === '/') {
