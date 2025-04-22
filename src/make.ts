@@ -30,6 +30,12 @@ export class Make {
     public readonly zone: string;
 
     /**
+     * Request Headers
+     * Can be used to set custom headers for all requests
+     */
+    private readonly headers: Record<string, string>;
+
+    /**
      * The API version to use
      * Default is version 2 of the Make API
      */
@@ -129,12 +135,15 @@ export class Make {
      * Create a new Make SDK instance
      * @param token Your Make API key or OAuth2 access token
      * @param zone The Make zone (e.g. eu1.make.com)
-     * @param version API version to use (defaults to 2)
+     * @param options Optional configuration
+     * @param options.version API version to use (defaults to 2)
+     * @param options.headers Custom headers to include in all requests
      */
-    constructor(token: string, zone: string, version = 2) {
+    constructor(token: string, zone: string, options: { version?: number, headers?: Record<string, string> } = {}) {
         this.#token = token;
         this.zone = zone;
-        this.version = version;
+        this.version = options.version ?? 2;
+        this.headers = options.headers ?? {};
         this.protocol = 'https';
 
         this.users = new Users(this.fetch.bind(this));
@@ -171,7 +180,7 @@ export class Make {
             ...options,
             headers: {
                 'user-agent': `MakeTypeScriptSDK/${VERSION}`,
-                ...options?.headers,
+                ...this.headers,
                 authorization: `${isAPIKey(this.#token) ? 'Token' : 'Bearer'} ${this.#token}`,
             },
         };
