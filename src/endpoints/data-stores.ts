@@ -80,8 +80,6 @@ type GetDataStoreResponse = {
 export type UpdateDataStoreBody = {
     /** New name for the data store */
     name: string;
-    /** ID of the team that owns the data store */
-    teamId: number;
 };
 
 /**
@@ -169,10 +167,7 @@ export class DataStores {
         return (
             await this.#fetch<UpdateDataStoreResponse>(`/data-stores/${dataStoreId}`, {
                 method: 'PATCH',
-                query: {
-                    teamId: body.teamId,
-                },
-                body: Object.assign({}, body, { teamId: undefined }),
+                body: body,
             })
         ).dataStore;
     }

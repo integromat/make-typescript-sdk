@@ -56,10 +56,9 @@ describe('Endpoints: DataStores', () => {
     it('Should update a data store', async () => {
         const body = {
             name: 'Updated Customers',
-            teamId: 123,
         };
 
-        mockFetch('PATCH https://make.local/api/v2/data-stores/137?teamId=123', dataStoreUpdateMock, req => {
+        mockFetch('PATCH https://make.local/api/v2/data-stores/137', dataStoreUpdateMock, req => {
             // The teamId is removed from the body and added to the query params
             expect(req.body).toStrictEqual({ name: 'Updated Customers' });
         });

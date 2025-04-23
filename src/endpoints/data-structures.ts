@@ -10,7 +10,7 @@ export type DataStructureField = {
     /** Unique identifier of the field within the data structure */
     name: string;
     /** Human-readable name of the field */
-    label: string;
+    label?: string;
     /** Default value for the field */
     default?: string | number | boolean;
     /** Whether the field must be provided */

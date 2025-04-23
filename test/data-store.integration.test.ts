@@ -93,7 +93,6 @@ describe('Integration: Data Stores', () => {
         const updatedName = `Updated DataStore ${Date.now()}`;
         const dataStore = await make.dataStores.update(dataStoreId, {
             name: updatedName,
-            teamId: MAKE_TEAM,
         });
 
         expect(dataStore).toBeDefined();
