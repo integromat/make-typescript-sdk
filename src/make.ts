@@ -12,6 +12,7 @@ import { Keys } from './endpoints/keys.js';
 import { Connections } from './endpoints/connections.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
+import { Enums } from './endpoints/enums.js';
 import { buildUrl, createMakeError, isAPIKey } from './utils.js';
 import type { FetchOptions } from './types.js';
 import { VERSION } from './version.js';
@@ -132,6 +133,12 @@ export class Make {
     public readonly organizations: Organizations;
 
     /**
+     * Access to enum-related endpoints
+     * Enums provide access to standardized lists like countries, regions, and timezones
+     */
+    public readonly enums: Enums;
+
+    /**
      * Create a new Make SDK instance
      * @param token Your Make API key or OAuth2 access token
      * @param zone The Make zone (e.g. eu1.make.com)
@@ -139,7 +146,7 @@ export class Make {
      * @param options.version API version to use (defaults to 2)
      * @param options.headers Custom headers to include in all requests
      */
-    constructor(token: string, zone: string, options: { version?: number, headers?: Record<string, string> } = {}) {
+    constructor(token: string, zone: string, options: { version?: number; headers?: Record<string, string> } = {}) {
         this.#token = token;
         this.zone = zone;
         this.version = options.version ?? 2;
@@ -160,6 +167,7 @@ export class Make {
         this.connections = new Connections(this.fetch.bind(this));
         this.functions = new Functions(this.fetch.bind(this));
         this.organizations = new Organizations(this.fetch.bind(this));
+        this.enums = new Enums(this.fetch.bind(this));
     }
 
     /**

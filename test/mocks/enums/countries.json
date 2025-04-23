@@ -1,0 +1,22 @@
+{
+    "countries": [
+        {
+            "id": 4,
+            "name": "Afghanistan",
+            "code": "AFG",
+            "code2": "af"
+        },
+        {
+            "id": 5,
+            "name": "Åland Islands",
+            "code": "ALA",
+            "code2": "ax"
+        },
+        {
+            "id": 6,
+            "name": "Albania",
+            "code": "ALB",
+            "code2": "al"
+        }
+    ]
+}
