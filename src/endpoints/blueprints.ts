@@ -55,8 +55,6 @@ export type BlueprintRoute = {
 export type Blueprint = {
     /** Name of the blueprint */
     name: string;
-    /** Version of the blueprint */
-    version: number;
     /** The main flow of nodes in the blueprint */
     flow: BlueprintNode[];
     /** Metadata for the blueprint */
