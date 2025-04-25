@@ -50,4 +50,14 @@ describe('Make SDK', () => {
 
         expect(await makeWithCustomHeaders.users.me()).toBe(null);
     });
+
+    it('Should allow passing custom headers per request', async () => {
+        const makeWithCustomHeaders = new Make(MAKE_API_KEY, MAKE_ZONE, { headers: { 'x-custom-header': 'FooBar' } });
+        mockFetch('GET https://make.local/api/v2/users/me', { authUser: null }, req => {
+            expect(req.headers.get('x-custom-header')).toBe('FooBar');
+            expect(req.headers.get('x-custom-header-2')).toBe('CustomValue');
+        });
+
+        await makeWithCustomHeaders.fetch('/users/me', { headers: { 'x-custom-header-2': 'CustomValue' } });
+    });
 });

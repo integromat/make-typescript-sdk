@@ -190,6 +190,7 @@ export class Make {
                 'user-agent': `MakeTypeScriptSDK/${VERSION}`,
                 ...this.headers,
                 authorization: `${isAPIKey(this.#token) ? 'Token' : 'Bearer'} ${this.#token}`,
+                ...options?.headers,
             },
         };
 
