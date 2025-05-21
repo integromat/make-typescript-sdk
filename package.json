@@ -1,6 +1,6 @@
 {
     "name": "@makehq/sdk",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "description": "Make TypeScript SDK",
     "license": "MIT",
     "author": "Make",

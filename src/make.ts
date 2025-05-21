@@ -13,8 +13,8 @@ import { Connections } from './endpoints/connections.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
-import { buildUrl, createMakeError, isAPIKey } from './utils.js';
-import type { FetchOptions } from './types.js';
+import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
+import type { FetchOptions, JSONValue, QueryValue } from './types.js';
 import { VERSION } from './version.js';
 
 /**
@@ -184,16 +184,43 @@ export class Make {
      * @internal
      */
     public async fetch<T = unknown>(url: string, options?: FetchOptions): Promise<T> {
-        options = {
-            ...options,
-            headers: {
-                'user-agent': `MakeTypeScriptSDK/${VERSION}`,
-                ...this.headers,
-                authorization: `${isAPIKey(this.#token) ? 'Token' : 'Bearer'} ${this.#token}`,
-                ...options?.headers,
-            },
-        };
+        const headers = this.prepareHeaders(options?.headers);
+        const body = this.prepareBody(options?.body, headers);
+        url = this.prepareURL(url, options?.query);
 
+        const res = await this.handleRequest(url, {
+            headers,
+            body,
+            method: options?.method,
+        });
+        if (res.status >= 400) {
+            throw await this.handleError(res);
+        }
+
+        return this.handleResponse<T>(res);
+    }
+
+    protected prepareBody(
+        body: Record<string, JSONValue> | string | undefined,
+        headers: Record<string, string>,
+    ): string {
+        if (body && typeof body !== 'string') {
+            headers['content-type'] = 'application/json';
+            return JSON.stringify(body);
+        }
+        return body as string;
+    }
+
+    protected prepareHeaders(headers?: Record<string, string>): Record<string, string> {
+        return {
+            'user-agent': `MakeTypeScriptSDK/${VERSION}`,
+            ...this.headers,
+            authorization: `${isAPIKey(this.#token) ? 'Token' : 'Bearer'} ${this.#token}`,
+            ...headers,
+        };
+    }
+
+    protected prepareURL(url: string, query?: Record<string, QueryValue>): string {
         if (url.charAt(0) === '/') {
             if (url.charAt(1) === '/') {
                 url = `${this.protocol}:${url}`;
@@ -201,27 +228,23 @@ export class Make {
                 url = `${this.protocol}://${this.zone}/api/v${this.version}${url}`;
             }
         }
+        return this.prepareQuery(url, query);
+    }
 
-        if (options?.body && typeof options.body !== 'string') {
-            options.body = JSON.stringify(options.body);
-            options.headers = Object.assign(options!.headers!, {
-                'content-type': 'application/json',
-            });
-        }
+    protected prepareQuery(url: string, query?: Record<string, QueryValue>): string {
+        if (!query) return url;
+        return buildUrl(url, query);
+    }
 
-        if (options?.query) {
-            url = buildUrl(url, options.query);
-        }
+    protected async handleRequest(url: string, options?: RequestInit): Promise<Response> {
+        return fetch(url, options);
+    }
 
-        const res = await fetch(url, {
-            headers: options?.headers,
-            body: options?.body as string,
-            method: options?.method,
-        });
-        if (res.status >= 400) {
-            throw await createMakeError(res);
-        }
+    protected async handleError(res: Response): Promise<MakeError> {
+        return await createMakeError(res);
+    }
 
+    protected async handleResponse<T>(res: Response): Promise<T> {
         const contentType = res.headers.get('content-type');
         const result = contentType?.includes('application/json') ? await res.json() : await res.text();
         return result as T;
