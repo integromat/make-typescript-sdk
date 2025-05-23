@@ -65,8 +65,6 @@ export type ListConnectionsOptions<C extends keyof Connection = never> = {
     cols?: C[];
     /** Filter connections by type */
     type?: string[];
-    /** Team ID to filter connections by (can override the main parameter) */
-    teamId?: number;
 };
 
 /**

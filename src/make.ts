@@ -200,6 +200,14 @@ export class Make {
         return this.handleResponse<T>(res);
     }
 
+    /**
+     * Prepare the request body for API calls
+     *
+     * @param body The request body - can be an object, string, or undefined
+     * @param headers The headers object to potentially modify the content-type
+     * @returns The body serialized as a string
+     * @protected
+     */
     protected prepareBody(
         body: Record<string, JSONValue> | string | undefined,
         headers: Record<string, string>,
@@ -211,6 +219,13 @@ export class Make {
         return body as string;
     }
 
+    /**
+     * Prepare headers for API requests
+     *
+     * @param headers Request-specific headers to prepare
+     * @returns Headers object ready for the request
+     * @protected
+     */
     protected prepareHeaders(headers?: Record<string, string>): Record<string, string> {
         return {
             'user-agent': `MakeTypeScriptSDK/${VERSION}`,
@@ -220,6 +235,14 @@ export class Make {
         };
     }
 
+    /**
+     * Prepare the full URL for API requests
+     *
+     * @param url The URL - can be relative or absolute
+     * @param query Query parameters to append
+     * @returns The complete URL ready for the request
+     * @protected
+     */
     protected prepareURL(url: string, query?: Record<string, QueryValue>): string {
         if (url.charAt(0) === '/') {
             if (url.charAt(1) === '/') {
@@ -231,22 +254,62 @@ export class Make {
         return this.prepareQuery(url, query);
     }
 
+    /**
+     * Add query parameters to a URL
+     *
+     * @param url The base URL
+     * @param query Query parameters to append
+     * @returns The URL with query parameters appended
+     * @protected
+     */
     protected prepareQuery(url: string, query?: Record<string, QueryValue>): string {
         if (!query) return url;
         return buildUrl(url, query);
     }
 
+    /**
+     * Execute the HTTP request
+     *
+     * Makes the actual fetch request with the provided URL and options.
+     * This method can be overridden in subclasses for custom request handling.
+     *
+     * @param url The complete URL to request
+     * @param options Fetch options including headers, body, and method
+     * @returns Promise resolving to the Response object
+     * @protected
+     */
     protected async handleRequest(url: string, options?: RequestInit): Promise<Response> {
         return fetch(url, options);
     }
 
-    protected async handleError(res: Response): Promise<MakeError> {
-        return await createMakeError(res);
+    /**
+     * Handle API error responses
+     *
+     * Converts error responses into MakeError instances with proper error details.
+     * This method processes the response body to extract error information.
+     *
+     * @param response The error response from the API
+     * @returns Promise resolving to a MakeError instance
+     * @protected
+     */
+    protected async handleError(response: Response): Promise<MakeError> {
+        return await createMakeError(response);
     }
 
-    protected async handleResponse<T>(res: Response): Promise<T> {
-        const contentType = res.headers.get('content-type');
-        const result = contentType?.includes('application/json') ? await res.json() : await res.text();
+    /**
+     * Handle successful API responses
+     *
+     * Parses the response based on content-type header.
+     * JSON responses are parsed as objects, other responses as text.
+     *
+     * @template T The expected response type
+     * @param response The successful response from the API
+     * @returns Promise resolving to the parsed response data
+     * @protected
+     */
+    protected async handleResponse<T>(response: Response): Promise<T> {
+        const contentType = response.headers.get('content-type');
+        const result = contentType?.includes('application/json') ? await response.json() : await response.text();
         return result as T;
     }
 }

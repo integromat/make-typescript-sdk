@@ -1,0 +1,6 @@
+{
+    "authorization": {
+        "authUsed": "token",
+        "scope": ["scenarios:read", "datastores:read"]
+    }
+}
