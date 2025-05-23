@@ -19,7 +19,7 @@ describe('Endpoints: Users', () => {
     });
 
     it('Should receive current authorization', async () => {
-        mockFetch('GET https://make.local/api/v2/users/current-authorization', currentAuthorizationMock);
+        mockFetch('GET https://make.local/api/v2/users/me/current-authorization', currentAuthorizationMock);
 
         const result = await make.users.currentAuthorization();
         expect(result).toStrictEqual(currentAuthorizationMock.authorization);

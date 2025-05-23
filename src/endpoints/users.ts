@@ -78,6 +78,6 @@ export class Users {
      * @returns Promise with the current user's profile data
      */
     async currentAuthorization(): Promise<Authorization> {
-        return (await this.#fetch<CurrentAuthorizationResponse>('/users/current-authorization')).authorization;
+        return (await this.#fetch<CurrentAuthorizationResponse>('/users/me/current-authorization')).authorization;
     }
 }
