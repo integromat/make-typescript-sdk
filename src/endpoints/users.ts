@@ -29,12 +29,25 @@ export type User = {
     locale: string;
 };
 
+export type Authorization = {
+    authUsed: string;
+    scope: string[];
+};
+
 /**
  * Response format for getting the current user.
  */
 type MeResponse = {
     /** The authenticated user's information */
     authUser: User;
+};
+
+/**
+ * Response format for getting the current authorization.
+ */
+type CurrentAuthorizationResponse = {
+    /** The current authorization information */
+    authorization: Authorization;
 };
 
 /**
@@ -58,5 +71,13 @@ export class Users {
      */
     async me(): Promise<User> {
         return (await this.#fetch<MeResponse>('/users/me')).authUser;
+    }
+
+    /**
+     * Get the current authenticated user's information.
+     * @returns Promise with the current user's profile data
+     */
+    async currentAuthorization(): Promise<Authorization> {
+        return (await this.#fetch<CurrentAuthorizationResponse>('/users/current-authorization')).authorization;
     }
 }
