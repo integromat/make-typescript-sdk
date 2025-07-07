@@ -35,6 +35,15 @@ export type ListDataStoresOptions<C extends keyof DataStore = never> = {
 };
 
 /**
+ * Options for getting a data store.
+ * @template C Keys of the DataStore type to include in the response
+ */
+export type GetDataStoreOptions<C extends keyof DataStore = never> = {
+    /** Specific columns/fields to include in the response */
+    cols?: C[];
+};
+
+/**
  * Response format for listing data stores.
  */
 type ListDataStoresResponse<C extends keyof DataStore = never> = {
@@ -69,9 +78,9 @@ type CreateDataStoreResponse = {
 /**
  * Response format for getting a data store.
  */
-type GetDataStoreResponse = {
+type GetDataStoreResponse<C extends keyof DataStore = never> = {
     /** The requested data store */
-    dataStore: DataStore;
+    dataStore: PickColumns<DataStore, C>;
 };
 
 /**
@@ -122,7 +131,7 @@ export class DataStores {
     async list<C extends keyof DataStore = never>(
         teamId: number,
         options?: ListDataStoresOptions<C>,
-    ): Promise<PickColumns<DataStore, C>[]> {
+    ): Promise<PickColumns<DataStore, C, 'id' | 'name' | 'teamId' | 'records' | 'size' | 'maxSize'>[]> {
         return (
             await this.#fetch<ListDataStoresResponse<C>>('/data-stores', {
                 query: {
@@ -153,8 +162,17 @@ export class DataStores {
      * @param dataStoreId The data store ID to retrieve
      * @returns Promise with the data store details
      */
-    async get(dataStoreId: number): Promise<DataStore> {
-        return (await this.#fetch<GetDataStoreResponse>(`/data-stores/${dataStoreId}`)).dataStore;
+    async get<C extends keyof DataStore = never>(
+        dataStoreId: number,
+        options?: GetDataStoreOptions<C>,
+    ): Promise<PickColumns<DataStore, C, 'id' | 'name' | 'teamId' | 'records' | 'size' | 'maxSize'>> {
+        return (
+            await this.#fetch<GetDataStoreResponse<C>>(`/data-stores/${dataStoreId}`, {
+                query: {
+                    cols: options?.cols,
+                },
+            })
+        ).dataStore;
     }
 
     /**
