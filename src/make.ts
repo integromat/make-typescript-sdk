@@ -13,6 +13,7 @@ import { Connections } from './endpoints/connections.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
+import { Apps } from './endpoints/sdk/apps.js';
 import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
 import type { FetchOptions, JSONValue, QueryValue } from './types.js';
 import { VERSION } from './version.js';
@@ -139,6 +140,17 @@ export class Make {
     public readonly enums: Enums;
 
     /**
+     * Access to SDK-related endpoints
+     */
+    public readonly sdk: {
+        /**
+         * Access to App-related endpoints
+         * Apps allow you to create and manage custom applications for Make
+         */
+        apps: Apps;
+    };
+
+    /**
      * Create a new Make SDK instance
      * @param token Your Make API key or OAuth2 access token
      * @param zone The Make zone (e.g. eu1.make.com)
@@ -168,6 +180,9 @@ export class Make {
         this.functions = new Functions(this.fetch.bind(this));
         this.organizations = new Organizations(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
+        this.sdk = {
+            apps: new Apps(this.fetch.bind(this)),
+        };
     }
 
     /**

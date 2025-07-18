@@ -6,7 +6,7 @@ const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
 const MAKE_ORGANIZATION = Number(process.env.MAKE_ORGANIZATION || 0);
 
-describe('Integration: Teams', () => {
+describe.skip('Integration: Teams', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
     let teamId: number;

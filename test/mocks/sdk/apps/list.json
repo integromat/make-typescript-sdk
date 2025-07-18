@@ -1,0 +1,52 @@
+{
+    "apps": [
+        {
+            "name": "custom-app-1",
+            "label": "Ding",
+            "version": 1,
+            "beta": true
+        },
+        {
+            "name": "model",
+            "label": "MODEL",
+            "version": 1,
+            "beta": false
+        },
+        {
+            "name": "postman-test-app-1",
+            "label": "Postman Test App",
+            "version": 1,
+            "beta": true
+        },
+        {
+            "name": "postman-test-app-2-1",
+            "label": "Postman Test App",
+            "version": 1,
+            "beta": true
+        },
+        {
+            "name": "postman-test-app-3-1",
+            "label": "Postman Test App",
+            "version": 1,
+            "beta": true
+        },
+        {
+            "name": "postman-test-app-4-1",
+            "label": "Postman Test App",
+            "version": 1,
+            "beta": true
+        },
+        {
+            "name": "postman-test-app-5-1",
+            "label": "Postman Test App",
+            "version": 1,
+            "beta": true
+        },
+        {
+            "name": "testovaci-lokalni-appka-1",
+            "label": "Testovací Lokální Appka",
+            "version": 1,
+            "beta": false
+        }
+    ]
+}
