@@ -15,7 +15,9 @@ export type SDKConnection = {
 /**
  * SDK Connection section data
  */
-export type SDKConnectionSection = Record<string, JSONValue>;
+export type SDKConnectionSection<T extends SDKConnectionSectionType> = T extends 'api'
+    ? Record<string, JSONValue> | Array<Record<string, JSONValue>>
+    : Record<string, JSONValue>;
 
 /**
  * SDK Connection section type
@@ -44,16 +46,6 @@ export type UpdateSDKConnectionBody = {
     /** The label of the connection visible in the scenario builder */
     label?: string;
 };
-
-/**
- * Body for setting connection section
- */
-export type SetSDKConnectionSectionBody = Record<string, JSONValue>;
-
-/**
- * Body for setting connection common configuration
- */
-export type SetSDKConnectionCommonBody = Record<string, JSONValue>;
 
 /**
  * Internal response types (not exported)
@@ -138,18 +130,23 @@ export class SDKConnections {
     /**
      * Get a specific section of a connection
      */
-    async getSection(connectionName: string, section: SDKConnectionSectionType): Promise<SDKConnectionSection> {
-        const response = await this.#fetch<SDKConnectionSection>(`/sdk/apps/connections/${connectionName}/${section}`);
+    async getSection<T extends SDKConnectionSectionType>(
+        connectionName: string,
+        section: T,
+    ): Promise<SDKConnectionSection<T>> {
+        const response = await this.#fetch<SDKConnectionSection<T>>(
+            `/sdk/apps/connections/${connectionName}/${section}`,
+        );
         return response;
     }
 
     /**
      * Set a specific section of a connection
      */
-    async setSection(
+    async setSection<T extends SDKConnectionSectionType>(
         connectionName: string,
-        section: SDKConnectionSectionType,
-        body: SetSDKConnectionSectionBody,
+        section: T,
+        body: SDKConnectionSection<T>,
     ): Promise<void> {
         await this.#fetch(`/sdk/apps/connections/${connectionName}/${section}`, {
             method: 'PUT',
@@ -168,7 +165,7 @@ export class SDKConnections {
     /**
      * Set common configuration for a connection
      */
-    async setCommon(connectionName: string, body: SetSDKConnectionCommonBody): Promise<boolean> {
+    async setCommon(connectionName: string, body: SDKConnectionCommon): Promise<boolean> {
         const response = await this.#fetch<SetSDKConnectionCommonResponse>(
             `/sdk/apps/connections/${connectionName}/common`,
             {

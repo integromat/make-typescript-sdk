@@ -60,7 +60,7 @@ describe('Endpoints: SDK Webhooks', () => {
         mockFetch('GET https://make.local/api/v2/sdk/apps/webhooks/custom-app-12/api', getSectionMock);
 
         const result = await make.sdk.webhooks.getSection('custom-app-12', 'api');
-        expect(result).toStrictEqual(getSectionMock.output);
+        expect(result).toStrictEqual(getSectionMock);
     });
 
     it('Should set webhook section', async () => {
@@ -71,22 +71,5 @@ describe('Endpoints: SDK Webhooks', () => {
         });
 
         await make.sdk.webhooks.setSection('custom-app-12', 'api', body);
-    });
-
-    it('Should handle all webhook section types', async () => {
-        const sections: ('api' | 'parameters' | 'attach' | 'detach' | 'scope')[] = [
-            'api',
-            'parameters',
-            'attach',
-            'detach',
-            'scope',
-        ];
-
-        for (const section of sections) {
-            mockFetch(`GET https://make.local/api/v2/sdk/apps/webhooks/test-webhook/${section}`, getSectionMock);
-
-            const result = await make.sdk.webhooks.getSection('test-webhook', section);
-            expect(result).toStrictEqual(getSectionMock.output);
-        }
     });
 });

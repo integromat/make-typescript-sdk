@@ -96,8 +96,6 @@ export type {
     GetSDKAppsOptions,
     CreateSDKAppBody,
     UpdateSDKAppBody,
-    SetSDKAppSectionBody,
-    SetSDKAppCommonBody,
 } from './endpoints/sdk/apps.js';
 export type {
     SDKModule,
@@ -106,7 +104,6 @@ export type {
     SDKModuleSectionType,
     CreateSDKModuleBody,
     UpdateSDKModuleBody,
-    SetSDKModuleSectionBody,
 } from './endpoints/sdk/modules.js';
 export type {
     SDKConnection,
@@ -116,8 +113,6 @@ export type {
     SDKConnectionCommon,
     CreateSDKConnectionBody,
     UpdateSDKConnectionBody,
-    SetSDKConnectionSectionBody,
-    SetSDKConnectionCommonBody,
 } from './endpoints/sdk/connections.js';
 export type {
     SDKFunction,
@@ -134,7 +129,6 @@ export type {
     CreateSDKRPCBody,
     UpdateSDKRPCBody,
     TestSDKRPCBody,
-    SetSDKRPCSectionBody,
 } from './endpoints/sdk/rpcs.js';
 export type {
     SDKWebhook,
@@ -143,7 +137,6 @@ export type {
     SDKWebhookSectionType,
     CreateSDKWebhookBody,
     UpdateSDKWebhookBody,
-    SetSDKWebhookSectionBody,
 } from './endpoints/sdk/webhooks.js';
 export type { Team, Teams, CreateTeamBody, ListTeamsOptions, GetTeamOptions } from './endpoints/teams.js';
 export type { User, Users } from './endpoints/users.js';

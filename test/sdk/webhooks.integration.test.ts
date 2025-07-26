@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../../src/make.js';
+import { JSONValue } from '../../src/types.js';
 
 const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
@@ -85,9 +86,9 @@ describe('Integration: SDK > Webhooks', () => {
     it('Should get webhook section', async () => {
         const result = await make.sdk.webhooks.getSection(webhookName, 'api');
         expect(result).toBeDefined();
-        expect(typeof result).toBe('string');
+        expect(typeof result).toBe('object');
         // Should return the output that was set
-        expect(result).toBe('{{body}}');
+        expect((result as Record<string, JSONValue>).output).toBe('{{body}}');
     });
 
     it('Should delete the webhook', async () => {

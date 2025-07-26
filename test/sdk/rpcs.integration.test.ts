@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../../src/make.js';
+import { JSONValue } from '../../src/types.js';
 
 const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
@@ -110,8 +111,9 @@ describe('Integration: SDK > RPCs', () => {
     it('Should get RPC section', async () => {
         const section = await make.sdk.rpcs.getSection(appName, appVersion, rpcName, 'api');
         expect(section).toBeDefined();
-        expect(section.url).toBe('/api/users');
-        expect(section.method).toBe('GET');
+        expect(Array.isArray(section)).toBe(false);
+        expect((section as Record<string, JSONValue>).url).toBe('/api/users');
+        expect((section as Record<string, JSONValue>).method).toBe('GET');
     });
 
     it('Should delete the RPC', async () => {

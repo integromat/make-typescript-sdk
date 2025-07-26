@@ -17,7 +17,9 @@ export type SDKRPC = {
 /**
  * RPC section data (api, parameters, etc.)
  */
-export type SDKRPCSection = Record<string, JSONValue>;
+export type SDKRPCSection<T extends SDKRPCSectionType> = T extends 'api'
+    ? Record<string, JSONValue> | Array<Record<string, JSONValue>>
+    : Record<string, JSONValue>;
 
 /**
  * RPC section type
@@ -62,11 +64,6 @@ export type TestSDKRPCBody = {
         required: boolean;
     }>;
 };
-
-/**
- * Body for setting RPC section data
- */
-export type SetSDKRPCSectionBody = SDKRPCSection;
 
 /**
  * Internal response types (not exported)
@@ -161,13 +158,13 @@ export class SDKRPCs {
     /**
      * Get RPC section data
      */
-    async getSection(
+    async getSection<T extends SDKRPCSectionType>(
         appName: string,
         appVersion: number,
         rpcName: string,
-        section: SDKRPCSectionType,
-    ): Promise<SDKRPCSection> {
-        const response = await this.#fetch<SDKRPCSection>(
+        section: T,
+    ): Promise<SDKRPCSection<T>> {
+        const response = await this.#fetch<SDKRPCSection<T>>(
             `/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`,
         );
         return response;
@@ -176,12 +173,12 @@ export class SDKRPCs {
     /**
      * Set RPC section data
      */
-    async setSection(
+    async setSection<T extends SDKRPCSectionType>(
         appName: string,
         appVersion: number,
         rpcName: string,
-        section: SDKRPCSectionType,
-        body: SetSDKRPCSectionBody,
+        section: T,
+        body: SDKRPCSection<T>,
     ): Promise<void> {
         await this.#fetch(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`, {
             method: 'PUT',

@@ -21,7 +21,9 @@ export type SDKWebhook = {
 /**
  * Webhook section content
  */
-export type SDKWebhookSection = Record<string, JSONValue>;
+export type SDKWebhookSection<T extends SDKWebhookSectionType> = T extends 'api'
+    ? Record<string, JSONValue> | Array<Record<string, JSONValue>>
+    : Record<string, JSONValue>;
 
 /**
  * Available webhook section types
@@ -47,11 +49,6 @@ export type UpdateSDKWebhookBody = {
 };
 
 /**
- * Body for setting a webhook section
- */
-export type SetSDKWebhookSectionBody = Record<string, JSONValue>;
-
-/**
  * Internal response types (not exported)
  */
 type ListSDKWebhooksResponse = {
@@ -68,10 +65,6 @@ type CreateSDKWebhookResponse = {
 
 type UpdateSDKWebhookResponse = {
     appWebhook: SDKWebhook;
-};
-
-type GetSDKWebhookSectionResponse = {
-    output: string;
 };
 
 /**
@@ -135,21 +128,19 @@ export class SDKWebhooks {
      * Get a specific section of a webhook
      * Available sections are: api, parameters, attach, detach, scope
      */
-    async getSection(webhookName: string, section: SDKWebhookSectionType): Promise<string> {
-        const response = await this.#fetch<GetSDKWebhookSectionResponse>(
-            `/sdk/apps/webhooks/${webhookName}/${section}`,
-        );
-        return response.output;
+    async getSection<T extends SDKWebhookSectionType>(webhookName: string, section: T): Promise<SDKWebhookSection<T>> {
+        const response = await this.#fetch<SDKWebhookSection<T>>(`/sdk/apps/webhooks/${webhookName}/${section}`);
+        return response;
     }
 
     /**
      * Set a specific section of a webhook
      * Available sections are: api, parameters, attach, detach, scope
      */
-    async setSection(
+    async setSection<T extends SDKWebhookSectionType>(
         webhookName: string,
-        section: SDKWebhookSectionType,
-        body: SetSDKWebhookSectionBody,
+        section: T,
+        body: SDKWebhookSection<T>,
     ): Promise<void> {
         await this.#fetch(`/sdk/apps/webhooks/${webhookName}/${section}`, {
             method: 'PUT',

@@ -110,16 +110,6 @@ export type UpdateSDKAppBody = {
 };
 
 /**
- * Body for setting app section data
- */
-export type SetSDKAppSectionBody = SDKAppSection;
-
-/**
- * Body for setting app common data
- */
-export type SetSDKAppCommonBody = SDKAppCommon;
-
-/**
  * Response for set operations
  */
 type SetSDKAppResponse = {
@@ -216,35 +206,15 @@ export class SDKApps {
      * Available sections: base, groups, install, installSpec
      */
     async getSection(name: string, version: number, section: SDKAppSectionType): Promise<SDKAppSection> {
-        try {
-            const response = await this.#fetch<SDKAppSection>(`/sdk/apps/${name}/${version}/${section}`);
-            return response;
-        } catch (error) {
-            // If JSON parsing fails, try to get raw response
-            if (error instanceof Error && error.message.includes('JSON')) {
-                const response = await this.#fetch<string>(`/sdk/apps/${name}/${version}/${section}`);
-                // Try to parse as JSON manually
-                try {
-                    return JSON.parse(response) as SDKAppSection;
-                } catch {
-                    // If still fails, return empty object
-                    return {} as SDKAppSection;
-                }
-            }
-            throw error;
-        }
+        const response = await this.#fetch<SDKAppSection>(`/sdk/apps/${name}/${version}/${section}`);
+        return response;
     }
 
     /**
      * Set/update a specific section of an app
      * Available sections: base, groups, install, installSpec
      */
-    async setSection(
-        name: string,
-        version: number,
-        section: SDKAppSectionType,
-        body: SetSDKAppSectionBody,
-    ): Promise<void> {
+    async setSection(name: string, version: number, section: SDKAppSectionType, body: SDKAppSection): Promise<void> {
         await this.#fetch(`/sdk/apps/${name}/${version}/${section}`, {
             method: 'PUT',
             body,
@@ -284,7 +254,7 @@ export class SDKApps {
     /**
      * Set app common data (client credentials and shared configuration)
      */
-    async setCommon(name: string, version: number, common: SetSDKAppCommonBody): Promise<boolean> {
+    async setCommon(name: string, version: number, common: SDKAppCommon): Promise<boolean> {
         const response = await this.#fetch<SetSDKAppResponse>(`/sdk/apps/${name}/${version}/common`, {
             method: 'PUT',
             body: common,
