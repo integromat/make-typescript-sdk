@@ -18,6 +18,7 @@ import { SDKModules } from './endpoints/sdk/modules.js';
 import { SDKConnections } from './endpoints/sdk/connections.js';
 import { SDKFunctions } from './endpoints/sdk/functions.js';
 import { SDKRPCs } from './endpoints/sdk/rpcs.js';
+import { SDKWebhooks } from './endpoints/sdk/webhooks.js';
 import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
 import type { FetchOptions, JSONValue, QueryValue } from './types.js';
 import { VERSION } from './version.js';
@@ -172,6 +173,11 @@ export class Make {
          * RPCs are the building blocks of apps
          */
         readonly rpcs: SDKRPCs;
+        /**
+         * Access to Webhook-related endpoints
+         * Webhooks are used to listen for external events in apps
+         */
+        readonly webhooks: SDKWebhooks;
     };
 
     /**
@@ -210,6 +216,7 @@ export class Make {
             connections: new SDKConnections(this.fetch.bind(this)),
             functions: new SDKFunctions(this.fetch.bind(this)),
             rpcs: new SDKRPCs(this.fetch.bind(this)),
+            webhooks: new SDKWebhooks(this.fetch.bind(this)),
         };
     }
 

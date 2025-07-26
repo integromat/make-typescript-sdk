@@ -1,0 +1,6 @@
+{
+    "appWebhook": {
+        "label": "Watch Events",
+        "type": "web"
+    }
+}

@@ -131,5 +131,14 @@ export type {
     TestSDKRPCBody,
     SetSDKRPCSectionBody,
 } from './endpoints/sdk/rpcs.js';
+export type {
+    SDKWebhook,
+    SDKWebhooks,
+    SDKWebhookSection,
+    SDKWebhookSectionType,
+    CreateSDKWebhookBody,
+    UpdateSDKWebhookBody,
+    SetSDKWebhookSectionBody,
+} from './endpoints/sdk/webhooks.js';
 export type { Team, Teams, CreateTeamBody, ListTeamsOptions, GetTeamOptions } from './endpoints/teams.js';
 export type { User, Users } from './endpoints/users.js';
