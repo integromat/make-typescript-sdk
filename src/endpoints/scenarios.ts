@@ -14,6 +14,8 @@ export type Scenario = {
     id: number;
     /** Name of the scenario */
     name: string;
+    /** Description of the scenario */
+    description: string;
     /** ID of the team that owns the scenario */
     teamId: number;
     /** ID of the folder containing the scenario */
@@ -197,6 +199,8 @@ type CreateScenarioResponse<C extends keyof Scenario = never> = {
 export type UpdateScenarioBody = {
     /** New name for the scenario */
     name?: string;
+    /** New description for the scenario */
+    description?: string;
     /** New folder ID for the scenario */
     folderId?: number;
     /** Updated scheduling configuration */
