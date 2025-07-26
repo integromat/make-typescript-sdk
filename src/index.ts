@@ -89,10 +89,15 @@ export type {
 export type {
     SDKApp,
     SDKApps,
+    SDKAppSection,
+    SDKAppSectionType,
+    SDKAppCommon,
     ListSDKAppsOptions,
     GetSDKAppsOptions,
     CreateSDKAppBody,
     UpdateSDKAppBody,
+    SetSDKAppSectionBody,
+    SetSDKAppCommonBody,
 } from './endpoints/sdk/apps.js';
 export type {
     SDKModule,

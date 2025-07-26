@@ -1,4 +1,4 @@
-import type { FetchFunction, PickColumns } from '../../types.js';
+import type { FetchFunction, PickColumns, JSONValue } from '../../types.js';
 
 /**
  * App
@@ -33,6 +33,23 @@ export type SDKApp = {
     /** Stack of changes made to the app */
     changes?: unknown[];
 };
+
+/**
+ * App section data structure
+ * Represents configuration for different app sections like base, groups, install, installSpec
+ */
+export type SDKAppSection = Record<string, JSONValue>;
+
+/**
+ * Available app section types
+ */
+export type SDKAppSectionType = 'base' | 'groups' | 'install' | 'installSpec';
+
+/**
+ * App common data structure
+ * Contains sensitive information like API keys or secrets shared across all modules
+ */
+export type SDKAppCommon = Record<string, JSONValue>;
 
 /**
  * Options for listing apps with generic column selection
@@ -90,6 +107,24 @@ export type UpdateSDKAppBody = {
     countries?: string[];
     /** Audience setting */
     audience?: string;
+};
+
+/**
+ * Body for setting app section data
+ */
+export type SetSDKAppSectionBody = SDKAppSection;
+
+/**
+ * Body for setting app common data
+ */
+export type SetSDKAppCommonBody = SDKAppCommon;
+
+/**
+ * Response for set operations
+ */
+type SetSDKAppResponse = {
+    /** Whether the operation changed data */
+    changed: boolean;
 };
 
 /**
@@ -174,5 +209,86 @@ export class SDKApps {
         await this.#fetch(`/sdk/apps/${name}/${version}`, {
             method: 'DELETE',
         });
+    }
+
+    /**
+     * Get a specific section of an app
+     * Available sections: base, groups, install, installSpec
+     */
+    async getSection(name: string, version: number, section: SDKAppSectionType): Promise<SDKAppSection> {
+        try {
+            const response = await this.#fetch<SDKAppSection>(`/sdk/apps/${name}/${version}/${section}`);
+            return response;
+        } catch (error) {
+            // If JSON parsing fails, try to get raw response
+            if (error instanceof Error && error.message.includes('JSON')) {
+                const response = await this.#fetch<string>(`/sdk/apps/${name}/${version}/${section}`);
+                // Try to parse as JSON manually
+                try {
+                    return JSON.parse(response) as SDKAppSection;
+                } catch {
+                    // If still fails, return empty object
+                    return {} as SDKAppSection;
+                }
+            }
+            throw error;
+        }
+    }
+
+    /**
+     * Set/update a specific section of an app
+     * Available sections: base, groups, install, installSpec
+     */
+    async setSection(
+        name: string,
+        version: number,
+        section: SDKAppSectionType,
+        body: SetSDKAppSectionBody,
+    ): Promise<void> {
+        await this.#fetch(`/sdk/apps/${name}/${version}/${section}`, {
+            method: 'PUT',
+            body,
+        });
+    }
+
+    /**
+     * Get app documentation (readme)
+     */
+    async getDocs(name: string, version: number): Promise<string> {
+        const response = await this.#fetch<string>(`/sdk/apps/${name}/${version}/readme`);
+        return response;
+    }
+
+    /**
+     * Set app documentation (readme)
+     */
+    async setDocs(name: string, version: number, docs: string): Promise<boolean> {
+        const response = await this.#fetch<SetSDKAppResponse>(`/sdk/apps/${name}/${version}/readme`, {
+            method: 'PUT',
+            body: docs,
+            headers: {
+                'Content-Type': 'text/markdown',
+            },
+        });
+        return response.changed;
+    }
+
+    /**
+     * Get app common data (client credentials and shared configuration)
+     */
+    async getCommon(name: string, version: number): Promise<SDKAppCommon> {
+        const response = await this.#fetch<SDKAppCommon>(`/sdk/apps/${name}/${version}/common`);
+        return response;
+    }
+
+    /**
+     * Set app common data (client credentials and shared configuration)
+     */
+    async setCommon(name: string, version: number, common: SetSDKAppCommonBody): Promise<boolean> {
+        const response = await this.#fetch<SetSDKAppResponse>(`/sdk/apps/${name}/${version}/common`, {
+            method: 'PUT',
+            body: common,
+        });
+        return response.changed;
     }
 }

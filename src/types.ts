@@ -32,7 +32,7 @@ export type FetchOptions = {
     /** Query parameters to append to the URL */
     query?: Record<string, QueryValue>;
     /** Request body as an object or string */
-    body?: Record<string, JSONValue> | string;
+    body?: Record<string, JSONValue> | Array<JSONValue> | string;
     /** HTTP method (GET, POST, PATCH, etc.) */
     method?: string;
 };

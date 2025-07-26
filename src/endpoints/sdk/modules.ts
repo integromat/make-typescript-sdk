@@ -30,7 +30,7 @@ export type SDKModule = {
  * Module section data structure
  * Represents configuration for different module sections like api, epoch, parameters, etc.
  */
-export type SDKModuleSection = Record<string, JSONValue>;
+export type SDKModuleSection = Record<string, JSONValue> | Array<Record<string, JSONValue>>;
 
 /**
  * Available module section types

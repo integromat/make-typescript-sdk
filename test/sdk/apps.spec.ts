@@ -6,6 +6,12 @@ import * as listMock from '../mocks/sdk/apps/list.json';
 import * as getMock from '../mocks/sdk/apps/get.json';
 import * as createMock from '../mocks/sdk/apps/create.json';
 import * as updateMock from '../mocks/sdk/apps/update.json';
+import * as getSectionMock from '../mocks/sdk/apps/get-section.json';
+import * as getCommonMock from '../mocks/sdk/apps/get-common.json';
+import * as setCommonMock from '../mocks/sdk/apps/set-common.json';
+import * as setDocsMock from '../mocks/sdk/apps/set-docs.json';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -83,5 +89,59 @@ describe('Endpoints: SDK > Apps', () => {
         mockFetch('DELETE https://make.local/api/v2/sdk/apps/postman-test-app-1/1', null);
 
         await make.sdk.apps.delete('postman-test-app-1', 1);
+    });
+
+    it('Should get app section', async () => {
+        mockFetch('GET https://make.local/api/v2/sdk/apps/test-app/1/base', getSectionMock);
+
+        const result = await make.sdk.apps.getSection('test-app', 1, 'base');
+        expect(result).toStrictEqual(getSectionMock);
+    });
+
+    it('Should set app section', async () => {
+        const body = { name: 'text', type: 'text' };
+        mockFetch('PUT https://make.local/api/v2/sdk/apps/test-app/1/base', null, req => {
+            expect(req.body).toStrictEqual(body);
+            expect(req.headers.get('content-type')).toBe('application/json');
+        });
+
+        await make.sdk.apps.setSection('test-app', 1, 'base', body);
+    });
+
+    it('Should get app documentation', async () => {
+        const docsContent = readFileSync(join(__dirname, '../mocks/sdk/apps/get-docs.txt'), 'utf8');
+        mockFetch('GET https://make.local/api/v2/sdk/apps/test-app/1/readme', docsContent);
+
+        const result = await make.sdk.apps.getDocs('test-app', 1);
+        expect(result).toBe(docsContent);
+    });
+
+    it('Should set app documentation', async () => {
+        const docs = '# Updated Documentation\n\nThis is updated documentation.';
+        mockFetch('PUT https://make.local/api/v2/sdk/apps/test-app/1/readme', setDocsMock, req => {
+            expect(req.body).toBe(docs);
+            expect(req.headers.get('content-type')).toBe('text/markdown');
+        });
+
+        const result = await make.sdk.apps.setDocs('test-app', 1, docs);
+        expect(result).toBe(true);
+    });
+
+    it('Should get app common data', async () => {
+        mockFetch('GET https://make.local/api/v2/sdk/apps/test-app/1/common', getCommonMock);
+
+        const result = await make.sdk.apps.getCommon('test-app', 1);
+        expect(result).toStrictEqual(getCommonMock);
+    });
+
+    it('Should set app common data', async () => {
+        const common = { clientId: '789', clientSecret: 'newsecret' };
+        mockFetch('PUT https://make.local/api/v2/sdk/apps/test-app/1/common', setCommonMock, req => {
+            expect(req.body).toStrictEqual(common);
+            expect(req.headers.get('content-type')).toBe('application/json');
+        });
+
+        const result = await make.sdk.apps.setCommon('test-app', 1, common);
+        expect(result).toBe(true);
     });
 });

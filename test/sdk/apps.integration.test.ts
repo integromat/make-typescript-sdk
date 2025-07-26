@@ -53,6 +53,53 @@ describe('Integration: SDK > Apps', () => {
         expect(updatedApp.theme).toBe('#33ff57');
     });
 
+    it.skip('Should get and set app sections', async () => {
+        // Test getting base section
+        const baseSection = await make.sdk.apps.getSection(appName, appVersion, 'base');
+        expect(baseSection).toBeDefined();
+
+        // Test setting base section
+        const sectionData = {
+            baseUrl: 'https://api.example.com',
+            log: {
+                sanitize: ['request.headers.authorization'],
+            },
+        };
+        await make.sdk.apps.setSection(appName, appVersion, 'base', sectionData);
+
+        // Verify the section was updated
+        const updatedSection = await make.sdk.apps.getSection(appName, appVersion, 'base');
+        expect(updatedSection.baseUrl).toBe('https://api.example.com');
+    });
+
+    it('Should get and set app documentation', async () => {
+        // Test setting documentation
+        const docsContent = '# Test App Documentation\n\nThis is test documentation for the app.';
+        const changed = await make.sdk.apps.setDocs(appName, appVersion, docsContent);
+        expect(changed).toBe(true);
+
+        // Test getting documentation
+        const retrievedDocs = await make.sdk.apps.getDocs(appName, appVersion);
+        expect(retrievedDocs).toBe(docsContent);
+    });
+
+    it('Should get and set app common data', async () => {
+        // Test setting common data
+        const commonData = {
+            clientId: 'test-client-id',
+            clientSecret: 'test-client-secret',
+            customField: 'custom-value',
+        };
+        const changed = await make.sdk.apps.setCommon(appName, appVersion, commonData);
+        expect(changed).toBe(true);
+
+        // Test getting common data
+        const retrievedCommon = await make.sdk.apps.getCommon(appName, appVersion);
+        expect(retrievedCommon.clientId).toBe('test-client-id');
+        expect(retrievedCommon.clientSecret).toBe('test-client-secret');
+        expect(retrievedCommon.customField).toBe('custom-value');
+    });
+
     it('Should delete the app', async () => {
         await make.sdk.apps.delete(appName, appVersion);
 

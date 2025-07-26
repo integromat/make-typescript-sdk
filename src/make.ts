@@ -259,7 +259,7 @@ export class Make {
      * @protected
      */
     protected prepareBody(
-        body: Record<string, JSONValue> | string | undefined,
+        body: Record<string, JSONValue> | Array<JSONValue> | string | undefined,
         headers: Record<string, string>,
     ): string {
         if (body && typeof body !== 'string') {
