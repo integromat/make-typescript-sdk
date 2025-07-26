@@ -8,7 +8,6 @@ import * as createMock from '../mocks/sdk/modules/create.json';
 import * as updateMock from '../mocks/sdk/modules/update.json';
 import * as deleteMock from '../mocks/sdk/modules/delete.json';
 import * as getSectionMock from '../mocks/sdk/modules/get-section.json';
-import * as setSectionMock from '../mocks/sdk/modules/set-section.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -111,14 +110,13 @@ describe('Endpoints: SDK > Modules', () => {
         };
         mockFetch(
             `PUT https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/${section}`,
-            setSectionMock,
+            null,
             req => {
                 expect(req.body).toStrictEqual(body);
                 expect(req.headers.get('content-type')).toBe('application/json');
             },
         );
 
-        const result = await make.sdk.modules.setSection(appName, appVersion, moduleName, section, body);
-        expect(result).toStrictEqual(setSectionMock);
+        await make.sdk.modules.setSection(appName, appVersion, moduleName, section, body);
     });
 });

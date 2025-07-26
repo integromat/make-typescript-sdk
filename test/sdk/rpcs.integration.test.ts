@@ -104,9 +104,7 @@ describe('Integration: SDK > RPCs', () => {
             },
         };
 
-        const result = await make.sdk.rpcs.setSection(appName, appVersion, rpcName, 'api', sectionData);
-        expect(result).toBeDefined();
-        expect(typeof result).toBe('object');
+        await make.sdk.rpcs.setSection(appName, appVersion, rpcName, 'api', sectionData);
     });
 
     it('Should get RPC section', async () => {

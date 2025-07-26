@@ -13,10 +13,10 @@ import { Connections } from './endpoints/connections.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
-import { Apps } from './endpoints/sdk/apps.js';
-import { Modules } from './endpoints/sdk/modules.js';
+import { SDKApps } from './endpoints/sdk/apps.js';
+import { SDKModules } from './endpoints/sdk/modules.js';
 import { SDKFunctions } from './endpoints/sdk/functions.js';
-import { RPCs } from './endpoints/sdk/rpcs.js';
+import { SDKRPCs } from './endpoints/sdk/rpcs.js';
 import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
 import type { FetchOptions, JSONValue, QueryValue } from './types.js';
 import { VERSION } from './version.js';
@@ -150,12 +150,12 @@ export class Make {
          * Access to App-related endpoints
          * Apps allow you to create and manage custom applications for Make
          */
-        readonly apps: Apps;
+        readonly apps: SDKApps;
         /**
          * Access to Module-related endpoints
          * Modules are the building blocks of apps
          */
-        readonly modules: Modules;
+        readonly modules: SDKModules;
         /**
          * Access to Function-related endpoints
          * Functions are reusable code blocks within apps
@@ -165,7 +165,7 @@ export class Make {
          * Access to RPC-related endpoints
          * RPCs are the building blocks of apps
          */
-        readonly rpcs: RPCs;
+        readonly rpcs: SDKRPCs;
     };
 
     /**
@@ -199,10 +199,10 @@ export class Make {
         this.organizations = new Organizations(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
         this.sdk = {
-            apps: new Apps(this.fetch.bind(this)),
-            modules: new Modules(this.fetch.bind(this)),
+            apps: new SDKApps(this.fetch.bind(this)),
+            modules: new SDKModules(this.fetch.bind(this)),
             functions: new SDKFunctions(this.fetch.bind(this)),
-            rpcs: new RPCs(this.fetch.bind(this)),
+            rpcs: new SDKRPCs(this.fetch.bind(this)),
         };
     }
 

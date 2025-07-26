@@ -3,7 +3,7 @@ import type { FetchFunction, JSONValue } from '../../types.js';
 /**
  * Remote Procedure Call (RPC) definition
  */
-export type RPC = {
+export type SDKRPC = {
     /** The name of the RPC */
     name: string;
     /** The label of the RPC visible in the scenario builder */
@@ -17,17 +17,17 @@ export type RPC = {
 /**
  * RPC section data (api, parameters, etc.)
  */
-export type RPCSection = Record<string, JSONValue>;
+export type SDKRPCSection = Record<string, JSONValue>;
 
 /**
  * RPC section type
  */
-export type RPCSectionType = 'api' | 'parameters';
+export type SDKRPCSectionType = 'api' | 'parameters';
 
 /**
  * Body for creating a new RPC
  */
-export type CreateRPCBody = {
+export type CreateSDKRPCBody = {
     /** The name of the RPC */
     name: string;
     /** The label of the RPC visible in the scenario builder */
@@ -37,7 +37,7 @@ export type CreateRPCBody = {
 /**
  * Body for updating an RPC
  */
-export type UpdateRPCBody = {
+export type UpdateSDKRPCBody = {
     /** The label of the RPC visible in the scenario builder */
     label?: string;
     /** Connection name */
@@ -49,7 +49,7 @@ export type UpdateRPCBody = {
 /**
  * Body for testing an RPC
  */
-export type TestRPCBody = {
+export type TestSDKRPCBody = {
     /** Test data object */
     data: Record<string, JSONValue>;
     /** Schema definition array */
@@ -66,39 +66,39 @@ export type TestRPCBody = {
 /**
  * Body for setting RPC section data
  */
-export type SetRPCSectionBody = RPCSection;
+export type SetSDKRPCSectionBody = SDKRPCSection;
 
 /**
  * Internal response types (not exported)
  */
-type ListRPCsResponse = {
-    appRpcs: RPC[];
+type ListSDKRPCsResponse = {
+    appRpcs: SDKRPC[];
 };
 
-type GetRPCResponse = {
-    appRpc: RPC;
+type GetSDKRPCResponse = {
+    appRpc: SDKRPC;
 };
 
-type CreateRPCResponse = {
-    appRpc: Pick<RPC, 'name' | 'label'>;
+type CreateSDKRPCResponse = {
+    appRpc: Pick<SDKRPC, 'name' | 'label'>;
 };
 
-type UpdateRPCResponse = {
-    appRpc: RPC;
+type UpdateSDKRPCResponse = {
+    appRpc: SDKRPC;
 };
 
-type DeleteRPCResponse = {
+type DeleteSDKRPCResponse = {
     appRpc: string;
 };
 
-type SetRPCSectionResponse = {
+type SetSDKRPCSectionResponse = {
     change: Record<string, JSONValue>;
 };
 
 /**
  * Class providing methods for working with RPCs within Apps
  */
-export class RPCs {
+export class SDKRPCs {
     readonly #fetch: FetchFunction;
 
     constructor(fetch: FetchFunction) {
@@ -108,24 +108,24 @@ export class RPCs {
     /**
      * List all RPCs for the app
      */
-    async list(appName: string, appVersion: number): Promise<RPC[]> {
-        const response = await this.#fetch<ListRPCsResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs`);
+    async list(appName: string, appVersion: number): Promise<SDKRPC[]> {
+        const response = await this.#fetch<ListSDKRPCsResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs`);
         return response.appRpcs || [];
     }
 
     /**
      * Get a single RPC by name
      */
-    async get(appName: string, appVersion: number, rpcName: string): Promise<RPC> {
-        const response = await this.#fetch<GetRPCResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`);
+    async get(appName: string, appVersion: number, rpcName: string): Promise<SDKRPC> {
+        const response = await this.#fetch<GetSDKRPCResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`);
         return response.appRpc;
     }
 
     /**
      * Create a new RPC
      */
-    async create(appName: string, appVersion: number, body: CreateRPCBody): Promise<CreateRPCResponse['appRpc']> {
-        const response = await this.#fetch<CreateRPCResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs`, {
+    async create(appName: string, appVersion: number, body: CreateSDKRPCBody): Promise<CreateSDKRPCResponse['appRpc']> {
+        const response = await this.#fetch<CreateSDKRPCResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs`, {
             method: 'POST',
             body,
         });
@@ -135,8 +135,8 @@ export class RPCs {
     /**
      * Update an existing RPC
      */
-    async update(appName: string, appVersion: number, rpcName: string, body: UpdateRPCBody): Promise<RPC> {
-        const response = await this.#fetch<UpdateRPCResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`, {
+    async update(appName: string, appVersion: number, rpcName: string, body: UpdateSDKRPCBody): Promise<SDKRPC> {
+        const response = await this.#fetch<UpdateSDKRPCResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`, {
             method: 'PATCH',
             body,
         });
@@ -147,7 +147,7 @@ export class RPCs {
      * Delete an RPC
      */
     async delete(appName: string, appVersion: number, rpcName: string): Promise<void> {
-        await this.#fetch<DeleteRPCResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`, {
+        await this.#fetch<DeleteSDKRPCResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`, {
             method: 'DELETE',
         });
     }
@@ -155,7 +155,7 @@ export class RPCs {
     /**
      * Test an RPC with provided data and schema
      */
-    async test(appName: string, appVersion: number, rpcName: string, body: TestRPCBody): Promise<void> {
+    async test(appName: string, appVersion: number, rpcName: string, body: TestSDKRPCBody): Promise<void> {
         await this.#fetch(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`, {
             method: 'POST',
             body,
@@ -169,9 +169,11 @@ export class RPCs {
         appName: string,
         appVersion: number,
         rpcName: string,
-        section: RPCSectionType,
-    ): Promise<RPCSection> {
-        const response = await this.#fetch<RPCSection>(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`);
+        section: SDKRPCSectionType,
+    ): Promise<SDKRPCSection> {
+        const response = await this.#fetch<SDKRPCSection>(
+            `/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`,
+        );
         return response;
     }
 
@@ -182,16 +184,12 @@ export class RPCs {
         appName: string,
         appVersion: number,
         rpcName: string,
-        section: RPCSectionType,
-        body: SetRPCSectionBody,
-    ): Promise<Record<string, JSONValue>> {
-        const response = await this.#fetch<SetRPCSectionResponse>(
-            `/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`,
-            {
-                method: 'PUT',
-                body,
-            },
-        );
-        return response.change || {};
+        section: SDKRPCSectionType,
+        body: SetSDKRPCSectionBody,
+    ): Promise<void> {
+        await this.#fetch<SetSDKRPCSectionResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`, {
+            method: 'PUT',
+            body,
+        });
     }
 }

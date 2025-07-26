@@ -94,9 +94,7 @@ describe('Integration: SDK > Modules', () => {
             },
         };
 
-        const result = await make.sdk.modules.setSection(appName, appVersion, moduleName, 'api', sectionData);
-        expect(result).toBeDefined();
-        // Note: API response format may vary, so we check if the operation completed successfully
+        await make.sdk.modules.setSection(appName, appVersion, moduleName, 'api', sectionData);
     });
 
     it('Should get module section', async () => {

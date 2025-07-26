@@ -3,7 +3,7 @@ import type { FetchFunction, JSONValue } from '../../types.js';
 /**
  * Module
  */
-export type Module = {
+export type SDKModule = {
     /** The name of the module */
     name: string;
     /** The label of the module visible in the scenario builder */
@@ -30,17 +30,17 @@ export type Module = {
  * Module section data structure
  * Represents configuration for different module sections like api, epoch, parameters, etc.
  */
-export type ModuleSection = Record<string, JSONValue>;
+export type SDKModuleSection = Record<string, JSONValue>;
 
 /**
  * Available module section types
  */
-export type ModuleSectionType = 'api' | 'epoch' | 'parameters' | 'expect' | 'interface' | 'samples' | 'scope';
+export type SDKModuleSectionType = 'api' | 'epoch' | 'parameters' | 'expect' | 'interface' | 'samples' | 'scope';
 
 /**
  * Body for creating a new module
  */
-export type CreateModuleBody = {
+export type CreateSDKModuleBody = {
     /** The name of the module */
     name: string;
     /** The type ID of the module */
@@ -56,7 +56,7 @@ export type CreateModuleBody = {
 /**
  * Body for updating a module
  */
-export type UpdateModuleBody = {
+export type UpdateSDKModuleBody = {
     /** The label of the module visible in the scenario builder */
     label?: string;
     /** The description of the module */
@@ -68,35 +68,35 @@ export type UpdateModuleBody = {
 /**
  * Body for setting a module section
  */
-export type SetModuleSectionBody = ModuleSection;
+export type SetSDKModuleSectionBody = SDKModuleSection;
 
 /**
  * Internal response types (not exported)
  */
-type ListModulesResponse = {
-    appModules: Module[];
+type ListSDKModulesResponse = {
+    appModules: SDKModule[];
 };
 
-type GetModuleResponse = {
-    appModule: Module;
+type GetSDKModuleResponse = {
+    appModule: SDKModule;
 };
 
-type CreateModuleResponse = {
-    appModule: Module;
+type CreateSDKModuleResponse = {
+    appModule: SDKModule;
 };
 
-type UpdateModuleResponse = {
-    appModule: Module;
+type UpdateSDKModuleResponse = {
+    appModule: SDKModule;
 };
 
-type DeleteModuleResponse = {
+type DeleteSDKModuleResponse = {
     appModule: string;
 };
 
 /**
  * Class providing methods for working with App Modules
  */
-export class Modules {
+export class SDKModules {
     readonly #fetch: FetchFunction;
 
     constructor(fetch: FetchFunction) {
@@ -106,16 +106,16 @@ export class Modules {
     /**
      * List modules for the app with optional filtering
      */
-    async list(appName: string, appVersion: number): Promise<Module[]> {
-        const response = await this.#fetch<ListModulesResponse>(`/sdk/apps/${appName}/${appVersion}/modules`);
+    async list(appName: string, appVersion: number): Promise<SDKModule[]> {
+        const response = await this.#fetch<ListSDKModulesResponse>(`/sdk/apps/${appName}/${appVersion}/modules`);
         return response.appModules;
     }
 
     /**
      * Get a single module by name
      */
-    async get(appName: string, appVersion: number, moduleName: string): Promise<Module> {
-        const response = await this.#fetch<GetModuleResponse>(
+    async get(appName: string, appVersion: number, moduleName: string): Promise<SDKModule> {
+        const response = await this.#fetch<GetSDKModuleResponse>(
             `/sdk/apps/${appName}/${appVersion}/modules/${moduleName}`,
         );
         return response.appModule;
@@ -124,8 +124,8 @@ export class Modules {
     /**
      * Create a new module
      */
-    async create(appName: string, appVersion: number, body: CreateModuleBody): Promise<Module> {
-        const response = await this.#fetch<CreateModuleResponse>(`/sdk/apps/${appName}/${appVersion}/modules`, {
+    async create(appName: string, appVersion: number, body: CreateSDKModuleBody): Promise<SDKModule> {
+        const response = await this.#fetch<CreateSDKModuleResponse>(`/sdk/apps/${appName}/${appVersion}/modules`, {
             method: 'POST',
             body,
         });
@@ -135,8 +135,13 @@ export class Modules {
     /**
      * Update an existing module
      */
-    async update(appName: string, appVersion: number, moduleName: string, body: UpdateModuleBody): Promise<Module> {
-        const response = await this.#fetch<UpdateModuleResponse>(
+    async update(
+        appName: string,
+        appVersion: number,
+        moduleName: string,
+        body: UpdateSDKModuleBody,
+    ): Promise<SDKModule> {
+        const response = await this.#fetch<UpdateSDKModuleResponse>(
             `/sdk/apps/${appName}/${appVersion}/modules/${moduleName}`,
             {
                 method: 'PATCH',
@@ -150,7 +155,7 @@ export class Modules {
      * Delete a module
      */
     async delete(appName: string, appVersion: number, moduleName: string): Promise<void> {
-        await this.#fetch<DeleteModuleResponse>(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}`, {
+        await this.#fetch<DeleteSDKModuleResponse>(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}`, {
             method: 'DELETE',
         });
     }
@@ -163,9 +168,9 @@ export class Modules {
         appName: string,
         appVersion: number,
         moduleName: string,
-        section: ModuleSectionType,
-    ): Promise<ModuleSection> {
-        const response = await this.#fetch<ModuleSection>(
+        section: SDKModuleSectionType,
+    ): Promise<SDKModuleSection> {
+        const response = await this.#fetch<SDKModuleSection>(
             `/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/${section}`,
         );
         return response;
@@ -179,16 +184,12 @@ export class Modules {
         appName: string,
         appVersion: number,
         moduleName: string,
-        section: ModuleSectionType,
-        body: SetModuleSectionBody,
-    ): Promise<ModuleSection> {
-        const response = await this.#fetch<ModuleSection>(
-            `/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/${section}`,
-            {
-                method: 'PUT',
-                body,
-            },
-        );
-        return response;
+        section: SDKModuleSectionType,
+        body: SetSDKModuleSectionBody,
+    ): Promise<void> {
+        await this.#fetch<SDKModuleSection>(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/${section}`, {
+            method: 'PUT',
+            body,
+        });
     }
 }

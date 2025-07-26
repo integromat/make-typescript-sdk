@@ -86,15 +86,22 @@ export type {
     RunScenarioResponse,
     Scheduling,
 } from './endpoints/scenarios.js';
-export type { App, Apps, ListAppsOptions, GetAppsOptions, CreateAppBody, UpdateAppBody } from './endpoints/sdk/apps.js';
 export type {
-    Module,
-    Modules,
-    ModuleSection,
-    ModuleSectionType,
-    CreateModuleBody,
-    UpdateModuleBody,
-    SetModuleSectionBody,
+    SDKApp,
+    SDKApps,
+    ListSDKAppsOptions,
+    GetSDKAppsOptions,
+    CreateSDKAppBody,
+    UpdateSDKAppBody,
+} from './endpoints/sdk/apps.js';
+export type {
+    SDKModule,
+    SDKModules,
+    SDKModuleSection,
+    SDKModuleSectionType,
+    CreateSDKModuleBody,
+    UpdateSDKModuleBody,
+    SetSDKModuleSectionBody,
 } from './endpoints/sdk/modules.js';
 export type {
     SDKFunction,
@@ -104,14 +111,14 @@ export type {
     SDKFunctionTestResult,
 } from './endpoints/sdk/functions.js';
 export type {
-    RPC,
-    RPCs,
-    RPCSection,
-    RPCSectionType,
-    CreateRPCBody,
-    UpdateRPCBody,
-    TestRPCBody,
-    SetRPCSectionBody,
+    SDKRPC,
+    SDKRPCs,
+    SDKRPCSection,
+    SDKRPCSectionType,
+    CreateSDKRPCBody,
+    UpdateSDKRPCBody,
+    TestSDKRPCBody,
+    SetSDKRPCSectionBody,
 } from './endpoints/sdk/rpcs.js';
 export type { Team, Teams, CreateTeamBody, ListTeamsOptions, GetTeamOptions } from './endpoints/teams.js';
 export type { User, Users } from './endpoints/users.js';

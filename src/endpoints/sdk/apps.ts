@@ -3,7 +3,7 @@ import type { FetchFunction, PickColumns } from '../../types.js';
 /**
  * App
  */
-export type App = {
+export type SDKApp = {
     /** The name of the app visible in the URL */
     name: string;
     /** The label of the app visible in the scenario builder */
@@ -37,7 +37,7 @@ export type App = {
 /**
  * Options for listing apps with generic column selection
  */
-export type ListAppsOptions<C extends keyof App = never> = {
+export type ListSDKAppsOptions<C extends keyof SDKApp = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[];
     /** If set to true, returns all apps available to all users */
@@ -47,7 +47,7 @@ export type ListAppsOptions<C extends keyof App = never> = {
 /**
  * Options for getting a single app with generic column selection
  */
-export type GetAppsOptions<C extends keyof App = never> = {
+export type GetSDKAppsOptions<C extends keyof SDKApp = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[];
 };
@@ -55,7 +55,7 @@ export type GetAppsOptions<C extends keyof App = never> = {
 /**
  * Body for creating a new app
  */
-export type CreateAppBody = {
+export type CreateSDKAppBody = {
     /** The name of the app visible in the URL */
     name: string;
     /** The label of the app visible in the scenario builder */
@@ -77,7 +77,7 @@ export type CreateAppBody = {
 /**
  * Body for updating an app
  */
-export type UpdateAppBody = {
+export type UpdateSDKAppBody = {
     /** The label of the app visible in the scenario builder */
     label?: string;
     /** The description of the app */
@@ -95,26 +95,26 @@ export type UpdateAppBody = {
 /**
  * Internal response types (not exported)
  */
-type ListAppsResponse<C extends keyof App = never> = {
-    apps: PickColumns<App, C>[];
+type ListSDKAppsResponse<C extends keyof SDKApp = never> = {
+    apps: PickColumns<SDKApp, C>[];
 };
 
-type GetAppResponse<C extends keyof App = never> = {
-    app: PickColumns<App, C>;
+type GetSDKAppResponse<C extends keyof SDKApp = never> = {
+    app: PickColumns<SDKApp, C>;
 };
 
-type CreateAppResponse = {
-    app: Pick<App, 'name' | 'label' | 'description' | 'version' | 'theme' | 'public' | 'approved'>;
+type CreateSDKAppResponse = {
+    app: Pick<SDKApp, 'name' | 'label' | 'description' | 'version' | 'theme' | 'public' | 'approved'>;
 };
 
-type UpdateAppResponse = {
-    app: Pick<App, 'name' | 'label' | 'description' | 'version' | 'theme' | 'public' | 'approved'>;
+type UpdateSDKAppResponse = {
+    app: Pick<SDKApp, 'name' | 'label' | 'description' | 'version' | 'theme' | 'public' | 'approved'>;
 };
 
 /**
  * Class providing methods for working with Apps
  */
-export class Apps {
+export class SDKApps {
     readonly #fetch: FetchFunction;
 
     constructor(fetch: FetchFunction) {
@@ -124,8 +124,8 @@ export class Apps {
     /**
      * List apps with optional filtering
      */
-    async list<C extends keyof App = never>(options: ListAppsOptions<C> = {}): Promise<PickColumns<App, C>[]> {
-        const response = await this.#fetch<ListAppsResponse<C>>('/sdk/apps', {
+    async list<C extends keyof SDKApp = never>(options: ListSDKAppsOptions<C> = {}): Promise<PickColumns<SDKApp, C>[]> {
+        const response = await this.#fetch<ListSDKAppsResponse<C>>('/sdk/apps', {
             query: options,
         });
         return response.apps;
@@ -134,12 +134,12 @@ export class Apps {
     /**
      * Get a single app by name and version
      */
-    async get<C extends keyof App = never>(
+    async get<C extends keyof SDKApp = never>(
         name: string,
         version: number,
-        options: GetAppsOptions<C> = {},
-    ): Promise<PickColumns<App, C>> {
-        const response = await this.#fetch<GetAppResponse<C>>(`/sdk/apps/${name}/${version}`, {
+        options: GetSDKAppsOptions<C> = {},
+    ): Promise<PickColumns<SDKApp, C>> {
+        const response = await this.#fetch<GetSDKAppResponse<C>>(`/sdk/apps/${name}/${version}`, {
             query: options,
         });
         return response.app;
@@ -148,8 +148,8 @@ export class Apps {
     /**
      * Create a new app
      */
-    async create(body: CreateAppBody): Promise<CreateAppResponse['app']> {
-        const response = await this.#fetch<CreateAppResponse>('/sdk/apps', {
+    async create(body: CreateSDKAppBody): Promise<CreateSDKAppResponse['app']> {
+        const response = await this.#fetch<CreateSDKAppResponse>('/sdk/apps', {
             method: 'POST',
             body,
         });
@@ -159,8 +159,8 @@ export class Apps {
     /**
      * Update an existing app
      */
-    async update(name: string, version: number, body: UpdateAppBody): Promise<UpdateAppResponse['app']> {
-        const response = await this.#fetch<UpdateAppResponse>(`/sdk/apps/${name}/${version}`, {
+    async update(name: string, version: number, body: UpdateSDKAppBody): Promise<UpdateSDKAppResponse['app']> {
+        const response = await this.#fetch<UpdateSDKAppResponse>(`/sdk/apps/${name}/${version}`, {
             method: 'PATCH',
             body,
         });

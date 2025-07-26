@@ -8,7 +8,6 @@ import * as createMock from '../mocks/sdk/rpcs/create.json';
 import * as updateMock from '../mocks/sdk/rpcs/update.json';
 import * as deleteMock from '../mocks/sdk/rpcs/delete.json';
 import * as getSectionMock from '../mocks/sdk/rpcs/get-section.json';
-import * as setSectionMock from '../mocks/sdk/rpcs/set-section.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -119,14 +118,13 @@ describe('Endpoints: SDK > RPCs', () => {
         };
         mockFetch(
             `PUT https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`,
-            setSectionMock,
+            null,
             req => {
                 expect(req.body).toStrictEqual(body);
                 expect(req.headers.get('content-type')).toBe('application/json');
             },
         );
 
-        const result = await make.sdk.rpcs.setSection(appName, appVersion, rpcName, section, body);
-        expect(result).toStrictEqual(setSectionMock.change);
+        await make.sdk.rpcs.setSection(appName, appVersion, rpcName, section, body);
     });
 });
