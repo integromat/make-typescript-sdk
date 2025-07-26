@@ -1,0 +1,17 @@
+{
+    "app": {
+        "name": "postman-test-app-1",
+        "label": "Postman Test App",
+        "description": "This is a testing app from Postman",
+        "version": 1,
+        "beta": true,
+        "theme": "#ff00ff",
+        "language": "en",
+        "public": false,
+        "approved": false,
+        "global": true,
+        "countries": null,
+        "created": "2019-12-18T11:55:31.655Z",
+        "manifestVersion": 2
+    }
+}

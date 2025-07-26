@@ -1,0 +1,10 @@
+{
+    "app": {
+        "name": "postman-test-app-7-1",
+        "label": "Postman Test App",
+        "version": 1,
+        "theme": "#FF00FF",
+        "public": false,
+        "approved": false
+    }
+}

@@ -1,0 +1,61 @@
+{
+    "authorize": {
+        "qs": {
+            "scope": "{{join(oauth.scope, ',')}}",
+            "client_id": "{{ifempty(parameters.clientId, common.clientId)}}",
+            "redirect_uri": "{{oauth.redirectUri}}",
+            "response_type": "code"
+        },
+        "url": "https://www.example.com/oauth/authorize",
+        "response": {
+            "temp": {
+                "code": "{{query.code}}"
+            }
+        }
+    },
+    "token": {
+        "url": "https://www.example.com/api/token",
+        "body": {
+            "code": "{{temp.code}}",
+            "client_id": "{{ifempty(parameters.clientId, common.clientId)}}",
+            "grant_type": "authorization_code",
+            "redirect_uri": "{{oauth.redirectUri}}",
+            "client_secret": "{{ifempty(parameters.clientSecret, common.clientSecret)}}"
+        },
+        "type": "urlencoded",
+        "method": "POST",
+        "response": {
+            "data": {
+                "accessToken": "{{body.access_token}}"
+            }
+        },
+        "log": {
+            "sanitize": ["request.body.code", "request.body.client_secret", "response.body.access_token"]
+        }
+    },
+    "info": {
+        "url": "https://www.example.com/api/whoami",
+        "headers": {
+            "authorization": "Bearer {{connection.accessToken}}"
+        },
+        "response": {
+            "uid": "{{body.id}}",
+            "metadata": {
+                "type": "text",
+                "value": "{{body.user}}"
+            }
+        },
+        "log": {
+            "sanitize": ["request.headers.authorization"]
+        }
+    },
+    "invalidate": {
+        "url": "https://www.example.com/oauth/invalidate",
+        "headers": {
+            "authorization": "Bearer {{connection.accessToken}}"
+        },
+        "log": {
+            "sanitize": ["request.headers.authorization"]
+        }
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "appConnection": {
+        "name": "custom-app-13",
+        "label": "Main Connection",
+        "type": "basic"
+    }
+}

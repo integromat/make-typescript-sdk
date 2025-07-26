@@ -1,0 +1,19 @@
+{
+    "appConnections": [
+        {
+            "name": "testConnection",
+            "label": "Test Connection",
+            "type": "oauth"
+        },
+        {
+            "name": "postman-test-app-6-1",
+            "label": "Test Connection",
+            "type": "oauth"
+        },
+        {
+            "name": "postman-test-app-6-12",
+            "label": "Test Connection",
+            "type": "oauth"
+        }
+    ]
+}

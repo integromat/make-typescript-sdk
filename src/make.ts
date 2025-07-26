@@ -13,6 +13,12 @@ import { Connections } from './endpoints/connections.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
+import { SDKApps } from './endpoints/sdk/apps.js';
+import { SDKModules } from './endpoints/sdk/modules.js';
+import { SDKConnections } from './endpoints/sdk/connections.js';
+import { SDKFunctions } from './endpoints/sdk/functions.js';
+import { SDKRPCs } from './endpoints/sdk/rpcs.js';
+import { SDKWebhooks } from './endpoints/sdk/webhooks.js';
 import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
 import type { FetchOptions, JSONValue, QueryValue } from './types.js';
 import { VERSION } from './version.js';
@@ -139,6 +145,42 @@ export class Make {
     public readonly enums: Enums;
 
     /**
+     * Access to SDK-related endpoints
+     */
+    public readonly sdk: {
+        /**
+         * Access to App-related endpoints
+         * Apps allow you to create and manage custom applications for Make
+         */
+        readonly apps: SDKApps;
+        /**
+         * Access to Module-related endpoints
+         * Modules are the building blocks of apps
+         */
+        readonly modules: SDKModules;
+        /**
+         * Access to Connection-related endpoints
+         * Connections manage authentication and authorization for apps
+         */
+        readonly connections: SDKConnections;
+        /**
+         * Access to Function-related endpoints
+         * Functions are reusable code blocks within apps
+         */
+        readonly functions: SDKFunctions;
+        /**
+         * Access to RPC-related endpoints
+         * RPCs are the building blocks of apps
+         */
+        readonly rpcs: SDKRPCs;
+        /**
+         * Access to Webhook-related endpoints
+         * Webhooks are used to listen for external events in apps
+         */
+        readonly webhooks: SDKWebhooks;
+    };
+
+    /**
      * Create a new Make SDK instance
      * @param token Your Make API key or OAuth2 access token
      * @param zone The Make zone (e.g. eu1.make.com)
@@ -168,6 +210,14 @@ export class Make {
         this.functions = new Functions(this.fetch.bind(this));
         this.organizations = new Organizations(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
+        this.sdk = {
+            apps: new SDKApps(this.fetch.bind(this)),
+            modules: new SDKModules(this.fetch.bind(this)),
+            connections: new SDKConnections(this.fetch.bind(this)),
+            functions: new SDKFunctions(this.fetch.bind(this)),
+            rpcs: new SDKRPCs(this.fetch.bind(this)),
+            webhooks: new SDKWebhooks(this.fetch.bind(this)),
+        };
     }
 
     /**
@@ -209,7 +259,7 @@ export class Make {
      * @protected
      */
     protected prepareBody(
-        body: Record<string, JSONValue> | string | undefined,
+        body: Record<string, JSONValue> | Array<JSONValue> | string | undefined,
         headers: Record<string, string>,
     ): string {
         if (body && typeof body !== 'string') {

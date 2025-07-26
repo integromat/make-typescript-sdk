@@ -5,7 +5,7 @@ enableFetchMocks();
 
 type Mock = [string, unknown, number | Asserts | undefined];
 type Asserts = (req: {
-    body: Record<string, JSONValue> | string;
+    body: Record<string, JSONValue> | Array<JSONValue> | string;
     headers: Headers;
     method: string;
     url: string;
@@ -53,7 +53,7 @@ export function mockFetch(...args: unknown[]): void {
             const contentType = req.headers.get('content-type');
             const body = contentType?.includes('application/json') ? await req.json() : await req.text();
             mock.asserts({
-                body: isObject(body) ? (body as Record<string, JSONValue>) : String(body),
+                body: isObject(body) ? (body as Record<string, JSONValue>) : Array.isArray(body) ? body : String(body),
                 headers: req.headers,
                 method: req.method,
                 url: req.url,

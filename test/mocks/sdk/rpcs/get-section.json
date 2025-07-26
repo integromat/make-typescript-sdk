@@ -1,0 +1,14 @@
+{
+    "url": "/api/users",
+    "method": "GET",
+    "qs": {},
+    "body": {},
+    "headers": {},
+    "response": {
+        "iterate": "{{body.users}}",
+        "output": {
+            "label": "{{item.name}}",
+            "value": "{{item.id}}"
+        }
+    }
+}

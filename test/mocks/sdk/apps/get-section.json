@@ -1,0 +1,6 @@
+{
+    "baseUrl": "https://www.example.com",
+    "log": {
+        "sanitize": ["request.headers.authorization"]
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "app": {
+        "name": "postman-test-app-1",
+        "label": "Multiverse",
+        "description": "Hey there, Charlie!",
+        "version": 1,
+        "theme": "#AABBCC",
+        "public": false
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "appWebhook": {
+        "name": "custom-app-12",
+        "label": "Watch Events",
+        "type": "web",
+        "connection": "custom-app-1",
+        "altConnection": null
+    }
+}

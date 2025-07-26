@@ -1,0 +1,14 @@
+{
+    "appModule": {
+        "name": "getEntity",
+        "label": "Get Entity",
+        "description": "Retrieves the given entity.",
+        "typeId": 4,
+        "public": false,
+        "approved": false,
+        "crud": null,
+        "connection": null,
+        "altConnection": null,
+        "webhook": null
+    }
+}

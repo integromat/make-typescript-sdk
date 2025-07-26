@@ -1,0 +1,8 @@
+{
+    "appFunctions": [
+        {
+            "name": "myFunction",
+            "args": "()"
+        }
+    ]
+}

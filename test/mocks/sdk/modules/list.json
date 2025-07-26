@@ -1,0 +1,28 @@
+{
+    "appModules": [
+        {
+            "name": "postmanModule5",
+            "label": "BezVisKam",
+            "typeId": 1,
+            "public": false,
+            "approved": false,
+            "description": "Bleeeeee",
+            "crud": "read",
+            "connection": null,
+            "altConnection": null,
+            "webhook": null
+        },
+        {
+            "name": "getEntity",
+            "label": "Get Entity",
+            "typeId": 4,
+            "public": false,
+            "approved": false,
+            "description": "Retrieves the given entity.",
+            "crud": null,
+            "connection": null,
+            "altConnection": null,
+            "webhook": null
+        }
+    ]
+}

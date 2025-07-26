@@ -1,0 +1,24 @@
+{
+    "appWebhooks": [
+        {
+            "name": "postman-test-app-6-1",
+            "label": "Test Connection",
+            "type": "web"
+        },
+        {
+            "name": "aaaa",
+            "label": "Test Connection",
+            "type": "web"
+        },
+        {
+            "name": "postman-test-app-6-12",
+            "label": "Test Connection",
+            "type": "web"
+        },
+        {
+            "name": "postman-test-app-6-13",
+            "label": "Test Connection",
+            "type": "web"
+        }
+    ]
+}

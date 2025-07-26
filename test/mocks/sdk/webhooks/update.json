@@ -1,0 +1,9 @@
+{
+    "appWebhook": {
+        "name": "charlie-1",
+        "label": "Test Renamed",
+        "type": "web",
+        "connection": null,
+        "altConnection": null
+    }
+}
