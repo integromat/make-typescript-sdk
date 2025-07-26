@@ -91,10 +91,6 @@ type DeleteSDKRPCResponse = {
     appRpc: string;
 };
 
-type SetSDKRPCSectionResponse = {
-    change: Record<string, JSONValue>;
-};
-
 /**
  * Class providing methods for working with RPCs within Apps
  */
@@ -187,7 +183,7 @@ export class SDKRPCs {
         section: SDKRPCSectionType,
         body: SetSDKRPCSectionBody,
     ): Promise<void> {
-        await this.#fetch<SetSDKRPCSectionResponse>(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`, {
+        await this.#fetch(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`, {
             method: 'PUT',
             body,
         });

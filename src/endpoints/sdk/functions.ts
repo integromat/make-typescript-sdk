@@ -46,14 +46,6 @@ type CreateSDKFunctionResponse = {
     appFunction: Pick<SDKFunction, 'name'>;
 };
 
-type DeleteSDKFunctionResponse = {
-    appFunction: string;
-};
-
-type SetSDKFunctionCodeResponse = {
-    change: SDKFunctionChange;
-};
-
 /**
  * Class providing methods for working with SDK App Functions
  */
@@ -97,7 +89,7 @@ export class SDKFunctions {
      * Delete a function
      */
     async delete(appName: string, appVersion: number, functionName: string): Promise<void> {
-        await this.#fetch<DeleteSDKFunctionResponse>(`/sdk/apps/${appName}/${appVersion}/functions/${functionName}`, {
+        await this.#fetch(`/sdk/apps/${appName}/${appVersion}/functions/${functionName}`, {
             method: 'DELETE',
         });
     }
@@ -121,16 +113,13 @@ export class SDKFunctions {
      * Set/update function code
      */
     async setCode(appName: string, appVersion: number, functionName: string, code: string): Promise<void> {
-        await this.#fetch<SetSDKFunctionCodeResponse>(
-            `/sdk/apps/${appName}/${appVersion}/functions/${functionName}/code`,
-            {
-                method: 'PUT',
-                body: code,
-                headers: {
-                    'content-type': 'application/javascript',
-                },
+        await this.#fetch(`/sdk/apps/${appName}/${appVersion}/functions/${functionName}/code`, {
+            method: 'PUT',
+            body: code,
+            headers: {
+                'content-type': 'application/javascript',
             },
-        );
+        });
     }
 
     /**

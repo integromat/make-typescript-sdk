@@ -6,7 +6,6 @@ import * as listMock from '../mocks/sdk/rpcs/list.json';
 import * as getMock from '../mocks/sdk/rpcs/get.json';
 import * as createMock from '../mocks/sdk/rpcs/create.json';
 import * as updateMock from '../mocks/sdk/rpcs/update.json';
-import * as deleteMock from '../mocks/sdk/rpcs/delete.json';
 import * as getSectionMock from '../mocks/sdk/rpcs/get-section.json';
 
 const MAKE_API_KEY = 'api-key';
@@ -65,7 +64,7 @@ describe('Endpoints: SDK > RPCs', () => {
     });
 
     it('Should delete SDK app RPC', async () => {
-        mockFetch(`DELETE https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`, deleteMock);
+        mockFetch(`DELETE https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`, null);
 
         await make.sdk.rpcs.delete(appName, appVersion, rpcName);
     });

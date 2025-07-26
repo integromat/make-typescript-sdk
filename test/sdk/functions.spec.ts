@@ -5,7 +5,6 @@ import { mockFetch } from '../test.utils.js';
 import * as listMock from '../mocks/sdk/functions/list.json';
 import * as getMock from '../mocks/sdk/functions/get.json';
 import * as createMock from '../mocks/sdk/functions/create.json';
-import * as deleteMock from '../mocks/sdk/functions/delete.json';
 import * as setTestMock from '../mocks/sdk/functions/set-test.json';
 
 const MAKE_API_KEY = 'api-key';
@@ -45,10 +44,7 @@ describe('Endpoints: SDK > Functions', () => {
     });
 
     it('Should delete SDK app function', async () => {
-        mockFetch(
-            `DELETE https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/functions/${functionName}`,
-            deleteMock,
-        );
+        mockFetch(`DELETE https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/functions/${functionName}`, null);
 
         await make.sdk.functions.delete(appName, appVersion, functionName);
     });

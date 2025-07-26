@@ -6,7 +6,6 @@ import * as listMock from '../mocks/sdk/modules/list.json';
 import * as getMock from '../mocks/sdk/modules/get.json';
 import * as createMock from '../mocks/sdk/modules/create.json';
 import * as updateMock from '../mocks/sdk/modules/update.json';
-import * as deleteMock from '../mocks/sdk/modules/delete.json';
 import * as getSectionMock from '../mocks/sdk/modules/get-section.json';
 
 const MAKE_API_KEY = 'api-key';
@@ -69,10 +68,7 @@ describe('Endpoints: SDK > Modules', () => {
     });
 
     it('Should delete SDK app module', async () => {
-        mockFetch(
-            `DELETE https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/modules/${moduleName}`,
-            deleteMock,
-        );
+        mockFetch(`DELETE https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/modules/${moduleName}`, null);
 
         await make.sdk.modules.delete(appName, appVersion, moduleName);
     });

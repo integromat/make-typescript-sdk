@@ -89,10 +89,6 @@ type UpdateSDKModuleResponse = {
     appModule: SDKModule;
 };
 
-type DeleteSDKModuleResponse = {
-    appModule: string;
-};
-
 /**
  * Class providing methods for working with App Modules
  */
@@ -155,7 +151,7 @@ export class SDKModules {
      * Delete a module
      */
     async delete(appName: string, appVersion: number, moduleName: string): Promise<void> {
-        await this.#fetch<DeleteSDKModuleResponse>(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}`, {
+        await this.#fetch(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}`, {
             method: 'DELETE',
         });
     }
@@ -187,7 +183,7 @@ export class SDKModules {
         section: SDKModuleSectionType,
         body: SetSDKModuleSectionBody,
     ): Promise<void> {
-        await this.#fetch<SDKModuleSection>(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/${section}`, {
+        await this.#fetch(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/${section}`, {
             method: 'PUT',
             body,
         });
