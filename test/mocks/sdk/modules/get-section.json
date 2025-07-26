@@ -1,0 +1,18 @@
+{
+    "url": "/api/users",
+    "method": "GET",
+    "qs": {},
+    "body": {},
+    "headers": {},
+    "response": {
+        "iterate": "{{body.users}}",
+        "trigger": {
+            "id": "{{item.id}}",
+            "date": "{{item.created}}",
+            "type": "string",
+            "order": "desc"
+        },
+        "output": "{{item}}",
+        "limit": "{{parameters.limit}}"
+    }
+}

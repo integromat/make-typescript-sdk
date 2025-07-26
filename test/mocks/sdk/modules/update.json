@@ -1,0 +1,12 @@
+{
+    "appModule": {
+        "name": "getEntity",
+        "label": "Get Order",
+        "description": "Retrieves the order by its id.",
+        "typeId": 4,
+        "crud": null,
+        "connection": "charlie-1",
+        "altConnection": null,
+        "webhook": null
+    }
+}

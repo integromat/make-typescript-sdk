@@ -14,6 +14,7 @@ import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
 import { Apps } from './endpoints/sdk/apps.js';
+import { Modules } from './endpoints/sdk/modules.js';
 import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
 import type { FetchOptions, JSONValue, QueryValue } from './types.js';
 import { VERSION } from './version.js';
@@ -148,6 +149,11 @@ export class Make {
          * Apps allow you to create and manage custom applications for Make
          */
         apps: Apps;
+        /**
+         * Access to Module-related endpoints
+         * Modules are the building blocks of apps
+         */
+        modules: Modules;
     };
 
     /**
@@ -182,6 +188,7 @@ export class Make {
         this.enums = new Enums(this.fetch.bind(this));
         this.sdk = {
             apps: new Apps(this.fetch.bind(this)),
+            modules: new Modules(this.fetch.bind(this)),
         };
     }
 
