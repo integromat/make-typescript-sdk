@@ -97,6 +97,13 @@ export type {
     SetModuleSectionBody,
 } from './endpoints/sdk/modules.js';
 export type {
+    SDKFunction,
+    SDKFunctions,
+    CreateSDKFunctionBody,
+    SDKFunctionChange,
+    SDKFunctionTestResult,
+} from './endpoints/sdk/functions.js';
+export type {
     RPC,
     RPCs,
     RPCSection,

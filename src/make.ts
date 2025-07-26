@@ -15,6 +15,7 @@ import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
 import { Apps } from './endpoints/sdk/apps.js';
 import { Modules } from './endpoints/sdk/modules.js';
+import { SDKFunctions } from './endpoints/sdk/functions.js';
 import { RPCs } from './endpoints/sdk/rpcs.js';
 import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
 import type { FetchOptions, JSONValue, QueryValue } from './types.js';
@@ -156,6 +157,11 @@ export class Make {
          */
         readonly modules: Modules;
         /**
+         * Access to Function-related endpoints
+         * Functions are reusable code blocks within apps
+         */
+        readonly functions: SDKFunctions;
+        /**
          * Access to RPC-related endpoints
          * RPCs are the building blocks of apps
          */
@@ -195,6 +201,7 @@ export class Make {
         this.sdk = {
             apps: new Apps(this.fetch.bind(this)),
             modules: new Modules(this.fetch.bind(this)),
+            functions: new SDKFunctions(this.fetch.bind(this)),
             rpcs: new RPCs(this.fetch.bind(this)),
         };
     }
