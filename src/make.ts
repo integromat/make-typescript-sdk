@@ -15,6 +15,7 @@ import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
 import { SDKModules } from './endpoints/sdk/modules.js';
+import { SDKConnections } from './endpoints/sdk/connections.js';
 import { SDKFunctions } from './endpoints/sdk/functions.js';
 import { SDKRPCs } from './endpoints/sdk/rpcs.js';
 import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
@@ -157,6 +158,11 @@ export class Make {
          */
         readonly modules: SDKModules;
         /**
+         * Access to Connection-related endpoints
+         * Connections manage authentication and authorization for apps
+         */
+        readonly connections: SDKConnections;
+        /**
          * Access to Function-related endpoints
          * Functions are reusable code blocks within apps
          */
@@ -201,6 +207,7 @@ export class Make {
         this.sdk = {
             apps: new SDKApps(this.fetch.bind(this)),
             modules: new SDKModules(this.fetch.bind(this)),
+            connections: new SDKConnections(this.fetch.bind(this)),
             functions: new SDKFunctions(this.fetch.bind(this)),
             rpcs: new SDKRPCs(this.fetch.bind(this)),
         };

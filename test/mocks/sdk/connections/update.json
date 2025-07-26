@@ -1,0 +1,7 @@
+{
+    "appConnection": {
+        "name": "charlie-1",
+        "label": "Main Connection",
+        "type": "basic"
+    }
+}

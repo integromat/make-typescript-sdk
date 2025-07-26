@@ -104,6 +104,17 @@ export type {
     SetSDKModuleSectionBody,
 } from './endpoints/sdk/modules.js';
 export type {
+    SDKConnection,
+    SDKConnections,
+    SDKConnectionSection,
+    SDKConnectionSectionType,
+    SDKConnectionCommon,
+    CreateSDKConnectionBody,
+    UpdateSDKConnectionBody,
+    SetSDKConnectionSectionBody,
+    SetSDKConnectionCommonBody,
+} from './endpoints/sdk/connections.js';
+export type {
     SDKFunction,
     SDKFunctions,
     CreateSDKFunctionBody,
