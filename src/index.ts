@@ -96,5 +96,15 @@ export type {
     UpdateModuleBody,
     SetModuleSectionBody,
 } from './endpoints/sdk/modules.js';
+export type {
+    RPC,
+    RPCs,
+    RPCSection,
+    RPCSectionType,
+    CreateRPCBody,
+    UpdateRPCBody,
+    TestRPCBody,
+    SetRPCSectionBody,
+} from './endpoints/sdk/rpcs.js';
 export type { Team, Teams, CreateTeamBody, ListTeamsOptions, GetTeamOptions } from './endpoints/teams.js';
 export type { User, Users } from './endpoints/users.js';

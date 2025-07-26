@@ -1,0 +1,8 @@
+{
+    "appRpc": {
+        "name": "listUsers",
+        "label": "List Users",
+        "connection": null,
+        "altConnection": null
+    }
+}

@@ -15,6 +15,7 @@ import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
 import { Apps } from './endpoints/sdk/apps.js';
 import { Modules } from './endpoints/sdk/modules.js';
+import { RPCs } from './endpoints/sdk/rpcs.js';
 import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
 import type { FetchOptions, JSONValue, QueryValue } from './types.js';
 import { VERSION } from './version.js';
@@ -148,12 +149,17 @@ export class Make {
          * Access to App-related endpoints
          * Apps allow you to create and manage custom applications for Make
          */
-        apps: Apps;
+        readonly apps: Apps;
         /**
          * Access to Module-related endpoints
          * Modules are the building blocks of apps
          */
-        modules: Modules;
+        readonly modules: Modules;
+        /**
+         * Access to RPC-related endpoints
+         * RPCs are the building blocks of apps
+         */
+        readonly rpcs: RPCs;
     };
 
     /**
@@ -189,6 +195,7 @@ export class Make {
         this.sdk = {
             apps: new Apps(this.fetch.bind(this)),
             modules: new Modules(this.fetch.bind(this)),
+            rpcs: new RPCs(this.fetch.bind(this)),
         };
     }
 

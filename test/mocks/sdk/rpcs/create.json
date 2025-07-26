@@ -1,0 +1,6 @@
+{
+    "appRpc": {
+        "name": "listUsers",
+        "label": "List Users"
+    }
+}
