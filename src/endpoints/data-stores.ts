@@ -88,7 +88,11 @@ type GetDataStoreResponse<C extends keyof DataStore = never> = {
  */
 export type UpdateDataStoreBody = {
     /** New name for the data store */
-    name: string;
+    name?: string;
+    /** Optional ID of a data structure that defines the record format */
+    datastructureId?: number;
+    /** Maximum size limit for the data store in megabytes */
+    maxSizeMB?: number;
 };
 
 /**
