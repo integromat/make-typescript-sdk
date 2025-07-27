@@ -19,7 +19,7 @@ describe('Integration Tests', () => {
     it('Should create a scenario', async () => {
         const scenario = await make.scenarios.create({
             teamId: MAKE_TEAM,
-            scheduling: '{"type":"immediately"}',
+            scheduling: '{"type":"on-demand"}',
             blueprint: '{"flow":[],"metadata":{},"name":"Test Scenario"}',
         });
 
@@ -47,6 +47,37 @@ describe('Integration Tests', () => {
         expect(scenario).toBeDefined();
         expect(scenario.id).toBe(scenarioId);
         expect(scenario.name).toBe(updatedName);
+    });
+
+    it('Should update scenario interface', async () => {
+        const interfaceBody = {
+            interface: {
+                input: [
+                    {
+                        name: 'testInput',
+                        type: 'text',
+                        default: 'test value',
+                        required: true,
+                        multiline: false,
+                    },
+                ],
+                output: [],
+            },
+        };
+
+        const updatedInterface = await make.scenarios.setInterface(scenarioId, interfaceBody);
+
+        expect(updatedInterface).toBeDefined();
+        expect(updatedInterface.input).toBeDefined();
+        expect(Array.isArray(updatedInterface.input)).toBe(true);
+        expect(updatedInterface.input).toHaveLength(1);
+        expect(updatedInterface.input![0]).toMatchObject({
+            name: 'testInput',
+            type: 'text',
+            default: 'test value',
+            required: true,
+            multiline: false,
+        });
     });
 
     it('Should delete a scenario', async () => {
