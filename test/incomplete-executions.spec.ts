@@ -14,9 +14,9 @@ describe('Endpoints: IncompleteExecutions', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
     it('Should list incomplete executions', async () => {
-        mockFetch('GET https://make.local/api/v2/dlqs', listMock);
+        mockFetch('GET https://make.local/api/v2/dlqs?scenarioId=1', listMock);
 
-        const result = await make.incompleteExecutions.list();
+        const result = await make.incompleteExecutions.list(1);
 
         expect(result).toStrictEqual(listMock.dlqs);
     });

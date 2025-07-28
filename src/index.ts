@@ -83,6 +83,7 @@ export type {
     CreateScenarioOptions,
     UpdateScenarioBody,
     UpdateScenarioOptions,
+    UpdateScenarioInterfaceBody,
     RunScenarioResponse,
     Scheduling,
 } from './endpoints/scenarios.js';

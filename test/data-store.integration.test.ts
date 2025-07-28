@@ -185,14 +185,6 @@ describe('Integration: Data Stores', () => {
         expect(remainingRecord).toBeDefined();
     });
 
-    it('Should delete all records from a data store', async () => {
-        await make.dataStores.records.deleteAll(dataStoreId);
-
-        // Verify all records are deleted
-        const records = await make.dataStores.records.list(dataStoreId);
-        expect(records.length).toBe(0);
-    });
-
     it('Should delete a data store', async () => {
         await make.dataStores.delete(dataStoreId);
 

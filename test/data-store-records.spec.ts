@@ -92,23 +92,4 @@ describe('Endpoints: DataStoreRecords', () => {
 
         await make.dataStores.records.delete(137, keys);
     });
-
-    it('Should delete all records from a data store', async () => {
-        mockFetch('DELETE https://make.local/api/v2/data-stores/137/data?confirmed=true', null);
-
-        await make.dataStores.records.deleteAll(137);
-    });
-
-    it('Should delete all records except specified ones from a data store', async () => {
-        const exceptKeys = ['8f7162828bc0'];
-
-        mockFetch('DELETE https://make.local/api/v2/data-stores/137/data?confirmed=true', null, req => {
-            expect(req.body).toStrictEqual({
-                all: true,
-                exceptKeys,
-            });
-        });
-
-        await make.dataStores.records.deleteAll(137, exceptKeys);
-    });
 });

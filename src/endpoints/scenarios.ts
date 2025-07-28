@@ -140,6 +140,22 @@ type GetScenarioInterfaceResponse = {
 };
 
 /**
+ * Parameters for updating a scenario interface.
+ */
+export type UpdateScenarioInterfaceBody = {
+    /** The interface definition with input and output specifications */
+    interface: ScenarioInteface;
+};
+
+/**
+ * Response format for updating a scenario interface.
+ */
+type UpdateScenarioInterfaceResponse = {
+    /** The updated scenario interface definition */
+    interface: ScenarioInteface;
+};
+
+/**
  * Response format for running a scenario.
  */
 export type RunScenarioResponse = {
@@ -216,7 +232,7 @@ export type UpdateScenarioBody = {
 export type UpdateScenarioOptions<C extends keyof Scenario = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[];
-    /** Whether to confirm the update even if there are warnings */
+    /** Confirmation in case the scenario uses apps that are not yet installed in the organization */
     confirmed?: boolean;
 };
 
@@ -441,8 +457,33 @@ export class Scenarios {
      * Get the interface for a scenario.
      * @param scenarioId The scenario ID to get the interface for
      * @returns Promise with the scenario interface
+     * @deprecated Use getInterface instead
      */
     async ['interface'](scenarioId: number): Promise<ScenarioInteface> {
+        return await this.getInterface(scenarioId);
+    }
+
+    /**
+     * Get the interface for a scenario.
+     * @param scenarioId The scenario ID to get the interface for
+     * @returns Promise with the scenario interface
+     */
+    async getInterface(scenarioId: number): Promise<ScenarioInteface> {
         return (await this.#fetch<GetScenarioInterfaceResponse>(`/scenarios/${scenarioId}/interface`)).interface;
+    }
+
+    /**
+     * Update a scenario interface.
+     * @param scenarioId The scenario ID to update the interface for
+     * @param body The new interface definition
+     * @returns Promise with the updated scenario interface
+     */
+    async setInterface(scenarioId: number, body: UpdateScenarioInterfaceBody): Promise<ScenarioInteface> {
+        return (
+            await this.#fetch<UpdateScenarioInterfaceResponse>(`/scenarios/${scenarioId}/interface`, {
+                method: 'PATCH',
+                body: body,
+            })
+        ).interface;
     }
 }

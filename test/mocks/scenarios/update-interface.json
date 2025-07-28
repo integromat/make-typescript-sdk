@@ -1,0 +1,19 @@
+{
+    "interface": {
+        "input": [
+            {
+                "name": "userName",
+                "type": "text",
+                "default": "John Doe",
+                "required": true,
+                "multiline": false
+            },
+            {
+                "name": "employeeID",
+                "type": "number",
+                "required": false
+            }
+        ],
+        "output": null
+    }
+}

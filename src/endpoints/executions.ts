@@ -36,6 +36,12 @@ export type Execution = {
 export type ListExecutionsOptions = {
     /** Pagination options */
     pg?: Partial<Pagination<Execution>>;
+    /** Filter by execution status */
+    status?: number;
+    /** Filter by start timestamp */
+    from?: number;
+    /** Filter by end timestamp */
+    to?: number;
 };
 
 /**

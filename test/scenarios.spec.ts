@@ -4,6 +4,7 @@ import { mockFetch } from './test.utils.js';
 
 import * as scenariosMock from './mocks/scenarios/list.json';
 import * as scenarioInterfaceMock from './mocks/scenarios/interface.json';
+import * as scenarioUpdateInterfaceMock from './mocks/scenarios/update-interface.json';
 import * as scenarioRunMock from './mocks/scenarios/run.json';
 import * as scenarioActivateMock from './mocks/scenarios/activate.json';
 import * as scenarioCreateMock from './mocks/scenarios/create.json';
@@ -45,6 +46,36 @@ describe('Endpoints: Scenarios', () => {
 
             const result = await make.scenarios['interface'](18);
             expect(result).toStrictEqual(scenarioInterfaceMock.interface);
+        });
+
+        it('Should update scenario interface', async () => {
+            const body = {
+                interface: {
+                    input: [
+                        {
+                            name: 'userName',
+                            type: 'text',
+                            default: 'John Doe',
+                            required: true,
+                            multiline: false,
+                        },
+                        {
+                            name: 'employeeID',
+                            type: 'number',
+                            required: false,
+                        },
+                    ],
+                    output: null,
+                },
+            };
+
+            mockFetch('PATCH https://make.local/api/v2/scenarios/18/interface', scenarioUpdateInterfaceMock, req => {
+                expect(req.body).toStrictEqual(body);
+                expect(req.headers.get('content-type')).toBe('application/json');
+            });
+
+            const result = await make.scenarios.setInterface(18, body);
+            expect(result).toStrictEqual(scenarioUpdateInterfaceMock.interface);
         });
 
         it('Should run scenario', async () => {
