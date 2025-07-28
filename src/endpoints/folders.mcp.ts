@@ -63,6 +63,8 @@ export const tools = [
         title: 'Delete folder',
         description: 'Delete a folder',
         category: 'folders',
+        scope: 'scenarios:write',
+        identifier: 'folderId',
         inputSchema: {
             type: 'object',
             properties: {
