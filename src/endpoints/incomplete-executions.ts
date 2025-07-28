@@ -130,11 +130,18 @@ export class IncompleteExecutions {
     }
 
     /**
-     * List all incomplete executions.
+     * List all incomplete executions for a scenario.
+     * @param scenarioId The scenario ID to list incomplete executions for
      * @returns Promise with the list of incomplete executions
      */
-    async list(): Promise<IncompleteExecution[]> {
-        return (await this.#fetch<ListIncompleteExecutionsResponse>('/dlqs')).dlqs;
+    async list(scenarioId: number): Promise<IncompleteExecution[]> {
+        return (
+            await this.#fetch<ListIncompleteExecutionsResponse>('/dlqs', {
+                query: {
+                    scenarioId,
+                },
+            })
+        ).dlqs;
     }
 
     /**

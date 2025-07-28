@@ -315,10 +315,10 @@ export class Connections {
     }
 
     /**
-     * Update the OAuth scopes for a connection.
-     * @param connectionId The connection ID to update scopes for
-     * @param scope Array of scope identifiers to set
-     * @returns Promise with a boolean indicating if the connection is now scoped
+     * Verify if given OAuth scopes are set for a given connection.
+     * @param connectionId The connection ID to validate scopes for
+     * @param scope Array of OAuth scopes to validate
+     * @returns Promise with a boolean indicating if the connection has the given scopes
      */
     async scoped(connectionId: number, scope: string[]): Promise<boolean> {
         return (

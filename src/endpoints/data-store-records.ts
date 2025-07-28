@@ -168,23 +168,4 @@ export class DataStoreRecords {
             },
         });
     }
-
-    /**
-     * Delete all records from a data store, with optional exceptions.
-     * @param dataStoreId The data store ID to clear
-     * @param exceptKeys Optional array of record keys to preserve
-     * @returns Promise that resolves when the records are deleted
-     */
-    async deleteAll(dataStoreId: number, exceptKeys?: string[]): Promise<void> {
-        await this.#fetch(`/data-stores/${dataStoreId}/data`, {
-            method: 'DELETE',
-            query: {
-                confirmed: true,
-            },
-            body: {
-                all: true,
-                exceptKeys,
-            },
-        });
-    }
 }

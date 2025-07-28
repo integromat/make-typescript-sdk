@@ -1,6 +1,6 @@
 {
     "name": "@makehq/sdk",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "description": "Make TypeScript SDK",
     "license": "MIT",
     "author": "Make",
@@ -18,7 +18,8 @@
         "test:integration": "jest --coverage --coverageReporters=\"text\" --runInBand --forceExit --verbose false --testMatch \"**/test/**/*.integration.test.ts\"",
         "publish:jsr": "npx jsr publish --allow-dirty",
         "lint": "tsc && eslint --quiet .",
-        "format": "npx prettier . --write"
+        "format": "npx prettier . --write",
+        "inspector": "npx @modelcontextprotocol/inspector scripts/run-mcp-server.mjs"
     },
     "exports": {
         ".": {
@@ -29,6 +30,16 @@
             "require": {
                 "types": "./dist/index.d.cts",
                 "default": "./dist/index.cjs"
+            }
+        },
+        "./mcp": {
+            "import": {
+                "types": "./dist/mcp.d.ts",
+                "default": "./dist/mcp.js"
+            },
+            "require": {
+                "types": "./dist/mcp.d.cts",
+                "default": "./dist/mcp.cjs"
             }
         }
     },
@@ -41,6 +52,7 @@
     "devDependencies": {
         "@eslint/js": "^9.22.0",
         "@jest/globals": "^29.7.0",
+        "@modelcontextprotocol/sdk": "^1.17.0",
         "@types/jest": "^29.5.14",
         "@types/node": "^22.13.10",
         "dotenv": "^16.4.7",

@@ -34,12 +34,140 @@ const scenarios = await make.scenarios.list(/* Team ID */);
 const dataStore = await make.dataStores.get(/* DataStore ID */);
 ```
 
+## Platform Endpoints
+
+- **Enums** - Standardized lists (countries, regions, timezones)
+- **Blueprit** - Blueprint management
+- **Connections** - External service connections and authentication
+- **Data Stores** - Data storage within Make
+- **Data Store Records** - Individual records within data stores
+- **Data Structures** - Data schemas and formats
+- **Executions** - Scenario execution history
+- **Folders** - Scenario categorization
+- **Functions** - Custom JavaScript functions for scenarios
+- **Hooks** - Webhooks and mailhooks for external integrations
+- **Incomplete Executions** - Failed or incomplete scenario runs
+- **Keys** - API keys and secrets
+- **Organizations** - Top-level account and billing management
+- **Scenarios** - Scenario management
+- **Teams** - Team management and collaboration
+- **Users** - Current user information and authentication
+
+## Custom Apps Development Endpoints
+
+- **SDK Apps** - Create and manage custom Make applications
+- **SDK Modules** - Building blocks for custom apps
+- **SDK Connections** - Authentication for custom apps
+- **SDK Functions** - Reusable code blocks within custom apps
+- **SDK RPCs** - Remote procedure calls for custom apps
+- **SDK Webhooks** - Webhook handling for custom apps
+
 ## Features
 
 - Full TypeScript support with type definitions
 - Support for majority of Make API endpoints
 - Built-in error handling and response typing
 - Comprehensive test coverage
+- Model Context Protocol (MCP) support
+
+## MCP Server Support
+
+This SDK includes full support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), allowing AI agents to interact with the Make API through standardized tools. All SDK endpoints are automatically exposed as MCP tools.
+
+### Integrating with MCP Server
+
+```ts
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { MakeMCPTools } from '@makehq/sdk/mcp';
+
+server.setRequestHandler(ListToolsRequestSchema, async () => {
+    return {
+        tools: MakeMCPTools.map(tool => {
+            return {
+                name: tool.name,
+                title: tool.title,
+                description: tool.description,
+                inputSchema: tool.inputSchema,
+            };
+        }),
+    };
+});
+
+server.setRequestHandler(CallToolRequestSchema, async request => {
+    const tool = MakeMCPTools.find(tool => tool.name === request.params.name);
+    if (!tool) {
+        throw new Error(`Unknown tool: ${request.params.name}`);
+    }
+    return {
+        content: [
+            {
+                type: 'text',
+                text: JSON.stringify(await tool.execute(make, request.params.arguments)),
+            },
+        ],
+    };
+});
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
+```
+
+### Tool Structure
+
+Each tool is described as demonstrated in the following example:
+
+```ts
+{
+    name: 'scenarios_list',
+    title: 'List scenarios',
+    description: 'List all scenarios for a team',
+    category: 'scenarios',
+    scope: 'scenarios:read',
+    inputSchema: {
+        type: 'object',
+        properties: {
+            teamId: { type: 'number', description: 'The team ID to filter scenarios by' },
+        },
+        required: ['teamId'],
+    },
+    execute: async (make: Make, args: { teamId: number }) => {
+        return await make.scenarios.list(args.teamId);
+    },
+}
+```
+
+### Tool Categories
+
+All tools are organized into the following categories:
+
+- `blueprints`
+- `connections`
+- `data-stores`
+- `data-store-records`
+- `data-structures`
+- `enums`
+- `executions`
+- `folders`
+- `functions`
+- `hooks`
+- `incomplete-executions`
+- `keys`
+- `organizations`
+- `scenarios`
+- `teams`
+- `users`
+- `sdk.apps`
+- `sdk.connections`
+- `sdk.functions`
+- `sdk.modules`
+- `sdk.rpcs`
+- `sdk.webhooks`
+
+### Tool Scopes
+
+You can learn more about scopes in [our documentation](https://developers.make.com/api-documentation/authentication/api-scopes-overview#standard-user-scopes-for-all-users-of-make-platforms).
 
 ## Project Structure
 
@@ -47,6 +175,8 @@ const dataStore = await make.dataStores.get(/* DataStore ID */);
 make-sdk/
 ├── src/                       # Source code
 │   ├── endpoints/             # API endpoint implementations
+│   │   ├── *.ts               # Endpoints
+│   │   └── *.mcp.ts           # MCP Tools
 │   ├── index.ts               # Main entry point
 │   ├── make.ts                # Core Make client
 │   ├── types.ts               # Common type definitions
