@@ -23,27 +23,9 @@ export const tools = [
         },
     },
     {
-        name: 'scenarios_list_in_organization',
-        title: 'List scenarios in organization',
-        description: 'List all scenarios for an organization',
-        category: 'scenarios',
-        scope: 'scenarios:read',
-        identifier: 'organizationId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                organizationId: { type: 'number', description: 'The organization ID to filter scenarios by' },
-            },
-            required: ['organizationId'],
-        },
-        execute: async (make: Make, args: { organizationId: number }) => {
-            return await make.scenarios.listInOrganization(args.organizationId);
-        },
-    },
-    {
         name: 'scenarios_get',
         title: 'Get scenario',
-        description: 'Get a scenario by ID',
+        description: 'Get a scenario and its blueprint by ID',
         category: 'scenarios',
         scope: 'scenarios:read',
         identifier: 'scenarioId',
@@ -55,7 +37,13 @@ export const tools = [
             required: ['scenarioId'],
         },
         execute: async (make: Make, args: { scenarioId: number }) => {
-            return await make.scenarios.get(args.scenarioId);
+            const scenario = await make.scenarios.get(args.scenarioId);
+            const blueprint = await make.blueprints.get(scenario.id);
+
+            return {
+                ...scenario,
+                blueprint,
+            };
         },
     },
     {
@@ -151,7 +139,8 @@ export const tools = [
             required: ['scenarioId'],
         },
         execute: async (make: Make, args: { scenarioId: number }) => {
-            return await make.scenarios.delete(args.scenarioId);
+            await make.scenarios.delete(args.scenarioId);
+            return `Scenario has been deleted.`;
         },
     },
     {
@@ -169,7 +158,9 @@ export const tools = [
             required: ['scenarioId'],
         },
         execute: async (make: Make, args: { scenarioId: number }) => {
-            return await make.scenarios.activate(args.scenarioId);
+            return (await make.scenarios.activate(args.scenarioId))
+                ? 'Scenario has been activated.'
+                : 'Scenario has not been activated.';
         },
     },
     {
@@ -187,7 +178,9 @@ export const tools = [
             required: ['scenarioId'],
         },
         execute: async (make: Make, args: { scenarioId: number }) => {
-            return await make.scenarios.deactivate(args.scenarioId);
+            return (await make.scenarios.deactivate(args.scenarioId))
+                ? 'Scenario has been deactivated.'
+                : 'Scenario has not been deactivated.';
         },
     },
     {

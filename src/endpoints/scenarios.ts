@@ -413,10 +413,12 @@ export class Scenarios {
      */
     async activate(scenarioId: number): Promise<boolean> {
         return (
-            await this.#fetch<ActivateScenarioResponse>(`/scenarios/${scenarioId}/start`, {
-                method: 'POST',
-            })
-        ).scenario.isActive;
+            (
+                await this.#fetch<ActivateScenarioResponse>(`/scenarios/${scenarioId}/start`, {
+                    method: 'POST',
+                })
+            ).scenario.isActive === true
+        );
     }
 
     /**
@@ -426,10 +428,12 @@ export class Scenarios {
      */
     async deactivate(scenarioId: number): Promise<boolean> {
         return (
-            await this.#fetch<DeactivateScenarioResponse>(`/scenarios/${scenarioId}/stop`, {
-                method: 'POST',
-            })
-        ).scenario.isActive;
+            (
+                await this.#fetch<DeactivateScenarioResponse>(`/scenarios/${scenarioId}/stop`, {
+                    method: 'POST',
+                })
+            ).scenario.isActive === false
+        );
     }
 
     /**

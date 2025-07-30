@@ -74,45 +74,36 @@ const dataStore = await make.dataStores.get(/* DataStore ID */);
 
 This SDK includes full support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), allowing AI agents to interact with the Make API through standardized tools. All SDK endpoints are automatically exposed as MCP tools.
 
-### Integrating with MCP Server
+### Integrating with MCP Server (experimental)
 
 ```ts
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { Make } from '@makehq/sdk';
 import { MakeMCPTools } from '@makehq/sdk/mcp';
 
-server.setRequestHandler(ListToolsRequestSchema, async () => {
+// Initialize the Make client
+const make = new Make('your-api-key', 'eu2.make.com');
+
+// List tools
+const tools = MakeMCPTools.map(tool => {
     return {
-        tools: MakeMCPTools.map(tool => {
-            return {
-                name: tool.name,
-                title: tool.title,
-                description: tool.description,
-                inputSchema: tool.inputSchema,
-            };
-        }),
+        name: tool.name,
+        title: tool.title,
+        description: tool.description,
+        inputSchema: tool.inputSchema,
     };
 });
 
-server.setRequestHandler(CallToolRequestSchema, async request => {
-    const tool = MakeMCPTools.find(tool => tool.name === request.params.name);
-    if (!tool) {
-        throw new Error(`Unknown tool: ${request.params.name}`);
-    }
-    return {
-        content: [
-            {
-                type: 'text',
-                text: JSON.stringify(await tool.execute(make, request.params.arguments)),
-            },
-        ],
-    };
-});
+// Execute tool
+const tool = MakeMCPTools.find(tool => tool.name === 'scenarios_list');
 
-const transport = new StdioServerTransport();
-await server.connect(transport);
+try {
+    await tool.execute(make, { teamId: 1 });
+} catch (error) {
+    // Handle error
+}
 ```
+
+See full example in the `scripts/run-mcp-server.mjs` file.
 
 ### Tool Structure
 
@@ -142,7 +133,6 @@ Each tool is described as demonstrated in the following example:
 
 All tools are organized into the following categories:
 
-- `blueprints`
 - `connections`
 - `data-stores`
 - `data-store-records`

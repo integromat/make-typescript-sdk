@@ -80,7 +80,8 @@ export const tools = [
         },
         execute: async (make: Make, args: { keyId: number; name?: string; parameters?: Record<string, JSONValue> }) => {
             const { keyId, ...body } = args;
-            return await make.keys.update(keyId, body);
+            await make.keys.update(keyId, body);
+            return `Key has been updated.`;
         },
     },
     {
@@ -98,7 +99,8 @@ export const tools = [
             required: ['keyId'],
         },
         execute: async (make: Make, args: { keyId: number }) => {
-            return await make.keys.delete(args.keyId);
+            await make.keys.delete(args.keyId);
+            return `Key has been deleted.`;
         },
     },
 ];

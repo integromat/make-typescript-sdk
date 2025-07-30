@@ -78,7 +78,8 @@ export const tools = [
             required: ['appName', 'appVersion', 'functionName'],
         },
         execute: async (make: Make, args: { appName: string; appVersion: number; functionName: string }) => {
-            return await make.sdk.functions.delete(args.appName, args.appVersion, args.functionName);
+            await make.sdk.functions.delete(args.appName, args.appVersion, args.functionName);
+            return `Function has been deleted.`;
         },
     },
     {
@@ -122,7 +123,8 @@ export const tools = [
             make: Make,
             args: { appName: string; appVersion: number; functionName: string; code: string },
         ) => {
-            return await make.sdk.functions.setCode(args.appName, args.appVersion, args.functionName, args.code);
+            await make.sdk.functions.setCode(args.appName, args.appVersion, args.functionName, args.code);
+            return `Code has been set.`;
         },
     },
     {
@@ -166,7 +168,8 @@ export const tools = [
             make: Make,
             args: { appName: string; appVersion: number; functionName: string; test: string },
         ) => {
-            return await make.sdk.functions.setTest(args.appName, args.appVersion, args.functionName, args.test);
+            await make.sdk.functions.setTest(args.appName, args.appVersion, args.functionName, args.test);
+            return `Test has been set.`;
         },
     },
 ];

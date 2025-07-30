@@ -3,7 +3,7 @@ import type { JSONValue } from '../types.js';
 
 export const tools = [
     {
-        name: 'data_store_records_list',
+        name: 'data-store-records_list',
         title: 'List data store records',
         description: 'List all records in a data store',
         category: 'data-store-records',
@@ -22,7 +22,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_store_records_create',
+        name: 'data-store-records_create',
         title: 'Create data store record',
         description: 'Create a new record in a data store',
         category: 'data-store-records',
@@ -46,7 +46,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_store_records_update',
+        name: 'data-store-records_update',
         title: 'Update data store record',
         description: 'Update an existing record in a data store',
         category: 'data-store-records',
@@ -66,7 +66,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_store_records_replace',
+        name: 'data-store-records_replace',
         title: 'Replace data store record',
         description: "Replace an existing record in a data store or create if it doesn't exist",
         category: 'data-store-records',
@@ -86,7 +86,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_store_records_delete',
+        name: 'data-store-records_delete',
         title: 'Delete data store records',
         description: 'Delete specific records from a data store by keys',
         category: 'data-store-records',
@@ -101,7 +101,8 @@ export const tools = [
             required: ['dataStoreId', 'keys'],
         },
         execute: async (make: Make, args: { dataStoreId: number; keys: string[] }) => {
-            return await make.dataStores.records.delete(args.dataStoreId, args.keys);
+            await make.dataStores.records.delete(args.dataStoreId, args.keys);
+            return `Records have been deleted.`;
         },
     },
 ];

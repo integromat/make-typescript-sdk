@@ -114,7 +114,8 @@ export const tools = [
             required: ['appName', 'appVersion', 'rpcName'],
         },
         execute: async (make: Make, args: { appName: string; appVersion: number; rpcName: string }) => {
-            return await make.sdk.rpcs.delete(args.appName, args.appVersion, args.rpcName);
+            await make.sdk.rpcs.delete(args.appName, args.appVersion, args.rpcName);
+            return `RPC has been deleted.`;
         },
     },
     {
@@ -230,7 +231,8 @@ export const tools = [
                 body: Record<string, JSONValue> | Array<Record<string, JSONValue>>;
             },
         ) => {
-            return await make.sdk.rpcs.setSection(args.appName, args.appVersion, args.rpcName, args.section, args.body);
+            await make.sdk.rpcs.setSection(args.appName, args.appVersion, args.rpcName, args.section, args.body);
+            return `Section '${args.section}' has been set.`;
         },
     },
 ];

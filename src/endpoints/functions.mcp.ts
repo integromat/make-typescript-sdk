@@ -102,7 +102,8 @@ export const tools = [
             required: ['functionId'],
         },
         execute: async (make: Make, args: { functionId: number }) => {
-            return await make.functions.delete(args.functionId);
+            await make.functions.delete(args.functionId);
+            return `Function has been deleted.`;
         },
     },
     {
@@ -121,26 +122,8 @@ export const tools = [
             required: ['teamId', 'code'],
         },
         execute: async (make: Make, args: { teamId: number; code: string }) => {
-            return await make.functions.check(args.teamId, args.code);
-        },
-    },
-    {
-        name: 'functions_history',
-        title: 'Get function history',
-        description: 'Get the version history of a function',
-        category: 'functions',
-        scope: 'functions:read',
-        identifier: 'functionId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                functionId: { type: 'number', description: 'The function ID to get history for' },
-                teamId: { type: 'number', description: 'The team ID the function belongs to' },
-            },
-            required: ['functionId', 'teamId'],
-        },
-        execute: async (make: Make, args: { functionId: number; teamId: number }) => {
-            return await make.functions.history(args.teamId, args.functionId);
+            const result = await make.functions.check(args.teamId, args.code);
+            return result.success ? 'Function code is valid.' : `Function code is not valid: ${result.error}`;
         },
     },
 ];

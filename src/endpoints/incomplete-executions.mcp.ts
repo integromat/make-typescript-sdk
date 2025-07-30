@@ -2,7 +2,7 @@ import type { Make } from '../make.js';
 
 export const tools = [
     {
-        name: 'incomplete_executions_list',
+        name: 'incomplete-executions_list',
         title: 'List incomplete executions',
         description: 'List all incomplete executions',
         category: 'incomplete-executions',
@@ -20,7 +20,7 @@ export const tools = [
         },
     },
     {
-        name: 'incomplete_executions_get',
+        name: 'incomplete-executions_get',
         title: 'Get incomplete execution',
         description: 'Get details of a specific incomplete execution',
         category: 'incomplete-executions',

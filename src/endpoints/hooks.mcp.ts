@@ -4,8 +4,8 @@ import type { JSONValue } from '../types.js';
 export const tools = [
     {
         name: 'hooks_list',
-        title: 'List hooks',
-        description: 'List webhooks for a specific team',
+        title: 'List webhooks/mailhooks',
+        description: 'List webhooks/mailhooks for a specific team',
         category: 'hooks',
         scope: 'hooks:read',
         identifier: 'teamId',
@@ -22,8 +22,8 @@ export const tools = [
     },
     {
         name: 'hooks_get',
-        title: 'Get hook',
-        description: 'Get details of a specific hook',
+        title: 'Get webhook/mailhook',
+        description: 'Get details of a specific webhook/mailhook',
         category: 'hooks',
         scope: 'hooks:read',
         identifier: 'hookId',
@@ -40,8 +40,8 @@ export const tools = [
     },
     {
         name: 'hooks_create',
-        title: 'Create hook',
-        description: 'Create a new webhook',
+        title: 'Create webhook/mailhook',
+        description: 'Create a new webhook/mailhook',
         category: 'hooks',
         scope: 'hooks:write',
         identifier: 'teamId',
@@ -72,8 +72,8 @@ export const tools = [
     },
     {
         name: 'hooks_update',
-        title: 'Update hook',
-        description: 'Update an existing webhook',
+        title: 'Update webhook/mailhook',
+        description: 'Update an existing webhook/mailhook',
         category: 'hooks',
         scope: 'hooks:write',
         identifier: 'hookId',
@@ -86,13 +86,14 @@ export const tools = [
             required: ['hookId', 'data'],
         },
         execute: async (make: Make, args: { hookId: number; data: Record<string, JSONValue> }) => {
-            return await make.hooks.update(args.hookId, { data: args.data });
+            await make.hooks.update(args.hookId, { data: args.data });
+            return `Hook has been updated.`;
         },
     },
     {
         name: 'hooks_delete',
-        title: 'Delete hook',
-        description: 'Delete a webhook',
+        title: 'Delete webhook/mailhook',
+        description: 'Delete a webhook/mailhook',
         category: 'hooks',
         scope: 'hooks:write',
         identifier: 'hookId',
@@ -104,97 +105,8 @@ export const tools = [
             required: ['hookId'],
         },
         execute: async (make: Make, args: { hookId: number }) => {
-            return await make.hooks.delete(args.hookId);
-        },
-    },
-    {
-        name: 'hooks_enable',
-        title: 'Enable hook',
-        description: 'Enable a webhook',
-        category: 'hooks',
-        scope: 'hooks:write',
-        identifier: 'hookId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                hookId: { type: 'number', description: 'The hook ID to enable' },
-            },
-            required: ['hookId'],
-        },
-        execute: async (make: Make, args: { hookId: number }) => {
-            return await make.hooks.enable(args.hookId);
-        },
-    },
-    {
-        name: 'hooks_disable',
-        title: 'Disable hook',
-        description: 'Disable a webhook',
-        category: 'hooks',
-        scope: 'hooks:write',
-        identifier: 'hookId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                hookId: { type: 'number', description: 'The hook ID to disable' },
-            },
-            required: ['hookId'],
-        },
-        execute: async (make: Make, args: { hookId: number }) => {
-            return await make.hooks.disable(args.hookId);
-        },
-    },
-    {
-        name: 'hooks_ping',
-        title: 'Ping hook',
-        description: 'Send a test ping to a webhook',
-        category: 'hooks',
-        scope: 'hooks:read',
-        identifier: 'hookId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                hookId: { type: 'number', description: 'The hook ID to ping' },
-            },
-            required: ['hookId'],
-        },
-        execute: async (make: Make, args: { hookId: number }) => {
-            return await make.hooks.ping(args.hookId);
-        },
-    },
-    {
-        name: 'hooks_learn_start',
-        title: 'Start hook learning',
-        description: 'Start learning mode for a webhook',
-        category: 'hooks',
-        scope: 'hooks:write',
-        identifier: 'hookId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                hookId: { type: 'number', description: 'The hook ID to start learning for' },
-            },
-            required: ['hookId'],
-        },
-        execute: async (make: Make, args: { hookId: number }) => {
-            return await make.hooks.learnStart(args.hookId);
-        },
-    },
-    {
-        name: 'hooks_learn_stop',
-        title: 'Stop hook learning',
-        description: 'Stop learning mode for a webhook',
-        category: 'hooks',
-        scope: 'hooks:write',
-        identifier: 'hookId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                hookId: { type: 'number', description: 'The hook ID to stop learning for' },
-            },
-            required: ['hookId'],
-        },
-        execute: async (make: Make, args: { hookId: number }) => {
-            return await make.hooks.learnStop(args.hookId);
+            await make.hooks.delete(args.hookId);
+            return `Hook has been deleted.`;
         },
     },
 ];

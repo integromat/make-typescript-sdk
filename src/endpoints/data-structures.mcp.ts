@@ -3,7 +3,7 @@ import type { DataStructureField } from './data-structures.js';
 
 export const tools = [
     {
-        name: 'data_structures_list',
+        name: 'data-structures_list',
         title: 'List data structures',
         description: 'List data structures for a team',
         category: 'data-structures',
@@ -21,7 +21,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_structures_get',
+        name: 'data-structures_get',
         title: 'Get data structure',
         description: 'Get details of a specific data structure',
         category: 'data-structures',
@@ -39,7 +39,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_structures_create',
+        name: 'data-structures_create',
         title: 'Create data structure',
         description: 'Create a new data structure',
         category: 'data-structures',
@@ -76,7 +76,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_structures_update',
+        name: 'data-structures_update',
         title: 'Update data structure',
         description: 'Update an existing data structure',
         category: 'data-structures',
@@ -116,30 +116,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_structures_clone',
-        title: 'Clone data structure',
-        description: 'Clone an existing data structure',
-        category: 'data-structures',
-        scope: 'udts:write',
-        identifier: 'dataStructureId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                dataStructureId: { type: 'number', description: 'The data structure ID to clone' },
-                name: { type: 'string', description: 'Name for the cloned data structure' },
-                targetTeamId: { type: 'number', description: 'Target team ID for the cloned data structure' },
-            },
-            required: ['dataStructureId', 'name', 'targetTeamId'],
-        },
-        execute: async (make: Make, args: { dataStructureId: number; name: string; targetTeamId: number }) => {
-            return await make.dataStructures.clone(args.dataStructureId, {
-                name: args.name,
-                targetTeamId: args.targetTeamId,
-            });
-        },
-    },
-    {
-        name: 'data_structures_delete',
+        name: 'data-structures_delete',
         title: 'Delete data structure',
         description: 'Delete a data structure',
         category: 'data-structures',
@@ -153,7 +130,8 @@ export const tools = [
             required: ['dataStructureId'],
         },
         execute: async (make: Make, args: { dataStructureId: number }) => {
-            return await make.dataStructures.delete(args.dataStructureId);
+            await make.dataStructures.delete(args.dataStructureId);
+            return `Data structure has been deleted.`;
         },
     },
 ];

@@ -73,7 +73,8 @@ export const tools = [
             required: ['folderId'],
         },
         execute: async (make: Make, args: { folderId: number }) => {
-            return await make.folders.delete(args.folderId);
+            await make.folders.delete(args.folderId);
+            return `Folder has been deleted.`;
         },
     },
 ];

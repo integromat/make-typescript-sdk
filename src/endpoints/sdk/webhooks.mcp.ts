@@ -94,7 +94,8 @@ export const tools = [
             required: ['webhookName'],
         },
         execute: async (make: Make, args: { webhookName: string }) => {
-            return await make.sdk.webhooks.delete(args.webhookName);
+            await make.sdk.webhooks.delete(args.webhookName);
+            return `Webhook has been deleted.`;
         },
     },
     {
@@ -154,7 +155,8 @@ export const tools = [
                 body: Record<string, JSONValue> | Array<Record<string, JSONValue>>;
             },
         ) => {
-            return await make.sdk.webhooks.setSection(args.webhookName, args.section, args.body);
+            await make.sdk.webhooks.setSection(args.webhookName, args.section, args.body);
+            return `Section '${args.section}' has been set.`;
         },
     },
 ];

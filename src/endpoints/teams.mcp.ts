@@ -79,7 +79,8 @@ export const tools = [
             required: ['teamId'],
         },
         execute: async (make: Make, args: { teamId: number }) => {
-            return await make.teams.delete(args.teamId);
+            await make.teams.delete(args.teamId);
+            return `Team has been deleted.`;
         },
     },
 ];

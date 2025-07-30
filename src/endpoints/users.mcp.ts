@@ -15,18 +15,4 @@ export const tools = [
             return await make.users.me();
         },
     },
-    {
-        name: 'users_current_authorization',
-        title: 'Get current authorization',
-        description: 'Get authorization details for the current user',
-        category: 'users',
-        scope: undefined,
-        identifier: undefined,
-        inputSchema: {
-            type: 'object',
-        },
-        execute: async (make: Make) => {
-            return await make.users.currentAuthorization();
-        },
-    },
 ];
