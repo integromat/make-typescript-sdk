@@ -9,7 +9,6 @@ import { tools as ScenariosTools } from './endpoints/scenarios.mcp.js';
 import { tools as ConnectionsTools } from './endpoints/connections.mcp.js';
 import { tools as DataStoresTools } from './endpoints/data-stores.mcp.js';
 import { tools as DataStoreRecordsTools } from './endpoints/data-store-records.mcp.js';
-import { tools as BlueprintsTools } from './endpoints/blueprints.mcp.js';
 import { tools as TeamsTools } from './endpoints/teams.mcp.js';
 import { tools as OrganizationsTools } from './endpoints/organizations.mcp.js';
 import { tools as UsersTools } from './endpoints/users.mcp.js';
@@ -36,7 +35,6 @@ export const MakeMCPTools = [
     ...ConnectionsTools,
     ...DataStoresTools,
     ...DataStoreRecordsTools,
-    ...BlueprintsTools,
     ...TeamsTools,
     ...OrganizationsTools,
     ...UsersTools,

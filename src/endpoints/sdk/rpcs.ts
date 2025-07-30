@@ -147,9 +147,10 @@ export class SDKRPCs {
 
     /**
      * Test an RPC with provided data and schema
+     * @returns The test result
      */
-    async test(appName: string, appVersion: number, rpcName: string, body: TestSDKRPCBody): Promise<void> {
-        await this.#fetch(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`, {
+    async test(appName: string, appVersion: number, rpcName: string, body: TestSDKRPCBody): Promise<unknown> {
+        return await this.#fetch(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}`, {
             method: 'POST',
             body,
         });

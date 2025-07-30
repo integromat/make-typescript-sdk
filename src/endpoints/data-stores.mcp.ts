@@ -2,7 +2,7 @@ import type { Make } from '../make.js';
 
 export const tools = [
     {
-        name: 'data_stores_list',
+        name: 'data-stores_list',
         title: 'List data stores',
         description: 'List all data stores for a team',
         category: 'data-stores',
@@ -20,7 +20,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_stores_get',
+        name: 'data-stores_get',
         title: 'Get data store',
         description: 'Get data store details by ID',
         category: 'data-stores',
@@ -38,7 +38,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_stores_create',
+        name: 'data-stores_create',
         title: 'Create data store',
         description: 'Create a new data store',
         category: 'data-stores',
@@ -65,7 +65,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_stores_update',
+        name: 'data-stores_update',
         title: 'Update data store',
         description: 'Update a data store',
         category: 'data-stores',
@@ -90,7 +90,7 @@ export const tools = [
         },
     },
     {
-        name: 'data_stores_delete',
+        name: 'data-stores_delete',
         title: 'Delete data store',
         description: 'Delete a data store',
         category: 'data-stores',
@@ -104,7 +104,8 @@ export const tools = [
             required: ['dataStoreId'],
         },
         execute: async (make: Make, args: { dataStoreId: number }) => {
-            return await make.dataStores.delete(args.dataStoreId);
+            await make.dataStores.delete(args.dataStoreId);
+            return `Data store has been deleted.`;
         },
     },
 ];

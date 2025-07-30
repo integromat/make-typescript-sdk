@@ -102,7 +102,8 @@ export const tools = [
             required: ['organizationId'],
         },
         execute: async (make: Make, args: { organizationId: number }) => {
-            return await make.organizations.delete(args.organizationId);
+            await make.organizations.delete(args.organizationId);
+            return `Organization has been deleted.`;
         },
     },
 ];

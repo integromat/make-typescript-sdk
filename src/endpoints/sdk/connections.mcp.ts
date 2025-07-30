@@ -94,7 +94,8 @@ export const tools = [
             required: ['connectionName'],
         },
         execute: async (make: Make, args: { connectionName: string }) => {
-            return await make.sdk.connections.delete(args.connectionName);
+            await make.sdk.connections.delete(args.connectionName);
+            return `Connection has been deleted.`;
         },
     },
     {
@@ -154,7 +155,8 @@ export const tools = [
                 body: Record<string, JSONValue> | Array<Record<string, JSONValue>>;
             },
         ) => {
-            return await make.sdk.connections.setSection(args.connectionName, args.section, args.body);
+            await make.sdk.connections.setSection(args.connectionName, args.section, args.body);
+            return `Section '${args.section}' has been set.`;
         },
     },
     {
@@ -191,7 +193,8 @@ export const tools = [
             required: ['connectionName', 'common'],
         },
         execute: async (make: Make, args: { connectionName: string; common: Record<string, JSONValue> }) => {
-            return await make.sdk.connections.setCommon(args.connectionName, args.common);
+            await make.sdk.connections.setCommon(args.connectionName, args.common);
+            return `Common data has been set.`;
         },
     },
 ];

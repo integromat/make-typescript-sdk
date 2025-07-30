@@ -132,7 +132,8 @@ export const tools = [
             required: ['appName', 'appVersion', 'moduleName'],
         },
         execute: async (make: Make, args: { appName: string; appVersion: number; moduleName: string }) => {
-            return await make.sdk.modules.delete(args.appName, args.appVersion, args.moduleName);
+            await make.sdk.modules.delete(args.appName, args.appVersion, args.moduleName);
+            return `Module has been deleted.`;
         },
     },
     {
@@ -200,13 +201,8 @@ export const tools = [
                 body: Record<string, JSONValue> | Array<Record<string, JSONValue>>;
             },
         ) => {
-            return await make.sdk.modules.setSection(
-                args.appName,
-                args.appVersion,
-                args.moduleName,
-                args.section,
-                args.body,
-            );
+            await make.sdk.modules.setSection(args.appName, args.appVersion, args.moduleName, args.section, args.body);
+            return `Section '${args.section}' has been set.`;
         },
     },
 ];

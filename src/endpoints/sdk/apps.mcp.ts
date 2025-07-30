@@ -134,7 +134,8 @@ export const tools = [
             required: ['name', 'version'],
         },
         execute: async (make: Make, args: { name: string; version: number }) => {
-            return await make.sdk.apps.delete(args.name, args.version);
+            await make.sdk.apps.delete(args.name, args.version);
+            return `App has been deleted.`;
         },
     },
     {
@@ -194,7 +195,8 @@ export const tools = [
                 body: Record<string, JSONValue>;
             },
         ) => {
-            return await make.sdk.apps.setSection(args.name, args.version, args.section, args.body);
+            await make.sdk.apps.setSection(args.name, args.version, args.section, args.body);
+            return `Section '${args.section}' has been set.`;
         },
     },
     {
@@ -233,7 +235,8 @@ export const tools = [
             required: ['name', 'version', 'docs'],
         },
         execute: async (make: Make, args: { name: string; version: number; docs: string }) => {
-            return await make.sdk.apps.setDocs(args.name, args.version, args.docs);
+            await make.sdk.apps.setDocs(args.name, args.version, args.docs);
+            return `Documentation has been set.`;
         },
     },
     {
@@ -272,7 +275,8 @@ export const tools = [
             required: ['name', 'version', 'common'],
         },
         execute: async (make: Make, args: { name: string; version: number; common: Record<string, JSONValue> }) => {
-            return await make.sdk.apps.setCommon(args.name, args.version, args.common);
+            await make.sdk.apps.setCommon(args.name, args.version, args.common);
+            return `Common data has been set.`;
         },
     },
 ];

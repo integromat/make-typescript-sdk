@@ -50,11 +50,13 @@ server.setRequestHandler(CallToolRequestSchema, async request => {
     if (!tool) {
         throw new Error(`Unknown tool: ${request.params.name}`);
     }
+
+    const result = await tool.execute(make, request.params.arguments);
     return {
         content: [
             {
                 type: 'text',
-                text: JSON.stringify(await tool.execute(make, request.params.arguments)),
+                text: typeof result === 'string' ? result : JSON.stringify(result, null, 2),
             },
         ],
     };

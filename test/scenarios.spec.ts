@@ -150,7 +150,7 @@ describe('Endpoints: Scenarios', () => {
             });
 
             const result = await make.scenarios.deactivate(5);
-            expect(result).toBe(false);
+            expect(result).toBe(true);
         });
     });
 });

@@ -87,31 +87,22 @@ export const tools = [
             type: 'object',
             properties: {
                 connectionId: { type: 'number', description: 'The connection ID to update' },
+                name: { type: 'string', description: 'The new name for the connection' },
                 data: { type: 'object', description: 'Connection configuration data to update' },
             },
-            required: ['connectionId', 'data'],
+            required: ['connectionId'],
         },
-        execute: async (make: Make, args: { connectionId: number; data: Record<string, JSONValue> }) => {
-            return await make.connections.update(args.connectionId, args.data);
-        },
-    },
-    {
-        name: 'connections_rename',
-        title: 'Rename connection',
-        description: 'Rename a connection',
-        category: 'connections',
-        scope: 'connections:write',
-        identifier: 'connectionId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                connectionId: { type: 'number', description: 'The connection ID to rename' },
-                name: { type: 'string', description: 'The new name for the connection' },
-            },
-            required: ['connectionId', 'name'],
-        },
-        execute: async (make: Make, args: { connectionId: number; name: string }) => {
-            return await make.connections.rename(args.connectionId, args.name);
+        execute: async (
+            make: Make,
+            args: { connectionId: number; name?: string; data?: Record<string, JSONValue> },
+        ) => {
+            if (args.name != null && args.name !== '') {
+                await make.connections.rename(args.connectionId, args.name);
+            }
+            if (args.data != null) {
+                await make.connections.update(args.connectionId, args.data);
+            }
+            return 'Connection has been updated.';
         },
     },
     {
@@ -129,48 +120,9 @@ export const tools = [
             required: ['connectionId'],
         },
         execute: async (make: Make, args: { connectionId: number }) => {
-            return await make.connections.verify(args.connectionId);
-        },
-    },
-    {
-        name: 'connections_scoped',
-        title: 'Verify connection scopes',
-        description: 'Verify if given OAuth scopes are set for a given connection',
-        category: 'connections',
-        scope: 'connections:write',
-        identifier: 'connectionId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                connectionId: { type: 'number', description: 'The connection ID to update scopes for' },
-                scope: {
-                    type: 'array',
-                    items: { type: 'string' },
-                    description: 'Array of scope identifiers to set',
-                },
-            },
-            required: ['connectionId', 'scope'],
-        },
-        execute: async (make: Make, args: { connectionId: number; scope: string[] }) => {
-            return await make.connections.scoped(args.connectionId, args.scope);
-        },
-    },
-    {
-        name: 'connections_list_editable_parameters',
-        title: 'List editable connection parameters',
-        description: 'List editable parameters for a connection',
-        category: 'connections',
-        scope: 'connections:read',
-        identifier: 'connectionId',
-        inputSchema: {
-            type: 'object',
-            properties: {
-                connectionId: { type: 'number', description: 'The connection ID to get editable parameters for' },
-            },
-            required: ['connectionId'],
-        },
-        execute: async (make: Make, args: { connectionId: number }) => {
-            return await make.connections.listEditableParameters(args.connectionId);
+            return (await make.connections.verify(args.connectionId))
+                ? 'Connection is valid.'
+                : 'Connection is not valid.';
         },
     },
     {
@@ -188,7 +140,8 @@ export const tools = [
             required: ['connectionId'],
         },
         execute: async (make: Make, args: { connectionId: number }) => {
-            return await make.connections.delete(args.connectionId);
+            await make.connections.delete(args.connectionId);
+            return 'Connection has been deleted.';
         },
     },
 ];
