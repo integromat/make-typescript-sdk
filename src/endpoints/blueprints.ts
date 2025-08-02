@@ -1,4 +1,6 @@
 import type { FetchFunction, JSONValue } from '../types.js';
+import type { DataStructureField } from './data-structures.js';
+import type { ScenarioInteface, Scheduling } from './scenarios.js';
 
 /**
  * Represents a node in a Make scenario blueprint.
@@ -59,6 +61,15 @@ export type Blueprint = {
     flow: BlueprintNode[];
     /** Metadata for the blueprint */
     metadata: Record<string, JSONValue>;
+    /** Scheduling configuration for the blueprint */
+    scheduling: Scheduling;
+    /** Interface configuration for the blueprint */
+    interface: ScenarioInteface;
+    /** @deprecated */
+    io?: {
+        input_spec: DataStructureField[];
+        output_spec: DataStructureField[];
+    };
 };
 
 /**
@@ -71,6 +82,11 @@ type GetScenarioBlueprintResponse = {
     response: {
         /** The scenario blueprint */
         blueprint: Blueprint;
+        metadata?: {
+            input_spec: DataStructureField[];
+            output_spec: DataStructureField[];
+        };
+        scheduling: Scheduling;
     };
 };
 
@@ -119,8 +135,15 @@ export class Blueprints {
      * @returns Promise with the complete scenario blueprint
      */
     async get(scenarioId: number): Promise<Blueprint> {
-        return (await this.#fetch<GetScenarioBlueprintResponse>(`/scenarios/${scenarioId}/blueprint`)).response
-            .blueprint;
+        const { blueprint, scheduling, metadata } = (
+            await this.#fetch<GetScenarioBlueprintResponse>(`/scenarios/${scenarioId}/blueprint`)
+        ).response;
+        blueprint.scheduling = scheduling;
+        blueprint.interface = {
+            input: metadata?.input_spec ?? [],
+            output: metadata?.output_spec ?? [],
+        };
+        return blueprint;
     }
 
     /**

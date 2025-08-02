@@ -1,5 +1,4 @@
 import type { FetchFunction, JSONValue, Pagination, PickColumns } from '../types.js';
-import { isObject } from '../utils.js';
 import { Blueprint } from './blueprints.js';
 import type { DataStructureField } from './data-structures.js';
 
@@ -126,9 +125,9 @@ type ListScenariosResponse<C extends keyof Scenario = never> = {
  */
 export type ScenarioInteface = {
     /** Input fields for the scenario, or null if no input is defined */
-    input: DataStructureField[] | null;
+    input: DataStructureField[];
     /** Output fields for the scenario, or null if no output is defined */
-    output: DataStructureField[] | null;
+    output: DataStructureField[];
 };
 
 /**
@@ -136,7 +135,7 @@ export type ScenarioInteface = {
  */
 type GetScenarioInterfaceResponse = {
     /** The scenario interface definition */
-    interface: ScenarioInteface;
+    interface: Partial<ScenarioInteface>;
 };
 
 /**
@@ -226,6 +225,47 @@ export type UpdateScenarioBody = {
 };
 
 /**
+ * Normalizes the payload for creating or updating a scenario.
+ * @param payload The payload to normalize
+ * @returns The normalized payload
+ */
+function normalizePayload(payload: UpdateScenarioBody | CreateScenarioBody) {
+    let blueprint: Partial<Blueprint> | undefined =
+        typeof payload.blueprint === 'string' ? JSON.parse(payload.blueprint) : payload.blueprint;
+    let scheduling: Scheduling | undefined =
+        typeof payload.scheduling === 'string' ? JSON.parse(payload.scheduling) : payload.scheduling;
+    const metadata: {
+        input_spec: DataStructureField[];
+        output_spec: DataStructureField[];
+    } = {
+        input_spec: [],
+        output_spec: [],
+    };
+
+    if (blueprint?.scheduling) {
+        scheduling = blueprint.scheduling;
+        blueprint = { ...blueprint, scheduling: undefined };
+    }
+    if (blueprint?.interface) {
+        metadata.input_spec = blueprint.interface.input ?? [];
+        metadata.output_spec = blueprint.interface.output ?? [];
+        blueprint = { ...blueprint, interface: undefined };
+    }
+    if (blueprint?.io) {
+        metadata.input_spec = blueprint.io.input_spec ?? [];
+        metadata.output_spec = blueprint.io.output_spec ?? [];
+        blueprint = { ...blueprint, io: undefined };
+    }
+
+    return {
+        ...payload,
+        scheduling: scheduling ? JSON.stringify(scheduling) : undefined,
+        blueprint: blueprint ? JSON.stringify(blueprint) : undefined,
+        metadata,
+    };
+}
+
+/**
  * Options for updating a scenario.
  * @template C Keys of the Scenario type to include in the response
  */
@@ -295,15 +335,7 @@ export class Scenarios {
                     cols: options?.cols,
                     confirmed: options?.confirmed,
                 },
-                body: {
-                    teamId: scenario.teamId,
-                    folderId: scenario.folderId,
-                    scheduling: isObject(scenario.scheduling)
-                        ? JSON.stringify(scenario.scheduling)
-                        : scenario.scheduling,
-                    blueprint: isObject(scenario.blueprint) ? JSON.stringify(scenario.blueprint) : scenario.blueprint,
-                    basedon: scenario.basedon,
-                },
+                body: normalizePayload(scenario),
             })
         ).scenario;
     }
@@ -384,14 +416,7 @@ export class Scenarios {
                     cols: options?.cols,
                     confirmed: options?.confirmed,
                 },
-                body: {
-                    name: scenario.name,
-                    folderId: scenario.folderId,
-                    scheduling: isObject(scenario.scheduling)
-                        ? JSON.stringify(scenario.scheduling)
-                        : scenario.scheduling,
-                    blueprint: isObject(scenario.blueprint) ? JSON.stringify(scenario.blueprint) : scenario.blueprint,
-                },
+                body: normalizePayload(scenario),
             })
         ).scenario;
     }
@@ -473,7 +498,11 @@ export class Scenarios {
      * @returns Promise with the scenario interface
      */
     async getInterface(scenarioId: number): Promise<ScenarioInteface> {
-        return (await this.#fetch<GetScenarioInterfaceResponse>(`/scenarios/${scenarioId}/interface`)).interface;
+        const result = await this.#fetch<GetScenarioInterfaceResponse>(`/scenarios/${scenarioId}/interface`);
+        return {
+            input: result.interface.input ?? [],
+            output: result.interface.output ?? [],
+        };
     }
 
     /**

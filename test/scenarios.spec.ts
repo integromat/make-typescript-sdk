@@ -44,8 +44,11 @@ describe('Endpoints: Scenarios', () => {
         it('Should get scenario interface', async () => {
             mockFetch('GET https://make.local/api/v2/scenarios/18/interface', scenarioInterfaceMock);
 
-            const result = await make.scenarios['interface'](18);
-            expect(result).toStrictEqual(scenarioInterfaceMock.interface);
+            const result = await make.scenarios.getInterface(18);
+            expect(result).toStrictEqual({
+                input: scenarioInterfaceMock.interface.input,
+                output: [],
+            });
         });
 
         it('Should update scenario interface', async () => {
@@ -65,7 +68,7 @@ describe('Endpoints: Scenarios', () => {
                             required: false,
                         },
                     ],
-                    output: null,
+                    output: [],
                 },
             };
 
@@ -106,11 +109,19 @@ describe('Endpoints: Scenarios', () => {
                 teamId: 18,
                 folderId: 99,
                 scheduling: '{"type":"immediately"}',
-                blueprint: '{"flow":[],"metadata":{},"name":"Test Scenario"}',
+                blueprint:
+                    '{"flow":[],"metadata":{},"interface":{"input":[{"name":"param","type":"text"}],"output":[]},"name":"Test Scenario"}',
             };
 
             mockFetch('POST https://make.local/api/v2/scenarios', scenarioCreateMock, req => {
-                expect(req.body).toStrictEqual(body);
+                expect(req.body).toStrictEqual({
+                    ...body,
+                    blueprint: '{"flow":[],"metadata":{},"name":"Test Scenario"}',
+                    metadata: {
+                        input_spec: [{ name: 'param', type: 'text' }],
+                        output_spec: [],
+                    },
+                });
             });
 
             const result = await make.scenarios.create(body);
@@ -131,7 +142,13 @@ describe('Endpoints: Scenarios', () => {
             };
 
             mockFetch('PATCH https://make.local/api/v2/scenarios/123456', scenarioUpdateMock, req => {
-                expect(req.body).toStrictEqual(body);
+                expect(req.body).toStrictEqual({
+                    ...body,
+                    metadata: {
+                        input_spec: [],
+                        output_spec: [],
+                    },
+                });
             });
 
             const result = await make.scenarios.update(123456, body);

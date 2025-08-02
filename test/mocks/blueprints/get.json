@@ -47,6 +47,10 @@
         },
         "idSequence": 4,
         "created": "2021-09-22T09:28:41.129Z",
-        "last_edit": "2021-09-22T09:40:31.488Z"
+        "last_edit": "2021-09-22T09:40:31.488Z",
+        "metadata": {
+            "input_spec": [],
+            "output_spec": []
+        }
     }
 }
