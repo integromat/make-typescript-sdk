@@ -16,7 +16,14 @@ describe('Endpoints: Blueprints', () => {
             mockFetch('GET https://make.local/api/v2/scenarios/123456/blueprint', blueprintMock);
 
             const result = await make.blueprints.get(123456);
-            expect(result).toStrictEqual(blueprintMock.response.blueprint);
+            expect(result).toStrictEqual({
+                ...blueprintMock.response.blueprint,
+                scheduling: blueprintMock.response.scheduling,
+                interface: {
+                    input: blueprintMock.response.metadata.input_spec,
+                    output: blueprintMock.response.metadata.output_spec,
+                },
+            });
         });
 
         it('Should get blueprint versions', async () => {
