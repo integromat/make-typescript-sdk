@@ -358,7 +358,7 @@ export class Make {
      * @protected
      */
     protected async handleResponse<T>(response: Response): Promise<T> {
-        const contentType: string = response.headers.get('content-type');
+        const contentType = response.headers.get('content-type');
         const isJsonType: boolean = contentType === 'application/json' || contentType?.startsWith('application/json;') //prevent application/jsonc to be parsed as json
 
         const result = isJsonType ? await response.json() : await response.text();
