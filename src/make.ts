@@ -359,7 +359,9 @@ export class Make {
      */
     protected async handleResponse<T>(response: Response): Promise<T> {
         const contentType = response.headers.get('content-type');
-        const result = contentType?.includes('application/json') ? await response.json() : await response.text();
+        const isJsonType: boolean = Boolean(contentType === 'application/json' || contentType?.startsWith('application/json;')); //prevent application/jsonc to be parsed as json
+
+        const result = isJsonType ? await response.json() : await response.text();
         return result as T;
     }
 }

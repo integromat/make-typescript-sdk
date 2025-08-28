@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
-import { mockFetch } from './test.utils.js';
+import { mockFetch, TestableMake } from './test.utils.js';
 import { randomUUID } from 'node:crypto';
 
 const MAKE_API_KEY = randomUUID();
@@ -96,4 +96,40 @@ describe('Make SDK', () => {
         const customMake = new CustomMake(MAKE_API_KEY, MAKE_ZONE);
         expect(await customMake.users.me()).toStrictEqual({ id: 1 });
     });
+
+    describe('Handle Response', () => {
+        it('Should parse JSON if content-type is application/json', async () => {
+            const response = new Response(JSON.stringify({ foo: 'bar' }), {
+                headers: { 'content-type': 'application/json' },
+            });
+
+            const make = new TestableMake(MAKE_API_KEY, MAKE_ZONE);
+            const result = await make.callHandleResponse<{ foo: string }>(response);
+
+            expect(result).toEqual({ foo: 'bar' });
+        });
+
+        it('Should return text if content-type is text/plain', async () => {
+            const response = new Response('hello world', {
+                headers: { 'content-type': 'text/plain' },
+            });
+
+            const make = new TestableMake(MAKE_API_KEY, MAKE_ZONE);
+            const result = await make.callHandleResponse<string>(response);
+
+            expect(result).toBe('hello world');
+        });
+
+        it('Should not parse application/jsonc as JSON', async () => {
+            const jsonc = '{"attr": "value" // with comments}';
+            const response = new Response(jsonc, {
+                headers: { 'content-type': 'application/jsonc' },
+            });
+
+            const make = new TestableMake(MAKE_API_KEY, MAKE_ZONE);
+            const result = await make.callHandleResponse<string>(response);
+
+            expect(result).toBe(jsonc);
+        });
+    })
 });
