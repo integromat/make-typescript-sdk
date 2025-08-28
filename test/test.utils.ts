@@ -1,6 +1,7 @@
 import { enableFetchMocks } from 'jest-fetch-mock';
 import type { JSONValue } from '../src/types';
 import { isObject } from '../src/utils';
+import { Make } from '../src';
 enableFetchMocks();
 
 type Mock = [string, unknown, number | Asserts | undefined];
@@ -68,4 +69,10 @@ export function mockFetch(...args: unknown[]): void {
             },
         });
     });
+}
+export class TestableMake extends Make {
+    // Expose the protected method just for tests
+    public callHandleResponse<T>(response: Response) {
+        return this.handleResponse<T>(response);
+    }
 }
