@@ -188,7 +188,7 @@ export const tools = [
         title: 'Run scenario',
         description: 'Execute a scenario with optional input data',
         category: 'scenarios',
-        scope: 'scenarios:write',
+        scope: 'scenarios:run',
         identifier: 'scenarioId',
         inputSchema: {
             type: 'object',
