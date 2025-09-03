@@ -117,7 +117,7 @@ describe('MCP Tools', () => {
 
         toolsWithScope.forEach(tool => {
             // Scopes should follow the pattern: {resource}:{permission}
-            const scopePattern = /^[a-z-]+:(read|write)$/;
+            const scopePattern = /^[a-z-]+:(read|write|run|use)$/;
             expect(tool.scope).toMatch(scopePattern);
         });
     });
