@@ -2,6 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
 import { mockFetch, TestableMake } from './test.utils.js';
 import { randomUUID } from 'node:crypto';
+import type { QueryValue } from '../src/types.js';
 
 const MAKE_API_KEY = randomUUID();
 const MAKE_ZONE = 'make.local';
@@ -71,8 +72,8 @@ describe('Make SDK', () => {
                     'x-custom-header': 'test',
                 };
             }
-            protected override prepareURL(url: string): string {
-                return url;
+            protected override prepareURL(url: string, query?: Record<string, QueryValue>): string {
+                return this.prepareQuery(url, query);
             }
             protected override async handleRequest(url: string, options?: RequestInit): Promise<Response> {
                 expect(url).toBe('/users/me');
