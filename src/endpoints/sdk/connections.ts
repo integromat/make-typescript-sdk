@@ -15,9 +15,7 @@ export type SDKConnection = {
 /**
  * SDK Connection section data
  */
-export type SDKConnectionSection<T extends SDKConnectionSectionType> = T extends 'api'
-    ? Record<string, JSONValue> | Array<Record<string, JSONValue>>
-    : Record<string, JSONValue>;
+export type SDKConnectionSection = string;
 
 /**
  * SDK Connection section type
@@ -130,26 +128,24 @@ export class SDKConnections {
     /**
      * Get a specific section of a connection
      */
-    async getSection<T extends SDKConnectionSectionType>(
-        connectionName: string,
-        section: T,
-    ): Promise<SDKConnectionSection<T>> {
-        const response = await this.#fetch<SDKConnectionSection<T>>(
-            `/sdk/apps/connections/${connectionName}/${section}`,
-        );
+    async getSection(connectionName: string, section: SDKConnectionSectionType): Promise<SDKConnectionSection> {
+        const response = await this.#fetch<SDKConnectionSection>(`/sdk/apps/connections/${connectionName}/${section}`);
         return response;
     }
 
     /**
      * Set a specific section of a connection
      */
-    async setSection<T extends SDKConnectionSectionType>(
+    async setSection(
         connectionName: string,
-        section: T,
-        body: SDKConnectionSection<T>,
+        section: SDKConnectionSectionType,
+        body: SDKConnectionSection,
     ): Promise<void> {
         await this.#fetch(`/sdk/apps/connections/${connectionName}/${section}`, {
             method: 'PUT',
+            headers: {
+                'Content-Type': 'application/jsonc',
+            },
             body,
         });
     }

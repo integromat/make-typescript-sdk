@@ -86,7 +86,7 @@ describe('Endpoints: SDK > Modules', () => {
 
     it('Should set module section', async () => {
         const section = 'api';
-        const body = {
+        const body = JSON.stringify({
             url: '/api/users',
             method: 'GET',
             qs: {},
@@ -103,13 +103,13 @@ describe('Endpoints: SDK > Modules', () => {
                 output: '{{item}}',
                 limit: '{{parameters.limit}}',
             },
-        };
+        });
         mockFetch(
             `PUT https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/${section}`,
             null,
             req => {
                 expect(req.body).toStrictEqual(body);
-                expect(req.headers.get('content-type')).toBe('application/json');
+                expect(req.headers.get('content-type')).toBe('application/jsonc');
             },
         );
 

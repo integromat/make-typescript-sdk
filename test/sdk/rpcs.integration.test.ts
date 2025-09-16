@@ -90,7 +90,7 @@ describe('Integration: SDK > RPCs', () => {
     });
 
     it('Should set RPC section', async () => {
-        const sectionData = {
+        const sectionData = JSON.stringify({
             url: '/api/users',
             method: 'GET',
             qs: {},
@@ -103,13 +103,13 @@ describe('Integration: SDK > RPCs', () => {
                     value: '{{item.id}}',
                 },
             },
-        };
+        });
 
         await make.sdk.rpcs.setSection(appName, appVersion, rpcName, 'api', sectionData);
     });
 
     it('Should get RPC section', async () => {
-        const section = await make.sdk.rpcs.getSection(appName, appVersion, rpcName, 'api');
+        const section = JSON.parse(await make.sdk.rpcs.getSection(appName, appVersion, rpcName, 'api'));
         expect(section).toBeDefined();
         expect(Array.isArray(section)).toBe(false);
         expect((section as Record<string, JSONValue>).url).toBe('/api/users');

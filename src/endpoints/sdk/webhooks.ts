@@ -1,4 +1,4 @@
-import type { FetchFunction, JSONValue } from '../../types.js';
+import type { FetchFunction } from '../../types.js';
 
 /**
  * Webhook
@@ -21,9 +21,7 @@ export type SDKWebhook = {
 /**
  * Webhook section content
  */
-export type SDKWebhookSection<T extends SDKWebhookSectionType> = T extends 'api'
-    ? Record<string, JSONValue> | Array<Record<string, JSONValue>>
-    : Record<string, JSONValue>;
+export type SDKWebhookSection = string;
 
 /**
  * Available webhook section types
@@ -128,8 +126,8 @@ export class SDKWebhooks {
      * Get a specific section of a webhook
      * Available sections are: api, parameters, attach, detach, scope
      */
-    async getSection<T extends SDKWebhookSectionType>(webhookName: string, section: T): Promise<SDKWebhookSection<T>> {
-        const response = await this.#fetch<SDKWebhookSection<T>>(`/sdk/apps/webhooks/${webhookName}/${section}`);
+    async getSection(webhookName: string, section: SDKWebhookSectionType): Promise<SDKWebhookSection> {
+        const response = await this.#fetch<SDKWebhookSection>(`/sdk/apps/webhooks/${webhookName}/${section}`);
         return response;
     }
 
@@ -137,13 +135,12 @@ export class SDKWebhooks {
      * Set a specific section of a webhook
      * Available sections are: api, parameters, attach, detach, scope
      */
-    async setSection<T extends SDKWebhookSectionType>(
-        webhookName: string,
-        section: T,
-        body: SDKWebhookSection<T>,
-    ): Promise<void> {
+    async setSection(webhookName: string, section: SDKWebhookSectionType, body: SDKWebhookSection): Promise<void> {
         await this.#fetch(`/sdk/apps/webhooks/${webhookName}/${section}`, {
             method: 'PUT',
+            headers: {
+                'Content-Type': 'application/jsonc',
+            },
             body,
         });
     }

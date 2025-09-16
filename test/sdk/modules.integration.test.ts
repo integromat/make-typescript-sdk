@@ -75,7 +75,7 @@ describe('Integration: SDK > Modules', () => {
     });
 
     it('Should set module section', async () => {
-        const sectionData = {
+        const sectionData = JSON.stringify({
             url: '/api/test',
             method: 'GET',
             qs: {},
@@ -92,7 +92,7 @@ describe('Integration: SDK > Modules', () => {
                 output: '{{item}}',
                 limit: '10',
             },
-        };
+        });
 
         await make.sdk.modules.setSection(appName, appVersion, moduleName, 'api', sectionData);
     });

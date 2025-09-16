@@ -217,7 +217,7 @@ export const tools = [
                     enum: ['api', 'parameters'],
                     description: 'The section to set',
                 },
-                body: { type: 'object', description: 'The section data to set' },
+                body: { type: 'string', description: 'The section data to set in JSONC format' },
             },
             required: ['appName', 'appVersion', 'rpcName', 'section', 'body'],
         },
@@ -228,7 +228,7 @@ export const tools = [
                 appVersion: number;
                 rpcName: string;
                 section: 'api' | 'parameters';
-                body: Record<string, JSONValue> | Array<Record<string, JSONValue>>;
+                body: string;
             },
         ) => {
             await make.sdk.rpcs.setSection(args.appName, args.appVersion, args.rpcName, args.section, args.body);

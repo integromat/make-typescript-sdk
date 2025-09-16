@@ -64,10 +64,10 @@ describe('Endpoints: SDK Webhooks', () => {
     });
 
     it('Should set webhook section', async () => {
-        const body = { output: '{{body}}', test: true };
+        const body = JSON.stringify({ output: '{{body}}', test: true });
         mockFetch('PUT https://make.local/api/v2/sdk/apps/webhooks/custom-app-12/api', null, req => {
             expect(req.body).toStrictEqual(body);
-            expect(req.headers.get('content-type')).toBe('application/json');
+            expect(req.headers.get('content-type')).toBe('application/jsonc');
         });
 
         await make.sdk.webhooks.setSection('custom-app-12', 'api', body);

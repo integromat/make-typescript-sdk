@@ -17,9 +17,7 @@ export type SDKRPC = {
 /**
  * RPC section data (api, parameters, etc.)
  */
-export type SDKRPCSection<T extends SDKRPCSectionType> = T extends 'api'
-    ? Record<string, JSONValue> | Array<Record<string, JSONValue>>
-    : Record<string, JSONValue>;
+export type SDKRPCSection = string;
 
 /**
  * RPC section type
@@ -159,13 +157,13 @@ export class SDKRPCs {
     /**
      * Get RPC section data
      */
-    async getSection<T extends SDKRPCSectionType>(
+    async getSection(
         appName: string,
         appVersion: number,
         rpcName: string,
-        section: T,
-    ): Promise<SDKRPCSection<T>> {
-        const response = await this.#fetch<SDKRPCSection<T>>(
+        section: SDKRPCSectionType,
+    ): Promise<SDKRPCSection> {
+        const response = await this.#fetch<SDKRPCSection>(
             `/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`,
         );
         return response;
@@ -174,15 +172,18 @@ export class SDKRPCs {
     /**
      * Set RPC section data
      */
-    async setSection<T extends SDKRPCSectionType>(
+    async setSection(
         appName: string,
         appVersion: number,
         rpcName: string,
-        section: T,
-        body: SDKRPCSection<T>,
+        section: SDKRPCSectionType,
+        body: SDKRPCSection,
     ): Promise<void> {
         await this.#fetch(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`, {
             method: 'PUT',
+            headers: {
+                'Content-Type': 'application/jsonc',
+            },
             body,
         });
     }

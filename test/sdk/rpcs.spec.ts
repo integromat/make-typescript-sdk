@@ -101,7 +101,7 @@ describe('Endpoints: SDK > RPCs', () => {
 
     it('Should set SDK app RPC section', async () => {
         const section = 'api';
-        const body = {
+        const body = JSON.stringify({
             url: '/api/users',
             method: 'GET',
             qs: {},
@@ -114,13 +114,13 @@ describe('Endpoints: SDK > RPCs', () => {
                     value: '{{item.id}}',
                 },
             },
-        };
+        });
         mockFetch(
             `PUT https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/${section}`,
             null,
             req => {
                 expect(req.body).toStrictEqual(body);
-                expect(req.headers.get('content-type')).toBe('application/json');
+                expect(req.headers.get('content-type')).toBe('application/jsonc');
             },
         );
 

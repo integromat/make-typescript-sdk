@@ -69,7 +69,7 @@ describe('Integration: SDK > Connections', () => {
     });
 
     it('Should set connection section', async () => {
-        const sectionData = {
+        const sectionData = JSON.stringify({
             authorize: {
                 url: 'https://www.example.com/oauth/authorize',
                 qs: {
@@ -100,7 +100,7 @@ describe('Integration: SDK > Connections', () => {
                     },
                 },
             },
-        };
+        });
 
         await make.sdk.connections.setSection(connectionName, 'api', sectionData);
     });

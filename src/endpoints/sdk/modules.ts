@@ -1,4 +1,4 @@
-import type { FetchFunction, JSONValue } from '../../types.js';
+import type { FetchFunction } from '../../types.js';
 
 /**
  * Module
@@ -30,9 +30,7 @@ export type SDKModule = {
  * Module section data structure
  * Represents configuration for different module sections like api, epoch, parameters, etc.
  */
-export type SDKModuleSection<T extends SDKModuleSectionType> = T extends 'api'
-    ? Record<string, JSONValue> | Array<Record<string, JSONValue>>
-    : Record<string, JSONValue>;
+export type SDKModuleSection = string;
 
 /**
  * Available module section types
@@ -157,13 +155,13 @@ export class SDKModules {
      * Get a specific section of a module
      * Available sections: api, epoch, parameters, expect, interface, samples, scope
      */
-    async getSection<T extends SDKModuleSectionType>(
+    async getSection(
         appName: string,
         appVersion: number,
         moduleName: string,
-        section: T,
-    ): Promise<SDKModuleSection<T>> {
-        const response = await this.#fetch<SDKModuleSection<T>>(
+        section: SDKModuleSectionType,
+    ): Promise<SDKModuleSection> {
+        const response = await this.#fetch<SDKModuleSection>(
             `/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/${section}`,
         );
         return response;
@@ -173,15 +171,18 @@ export class SDKModules {
      * Set/update a specific section of a module
      * Available sections: api, epoch, parameters, expect, interface, samples, scope
      */
-    async setSection<T extends SDKModuleSectionType>(
+    async setSection(
         appName: string,
         appVersion: number,
         moduleName: string,
-        section: T,
-        body: SDKModuleSection<T>,
+        section: SDKModuleSectionType,
+        body: SDKModuleSection,
     ): Promise<void> {
         await this.#fetch(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/${section}`, {
             method: 'PUT',
+            headers: {
+                'Content-Type': 'application/jsonc',
+            },
             body,
         });
     }
