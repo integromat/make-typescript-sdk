@@ -8,6 +8,9 @@ export const tools = [
         category: 'functions',
         scope: 'functions:read',
         identifier: 'teamId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -26,6 +29,9 @@ export const tools = [
         category: 'functions',
         scope: 'functions:read',
         identifier: 'functionId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -44,6 +50,10 @@ export const tools = [
         category: 'functions',
         scope: 'functions:write',
         identifier: 'teamId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -69,6 +79,10 @@ export const tools = [
         category: 'functions',
         scope: 'functions:write',
         identifier: 'functionId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -94,6 +108,9 @@ export const tools = [
         category: 'functions',
         scope: 'functions:write',
         identifier: 'functionId',
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -113,6 +130,9 @@ export const tools = [
         category: 'functions',
         scope: 'functions:write',
         identifier: 'teamId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {

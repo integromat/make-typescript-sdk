@@ -8,6 +8,9 @@ export const tools = [
         category: 'data-stores',
         scope: 'datastores:read',
         identifier: 'teamId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -26,6 +29,9 @@ export const tools = [
         category: 'data-stores',
         scope: 'datastores:read',
         identifier: 'dataStoreId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -44,6 +50,10 @@ export const tools = [
         category: 'data-stores',
         scope: 'datastores:write',
         identifier: 'teamId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -71,6 +81,10 @@ export const tools = [
         category: 'data-stores',
         scope: 'datastores:write',
         identifier: 'dataStoreId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -96,6 +110,9 @@ export const tools = [
         category: 'data-stores',
         scope: 'datastores:write',
         identifier: 'dataStoreId',
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {

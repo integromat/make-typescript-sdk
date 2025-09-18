@@ -9,6 +9,9 @@ export const tools = [
         category: 'data-structures',
         scope: 'udts:read',
         identifier: 'teamId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -27,6 +30,9 @@ export const tools = [
         category: 'data-structures',
         scope: 'udts:read',
         identifier: 'dataStructureId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -45,6 +51,10 @@ export const tools = [
         category: 'data-structures',
         scope: 'udts:write',
         identifier: 'teamId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -82,6 +92,10 @@ export const tools = [
         category: 'data-structures',
         scope: 'udts:write',
         identifier: 'dataStructureId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -122,6 +136,9 @@ export const tools = [
         category: 'data-structures',
         scope: 'udts:write',
         identifier: 'dataStructureId',
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {

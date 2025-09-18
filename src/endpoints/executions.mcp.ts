@@ -8,6 +8,9 @@ export const tools = [
         category: 'executions',
         scope: 'scenarios:read',
         identifier: 'scenarioId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -30,6 +33,9 @@ export const tools = [
         category: 'executions',
         scope: 'scenarios:read',
         identifier: 'scenarioId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -49,6 +55,9 @@ export const tools = [
         category: 'executions',
         scope: 'dlqs:read',
         identifier: 'incompleteExecutionId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -72,6 +81,9 @@ export const tools = [
         category: 'executions',
         scope: 'dlqs:read',
         identifier: 'incompleteExecutionId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {

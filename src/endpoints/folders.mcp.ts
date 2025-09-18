@@ -8,6 +8,9 @@ export const tools = [
         category: 'folders',
         scope: 'scenarios:read',
         identifier: 'teamId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -26,6 +29,10 @@ export const tools = [
         category: 'folders',
         scope: 'scenarios:write',
         identifier: 'teamId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -45,6 +52,10 @@ export const tools = [
         category: 'folders',
         scope: 'scenarios:write',
         identifier: 'folderId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -65,6 +76,9 @@ export const tools = [
         category: 'folders',
         scope: 'scenarios:write',
         identifier: 'folderId',
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {

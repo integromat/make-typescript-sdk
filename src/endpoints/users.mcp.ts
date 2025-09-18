@@ -8,6 +8,9 @@ export const tools = [
         category: 'users',
         scope: undefined,
         identifier: undefined,
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
         },

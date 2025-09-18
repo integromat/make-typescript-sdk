@@ -9,6 +9,9 @@ export const tools = [
         category: 'hooks',
         scope: 'hooks:read',
         identifier: 'teamId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -27,6 +30,9 @@ export const tools = [
         category: 'hooks',
         scope: 'hooks:read',
         identifier: 'hookId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -45,6 +51,10 @@ export const tools = [
         category: 'hooks',
         scope: 'hooks:write',
         identifier: 'teamId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -77,6 +87,10 @@ export const tools = [
         category: 'hooks',
         scope: 'hooks:write',
         identifier: 'hookId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -97,6 +111,9 @@ export const tools = [
         category: 'hooks',
         scope: 'hooks:write',
         identifier: 'hookId',
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {

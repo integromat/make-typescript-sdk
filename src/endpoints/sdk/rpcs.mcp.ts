@@ -9,6 +9,9 @@ export const tools = [
         category: 'sdk.rpcs',
         scope: 'sdk-apps:read',
         identifier: undefined,
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -28,6 +31,9 @@ export const tools = [
         category: 'sdk.rpcs',
         scope: 'sdk-apps:read',
         identifier: undefined,
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -48,6 +54,10 @@ export const tools = [
         category: 'sdk.rpcs',
         scope: 'sdk-apps:write',
         identifier: undefined,
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -70,6 +80,10 @@ export const tools = [
         category: 'sdk.rpcs',
         scope: 'sdk-apps:write',
         identifier: undefined,
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -104,6 +118,9 @@ export const tools = [
         category: 'sdk.rpcs',
         scope: 'sdk-apps:write',
         identifier: undefined,
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -125,6 +142,9 @@ export const tools = [
         category: 'sdk.rpcs',
         scope: 'sdk-apps:write',
         identifier: undefined,
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -173,6 +193,9 @@ export const tools = [
         category: 'sdk.rpcs',
         scope: 'sdk-apps:read',
         identifier: undefined,
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -206,6 +229,10 @@ export const tools = [
         category: 'sdk.rpcs',
         scope: 'sdk-apps:write',
         identifier: undefined,
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {

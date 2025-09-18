@@ -8,6 +8,9 @@ export const tools = [
         category: 'organizations',
         scope: 'organizations:read',
         identifier: undefined,
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
         },
@@ -22,6 +25,9 @@ export const tools = [
         category: 'organizations',
         scope: 'organizations:read',
         identifier: 'organizationId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -40,6 +46,10 @@ export const tools = [
         category: 'organizations',
         scope: 'organizations:write',
         identifier: undefined,
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -64,6 +74,10 @@ export const tools = [
         category: 'organizations',
         scope: 'organizations:write',
         identifier: 'organizationId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -94,6 +108,9 @@ export const tools = [
         category: 'organizations',
         scope: 'organizations:write',
         identifier: 'organizationId',
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
