@@ -9,6 +9,9 @@ export const tools = [
         category: 'connections',
         scope: 'connections:read',
         identifier: 'teamId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -28,6 +31,9 @@ export const tools = [
         category: 'connections',
         scope: 'connections:read',
         identifier: 'connectionId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -46,6 +52,10 @@ export const tools = [
         category: 'connections',
         scope: 'connections:write',
         identifier: 'teamId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -83,6 +93,10 @@ export const tools = [
         category: 'connections',
         scope: 'connections:write',
         identifier: 'connectionId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -112,6 +126,10 @@ export const tools = [
         category: 'connections',
         scope: 'connections:write',
         identifier: 'connectionId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -132,6 +150,9 @@ export const tools = [
         category: 'connections',
         scope: 'connections:write',
         identifier: 'connectionId',
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {

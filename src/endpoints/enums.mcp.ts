@@ -8,6 +8,9 @@ export const tools = [
         category: 'enums',
         scope: undefined,
         identifier: undefined,
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
         },
@@ -22,6 +25,9 @@ export const tools = [
         category: 'enums',
         scope: undefined,
         identifier: undefined,
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
         },
@@ -36,6 +42,9 @@ export const tools = [
         category: 'enums',
         scope: undefined,
         identifier: undefined,
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
         },

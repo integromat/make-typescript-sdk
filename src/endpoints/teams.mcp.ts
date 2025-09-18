@@ -8,6 +8,9 @@ export const tools = [
         category: 'teams',
         scope: 'teams:read',
         identifier: 'organizationId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -26,6 +29,9 @@ export const tools = [
         category: 'teams',
         scope: 'teams:read',
         identifier: 'teamId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -44,6 +50,10 @@ export const tools = [
         category: 'teams',
         scope: 'teams:write',
         identifier: 'organizationId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -71,6 +81,9 @@ export const tools = [
         category: 'teams',
         scope: 'teams:write',
         identifier: 'teamId',
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {

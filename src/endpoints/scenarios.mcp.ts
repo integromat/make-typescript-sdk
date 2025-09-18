@@ -11,6 +11,9 @@ export const tools = [
         category: 'scenarios',
         scope: 'scenarios:read',
         identifier: 'teamId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -29,6 +32,9 @@ export const tools = [
         category: 'scenarios',
         scope: 'scenarios:read',
         identifier: 'scenarioId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -53,6 +59,10 @@ export const tools = [
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'teamId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -91,6 +101,10 @@ export const tools = [
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'scenarioId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -131,6 +145,9 @@ export const tools = [
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'scenarioId',
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -150,6 +167,10 @@ export const tools = [
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'scenarioId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -170,6 +191,10 @@ export const tools = [
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'scenarioId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -190,6 +215,9 @@ export const tools = [
         category: 'scenarios',
         scope: 'scenarios:run',
         identifier: 'scenarioId',
+        annotations: {
+            destructiveHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -214,6 +242,9 @@ export const tools = [
         category: 'scenarios',
         scope: 'scenarios:read',
         identifier: 'scenarioId',
+        annotations: {
+            readOnlyHint: true,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -232,6 +263,10 @@ export const tools = [
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'scenarioId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
