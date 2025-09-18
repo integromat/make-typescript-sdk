@@ -1,4 +1,5 @@
 import type { FetchFunction, JSONValue } from '../../types.js';
+import { JSONStringifyIfNotString } from '../../utils.js';
 
 /**
  * Remote Procedure Call (RPC) definition
@@ -184,7 +185,7 @@ export class SDKRPCs {
             headers: {
                 'Content-Type': 'application/jsonc',
             },
-            body,
+            body: JSONStringifyIfNotString(body),
         });
     }
 }

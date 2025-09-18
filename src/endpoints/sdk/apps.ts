@@ -1,4 +1,5 @@
 import type { FetchFunction, PickColumns, JSONValue } from '../../types.js';
+import { JSONStringifyIfNotString } from '../../utils.js';
 
 /**
  * App
@@ -220,7 +221,7 @@ export class SDKApps {
             headers: {
                 'Content-Type': 'application/jsonc',
             },
-            body,
+            body: JSONStringifyIfNotString(body),
         });
     }
 

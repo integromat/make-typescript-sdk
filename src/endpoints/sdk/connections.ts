@@ -1,4 +1,5 @@
 import type { FetchFunction, JSONValue } from '../../types.js';
+import { JSONStringifyIfNotString } from '../../utils.js';
 
 /**
  * SDK Connection
@@ -146,7 +147,7 @@ export class SDKConnections {
             headers: {
                 'Content-Type': 'application/jsonc',
             },
-            body,
+            body: JSONStringifyIfNotString(body),
         });
     }
 

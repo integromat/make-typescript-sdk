@@ -1,4 +1,5 @@
 import type { FetchFunction } from '../../types.js';
+import { JSONStringifyIfNotString } from '../../utils.js';
 
 /**
  * Webhook
@@ -141,7 +142,7 @@ export class SDKWebhooks {
             headers: {
                 'Content-Type': 'application/jsonc',
             },
-            body,
+            body: JSONStringifyIfNotString(body),
         });
     }
 }
