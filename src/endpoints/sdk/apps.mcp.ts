@@ -182,7 +182,7 @@ export const tools = [
                     enum: ['base', 'groups', 'install', 'installSpec'],
                     description: 'The section to set',
                 },
-                body: { type: 'object', description: 'The section data to set' },
+                body: { type: 'string', description: 'The section data to set in JSONC format' },
             },
             required: ['name', 'version', 'section', 'body'],
         },
@@ -192,7 +192,7 @@ export const tools = [
                 name: string;
                 version: number;
                 section: 'base' | 'groups' | 'install' | 'installSpec';
-                body: Record<string, JSONValue>;
+                body: string;
             },
         ) => {
             await make.sdk.apps.setSection(args.name, args.version, args.section, args.body);

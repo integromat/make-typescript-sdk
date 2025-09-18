@@ -52,7 +52,10 @@ export function mockFetch(...args: unknown[]): void {
 
         if (mock.asserts) {
             const contentType = req.headers.get('content-type');
-            const body = contentType?.includes('application/json') ? await req.json() : await req.text();
+            const isJsonType: boolean = Boolean(
+                contentType === 'application/json' || contentType?.startsWith('application/json;'),
+            ); //prevent application/jsonc to be parsed as json
+            const body = isJsonType ? await req.json() : await req.text();
             mock.asserts({
                 body: isObject(body) ? (body as Record<string, JSONValue>) : Array.isArray(body) ? body : String(body),
                 headers: req.headers,

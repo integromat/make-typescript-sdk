@@ -143,7 +143,7 @@ export const tools = [
                     enum: ['api', 'parameters', 'scopes', 'scope', 'install', 'installSpec'],
                     description: 'The section to set',
                 },
-                body: { type: 'object', description: 'The section data to set' },
+                body: { type: 'string', description: 'The section data to set in JSONC format' },
             },
             required: ['connectionName', 'section', 'body'],
         },
@@ -152,7 +152,7 @@ export const tools = [
             args: {
                 connectionName: string;
                 section: 'api' | 'parameters' | 'scopes' | 'scope' | 'install' | 'installSpec';
-                body: Record<string, JSONValue> | Array<Record<string, JSONValue>>;
+                body: string;
             },
         ) => {
             await make.sdk.connections.setSection(args.connectionName, args.section, args.body);

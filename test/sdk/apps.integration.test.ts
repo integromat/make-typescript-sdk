@@ -59,17 +59,17 @@ describe('Integration: SDK > Apps', () => {
         expect(baseSection).toBeDefined();
 
         // Test setting base section
-        const sectionData = {
+        const sectionData = JSON.stringify({
             baseUrl: 'https://api.example.com',
             log: {
                 sanitize: ['request.headers.authorization'],
             },
-        };
+        });
         await make.sdk.apps.setSection(appName, appVersion, 'base', sectionData);
 
         // Verify the section was updated
         const updatedSection = await make.sdk.apps.getSection(appName, appVersion, 'base');
-        expect(updatedSection.baseUrl).toBe('https://api.example.com');
+        expect(JSON.parse(updatedSection).baseUrl).toBe('https://api.example.com');
     });
 
     it('Should get and set app documentation', async () => {

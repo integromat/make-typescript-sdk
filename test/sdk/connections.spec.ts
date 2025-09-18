@@ -71,15 +71,15 @@ describe('Endpoints: SDK > Connections', () => {
     });
 
     it('Should set SDK connection section', async () => {
-        const body = {
+        const body = JSON.stringify({
             test: 'value',
             nested: {
                 key: 'value',
             },
-        };
+        });
         mockFetch('PUT https://make.local/api/v2/sdk/apps/connections/test-connection/api', null, req => {
             expect(req.body).toStrictEqual(body);
-            expect(req.headers.get('content-type')).toBe('application/json');
+            expect(req.headers.get('content-type')).toBe('application/jsonc');
         });
 
         await make.sdk.connections.setSection('test-connection', 'api', body);

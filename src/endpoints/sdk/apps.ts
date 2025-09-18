@@ -1,4 +1,5 @@
 import type { FetchFunction, PickColumns, JSONValue } from '../../types.js';
+import { JSONStringifyIfNotString } from '../../utils.js';
 
 /**
  * App
@@ -38,7 +39,7 @@ export type SDKApp = {
  * App section data structure
  * Represents configuration for different app sections like base, groups, install, installSpec
  */
-export type SDKAppSection = Record<string, JSONValue>;
+export type SDKAppSection = string;
 
 /**
  * Available app section types
@@ -217,7 +218,10 @@ export class SDKApps {
     async setSection(name: string, version: number, section: SDKAppSectionType, body: SDKAppSection): Promise<void> {
         await this.#fetch(`/sdk/apps/${name}/${version}/${section}`, {
             method: 'PUT',
-            body,
+            headers: {
+                'Content-Type': 'application/jsonc',
+            },
+            body: JSONStringifyIfNotString(body),
         });
     }
 

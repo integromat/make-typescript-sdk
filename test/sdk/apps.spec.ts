@@ -99,10 +99,10 @@ describe('Endpoints: SDK > Apps', () => {
     });
 
     it('Should set app section', async () => {
-        const body = { name: 'text', type: 'text' };
+        const body = JSON.stringify({ name: 'text', type: 'text' });
         mockFetch('PUT https://make.local/api/v2/sdk/apps/test-app/1/base', null, req => {
             expect(req.body).toStrictEqual(body);
-            expect(req.headers.get('content-type')).toBe('application/json');
+            expect(req.headers.get('content-type')).toBe('application/jsonc');
         });
 
         await make.sdk.apps.setSection('test-app', 1, 'base', body);

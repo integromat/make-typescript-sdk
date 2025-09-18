@@ -143,7 +143,7 @@ export const tools = [
                     enum: ['api', 'parameters', 'attach', 'detach', 'scope'],
                     description: 'The section to set',
                 },
-                body: { type: 'object', description: 'The section data to set' },
+                body: { type: 'string', description: 'The section data to set in JSONC format' },
             },
             required: ['webhookName', 'section', 'body'],
         },
@@ -152,7 +152,7 @@ export const tools = [
             args: {
                 webhookName: string;
                 section: 'api' | 'parameters' | 'attach' | 'detach' | 'scope';
-                body: Record<string, JSONValue> | Array<Record<string, JSONValue>>;
+                body: string;
             },
         ) => {
             await make.sdk.webhooks.setSection(args.webhookName, args.section, args.body);

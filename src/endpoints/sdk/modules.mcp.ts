@@ -1,5 +1,4 @@
 import type { Make } from '../../make.js';
-import type { JSONValue } from '../../types.js';
 
 export const tools = [
     {
@@ -187,7 +186,7 @@ export const tools = [
                     enum: ['api', 'epoch', 'parameters', 'expect', 'interface', 'samples', 'scope'],
                     description: 'The section to set',
                 },
-                body: { type: 'object', description: 'The section data to set' },
+                body: { type: 'string', description: 'The section data to set in JSONC format' },
             },
             required: ['appName', 'appVersion', 'moduleName', 'section', 'body'],
         },
@@ -198,7 +197,7 @@ export const tools = [
                 appVersion: number;
                 moduleName: string;
                 section: 'api' | 'epoch' | 'parameters' | 'expect' | 'interface' | 'samples' | 'scope';
-                body: Record<string, JSONValue> | Array<Record<string, JSONValue>>;
+                body: string;
             },
         ) => {
             await make.sdk.modules.setSection(args.appName, args.appVersion, args.moduleName, args.section, args.body);

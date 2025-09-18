@@ -107,3 +107,12 @@ export class MakeError extends Error {
         this.statusCode = statusCode;
     }
 }
+
+/**
+ * JSON.stringify if the value is not a string
+ * @param value The value to stringify
+ * @returns The stringified value
+ */
+export function JSONStringifyIfNotString(value: unknown): string {
+    return typeof value === 'string' ? value : JSON.stringify(value);
+}
