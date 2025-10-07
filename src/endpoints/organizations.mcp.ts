@@ -13,6 +13,7 @@ export const tools = [
         },
         inputSchema: {
             type: 'object',
+            properties: {},
         },
         execute: async (make: Make) => {
             return await make.organizations.list();
