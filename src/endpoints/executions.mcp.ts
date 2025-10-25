@@ -27,6 +27,28 @@ export const tools = [
         },
     },
     {
+        name: 'executions_get_detail',
+        title: 'Get execution detail',
+        description: 'Get detailed result of a specific execution',
+        category: 'executions',
+        scope: 'scenarios:read',
+        identifier: 'scenarioId',
+        annotations: {
+            readOnlyHint: true,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                scenarioId: { type: 'number', description: 'The scenario ID the execution belongs to' },
+                executionId: { type: 'string', description: 'The execution ID to retrieve' },
+            },
+            required: ['scenarioId', 'executionId'],
+        },
+        execute: async (make: Make, args: { scenarioId: number; executionId: string }) => {
+            return await make.executions.getDetail(args.scenarioId, args.executionId);
+        },
+    },
+    {
         name: 'executions_get',
         title: 'Get execution',
         description: 'Get details of a specific execution',

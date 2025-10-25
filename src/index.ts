@@ -38,7 +38,7 @@ export type {
     CloneDataStructureBody,
 } from './endpoints/data-structures.js';
 export type { Enums, Country, Region, Timezone } from './endpoints/enums.js';
-export type { Execution, Executions, ListExecutionsOptions } from './endpoints/executions.js';
+export type { Execution, ExecutionDetail, Executions, ListExecutionsOptions } from './endpoints/executions.js';
 export type {
     Folder,
     Folders,
