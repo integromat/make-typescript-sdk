@@ -518,42 +518,6 @@ export type ListEntityNamesOptions<C extends keyof EntityName = never> = {
 };
 ```
 
-### Batch Operations
-
-For endpoints that support batch operations:
-
-```typescript
-/**
- * Delete multiple entities by IDs
- */
-async deleteMultiple(ids: number[]): Promise<void> {
-    await this.#fetch('/entity-names/batch', {
-        method: 'DELETE',
-        body: { ids },
-    });
-}
-```
-
-### File Uploads
-
-For endpoints that handle file uploads:
-
-```typescript
-/**
- * Upload a file for the entity
- */
-async uploadFile(id: number, file: File): Promise<EntityName> {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    const response = await this.#fetch<UpdateEntityNameResponse>(`/entity-names/${id}/upload`, {
-        method: 'POST',
-        body: formData as unknown as string, // FormData compatibility
-    });
-    return response.entityName;
-}
-```
-
 ## MCP (Model Context Protocol) Integration
 
 The Make TypeScript SDK supports MCP tool integration to provide AI agents with access to all SDK functionality. This section covers the patterns and conventions for creating MCP tool definitions.
