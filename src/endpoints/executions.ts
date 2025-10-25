@@ -1,4 +1,4 @@
-import type { FetchFunction, Pagination } from '../types.js';
+import type { FetchFunction, Pagination, JSONValue } from '../types.js';
 
 /**
  * Represents an execution of a Make scenario.
@@ -11,7 +11,7 @@ export type Execution = {
     /** Internal Make ID of the execution */
     imtId: string;
     /** Status of the execution (0 = pending, 1 = successful, 2 = successful with warnings, 3 = failed) */
-    status: number;
+    status: 0 | 1 | 2 | 3;
     /** Duration of the execution in milliseconds */
     duration: number;
     /** Number of operations consumed by the execution */
@@ -28,6 +28,37 @@ export type Execution = {
     authorId: number | null;
     /** Whether the execution was run instantly */
     instant: boolean;
+};
+
+/**
+ * Detailed result of a scenario execution.
+ * Includes high-level status, optional outputs, and error metadata.
+ */
+export type ExecutionDetail = {
+    /**
+     * Status of the scenario execution: RUNNING, SUCCESS, WARNING, or ERROR
+     */
+    status: 'RUNNING' | 'SUCCESS' | 'WARNING' | 'ERROR';
+    /**
+     * Outputs of the scenario execution (shape depends on scenario configuration)
+     */
+    outputs?: Record<string, JSONValue>;
+    /**
+     * Error information when execution resulted in WARNING or ERROR
+     */
+    error?: {
+        /** Name of the error */
+        name: string;
+        /** Description of the error */
+        message: string;
+        /** Module that caused the error */
+        causeModule?: {
+            /** Name of the module */
+            name: string;
+            /** Name of the app */
+            appName: string;
+        };
+    };
 };
 
 /**
@@ -59,6 +90,11 @@ type GetExecutionResponse = {
     /** The requested execution log */
     scenarioLogs: Execution;
 };
+
+/**
+ * Response format for getting detailed execution result.
+ */
+type GetExecutionDetailResponse = ExecutionDetail;
 
 /**
  * Class providing methods for working with Make executions.
@@ -119,6 +155,16 @@ export class Executions {
      */
     async get(scenarioId: number, executionId: string): Promise<Execution> {
         return (await this.#fetch<GetExecutionResponse>(`/scenarios/${scenarioId}/logs/${executionId}`)).scenarioLogs;
+    }
+
+    /**
+     * Get detailed result of a specific execution.
+     * @param scenarioId The scenario ID the execution belongs to
+     * @param executionId The unique ID of the execution to retrieve
+     * @returns Promise with the detailed execution result
+     */
+    async getDetail(scenarioId: number, executionId: string): Promise<ExecutionDetail> {
+        return await this.#fetch<GetExecutionDetailResponse>(`/scenarios/${scenarioId}/executions/${executionId}`);
     }
 
     /**

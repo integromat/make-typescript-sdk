@@ -160,6 +160,8 @@ type UpdateScenarioInterfaceResponse = {
 export type RunScenarioResponse = {
     /** ID of the execution that was created */
     executionId: string;
+    /** Status of the scenario execution when run in responsive mode (1 = successful, 2 = successful with warnings, 3 = failed) */
+    status?: 1 | 2 | 3;
     /** Output data from the scenario execution (when run in responsive mode) */
     outputs: unknown;
 };

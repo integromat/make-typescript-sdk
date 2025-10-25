@@ -4,6 +4,7 @@ import { mockFetch } from './test.utils.js';
 
 import * as executionsListMock from './mocks/executions/list.json';
 import * as executionsGetMock from './mocks/executions/get.json';
+import * as executionsGetDetailMock from './mocks/executions/get-detail.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -27,6 +28,16 @@ describe('Endpoints: Executions', () => {
 
             const result = await make.executions.get(123456, 'cc1c49323b344687a324888762206003');
             expect(result).toStrictEqual(executionsGetMock.scenarioLogs);
+        });
+
+        it('Should get execution detail', async () => {
+            mockFetch(
+                'GET https://make.local/api/v2/scenarios/123456/executions/cc1c49323b344687a324888762206003',
+                executionsGetDetailMock,
+            );
+
+            const result = await make.executions.getDetail(123456, 'cc1c49323b344687a324888762206003');
+            expect(result).toStrictEqual(executionsGetDetailMock);
         });
 
         it('Should list executions for incomplete execution', async () => {
