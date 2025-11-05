@@ -1,0 +1,7 @@
+{
+    "connection": {
+        "name": "cloned-connection",
+        "label": "Cloned Connection",
+        "type": "oauth2"
+    }
+}

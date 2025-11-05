@@ -1,0 +1,35 @@
+{
+    "test": {
+        "success": true,
+        "duration": 1234,
+        "message": "Connection test completed successfully",
+        "details": {
+            "endpoint": "/api/test",
+            "method": "GET",
+            "responseStatus": 200,
+            "responseBody": {"status": "ok", "timestamp": "2024-11-05T10:00:00Z"},
+            "assertions": [
+                {
+                    "name": "Status Code Check",
+                    "passed": true,
+                    "expected": 200,
+                    "actual": 200,
+                    "message": "Response status code matches expected"
+                },
+                {
+                    "name": "Response Time Check",
+                    "passed": true,
+                    "expected": "< 2000ms",
+                    "actual": "1234ms",
+                    "message": "Response time within acceptable limits"
+                }
+            ]
+        },
+        "logs": [
+            "Initiating connection test...",
+            "Connecting to endpoint...",
+            "Connection established successfully",
+            "Test completed"
+        ]
+    }
+}

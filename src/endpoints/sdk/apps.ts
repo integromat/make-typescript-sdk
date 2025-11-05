@@ -111,6 +111,54 @@ export type UpdateSDKAppBody = {
 };
 
 /**
+ * Body for cloning an app
+ */
+export type CloneSDKAppBody = {
+    /** New app name */
+    name: string;
+    /** New version */
+    version: string;
+    /** Optional new label */
+    label?: string;
+    /** Optional new description */
+    description?: string;
+};
+
+/**
+ * Body for committing changes
+ */
+export type CommitSDKAppBody = {
+    /** Commit message */
+    message: string;
+    /** Optional list of changes */
+    changes?: string[];
+};
+
+/**
+ * Body for rolling back changes
+ */
+export type RollbackSDKAppBody = {
+    /** Optional specific commit to rollback to */
+    commitId?: string;
+    /** Optional number of steps to rollback */
+    steps?: number;
+};
+
+/**
+ * Commit information
+ */
+export type SDKAppCommit = {
+    /** Commit ID */
+    id: string;
+    /** Commit message */
+    message: string;
+    /** Timestamp */
+    timestamp: string;
+    /** List of changes */
+    changes: string[];
+};
+
+/**
  * Response for set operations
  */
 type SetSDKAppResponse = {
@@ -135,6 +183,26 @@ type CreateSDKAppResponse = {
 
 type UpdateSDKAppResponse = {
     app: Pick<SDKApp, 'name' | 'label' | 'description' | 'version' | 'theme' | 'public' | 'approved'>;
+};
+
+type CloneSDKAppResponse = {
+    app: SDKApp;
+};
+
+type CommitSDKAppResponse = {
+    commit: SDKAppCommit;
+};
+
+type RollbackSDKAppResponse = {
+    app: SDKApp;
+};
+
+type PrivacySDKAppResponse = {
+    app: SDKApp;
+};
+
+type IconUploadResponse = {
+    success: boolean;
 };
 
 /**
@@ -264,5 +332,72 @@ export class SDKApps {
             body: common,
         });
         return response.changed;
+    }
+
+    /**
+     * Upload app icon
+     */
+    async uploadIcon(name: string, version: number, iconData: Uint8Array | string, contentType: string): Promise<boolean> {
+        const response = await this.#fetch<IconUploadResponse>(`/sdk/apps/${name}/${version}/icon`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': contentType,
+            },
+            body: iconData as unknown as string,
+        });
+        return response.success;
+    }
+
+    /**
+     * Make app private
+     */
+    async makePrivate(name: string, version: number): Promise<SDKApp> {
+        const response = await this.#fetch<PrivacySDKAppResponse>(`/sdk/apps/${name}/${version}/private`, {
+            method: 'POST',
+        });
+        return response.app;
+    }
+
+    /**
+     * Make app public
+     */
+    async makePublic(name: string, version: number): Promise<SDKApp> {
+        const response = await this.#fetch<PrivacySDKAppResponse>(`/sdk/apps/${name}/${version}/public`, {
+            method: 'POST',
+        });
+        return response.app;
+    }
+
+    /**
+     * Clone app to new name/version
+     */
+    async clone(name: string, version: number, cloneData: CloneSDKAppBody): Promise<SDKApp> {
+        const response = await this.#fetch<CloneSDKAppResponse>(`/sdk/apps/${name}/${version}/clone`, {
+            method: 'POST',
+            body: cloneData,
+        });
+        return response.app;
+    }
+
+    /**
+     * Commit changes to app
+     */
+    async commit(name: string, version: number, commitData: CommitSDKAppBody): Promise<SDKAppCommit> {
+        const response = await this.#fetch<CommitSDKAppResponse>(`/sdk/apps/${name}/${version}/commit`, {
+            method: 'POST',
+            body: commitData,
+        });
+        return response.commit;
+    }
+
+    /**
+     * Rollback changes to app
+     */
+    async rollback(name: string, version: number, rollbackData: RollbackSDKAppBody): Promise<SDKApp> {
+        const response = await this.#fetch<RollbackSDKAppResponse>(`/sdk/apps/${name}/${version}/rollback`, {
+            method: 'POST',
+            body: rollbackData,
+        });
+        return response.app;
     }
 }

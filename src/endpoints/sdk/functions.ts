@@ -153,4 +153,36 @@ export class SDKFunctions {
         );
         return response.changed;
     }
+
+    /**
+     * Test function execution with context
+     */
+    async testFunction(appName: string, appVersion: number, functionName: string, context?: any): Promise<any> {
+        const response = await this.#fetch(`/sdk/apps/${appName}/${appVersion}/functions/${functionName}/execute`, {
+            method: 'POST',
+            body: context ? { context } : undefined,
+        });
+        return response;
+    }
+
+    /**
+     * Validate function configuration and code
+     */
+    async validateFunction(appName: string, appVersion: number, functionName: string): Promise<any> {
+        const response = await this.#fetch(`/sdk/apps/${appName}/${appVersion}/functions/${functionName}/validate`, {
+            method: 'POST',
+        });
+        return response;
+    }
+
+    /**
+     * Execute function with parameters
+     */
+    async executeFunction(appName: string, appVersion: number, functionName: string, params: any): Promise<any> {
+        const response = await this.#fetch(`/sdk/apps/${appName}/${appVersion}/functions/${functionName}/run`, {
+            method: 'POST',
+            body: { params },
+        });
+        return response;
+    }
 }

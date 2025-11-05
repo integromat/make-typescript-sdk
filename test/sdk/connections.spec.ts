@@ -9,6 +9,10 @@ import * as updateMock from '../mocks/sdk/connections/update.json';
 import * as getSectionMock from '../mocks/sdk/connections/get-section.json';
 import * as getCommonMock from '../mocks/sdk/connections/get-common.json';
 import * as setCommonMock from '../mocks/sdk/connections/set-common.json';
+import * as validateMock from '../mocks/sdk/connections/validate.json';
+import * as cloneMock from '../mocks/sdk/connections/clone.json';
+import * as usageStatsMock from '../mocks/sdk/connections/usage-stats.json';
+import * as testMock from '../mocks/sdk/connections/test.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -104,5 +108,79 @@ describe('Endpoints: SDK > Connections', () => {
 
         const result = await make.sdk.connections.setCommon('test-connection', body);
         expect(result).toBe(setCommonMock.changed);
+    });
+
+    describe('Advanced Operations', () => {
+        it('Should validate connection configuration', async () => {
+            mockFetch('POST https://make.local/api/v2/sdk/apps/connections/test-connection/validate', validateMock);
+
+            const result = await make.sdk.connections.validateConnection('test-connection');
+            expect(result).toStrictEqual(validateMock.validation);
+        });
+
+        it('Should clone connection to new app', async () => {
+            const cloneData = {
+                targetName: 'cloned-connection',
+                targetApp: 'target-app',
+                label: 'Cloned Connection',
+                includeSensitiveData: false
+            };
+            mockFetch('POST https://make.local/api/v2/sdk/apps/connections/source-connection/clone', cloneMock, req => {
+                expect(req.body).toStrictEqual(cloneData);
+                expect(req.headers.get('content-type')).toBe('application/json');
+            });
+
+            const result = await make.sdk.connections.cloneConnection('source-connection', cloneData);
+            expect(result).toStrictEqual(cloneMock.connection);
+        });
+
+        it('Should get connection usage statistics', async () => {
+            mockFetch('GET https://make.local/api/v2/sdk/apps/connections/test-connection/stats', usageStatsMock);
+
+            const result = await make.sdk.connections.getUsageStats('test-connection');
+            expect(result).toStrictEqual(usageStatsMock.stats);
+        });
+
+        it('Should test connection functionality', async () => {
+            const testData = { endpoint: '/api/test', method: 'GET' };
+            mockFetch('POST https://make.local/api/v2/sdk/apps/connections/test-connection/test', testMock, req => {
+                expect(req.body).toStrictEqual({ testData });
+                expect(req.headers.get('content-type')).toBe('application/json');
+            });
+
+            const result = await make.sdk.connections.testConnection('test-connection', testData);
+            expect(result).toStrictEqual(testMock.test);
+        });
+
+        it('Should test connection without test data', async () => {
+            mockFetch('POST https://make.local/api/v2/sdk/apps/connections/test-connection/test', testMock);
+
+            const result = await make.sdk.connections.testConnection('test-connection');
+            expect(result).toStrictEqual(testMock.test);
+        });
+    });
+
+    describe('Error Handling', () => {
+        it('Should handle validation errors for invalid connections', async () => {
+            mockFetch('POST https://make.local/api/v2/sdk/apps/connections/invalid-connection/validate', null, 400);
+
+            await expect(make.sdk.connections.validateConnection('invalid-connection')).rejects.toThrow();
+        });
+
+        it('Should handle test failures for broken connections', async () => {
+            const failedTestMock = {
+                test: {
+                    success: false,
+                    duration: 1500,
+                    message: 'Connection failed: Authentication error',
+                    logs: ['Attempting connection...', 'Authentication failed']
+                }
+            };
+            mockFetch('POST https://make.local/api/v2/sdk/apps/connections/broken-connection/test', failedTestMock);
+
+            const result = await make.sdk.connections.testConnection('broken-connection');
+            expect(result.success).toBe(false);
+            expect(result.message).toContain('Authentication error');
+        });
     });
 });

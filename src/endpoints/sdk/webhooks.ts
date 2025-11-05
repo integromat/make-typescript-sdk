@@ -145,4 +145,47 @@ export class SDKWebhooks {
             body: JSONStringifyIfNotString(body),
         });
     }
+
+    /**
+     * Attach webhook with configuration
+     */
+    async attachWebhook(webhookName: string, config?: any): Promise<any> {
+        const response = await this.#fetch(`/sdk/apps/webhooks/${webhookName}/attach`, {
+            method: 'POST',
+            body: config ? { config } : undefined,
+        });
+        return response;
+    }
+
+    /**
+     * Detach webhook
+     */
+    async detachWebhook(webhookName: string, config?: any): Promise<any> {
+        const response = await this.#fetch(`/sdk/apps/webhooks/${webhookName}/detach`, {
+            method: 'POST',
+            body: config ? { config } : undefined,
+        });
+        return response;
+    }
+
+    /**
+     * Test webhook functionality
+     */
+    async testWebhook(webhookName: string, payload?: any): Promise<any> {
+        const response = await this.#fetch(`/sdk/apps/webhooks/${webhookName}/test`, {
+            method: 'POST',
+            body: payload ? { payload } : undefined,
+        });
+        return response;
+    }
+
+    /**
+     * Validate webhook configuration
+     */
+    async validateWebhook(webhookName: string): Promise<any> {
+        const response = await this.#fetch(`/sdk/apps/webhooks/${webhookName}/validate`, {
+            method: 'POST',
+        });
+        return response;
+    }
 }

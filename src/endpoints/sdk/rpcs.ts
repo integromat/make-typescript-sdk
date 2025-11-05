@@ -188,4 +188,36 @@ export class SDKRPCs {
             body: JSONStringifyIfNotString(body),
         });
     }
+
+    /**
+     * Test RPC functionality
+     */
+    async testRPC(appName: string, appVersion: number, rpcName: string, testData?: any): Promise<any> {
+        const response = await this.#fetch(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/test`, {
+            method: 'POST',
+            body: testData ? { testData } : undefined,
+        });
+        return response;
+    }
+
+    /**
+     * Validate RPC configuration
+     */
+    async validateRPC(appName: string, appVersion: number, rpcName: string): Promise<any> {
+        const response = await this.#fetch(`/sdk/apps/${appName}/${appVersion}/rpcs/${rpcName}/validate`, {
+            method: 'POST',
+        });
+        return response;
+    }
+
+    /**
+     * Clone RPC to new name
+     */
+    async cloneRPC(appName: string, appVersion: number, sourceRpcName: string, targetRpcName: string): Promise<SDKRPC> {
+        const response = await this.#fetch(`/sdk/apps/${appName}/${appVersion}/rpcs/${sourceRpcName}/clone`, {
+            method: 'POST',
+            body: { targetName: targetRpcName },
+        });
+        return (response as any).rpc || response;
+    }
 }

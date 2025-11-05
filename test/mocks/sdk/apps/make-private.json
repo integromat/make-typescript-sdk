@@ -1,0 +1,18 @@
+{
+    "app": {
+        "name": "test-app",
+        "label": "Test App",
+        "description": "Test application for SDK",
+        "version": 1,
+        "beta": false,
+        "theme": "#3498db",
+        "language": "en",
+        "public": false,
+        "approved": true,
+        "global": false,
+        "countries": ["us", "uk"],
+        "created": "2024-11-05T10:00:00Z",
+        "manifestVersion": 2,
+        "changes": []
+    }
+}

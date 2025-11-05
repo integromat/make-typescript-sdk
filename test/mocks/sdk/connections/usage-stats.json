@@ -1,0 +1,16 @@
+{
+    "stats": {
+        "totalRequests": 15420,
+        "successfulRequests": 14892,
+        "failedRequests": 528,
+        "averageResponseTime": 245.6,
+        "lastUsed": "2024-11-05T10:30:00Z",
+        "errorRate": 0.034,
+        "rateLimitStatus": {
+            "remaining": 850,
+            "total": 1000,
+            "resetTime": "2024-11-05T11:00:00Z",
+            "isLimited": false
+        }
+    }
+}

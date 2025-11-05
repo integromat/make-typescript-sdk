@@ -1,0 +1,19 @@
+{
+    "validation": {
+        "isValid": true,
+        "errors": [],
+        "warnings": [
+            {
+                "field": "timeout",
+                "code": "PERFORMANCE_WARNING",
+                "message": "Connection timeout is set high, consider optimizing",
+                "impact": "medium"
+            }
+        ],
+        "score": 85,
+        "recommendations": [
+            "Consider reducing timeout for better performance",
+            "Add retry logic for better reliability"
+        ]
+    }
+}
