@@ -131,7 +131,7 @@ export const tools = [
                 webhookName: { type: 'string', description: 'The name of the webhook' },
                 section: {
                     type: 'string',
-                    enum: ['api', 'parameters', 'attach', 'detach', 'scope'],
+                    enum: ['api', 'parameters', 'attach', 'detach', 'scope', 'update'],
                     description: 'The section to get',
                 },
             },
@@ -141,7 +141,7 @@ export const tools = [
             make: Make,
             args: {
                 webhookName: string;
-                section: 'api' | 'parameters' | 'attach' | 'detach' | 'scope';
+                section: 'api' | 'parameters' | 'attach' | 'detach' | 'scope' | 'update';
             },
         ) => {
             return await make.sdk.webhooks.getSection(args.webhookName, args.section);
@@ -164,7 +164,7 @@ export const tools = [
                 webhookName: { type: 'string', description: 'The name of the webhook' },
                 section: {
                     type: 'string',
-                    enum: ['api', 'parameters', 'attach', 'detach', 'scope'],
+                    enum: ['api', 'parameters', 'attach', 'detach', 'scope', 'update'],
                     description: 'The section to set',
                 },
                 body: { type: 'string', description: 'The section data to set in JSONC format' },
@@ -175,7 +175,7 @@ export const tools = [
             make: Make,
             args: {
                 webhookName: string;
-                section: 'api' | 'parameters' | 'attach' | 'detach' | 'scope';
+                section: 'api' | 'parameters' | 'attach' | 'detach' | 'scope' | 'update';
                 body: string;
             },
         ) => {

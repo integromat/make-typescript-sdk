@@ -27,7 +27,7 @@ export type SDKWebhookSection = string;
 /**
  * Available webhook section types
  */
-export type SDKWebhookSectionType = 'api' | 'parameters' | 'attach' | 'detach' | 'scope';
+export type SDKWebhookSectionType = 'api' | 'parameters' | 'attach' | 'detach' | 'scope' | 'update';
 
 /**
  * Body for creating a new webhook
