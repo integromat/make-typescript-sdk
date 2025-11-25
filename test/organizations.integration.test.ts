@@ -10,6 +10,7 @@ const MAKE_ZONE = 'eu2.make.com';
  * This is due to the free subscription tier not having access to the API endpoints required for deleting organizations.
  */
 
+// eslint-disable-next-line jest/no-disabled-tests
 describe.skip('Integration: Organizations', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
@@ -88,6 +89,7 @@ describe.skip('Integration: Organizations', () => {
             // If we get here, the test should fail because the organization should be deleted
             expect(true).toBe(false);
         } catch (error) {
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(error).toBeDefined();
         }
     });

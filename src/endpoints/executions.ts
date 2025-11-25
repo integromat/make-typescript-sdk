@@ -84,11 +84,27 @@ type ListExecutionsResponse = {
 };
 
 /**
+ * Response format for listing executions of Incomplete Executions.
+ */
+type ListIncompleteExecutionExecutionsResponse = {
+    /** List of incomplete execution logs */
+    dlqLogs: Execution[];
+};
+
+/**
  * Response format for getting an execution.
  */
 type GetExecutionResponse = {
     /** The requested execution log */
-    scenarioLogs: Execution;
+    scenarioLog: Execution;
+};
+
+/**
+ * Response format for getting an execution of an Incomplete Execution.
+ */
+type GetIncompleteExecutionExecutionResponse = {
+    /** The requested execution log */
+    dlqLog: Execution;
 };
 
 /**
@@ -139,12 +155,12 @@ export class Executions {
         options?: ListExecutionsOptions,
     ): Promise<Execution[]> {
         return (
-            await this.#fetch<ListExecutionsResponse>(`/dlqs/${incompleteExecutionId}/logs`, {
+            await this.#fetch<ListIncompleteExecutionExecutionsResponse>(`/dlqs/${incompleteExecutionId}/logs`, {
                 query: {
                     pg: options?.pg,
                 },
             })
-        ).scenarioLogs;
+        ).dlqLogs;
     }
 
     /**
@@ -154,7 +170,7 @@ export class Executions {
      * @returns Promise with the execution details
      */
     async get(scenarioId: number, executionId: string): Promise<Execution> {
-        return (await this.#fetch<GetExecutionResponse>(`/scenarios/${scenarioId}/logs/${executionId}`)).scenarioLogs;
+        return (await this.#fetch<GetExecutionResponse>(`/scenarios/${scenarioId}/logs/${executionId}`)).scenarioLog;
     }
 
     /**
@@ -174,7 +190,10 @@ export class Executions {
      * @returns Promise with the execution details
      */
     async getForIncompleteExecution(incompleteExecutionId: string, executionId: string): Promise<Execution> {
-        return (await this.#fetch<GetExecutionResponse>(`/dlqs/${incompleteExecutionId}/logs/${executionId}`))
-            .scenarioLogs;
+        return (
+            await this.#fetch<GetIncompleteExecutionExecutionResponse>(
+                `/dlqs/${incompleteExecutionId}/logs/${executionId}`,
+            )
+        ).dlqLog;
     }
 }

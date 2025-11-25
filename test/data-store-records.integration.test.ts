@@ -236,6 +236,7 @@ describe('Integration: Data Store Records', () => {
             await make.dataStores.get(dataStoreId);
             expect(true).toBe(false); // Should not reach this line
         } catch (error) {
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(error).toBeDefined();
         }
     });
@@ -248,6 +249,7 @@ describe('Integration: Data Store Records', () => {
             await make.dataStructures.get(dataStructureId);
             expect(true).toBe(false); // Should not reach this line
         } catch (error) {
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(error).toBeDefined();
         }
     });

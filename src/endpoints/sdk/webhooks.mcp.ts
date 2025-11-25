@@ -1,5 +1,4 @@
 import type { Make } from '../../make.js';
-import type { JSONValue } from '../../types.js';
 
 export const tools = [
     {

@@ -53,7 +53,7 @@ describe('Integration: SDK > Apps', () => {
         expect(updatedApp.theme).toBe('#33ff57');
     });
 
-    it.skip('Should get and set app sections', async () => {
+    it('Should get and set app sections', async () => {
         // Test getting base section
         const baseSection = await make.sdk.apps.getSection(appName, appVersion, 'base');
         expect(baseSection).toBeDefined();
@@ -109,6 +109,7 @@ describe('Integration: SDK > Apps', () => {
             // If we get here, the test should fail because the app should be deleted
             expect(true).toBe(false);
         } catch (error) {
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(error).toBeDefined();
         }
     });

@@ -124,7 +124,7 @@ describe('Integration: Connections', () => {
         expect(result).toBe(true);
     });
 
-    it('Should verify a connection', async () => {
+    it('Should fail to verify a connection', async () => {
         await expect(make.connections.verify(connectionId)).rejects.toThrow(/Access denied: Invalid token header./);
     });
 

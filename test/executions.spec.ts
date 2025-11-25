@@ -3,7 +3,9 @@ import { Make } from '../src/make.js';
 import { mockFetch } from './test.utils.js';
 
 import * as executionsListMock from './mocks/executions/list.json';
+import * as executionsDlqListMock from './mocks/executions/dlq-list.json';
 import * as executionsGetMock from './mocks/executions/get.json';
+import * as executionsDlqGetMock from './mocks/executions/dlq-get.json';
 import * as executionsGetDetailMock from './mocks/executions/get-detail.json';
 
 const MAKE_API_KEY = 'api-key';
@@ -27,7 +29,7 @@ describe('Endpoints: Executions', () => {
             );
 
             const result = await make.executions.get(123456, 'cc1c49323b344687a324888762206003');
-            expect(result).toStrictEqual(executionsGetMock.scenarioLogs);
+            expect(result).toStrictEqual(executionsGetMock.scenarioLog);
         });
 
         it('Should get execution detail', async () => {
@@ -41,23 +43,23 @@ describe('Endpoints: Executions', () => {
         });
 
         it('Should list executions for incomplete execution', async () => {
-            mockFetch('GET https://make.local/api/v2/dlqs/123456/logs', executionsListMock);
+            mockFetch('GET https://make.local/api/v2/dlqs/123456/logs', executionsDlqListMock);
 
             const result = await make.executions.listForIncompleteExecution('123456');
-            expect(result).toStrictEqual(executionsListMock.scenarioLogs);
+            expect(result).toStrictEqual(executionsDlqListMock.dlqLogs);
         });
 
         it('Should get execution for incomplete execution', async () => {
             mockFetch(
                 'GET https://make.local/api/v2/dlqs/123456/logs/cc1c49323b344687a324888762206003',
-                executionsGetMock,
+                executionsDlqGetMock,
             );
 
             const result = await make.executions.getForIncompleteExecution(
                 '123456',
                 'cc1c49323b344687a324888762206003',
             );
-            expect(result).toStrictEqual(executionsGetMock.scenarioLogs);
+            expect(result).toStrictEqual(executionsDlqGetMock.dlqLog);
         });
     });
 });

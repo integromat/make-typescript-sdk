@@ -6,6 +6,7 @@ const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
 const MAKE_ORGANIZATION = Number(process.env.MAKE_ORGANIZATION || 0);
 
+// eslint-disable-next-line jest/no-disabled-tests
 describe.skip('Integration: Teams', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
@@ -56,6 +57,7 @@ describe.skip('Integration: Teams', () => {
             // If we get here, the test should fail because the team should be deleted
             expect(true).toBe(false);
         } catch (error) {
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(error).toBeDefined();
         }
     });
