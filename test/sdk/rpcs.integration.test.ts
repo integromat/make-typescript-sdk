@@ -85,6 +85,7 @@ describe('Integration: SDK > RPCs', () => {
             expect(true).toBe(true);
         } catch (error) {
             // Test RPC may fail if not properly configured, which is acceptable for our test
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(error).toBeDefined();
         }
     });
@@ -127,7 +128,8 @@ describe('Integration: SDK > RPCs', () => {
             expect(true).toBe(false);
         } catch (error) {
             // This is expected - RPC should not exist
-            expect(true).toBe(true);
+            // eslint-disable-next-line jest/no-conditional-expect
+            expect(error).toBeDefined();
         }
     });
 

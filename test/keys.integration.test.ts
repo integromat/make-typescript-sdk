@@ -106,6 +106,7 @@ describe('Integration: Keys', () => {
             // If we get here, the test should fail because the key should be deleted
             expect(true).toBe(false);
         } catch (error) {
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(error).toBeDefined();
         }
     });

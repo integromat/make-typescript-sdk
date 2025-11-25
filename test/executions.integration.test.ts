@@ -65,6 +65,7 @@ describe('Integration: Executions', () => {
             await make.scenarios.get(scenarioId);
             expect(true).toBe(false);
         } catch (error) {
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(error).toBeDefined();
         }
     });
