@@ -1,0 +1,17 @@
+{
+    "dlqLog": {
+        "imtId": "1594117724361_dlq.00946714d6dd4a4cb091fe5435a8d197.manual.28a4794e85894c80a483777d6958160f",
+        "duration": 1353,
+        "operations": 1,
+        "centicredits": 100,
+        "transfer": 87,
+        "organizationId": 1,
+        "teamId": 1,
+        "id": "28a4794e85894c80a483777d6958160f",
+        "type": "manual",
+        "authorId": null,
+        "instant": false,
+        "timestamp": "2020-07-07T10:28:44.361Z",
+        "status": 3
+    }
+}

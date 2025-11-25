@@ -1,0 +1,36 @@
+{
+    "dlqLogs": [
+        {
+            "imtId": "1574777797796_dlq.a07e16f2ad134bf49cf83a00aa95c0a5.manual.f241ee9b0d344964a5ce54356b9ed98e",
+            "duration": 728,
+            "transfer": 0,
+            "operations": 1,
+            "centicredits": 100,
+            "teamId": 1,
+            "id": "f241ee9b0d344964a5ce54356b9ed98e",
+            "type": "manual",
+            "authorId": null,
+            "timestamp": "2019-11-26T14:16:37.796Z",
+            "status": 3
+        },
+        {
+            "imtId": "1574777795371_dlq.a07e16f2ad134bf49cf83a00aa95c0a5.manual.7f65bad83eb74c899a70c76794d8afc3",
+            "duration": 795,
+            "transfer": 0,
+            "operations": 1,
+            "centicredits": 100,
+            "teamId": 1,
+            "id": "7f65bad83eb74c899a70c76794d8afc3",
+            "type": "manual",
+            "authorId": null,
+            "timestamp": "2019-11-26T14:16:35.371Z",
+            "status": 3
+        }
+    ],
+    "pg": {
+        "sortBy": "imtId",
+        "sortDir": "desc",
+        "limit": 50,
+        "offset": 0
+    }
+}
