@@ -19,7 +19,7 @@ export const tools = [
             required: ['teamId'],
         },
         execute: async (make: Make, args: { teamId: number }) => {
-            return await make.dataStores.list(args.teamId);
+            return await make.dataStores.list(args.teamId, { cols: ['*'] });
         },
     },
     {
@@ -40,7 +40,7 @@ export const tools = [
             required: ['dataStoreId'],
         },
         execute: async (make: Make, args: { dataStoreId: number }) => {
-            return await make.dataStores.get(args.dataStoreId);
+            return await make.dataStores.get(args.dataStoreId, { cols: ['*'] });
         },
     },
     {

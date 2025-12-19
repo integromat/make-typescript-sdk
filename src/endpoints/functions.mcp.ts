@@ -19,7 +19,7 @@ export const tools = [
             required: ['teamId'],
         },
         execute: async (make: Make, args: { teamId: number }) => {
-            return await make.functions.list(args.teamId);
+            return await make.functions.list(args.teamId, { cols: ['*'] });
         },
     },
     {

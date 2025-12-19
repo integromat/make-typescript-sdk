@@ -19,7 +19,7 @@ export const tools = [
             required: ['teamId'],
         },
         execute: async (make: Make, args: { teamId: number }) => {
-            return await make.folders.list(args.teamId);
+            return await make.folders.list(args.teamId, { cols: ['*'] });
         },
     },
     {
@@ -66,7 +66,7 @@ export const tools = [
         },
         execute: async (make: Make, args: { folderId: number; name?: string }) => {
             const { folderId, ...body } = args;
-            return await make.folders.update(folderId, body);
+            return await make.folders.update(folderId, body, { cols: ['*'] });
         },
     },
     {

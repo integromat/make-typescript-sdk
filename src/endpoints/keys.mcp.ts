@@ -20,7 +20,7 @@ export const tools = [
             required: ['teamId'],
         },
         execute: async (make: Make, args: { teamId: number }) => {
-            return await make.keys.list(args.teamId);
+            return await make.keys.list(args.teamId, { cols: ['*'] });
         },
     },
     {
@@ -41,7 +41,7 @@ export const tools = [
             required: ['keyId'],
         },
         execute: async (make: Make, args: { keyId: number }) => {
-            return await make.keys.get(args.keyId);
+            return await make.keys.get(args.keyId, { cols: ['*'] });
         },
     },
     {
