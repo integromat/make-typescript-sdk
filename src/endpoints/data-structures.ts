@@ -56,7 +56,7 @@ export type DataStructure = {
  */
 export type ListDataStructuresOptions<C extends keyof DataStructure = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
     /** Pagination options */
     pg?: Partial<Pagination<DataStructure>>;
 };

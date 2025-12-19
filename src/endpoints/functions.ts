@@ -129,7 +129,7 @@ type FunctionHistoryResponse = {
  */
 export type ListFunctionsOptions<C extends keyof Function = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**
