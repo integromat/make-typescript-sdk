@@ -24,6 +24,22 @@ describe('Endpoints: Connections', () => {
         expect(connections).toStrictEqual(listMock.connections);
     });
 
+    it('should list connections of a particular type with scopes', async () => {
+        const googleConnections = listMock.connections.filter(c => c.accountName === 'google');
+        mockFetch(
+            'GET https://make.local/api/v2/connections?teamId=123&type%5B%5D=google&google%5B%5D=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fspreadsheets&google%5B%5D=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive',
+            { connections: googleConnections },
+        );
+
+        const connections = await make.connections.list(123, {
+            type: ['google'],
+            scopes: {
+                google: ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive'],
+            },
+        });
+        expect(connections).toStrictEqual(googleConnections);
+    });
+
     it('should get a connection', async () => {
         mockFetch('GET https://make.local/api/v2/connections/93', getMock);
 
