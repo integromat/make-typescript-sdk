@@ -50,7 +50,7 @@ export type KeyType = {
  */
 export type ListKeysOptions<C extends keyof Key = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
     /** Team ID to filter keys by (can override the main parameter) */
     teamId?: number;
     /** Filter keys by type */
@@ -94,7 +94,7 @@ type ListKeysResponse<C extends keyof Key = never> = {
  */
 export type GetKeyOptions<C extends keyof Key = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**

@@ -22,7 +22,7 @@ export const tools = [
             required: ['teamId'],
         },
         execute: async (make: Make, args: { teamId: number }) => {
-            return await make.scenarios.list(args.teamId);
+            return await make.scenarios.list(args.teamId, { cols: ['*'] });
         },
     },
     {
@@ -43,7 +43,7 @@ export const tools = [
             required: ['scenarioId'],
         },
         execute: async (make: Make, args: { scenarioId: number }) => {
-            const scenario = await make.scenarios.get(args.scenarioId);
+            const scenario = await make.scenarios.get(args.scenarioId, { cols: ['*'] });
             const blueprint = await make.blueprints.get(scenario.id);
 
             return {
@@ -91,7 +91,7 @@ export const tools = [
             },
         ) => {
             const { confirmed, ...body } = args;
-            return await make.scenarios.create(body, { confirmed });
+            return await make.scenarios.create(body, { confirmed, cols: ['*'] });
         },
     },
     {
@@ -135,7 +135,7 @@ export const tools = [
             },
         ) => {
             const { scenarioId, confirmed, ...body } = args;
-            return await make.scenarios.update(scenarioId, body, { confirmed });
+            return await make.scenarios.update(scenarioId, body, { confirmed, cols: ['*'] });
         },
     },
     {

@@ -14,10 +14,10 @@ export const tools = [
         },
         inputSchema: {
             type: 'object',
-            properties: {}
+            properties: {},
         },
         execute: async (make: Make) => {
-            return await make.sdk.apps.list();
+            return await make.sdk.apps.list({ cols: ['*'] });
         },
     },
     {
@@ -39,7 +39,7 @@ export const tools = [
             required: ['name', 'version'],
         },
         execute: async (make: Make, args: { name: string; version: number }) => {
-            return await make.sdk.apps.get(args.name, args.version);
+            return await make.sdk.apps.get(args.name, args.version, { cols: ['*'] });
         },
     },
     {

@@ -21,7 +21,7 @@ export const tools = [
             required: ['teamId'],
         },
         execute: async (make: Make, args: { teamId: number; type?: string[] }) => {
-            return await make.connections.list(args.teamId, { type: args.type });
+            return await make.connections.list(args.teamId, { type: args.type, cols: ['*'] });
         },
     },
     {
@@ -42,7 +42,7 @@ export const tools = [
             required: ['connectionId'],
         },
         execute: async (make: Make, args: { connectionId: number }) => {
-            return await make.connections.get(args.connectionId);
+            return await make.connections.get(args.connectionId, { cols: ['*'] });
         },
     },
     {

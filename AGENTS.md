@@ -53,7 +53,7 @@ export type EntityName = {
  */
 export type ListEntityNamesOptions<C extends keyof EntityName = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
     /** Pagination options */
     pg?: Partial<Pagination<EntityName>>;
     /** Additional filter options specific to this endpoint */
@@ -65,7 +65,7 @@ export type ListEntityNamesOptions<C extends keyof EntityName = never> = {
  */
 export type GetEntityNameOptions<C extends keyof EntityName = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**
@@ -507,7 +507,7 @@ For endpoints with special filtering or search capabilities:
 
 ```typescript
 export type ListEntityNamesOptions<C extends keyof EntityName = never> = {
-    cols?: C[];
+    cols?: C[] | ['*'];
     pg?: Partial<Pagination<EntityName>>;
     /** Search entities by name */
     search?: string;

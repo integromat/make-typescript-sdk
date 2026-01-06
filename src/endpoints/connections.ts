@@ -62,7 +62,7 @@ export type ConnectionWithScopes = Connection & {
  */
 export type ListConnectionsOptions<C extends keyof Connection = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
     /** Filter connections by type */
     type?: string[];
 };
@@ -73,7 +73,7 @@ export type ListConnectionsOptions<C extends keyof Connection = never> = {
  */
 export type GetConnectionOptions<C extends keyof ConnectionWithScopes = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**
@@ -82,7 +82,7 @@ export type GetConnectionOptions<C extends keyof ConnectionWithScopes = never> =
  */
 export type RenameConnectionOptions<C extends keyof Connection = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**
