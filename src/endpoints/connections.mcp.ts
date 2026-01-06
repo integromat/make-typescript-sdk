@@ -17,11 +17,23 @@ export const tools = [
             properties: {
                 teamId: { type: 'number', description: 'The team ID to list connections for' },
                 type: { type: 'array', items: { type: 'string' }, description: 'Filter by connection type' },
+                scopes: {
+                    type: 'object',
+                    description:
+                        'Scopes that are required on the requested connection types. Each connection type is a key in this object with an array of scopes as the value.',
+                    patternProperties: {
+                        '^.*$': {
+                            type: 'array',
+                            description: 'Array of scopes required on the particular connection type.',
+                            items: { type: 'string' },
+                        },
+                    },
+                },
             },
             required: ['teamId'],
         },
-        execute: async (make: Make, args: { teamId: number; type?: string[] }) => {
-            return await make.connections.list(args.teamId, { type: args.type });
+        execute: async (make: Make, args: { teamId: number; type?: string[]; scopes?: Record<string, string[]> }) => {
+            return await make.connections.list(args.teamId, { type: args.type, scopes: args.scopes });
         },
     },
     {
