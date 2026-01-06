@@ -65,6 +65,8 @@ export type ListConnectionsOptions<C extends keyof Connection = never> = {
     cols?: C[] | ['*'];
     /** Filter connections by type */
     type?: string[];
+    /** Scopes that need to be present on the particular connection type */
+    scopes?: Record<string, string[]>;
 };
 
 /**
@@ -210,6 +212,7 @@ export class Connections {
                     teamId,
                     type: options?.type,
                     cols: options?.cols,
+                    ...options?.scopes,
                 },
             })
         ).connections;
