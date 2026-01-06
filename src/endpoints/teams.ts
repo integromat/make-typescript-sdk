@@ -53,7 +53,7 @@ type UserTeamRole = {
  */
 export type ListTeamsOptions<C extends keyof Team = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
     /** Pagination options */
     pg?: Partial<Pagination<Team>>;
 };
@@ -98,7 +98,7 @@ type CreateTeamResponse = {
  */
 export type GetTeamOptions<C extends keyof Team = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**

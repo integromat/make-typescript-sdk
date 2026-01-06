@@ -33,7 +33,7 @@ export const tools = [
             required: ['teamId'],
         },
         execute: async (make: Make, args: { teamId: number; type?: string[]; scopes?: Record<string, string[]> }) => {
-            return await make.connections.list(args.teamId, { type: args.type, scopes: args.scopes });
+            return await make.connections.list(args.teamId, { type: args.type, scopes: args.scopes, cols: ['*'] });
         },
     },
     {
@@ -54,7 +54,7 @@ export const tools = [
             required: ['connectionId'],
         },
         execute: async (make: Make, args: { connectionId: number }) => {
-            return await make.connections.get(args.connectionId);
+            return await make.connections.get(args.connectionId, { cols: ['*'] });
         },
     },
     {

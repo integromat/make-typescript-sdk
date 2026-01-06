@@ -95,7 +95,7 @@ export type Scheduling = {
  */
 export type GetScenarioOptions<C extends keyof Scenario = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**
@@ -104,7 +104,7 @@ export type GetScenarioOptions<C extends keyof Scenario = never> = {
  */
 export type ListScenariosOptions<C extends keyof Scenario = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
     /** Pagination options */
     pg?: Partial<Pagination<Scenario>>;
 };
@@ -196,7 +196,7 @@ export type CreateScenarioBody = {
  */
 export type CreateScenarioOptions<C extends keyof Scenario = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
     /** Confirmation in case the scenario uses apps that are not yet installed in the organization */
     confirmed?: boolean;
 };
@@ -273,7 +273,7 @@ function normalizePayload(payload: UpdateScenarioBody | CreateScenarioBody) {
  */
 export type UpdateScenarioOptions<C extends keyof Scenario = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
     /** Confirmation in case the scenario uses apps that are not yet installed in the organization */
     confirmed?: boolean;
 };

@@ -16,7 +16,7 @@ export const tools = [
             properties: {},
         },
         execute: async (make: Make) => {
-            return await make.organizations.list();
+            return await make.organizations.list({ cols: ['*'] });
         },
     },
     {

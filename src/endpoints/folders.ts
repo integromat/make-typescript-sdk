@@ -19,7 +19,7 @@ export type Folder = {
  */
 export type ListFoldersOptions<C extends keyof Folder = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**
@@ -54,7 +54,7 @@ type CreateFolderResponse = {
  */
 export type UpdateFolderOptions<C extends keyof Folder = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**

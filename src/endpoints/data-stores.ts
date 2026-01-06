@@ -29,7 +29,7 @@ export type DataStore = {
  */
 export type ListDataStoresOptions<C extends keyof DataStore = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
     /** Pagination options */
     pg?: Partial<Pagination<DataStore>>;
 };
@@ -40,7 +40,7 @@ export type ListDataStoresOptions<C extends keyof DataStore = never> = {
  */
 export type GetDataStoreOptions<C extends keyof DataStore = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**

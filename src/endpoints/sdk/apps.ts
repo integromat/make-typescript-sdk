@@ -57,7 +57,7 @@ export type SDKAppCommon = Record<string, JSONValue>;
  */
 export type ListSDKAppsOptions<C extends keyof SDKApp = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
     /** If set to true, returns all apps available to all users */
     all?: boolean;
 };
@@ -67,7 +67,7 @@ export type ListSDKAppsOptions<C extends keyof SDKApp = never> = {
  */
 export type GetSDKAppsOptions<C extends keyof SDKApp = never> = {
     /** Specific columns/fields to include in the response */
-    cols?: C[];
+    cols?: C[] | ['*'];
 };
 
 /**
