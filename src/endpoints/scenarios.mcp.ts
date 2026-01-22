@@ -222,15 +222,16 @@ export const tools = [
                 scenarioId: { type: 'number', description: 'The scenario ID to run' },
                 data: { type: 'object', description: 'Optional input data for the scenario' },
                 responsive: { type: 'boolean', description: 'Whether to run responsively' },
+                callbackUrl: { type: 'string', description: 'URL to call once the scenario execution finishes' },
             },
             required: ['scenarioId'],
         },
         execute: async (
             make: Make,
-            args: { scenarioId: number; data?: Record<string, JSONValue>; responsive?: boolean },
+            args: { scenarioId: number; data?: Record<string, JSONValue>; responsive?: boolean; callbackUrl?: string },
         ) => {
-            const { scenarioId, data, responsive } = args;
-            return await make.scenarios.run(scenarioId, data, { responsive });
+            const { scenarioId, data, responsive, callbackUrl } = args;
+            return await make.scenarios.run(scenarioId, data, { responsive, callbackUrl });
         },
     },
     {
