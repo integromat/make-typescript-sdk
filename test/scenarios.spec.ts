@@ -95,6 +95,22 @@ describe('Endpoints: Scenarios', () => {
             expect(result).toStrictEqual(scenarioRunMock);
         });
 
+        it('Should run scenario with callback URL', async () => {
+            const data = { key: 'value' };
+            const callbackUrl = 'https://example.com/callback';
+
+            mockFetch('POST https://make.local/api/v2/scenarios/18/run', scenarioRunMock, req => {
+                expect(req.body).toStrictEqual({
+                    data,
+                    responsive: false,
+                    callbackUrl,
+                });
+            });
+
+            const result = await make.scenarios.run(18, data, { responsive: false, callbackUrl });
+            expect(result).toStrictEqual(scenarioRunMock);
+        });
+
         it('Should activate scenario', async () => {
             mockFetch('POST https://make.local/api/v2/scenarios/5/start', scenarioActivateMock, req => {
                 expect(req.body).toBe('');

@@ -167,6 +167,16 @@ export type RunScenarioResponse = {
 };
 
 /**
+ * Options for running a scenario.
+ */
+export type RunScenarioOptions = {
+    /** Whether to run responsively (defaults to true) */
+    responsive?: boolean;
+    /** URL that will be called once the scenario execution finishes */
+    callbackUrl?: string;
+};
+
+/**
  * Response format for activating a scenario.
  */
 type ActivateScenarioResponse = {
@@ -473,13 +483,14 @@ export class Scenarios {
     async run(
         scenarioId: number,
         body?: Record<string, JSONValue>,
-        options?: { responsive?: boolean },
+        options?: RunScenarioOptions,
     ): Promise<RunScenarioResponse> {
         return await this.#fetch<RunScenarioResponse>(`/scenarios/${scenarioId}/run`, {
             method: 'POST',
             body: {
                 data: body,
                 responsive: options?.responsive ?? true,
+                callbackUrl: options?.callbackUrl,
             },
         });
     }
