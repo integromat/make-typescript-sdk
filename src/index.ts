@@ -1,6 +1,6 @@
 export { Make } from './make.js';
 export { MakeError } from './utils.js';
-export type { FetchOptions, Pagination, JSONValue, FetchFunction, QueryValue, PickColumns } from './types.js';
+export type { FetchOptions, Pagination, JSONValue, FetchFunction, QueryValue, PickColumns, RetryOptions } from './types.js';
 
 export type { Blueprint, Blueprints, BlueprintNode, BlueprintRoute, BlueprintVersion } from './endpoints/blueprints.js';
 export type {
