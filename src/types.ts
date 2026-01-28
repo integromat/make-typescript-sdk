@@ -38,6 +38,24 @@ export type FetchOptions = {
 };
 
 /**
+ * Options for configuring retry behavior with exponential backoff.
+ */
+export type RetryOptions = {
+    /** Maximum number of retry attempts (default: 3) */
+    maxRetries?: number;
+    /** Base delay in milliseconds for exponential backoff (default: 1000) */
+    baseDelay?: number;
+    /** Maximum delay in milliseconds (default: 30000) */
+    maxDelay?: number;
+    /** Multiplier for exponential backoff (default: 2) */
+    backoffMultiplier?: number;
+    /** Whether to retry on rate limit errors (429) (default: true) */
+    retryOnRateLimit?: boolean;
+    /** Whether to retry on server errors (5xx) (default: false) */
+    retryOnServerError?: boolean;
+};
+
+/**
  * Function signature for making API requests.
  * @template T The expected response type
  * @param url The endpoint URL
