@@ -49,7 +49,7 @@ export type RetryOptions = {
     maxDelay?: number;
     /** Multiplier for exponential backoff (default: 2) */
     backoffMultiplier?: number;
-    /** Whether to retry on rate limit errors (429) (default: true) */
+    /** Whether to retry on rate limit errors (429) (default: false) */
     retryOnRateLimit?: boolean;
     /** Whether to retry on server errors (5xx) (default: false) */
     retryOnServerError?: boolean;

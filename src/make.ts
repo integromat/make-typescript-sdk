@@ -213,7 +213,7 @@ export class Make {
             baseDelay: options.retryOptions?.baseDelay ?? 1000,
             maxDelay: options.retryOptions?.maxDelay ?? 30000,
             backoffMultiplier: options.retryOptions?.backoffMultiplier ?? 2,
-            retryOnRateLimit: options.retryOptions?.retryOnRateLimit ?? true,
+            retryOnRateLimit: options.retryOptions?.retryOnRateLimit ?? false,
             retryOnServerError: options.retryOptions?.retryOnServerError ?? false,
         };
 
