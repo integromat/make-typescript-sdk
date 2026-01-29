@@ -348,8 +348,8 @@ export class Make {
         const jitter = exponentialDelay * 0.2 * (Math.random() * 2 - 1);
         const delay = exponentialDelay + jitter;
 
-        // Cap at maxDelay
-        return Math.min(Math.max(delay, this.retryOptions.baseDelay), this.retryOptions.maxDelay);
+        // Ensure non-negative delay and cap at maxDelay
+        return Math.min(Math.max(delay, 0), this.retryOptions.maxDelay);
     }
 
     /**
