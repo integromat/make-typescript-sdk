@@ -24,22 +24,25 @@ import { Make } from '@makehq/sdk';
 // Initialize the Make client
 const make = new Make('your-api-key', 'eu2.make.com');
 
-// Initialize with retry configuration (optional)
-const makeWithRetry = new Make('your-api-key', 'eu2.make.com', {
-    retry: {
-        onRateLimit: true, // Enable retries for rate limits
-        maxRetries: 3,         // Default: 3
-    }
-});
-
-// Example: Get user information
+// Get user information
 const user = await make.users.me();
 
-// Example: List scenarios
+// List scenarios
 const scenarios = await make.scenarios.list(/* Team ID */);
 
-// Example: Work with data stores
+// Work with data stores
 const dataStore = await make.dataStores.get(/* DataStore ID */);
+```
+
+Initialize with retry configuration (optional):
+
+```typescript
+const make = new Make('your-api-key', 'eu2.make.com', {
+    retry: {
+        onRateLimit: true,
+        maxRetries: 5,
+    },
+});
 ```
 
 ## Platform Endpoints
@@ -77,6 +80,48 @@ const dataStore = await make.dataStores.get(/* DataStore ID */);
 - Built-in error handling and response typing
 - Comprehensive test coverage
 - Model Context Protocol (MCP) support
+
+## Configuration Options
+
+The `Make` constructor accepts an optional third parameter with configuration options:
+
+```typescript
+const make = new Make('your-api-key', 'eu2.make.com', {
+    version: 2,
+    headers: { 'X-Custom-Header': 'value' },
+    retry: {
+        onRateLimit: true,
+        onServerError: true,
+        maxRetries: 3,
+        baseDelay: 1000,
+        maxDelay: 30000,
+        backoffMultiplier: 2,
+    },
+});
+```
+
+### Available Options
+
+| Option    | Type                     | Default   | Description                               |
+| --------- | ------------------------ | --------- | ----------------------------------------- |
+| `version` | `number`                 | `2`       | API version to use                        |
+| `headers` | `Record<string, string>` | `{}`      | Custom headers to include in all requests |
+| `retry`   | `RetryOptions`           | See below | Configuration for retry behavior          |
+
+### Retry Options
+
+The SDK supports automatic retries with exponential backoff for handling rate limits and transient server errors.
+
+| Option              | Type      | Default | Description                                        |
+| ------------------- | --------- | ------- | -------------------------------------------------- |
+| `onRateLimit`       | `boolean` | `false` | Enable retries for rate limit errors (HTTP 429)    |
+| `onServerError`     | `boolean` | `false` | Enable retries for server errors (HTTP 5xx)        |
+| `maxRetries`        | `number`  | `3`     | Maximum number of retry attempts                   |
+| `baseDelay`         | `number`  | `1000`  | Base delay in milliseconds for exponential backoff |
+| `maxDelay`          | `number`  | `30000` | Maximum delay in milliseconds                      |
+| `backoffMultiplier` | `number`  | `2`     | Multiplier for exponential backoff                 |
+
+The retry mechanism uses exponential backoff with jitter to prevent thundering herd problems. When a `Retry-After` header is present in the response, the SDK respects it (capped at `maxDelay`).
 
 ## MCP Server Support
 
