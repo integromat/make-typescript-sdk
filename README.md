@@ -26,8 +26,8 @@ const make = new Make('your-api-key', 'eu2.make.com');
 
 // Initialize with retry configuration (optional)
 const makeWithRetry = new Make('your-api-key', 'eu2.make.com', {
-    retryOptions: {
-        retryOnRateLimit: true, // Enable retries for rate limits
+    retry: {
+        onRateLimit: true, // Enable retries for rate limits
         maxRetries: 3,         // Default: 3
     }
 });

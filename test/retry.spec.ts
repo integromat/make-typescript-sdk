@@ -15,8 +15,8 @@ describe('Make SDK Retry Logic', () => {
 
     it('Should retry on 429 Rate Limit and succeed', async () => {
         const make = new Make(MAKE_API_KEY, MAKE_ZONE, {
-            retryOptions: {
-                retryOnRateLimit: true,
+            retry: {
+                onRateLimit: true,
                 baseDelay: 10, // Fast retries for testing
                 maxRetries: 3,
             },
@@ -53,8 +53,8 @@ describe('Make SDK Retry Logic', () => {
 
     it('Should throw error after max retries exhausted', async () => {
         const make = new Make(MAKE_API_KEY, MAKE_ZONE, {
-            retryOptions: {
-                retryOnRateLimit: true,
+            retry: {
+                onRateLimit: true,
                 baseDelay: 10,
                 maxRetries: 2,
             },
@@ -73,8 +73,8 @@ describe('Make SDK Retry Logic', () => {
 
     it('Should respect Retry-After header', async () => {
         const make = new Make(MAKE_API_KEY, MAKE_ZONE, {
-            retryOptions: {
-                retryOnRateLimit: true,
+            retry: {
+                onRateLimit: true,
                 baseDelay: 10,
                 maxRetries: 3,
             },
@@ -104,8 +104,8 @@ describe('Make SDK Retry Logic', () => {
 
     it('Should cap delay at maxDelay', async () => {
         const make = new Make(MAKE_API_KEY, MAKE_ZONE, {
-            retryOptions: {
-                retryOnRateLimit: true,
+            retry: {
+                onRateLimit: true,
                 baseDelay: 10,
                 maxDelay: 100, // Cap delay at 100ms
                 maxRetries: 3,
@@ -136,11 +136,11 @@ describe('Make SDK Retry Logic', () => {
 
     it('Should handle mixed errors (e.g. 500 then 429)', async () => {
         const make = new Make(MAKE_API_KEY, MAKE_ZONE, {
-            retryOptions: {
-                retryOnRateLimit: true,
+            retry: {
+                onRateLimit: true,
                 baseDelay: 10,
                 maxRetries: 3,
-                retryOnServerError: true,
+                onServerError: true,
             },
         });
 
@@ -167,10 +167,10 @@ describe('Make SDK Retry Logic', () => {
 
     it('Should retry on server errors (5xx) if enabled', async () => {
         const make = new Make(MAKE_API_KEY, MAKE_ZONE, {
-            retryOptions: {
+            retry: {
                 baseDelay: 10,
                 maxRetries: 3,
-                retryOnServerError: true,
+                onServerError: true,
             },
         });
 
@@ -193,10 +193,10 @@ describe('Make SDK Retry Logic', () => {
 
     it('Should NOT retry on server errors (5xx) if disabled', async () => {
         const make = new Make(MAKE_API_KEY, MAKE_ZONE, {
-            retryOptions: {
+            retry: {
                 baseDelay: 10,
                 maxRetries: 3,
-                retryOnServerError: false, // Default
+                onServerError: false, // Default
             },
         });
 
@@ -211,8 +211,8 @@ describe('Make SDK Retry Logic', () => {
 
     it('Should NOT retry on 4xx errors (except 429)', async () => {
         const make = new Make(MAKE_API_KEY, MAKE_ZONE, {
-            retryOptions: {
-                retryOnRateLimit: true,
+            retry: {
+                onRateLimit: true,
                 baseDelay: 10,
                 maxRetries: 3,
             },

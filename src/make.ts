@@ -57,7 +57,7 @@ export class Make {
     /**
      * Retry configuration for handling rate limits and transient errors
      */
-    private readonly retryOptions: Required<RetryOptions>;
+    private readonly retry: Required<RetryOptions>;
 
     /**
      * Access to user-related endpoints
@@ -192,7 +192,7 @@ export class Make {
      * @param options Optional configuration
      * @param options.version API version to use (defaults to 2)
      * @param options.headers Custom headers to include in all requests
-     * @param options.retryOptions Configuration for retry behavior with exponential backoff
+     * @param options.retry Configuration for retry behavior with exponential backoff
      */
     constructor(
         token: string,
@@ -200,7 +200,7 @@ export class Make {
         options: {
             version?: number;
             headers?: Record<string, string>;
-            retryOptions?: RetryOptions;
+            retry?: RetryOptions;
         } = {},
     ) {
         this.#token = token;
@@ -208,13 +208,13 @@ export class Make {
         this.version = options.version ?? 2;
         this.headers = options.headers ?? {};
         this.protocol = 'https';
-        this.retryOptions = {
-            maxRetries: options.retryOptions?.maxRetries ?? 3,
-            baseDelay: options.retryOptions?.baseDelay ?? 1000,
-            maxDelay: options.retryOptions?.maxDelay ?? 30000,
-            backoffMultiplier: options.retryOptions?.backoffMultiplier ?? 2,
-            retryOnRateLimit: options.retryOptions?.retryOnRateLimit ?? false,
-            retryOnServerError: options.retryOptions?.retryOnServerError ?? false,
+        this.retry = {
+            maxRetries: options.retry?.maxRetries ?? 3,
+            baseDelay: options.retry?.baseDelay ?? 1000,
+            maxDelay: options.retry?.maxDelay ?? 30000,
+            backoffMultiplier: options.retry?.backoffMultiplier ?? 2,
+            onRateLimit: options.retry?.onRateLimit ?? false,
+            onServerError: options.retry?.onServerError ?? false,
         };
 
         this.users = new Users(this.fetch.bind(this));
@@ -264,7 +264,7 @@ export class Make {
         let lastError: MakeError | null = null;
         let attempt = 0;
 
-        while (attempt <= this.retryOptions.maxRetries) {
+        while (attempt <= this.retry.maxRetries) {
             const res = await this.handleRequest(url, {
                 headers,
                 body,
@@ -305,17 +305,17 @@ export class Make {
      * @protected
      */
     protected shouldRetry(statusCode: number, attempt: number): boolean {
-        if (attempt >= this.retryOptions.maxRetries) {
+        if (attempt >= this.retry.maxRetries) {
             return false;
         }
 
         // Retry on rate limit (429)
-        if (statusCode === 429 && this.retryOptions.retryOnRateLimit) {
+        if (statusCode === 429 && this.retry.onRateLimit) {
             return true;
         }
 
         // Retry on server errors (5xx) if enabled
-        if (statusCode >= 500 && statusCode < 600 && this.retryOptions.retryOnServerError) {
+        if (statusCode >= 500 && statusCode < 600 && this.retry.onServerError) {
             return true;
         }
 
@@ -337,19 +337,19 @@ export class Make {
             const retryAfterSeconds = parseInt(retryAfter, 10);
             if (!isNaN(retryAfterSeconds) && retryAfterSeconds > 0) {
                 // Use Retry-After value, but cap at maxDelay
-                return Math.min(retryAfterSeconds * 1000, this.retryOptions.maxDelay);
+                return Math.min(retryAfterSeconds * 1000, this.retry.maxDelay);
             }
         }
 
         // Exponential backoff: baseDelay * (backoffMultiplier ^ attempt)
-        const exponentialDelay = this.retryOptions.baseDelay * Math.pow(this.retryOptions.backoffMultiplier, attempt);
+        const exponentialDelay = this.retry.baseDelay * Math.pow(this.retry.backoffMultiplier, attempt);
 
         // Add jitter (±20%) to prevent thundering herd
         const jitter = exponentialDelay * 0.2 * (Math.random() * 2 - 1);
         const delay = exponentialDelay + jitter;
 
         // Ensure non-negative delay and cap at maxDelay
-        return Math.min(Math.max(delay, 0), this.retryOptions.maxDelay);
+        return Math.min(Math.max(delay, 0), this.retry.maxDelay);
     }
 
     /**
