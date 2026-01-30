@@ -20,7 +20,7 @@ import { SDKFunctions } from './endpoints/sdk/functions.js';
 import { SDKRPCs } from './endpoints/sdk/rpcs.js';
 import { SDKWebhooks } from './endpoints/sdk/webhooks.js';
 import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
-import type { FetchOptions, JSONValue, QueryValue } from './types.js';
+import type { FetchOptions, JSONValue, QueryValue, RetryOptions } from './types.js';
 import { VERSION } from './version.js';
 
 /**
@@ -53,6 +53,11 @@ export class Make {
      * Can be changed to http for testing in local environments
      */
     public protocol: string;
+
+    /**
+     * Retry configuration for handling rate limits and transient errors
+     */
+    private readonly retry: Required<RetryOptions>;
 
     /**
      * Access to user-related endpoints
@@ -187,13 +192,30 @@ export class Make {
      * @param options Optional configuration
      * @param options.version API version to use (defaults to 2)
      * @param options.headers Custom headers to include in all requests
+     * @param options.retry Configuration for retry behavior with exponential backoff
      */
-    constructor(token: string, zone: string, options: { version?: number; headers?: Record<string, string> } = {}) {
+    constructor(
+        token: string,
+        zone: string,
+        options: {
+            version?: number;
+            headers?: Record<string, string>;
+            retry?: RetryOptions;
+        } = {},
+    ) {
         this.#token = token;
         this.zone = zone;
         this.version = options.version ?? 2;
         this.headers = options.headers ?? {};
         this.protocol = 'https';
+        this.retry = {
+            maxRetries: options.retry?.maxRetries ?? 3,
+            baseDelay: options.retry?.baseDelay ?? 1000,
+            maxDelay: options.retry?.maxDelay ?? 30000,
+            backoffMultiplier: options.retry?.backoffMultiplier ?? 2,
+            onRateLimit: options.retry?.onRateLimit ?? false,
+            onServerError: options.retry?.onServerError ?? false,
+        };
 
         this.users = new Users(this.fetch.bind(this));
         this.scenarios = new Scenarios(this.fetch.bind(this));
@@ -225,12 +247,13 @@ export class Make {
      *
      * Handles URL construction, authentication, and error handling for all API calls.
      * This method is used internally by all endpoint classes.
+     * Implements exponential backoff retry logic for rate limits (429) and optionally server errors (5xx).
      *
      * @template T The expected response type
      * @param url The endpoint URL (relative or absolute)
      * @param options Request options (method, headers, body, query parameters)
      * @returns Promise resolving to the parsed response data
-     * @throws {MakeError} If the API returns an error response
+     * @throws {MakeError} If the API returns an error response after all retries are exhausted
      * @internal
      */
     public async fetch<T = unknown>(url: string, options?: FetchOptions): Promise<T> {
@@ -238,16 +261,105 @@ export class Make {
         const body = this.prepareBody(options?.body, headers);
         url = this.prepareURL(url, options?.query);
 
-        const res = await this.handleRequest(url, {
-            headers,
-            body,
-            method: options?.method,
-        });
-        if (res.status >= 400) {
-            throw await this.handleError(res);
+        let lastError: MakeError | null = null;
+        let attempt = 0;
+
+        while (attempt <= this.retry.maxRetries) {
+            const res = await this.handleRequest(url, {
+                headers,
+                body,
+                method: options?.method,
+            });
+
+            // Success case
+            if (res.status < 400) {
+                return this.handleResponse<T>(res);
+            }
+
+            // Create error for potential retry
+            const error = await this.handleError(res);
+            lastError = error;
+
+            // Check if we should retry
+            const shouldRetry = this.shouldRetry(res.status, attempt);
+            if (!shouldRetry) {
+                throw error;
+            }
+
+            // Calculate delay before retry
+            const delay = this.calculateRetryDelay(res, attempt);
+            await this.sleep(delay);
+
+            attempt++;
         }
 
-        return this.handleResponse<T>(res);
+        // All retries exhausted
+        throw lastError!;
+    }
+
+    /**
+     * Determine if a request should be retried based on status code and attempt count
+     * @param statusCode HTTP status code from the response
+     * @param attempt Current attempt number (0-indexed)
+     * @returns True if the request should be retried
+     * @protected
+     */
+    protected shouldRetry(statusCode: number, attempt: number): boolean {
+        if (attempt >= this.retry.maxRetries) {
+            return false;
+        }
+
+        // Retry on rate limit (429)
+        if (statusCode === 429 && this.retry.onRateLimit) {
+            return true;
+        }
+
+        // Retry on server errors (5xx) if enabled
+        if (statusCode >= 500 && statusCode < 600 && this.retry.onServerError) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Calculate the delay before retrying a request
+     * Uses exponential backoff with jitter, respecting Retry-After header if present
+     * @param response The HTTP response that triggered the retry
+     * @param attempt Current attempt number (0-indexed)
+     * @returns Delay in milliseconds
+     * @protected
+     */
+    protected calculateRetryDelay(response: Response, attempt: number): number {
+        // Check for Retry-After header (in seconds)
+        const retryAfter = response.headers.get('Retry-After');
+        if (retryAfter) {
+            const retryAfterSeconds = parseInt(retryAfter, 10);
+            if (!isNaN(retryAfterSeconds) && retryAfterSeconds > 0) {
+                // Use Retry-After value, but cap at maxDelay
+                return Math.min(retryAfterSeconds * 1000, this.retry.maxDelay);
+            }
+        }
+
+        // Exponential backoff: baseDelay * (backoffMultiplier ^ attempt)
+        const exponentialDelay = this.retry.baseDelay * Math.pow(this.retry.backoffMultiplier, attempt);
+
+        // Add jitter (±20%) to prevent thundering herd
+        const jitter = exponentialDelay * 0.2 * (Math.random() * 2 - 1);
+        const delay = exponentialDelay + jitter;
+
+        // Ensure non-negative delay and cap at maxDelay
+        return Math.min(Math.max(delay, 0), this.retry.maxDelay);
+    }
+
+    /**
+     * Sleep for a specified number of milliseconds
+     * @param ms Milliseconds to sleep
+     * @returns Promise that resolves after the delay
+     * @protected
+     */
+    protected sleep(ms: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     /**

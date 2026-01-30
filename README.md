@@ -24,6 +24,14 @@ import { Make } from '@makehq/sdk';
 // Initialize the Make client
 const make = new Make('your-api-key', 'eu2.make.com');
 
+// Initialize with retry configuration (optional)
+const makeWithRetry = new Make('your-api-key', 'eu2.make.com', {
+    retry: {
+        onRateLimit: true, // Enable retries for rate limits
+        maxRetries: 3,         // Default: 3
+    }
+});
+
 // Example: Get user information
 const user = await make.users.me();
 
