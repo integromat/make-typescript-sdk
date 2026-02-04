@@ -1,6 +1,14 @@
 export { Make } from './make.js';
 export { MakeError } from './utils.js';
-export type { FetchOptions, Pagination, JSONValue, FetchFunction, QueryValue, PickColumns, RetryOptions } from './types.js';
+export type {
+    FetchOptions,
+    Pagination,
+    JSONValue,
+    FetchFunction,
+    QueryValue,
+    PickColumns,
+    RetryOptions,
+} from './types.js';
 
 export type { Blueprint, Blueprints, BlueprintNode, BlueprintRoute, BlueprintVersion } from './endpoints/blueprints.js';
 export type {
@@ -76,6 +84,7 @@ export type {
 export type {
     Scenario,
     Scenarios,
+    ScenarioInterface as ScenarioInteface, // Deprecated, to be removed in the next major version
     ScenarioInterface,
     ListScenariosOptions,
     GetScenarioOptions,
