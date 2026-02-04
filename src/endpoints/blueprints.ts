@@ -1,6 +1,6 @@
 import type { FetchFunction, JSONValue } from '../types.js';
 import type { DataStructureField } from './data-structures.js';
-import type { ScenarioInteface, Scheduling } from './scenarios.js';
+import type { ScenarioInterface, Scheduling } from './scenarios.js';
 
 /**
  * Represents a node in a Make scenario blueprint.
@@ -64,7 +64,7 @@ export type Blueprint = {
     /** Scheduling configuration for the blueprint */
     scheduling: Scheduling;
     /** Interface configuration for the blueprint */
-    interface: ScenarioInteface;
+    interface: ScenarioInterface;
     /** @deprecated */
     io?: {
         input_spec: DataStructureField[];
