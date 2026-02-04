@@ -84,7 +84,7 @@ export type {
 export type {
     Scenario,
     Scenarios,
-    ScenarioInterface as ScenarioInteface, // Deprecated, to be removed in the next major version
+    ScenarioInteface,
     ScenarioInterface,
     ListScenariosOptions,
     GetScenarioOptions,
