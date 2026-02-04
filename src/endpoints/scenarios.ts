@@ -123,7 +123,7 @@ type ListScenariosResponse<C extends keyof Scenario = never> = {
 /**
  * Represents the input and output interface of a scenario.
  */
-export type ScenarioInteface = {
+export type ScenarioInterface = {
     /** Input fields for the scenario, or null if no input is defined */
     input: DataStructureField[];
     /** Output fields for the scenario, or null if no output is defined */
@@ -135,7 +135,7 @@ export type ScenarioInteface = {
  */
 type GetScenarioInterfaceResponse = {
     /** The scenario interface definition */
-    interface: Partial<ScenarioInteface>;
+    interface: Partial<ScenarioInterface>;
 };
 
 /**
@@ -143,7 +143,7 @@ type GetScenarioInterfaceResponse = {
  */
 export type UpdateScenarioInterfaceBody = {
     /** The interface definition with input and output specifications */
-    interface: ScenarioInteface;
+    interface: ScenarioInterface;
 };
 
 /**
@@ -151,7 +151,7 @@ export type UpdateScenarioInterfaceBody = {
  */
 type UpdateScenarioInterfaceResponse = {
     /** The updated scenario interface definition */
-    interface: ScenarioInteface;
+    interface: ScenarioInterface;
 };
 
 /**
@@ -501,7 +501,7 @@ export class Scenarios {
      * @returns Promise with the scenario interface
      * @deprecated Use getInterface instead
      */
-    async ['interface'](scenarioId: number): Promise<ScenarioInteface> {
+    async ['interface'](scenarioId: number): Promise<ScenarioInterface> {
         return await this.getInterface(scenarioId);
     }
 
@@ -510,7 +510,7 @@ export class Scenarios {
      * @param scenarioId The scenario ID to get the interface for
      * @returns Promise with the scenario interface
      */
-    async getInterface(scenarioId: number): Promise<ScenarioInteface> {
+    async getInterface(scenarioId: number): Promise<ScenarioInterface> {
         const result = await this.#fetch<GetScenarioInterfaceResponse>(`/scenarios/${scenarioId}/interface`);
         return {
             input: result.interface.input ?? [],
@@ -524,7 +524,7 @@ export class Scenarios {
      * @param body The new interface definition
      * @returns Promise with the updated scenario interface
      */
-    async setInterface(scenarioId: number, body: UpdateScenarioInterfaceBody): Promise<ScenarioInteface> {
+    async setInterface(scenarioId: number, body: UpdateScenarioInterfaceBody): Promise<ScenarioInterface> {
         return (
             await this.#fetch<UpdateScenarioInterfaceResponse>(`/scenarios/${scenarioId}/interface`, {
                 method: 'PATCH',
