@@ -131,6 +131,11 @@ export type ScenarioInterface = {
 };
 
 /**
+ * @deprecated Use `ScenarioInterface` instead. Will be removed in the next major version.
+ */
+export type ScenarioInteface = ScenarioInterface;
+
+/**
  * Response format for getting a scenario interface.
  */
 type GetScenarioInterfaceResponse = {

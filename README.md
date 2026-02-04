@@ -40,7 +40,7 @@ Initialize with retry configuration (optional):
 const make = new Make('your-api-key', 'eu2.make.com', {
     retry: {
         onRateLimit: true,
-        maxRetries: 5,
+        maxRetries: 3,
     },
 });
 ```
