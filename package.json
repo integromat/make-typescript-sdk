@@ -1,10 +1,13 @@
 {
     "name": "@makehq/sdk",
-    "version": "0.10.1",
+    "version": "0.10.2",
     "description": "Make TypeScript SDK",
     "license": "MIT",
     "author": "Make",
-    "repository": "github:integromat/make-typescript-sdk",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/integromat/make-typescript-sdk.git"
+    },
     "homepage": "https://www.make.com",
     "type": "module",
     "main": "./dist/index.js",
