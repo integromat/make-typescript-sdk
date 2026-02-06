@@ -11,7 +11,7 @@ jobs:
         timeout-minutes: 10
         strategy:
             matrix:
-                node-version: ['22', '20', '18']
+                node-version: ['24', '22', '20', '18']
         steps:
             - name: Checkout
               uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
@@ -31,6 +31,9 @@ jobs:
     publish:
         needs: test
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            id-token: write
         steps:
             - name: Checkout
               uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -38,7 +41,7 @@ jobs:
             - name: Setup Node
               uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
               with:
-                  node-version: '22'
+                  node-version: 24
                   registry-url: 'https://registry.npmjs.org'
                   cache: 'npm'
 
@@ -52,6 +55,6 @@ jobs:
               run: npm run build
 
             - name: Publish to npm
-              run: npm publish --access public
+              run: npm publish --provenance --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
