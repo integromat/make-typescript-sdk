@@ -86,7 +86,6 @@ export const tools = [
                 scheduling: Scheduling;
                 blueprint: Blueprint;
                 basedon?: string;
-                cols?: string[];
                 confirmed?: boolean;
             },
         ) => {
@@ -130,7 +129,6 @@ export const tools = [
                 folderId?: number;
                 scheduling?: Scheduling;
                 blueprint?: Blueprint;
-                cols?: string[];
                 confirmed?: boolean;
             },
         ) => {
