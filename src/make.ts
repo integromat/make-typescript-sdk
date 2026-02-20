@@ -10,6 +10,7 @@ import { Teams } from './endpoints/teams.js';
 import { IncompleteExecutions } from './endpoints/incomplete-executions.js';
 import { Keys } from './endpoints/keys.js';
 import { Connections } from './endpoints/connections.js';
+import { CredentialRequests } from './endpoints/credential-requests.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
@@ -29,6 +30,12 @@ import { VERSION } from './version.js';
  */
 export class Make {
     readonly #token: string;
+
+    /**
+     * Access to credential request-related endpoints
+     * Credential requests allow you to manage requests for credentials (connections/keys) for users and teams
+     */
+    public readonly credentialRequests: CredentialRequests;
 
     /**
      * The Make zone (e.g. eu1.make.com)
@@ -232,6 +239,7 @@ export class Make {
         this.functions = new Functions(this.fetch.bind(this));
         this.organizations = new Organizations(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
+        this.credentialRequests = new CredentialRequests(this.fetch.bind(this));
         this.sdk = {
             apps: new SDKApps(this.fetch.bind(this)),
             modules: new SDKModules(this.fetch.bind(this)),
@@ -471,7 +479,9 @@ export class Make {
      */
     protected async handleResponse<T>(response: Response): Promise<T> {
         const contentType = response.headers.get('content-type');
-        const isJsonType: boolean = Boolean(contentType === 'application/json' || contentType?.startsWith('application/json;')); //prevent application/jsonc to be parsed as json
+        const isJsonType: boolean = Boolean(
+            contentType === 'application/json' || contentType?.startsWith('application/json;'),
+        ); //prevent application/jsonc to be parsed as json
 
         const result = isJsonType ? await response.json() : await response.text();
         return result as T;
