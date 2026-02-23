@@ -32,12 +32,6 @@ export class Make {
     readonly #token: string;
 
     /**
-     * Access to credential request-related endpoints
-     * Credential requests allow you to manage requests for credentials (connections/keys) for users and teams
-     */
-    public readonly credentialRequests: CredentialRequests;
-
-    /**
      * The Make zone (e.g. eu1.make.com)
      * Identifies the region of the Make servers to connect to
      */
@@ -137,6 +131,12 @@ export class Make {
      * Connections link Make to external apps and services
      */
     public readonly connections: Connections;
+
+    /**
+     * Access to credential request-related endpoints
+     * Credential requests allow you to manage requests for credentials (connections/keys) for users and teams
+     */
+    public readonly credentialRequests: CredentialRequests;
 
     /**
      * Access to function-related endpoints

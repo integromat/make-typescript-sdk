@@ -27,6 +27,7 @@ export type {
     CreateCredentialRequestBody,
     GetCredentialRequestOptions,
     Credential,
+    ListCredentialRequestsOptions,
 } from './endpoints/credential-requests.js';
 export type {
     DataStore,

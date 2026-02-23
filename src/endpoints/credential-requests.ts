@@ -1,5 +1,4 @@
-import type { FetchFunction, PickColumns, JSONValue } from '../types.js';
-import type { Pagination } from '../types.js';
+import type { FetchFunction, PickColumns, JSONValue, Pagination } from '../types.js';
 
 /**
  * Credential Request entity
