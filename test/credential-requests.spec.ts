@@ -8,7 +8,6 @@ import * as createMock from './mocks/credential-requests/create.json';
 import * as getCredentialMock from './mocks/credential-requests/get-credential.json';
 import * as declineMock from './mocks/credential-requests/decline.json';
 import * as deleteRemoteMock from './mocks/credential-requests/delete-remote.json';
-import * as createActionMock from './mocks/credential-requests/create-action.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
