@@ -11,6 +11,7 @@ describe('Integration: CredentialRequests', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
     let requestId: string;
     let credentialId: string;
+    let actionRequestId: string;
 
     it('Should create a credential request', async () => {
         const request = await make.credentialRequests.create({
@@ -76,5 +77,38 @@ describe('Integration: CredentialRequests', () => {
         // Check that request is deleted
         const requests = await make.credentialRequests.list({ teamId: MAKE_TEAM });
         expect(requests.some(r => r.id === requestId)).toBe(false);
+    });
+
+    it('Should create a credential request using the create action', async () => {
+        const action = await make.credentialRequests.createAction({
+            teamId: MAKE_TEAM,
+            keys: [
+                {
+                    name: 'Basic Auth',
+                    type: 'basicauth',
+                    appModules: ['ActionSendDataBasicAuth'],
+                    appName: 'http',
+                    appVersion: '3',
+                },
+            ],
+            connections: [],
+        });
+        expect(action.request.id).toBeDefined();
+        expect(action.publicUri).toBeDefined();
+        expect(action.request.teamId).toBe(MAKE_TEAM);
+        actionRequestId = action.request.id;
+    });
+
+    it('Should get the credential request created with the create action', async () => {
+        const request = await make.credentialRequests.get(actionRequestId);
+        expect(request.id).toBe(actionRequestId);
+    });
+
+    it('Should delete the credential request created by the create action', async () => {
+        await make.credentialRequests.delete(actionRequestId);
+
+        // Check that request is deleted
+        const requests = await make.credentialRequests.list({ teamId: MAKE_TEAM });
+        expect(requests.some(r => r.id === actionRequestId)).toBe(false);
     });
 });

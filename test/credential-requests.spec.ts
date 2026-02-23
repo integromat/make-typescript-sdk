@@ -8,6 +8,7 @@ import * as createMock from './mocks/credential-requests/create.json';
 import * as getCredentialMock from './mocks/credential-requests/get-credential.json';
 import * as declineMock from './mocks/credential-requests/decline.json';
 import * as deleteRemoteMock from './mocks/credential-requests/delete-remote.json';
+import * as createActionMock from './mocks/credential-requests/create-action.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -169,5 +170,45 @@ describe('Endpoints: CredentialRequests', () => {
         const result = await make.credentialRequests.deleteRemoteCredential('cred-999');
 
         expect(result).toStrictEqual(deleteRemoteMock.credential);
+    });
+
+    it('Should create a credential action', async () => {
+        const body = {
+            teamId: 123,
+            connections: [],
+            keys: [
+                {
+                    appModules: ['ActionSendDataBasicAuth'],
+                    appName: 'http',
+                    appVersion: '3',
+                    name: 'Basic Auth',
+                    type: 'basicauth',
+                },
+            ],
+        };
+
+        mockFetch('POST https://make.local/api/v2/credential-requests/actions/create', createActionMock, req => {
+            expect(req.body).toStrictEqual(body);
+            expect(req.headers.get('content-type')).toBe('application/json');
+        });
+
+        const result = await make.credentialRequests.createAction({
+            teamId: 123,
+            connections: [],
+            keys: [
+                {
+                    name: 'Basic Auth',
+                    type: 'basicauth',
+                    appModules: ['ActionSendDataBasicAuth'],
+                    appName: 'http',
+                    appVersion: '3',
+                },
+            ],
+        });
+
+        expect(result).toStrictEqual({
+            request: createActionMock.request,
+            publicUri: createActionMock.publicUri,
+        });
     });
 });

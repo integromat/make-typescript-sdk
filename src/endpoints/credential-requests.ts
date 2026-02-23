@@ -89,6 +89,42 @@ export type CreateCredentialRequestBody = {
 };
 
 /**
+ * Body for creating a credential action
+ */
+export type CreateCredentialActionBody = {
+    /** Team ID */
+    teamId: number;
+    /** Array of connections to create */
+    connections: {
+        /** Account name for the connection */
+        accountName: string;
+        /** OAuth scopes required */
+        scopes: string[];
+        /** Name of the connection */
+        name: string;
+        /** App name */
+        appName: string;
+        /** App modules */
+        appModules: string[];
+        /** App version */
+        appVersion: string[];
+    }[];
+    /** Array of keys to create */
+    keys: {
+        /** Type of key */
+        type: string;
+        /** Name of the key */
+        name: string;
+        /** App name */
+        appName: string;
+        /** App modules */
+        appModules: string[];
+        /** App version */
+        appVersion: string;
+    }[];
+};
+
+/**
  * Class providing methods for working with credential requests
  */
 export class CredentialRequests {
@@ -182,6 +218,19 @@ export class CredentialRequests {
             { method: 'POST' },
         );
         return response.credential;
+    }
+
+    /**
+     * Create a new action for credential creation (connection or key)
+     */
+    async createAction(body: CreateCredentialActionBody): Promise<{ request: CredentialRequest; publicUri: string }> {
+        return await this.#fetch<{ request: CredentialRequest; publicUri: string }>(
+            '/credential-requests/actions/create',
+            {
+                method: 'POST',
+                body,
+            },
+        );
     }
 }
 

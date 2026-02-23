@@ -199,4 +199,43 @@ export const tools = [
             return await make.credentialRequests.deleteRemoteCredential(args.credentialId);
         },
     },
+    {
+        name: 'credential_requests_create_action',
+        title: 'Create credential action',
+        description: 'Create a new action for credential creation (connection or key)',
+        category: 'credential-requests',
+        scope: 'credential-requests:write',
+        identifier: 'teamId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                teamId: { type: 'number', description: 'Team ID' },
+                accountName: { type: 'string', description: 'Account name' },
+                scopes: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'OAuth scopes',
+                },
+            },
+            required: ['teamId', 'accountName', 'scopes'],
+        },
+        execute: async (
+            make: Make,
+            args: {
+                teamId: number;
+                accountName: string;
+                scopes: string[];
+            },
+        ) => {
+            return await make.credentialRequests.createAction({
+                ...args,
+                connections: [], // Add appropriate connections here
+                keys: [], // Add appropriate keys here
+            });
+        },
+    },
 ];
