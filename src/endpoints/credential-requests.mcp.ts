@@ -5,7 +5,8 @@ export const tools = [
     {
         name: 'credential_requests_list',
         title: 'List credential requests',
-        description: 'List credential requests with optional filtering and pagination',
+        description:
+            'Retrieve a list of credential requests with optional filtering and pagination. Use this to view pending authorization requests, track credential request history, or find specific requests.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         identifier: 'teamId',
@@ -48,7 +49,8 @@ export const tools = [
     {
         name: 'credential_requests_get',
         title: 'Get credential request',
-        description: 'Get details of a specific credential request by ID',
+        description:
+            'Retrieve detailed information about a specific credential request by its ID. Use getDetail for complete information including all associated credentials.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         identifier: 'requestId',
@@ -69,7 +71,8 @@ export const tools = [
     {
         name: 'credential_requests_get_detail',
         title: 'Get credential request detail',
-        description: 'Get detail of a credential request including all associated credentials.',
+        description:
+            'Retrieve detailed information about a specific credential request by its ID, including all associated credentials with their authorization status, provider configuration, and user details.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         identifier: 'requestId',
@@ -91,7 +94,7 @@ export const tools = [
         name: 'credential_requests_create',
         title: 'Create credential request',
         description:
-            'Create a credential request for user authorization. When setting up scenarios or connections via MCP, this endpoint generates a URL that allows users to securely authorize their credentials in Make.',
+            'Create a new credential request to obtain user authorization for accessing external services. When setting up scenarios or connections programmatically, this endpoint generates an authorization URL that users can visit to grant permissions.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'teamId',
@@ -136,7 +139,8 @@ export const tools = [
     {
         name: 'credential_requests_delete',
         title: 'Delete credential request',
-        description: 'Delete a credential request by ID',
+        description:
+            'Delete a credential request by ID. If associated credentials exist, the query parameter confirmed is required to also these.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'requestId',
@@ -147,18 +151,25 @@ export const tools = [
             type: 'object',
             properties: {
                 requestId: { type: 'string', description: 'The credential request ID to delete' },
+                confirmed: {
+                    type: 'boolean',
+                    description: 'When true, also deletes associated credentials (connections and keys)',
+                },
             },
             required: ['requestId'],
         },
-        execute: async (make: Make, args: { requestId: string }) => {
-            await make.credentialRequests.delete(args.requestId);
-            return 'Credential request has been deleted.';
+        execute: async (make: Make, args: { requestId: string; confirmed?: boolean }) => {
+            await make.credentialRequests.delete(args.requestId, { confirmed: args.confirmed });
+            return args.confirmed
+                ? 'Credential request and associated credentials have been deleted.'
+                : 'Credential request has been deleted.';
         },
     },
     {
         name: 'credential_requests_get_credential',
         title: 'Get credential',
-        description: 'Get details of a specific credential by ID',
+        description:
+            'Get details of a specific credential by ID. Returns metadata about the credential including its authorization status, associated request, and timestamps.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         identifier: 'credentialId',
@@ -179,7 +190,8 @@ export const tools = [
     {
         name: 'credential_requests_decline_credential',
         title: 'Decline credential',
-        description: 'Decline a credential by ID with optional reason',
+        description:
+            'Decline a credential authorization request by ID with an optional reason. The credential status will be updated to declined.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'credentialId',
@@ -200,9 +212,10 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_delete_remote_credential',
-        title: 'Delete remote credential',
-        description: 'Delete a credential from the remote platform and reset its state to pending',
+        name: 'credential_requests_delete_credential',
+        title: 'Delete credential',
+        description:
+            'Delete a credential (e.g., revoke OAuth tokens) and reset its state to pending. This allows the credential to be re-authorized with fresh permissions.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'credentialId',
@@ -213,7 +226,7 @@ export const tools = [
         inputSchema: {
             type: 'object',
             properties: {
-                credentialId: { type: 'string', description: 'The credential ID to delete from remote' },
+                credentialId: { type: 'string', description: 'The credential ID to delete' },
             },
             required: ['credentialId'],
         },
@@ -225,7 +238,7 @@ export const tools = [
         name: 'credential_requests_create_action',
         title: 'Create credential action',
         description:
-            'Create a new action for credential creation, similar to the create credential request endpoint. Instead it creates the credential request directly for the user themselves, mcp can use it.',
+            'Create a credential request action directly for the current user, bypassing the typical creation flow. This endpoint is designed for MCP (Model Context Protocol) integrations where the user wants to authorizes their own credentials.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'teamId',
