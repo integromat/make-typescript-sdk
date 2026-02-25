@@ -1,6 +1,18 @@
 import type { FetchFunction, PickColumns, JSONValue, Pagination } from '../types.js';
 
 /**
+ * User entity for credential request details
+ */
+export type CredentialRequestUser = {
+    /** User ID */
+    id: number;
+    /** User email */
+    email: string;
+    /** User name */
+    name: string;
+};
+
+/**
  * Credential Request entity
  */
 export type CredentialRequest = {
@@ -40,6 +52,18 @@ export type CredentialRequest = {
         email: string;
         name: string;
     };
+};
+
+/**
+ * Detailed credential request with associated data
+ */
+export type CredentialRequestDetail = CredentialRequest & {
+    /** Make provider information */
+    makeProvider: CredentialRequestUser | null;
+    /** User information */
+    user: CredentialRequestUser | null;
+    /** Associated credentials */
+    credentials: Credential[];
 };
 
 /**
@@ -173,6 +197,16 @@ export class CredentialRequests {
     }
 
     /**
+     * Get full detail of a credential request including associated credentials
+     */
+    async getDetail(requestId: string): Promise<CredentialRequestDetail> {
+        const response = await this.#fetch<{ requestDetail: CredentialRequestDetail }>(
+            `/credential-requests/requests/${requestId}/detail`,
+        );
+        return response.requestDetail;
+    }
+
+    /**
      * Delete a credential request by ID
      */
     async delete(requestId: string): Promise<void> {
@@ -210,9 +244,9 @@ export class CredentialRequests {
     }
 
     /**
-     * Delete a credential from the remote platform and reset its state to pending
+     * Delete a credential and reset its state to pending
      */
-    async deleteRemoteCredential(credentialId: string): Promise<Credential> {
+    async deleteCredential(credentialId: string): Promise<Credential> {
         const response = await this.#fetch<{ credential: Credential }>(
             `/credential-requests/credentials/${credentialId}/delete-remote`,
             { method: 'POST' },

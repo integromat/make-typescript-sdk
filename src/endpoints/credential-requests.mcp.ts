@@ -67,9 +67,31 @@ export const tools = [
         },
     },
     {
+        name: 'credential_requests_get_detail',
+        title: 'Get credential request detail',
+        description: 'Get detail of a credential request including all associated credentials.',
+        category: 'credential-requests',
+        scope: 'credential-requests:read',
+        identifier: 'requestId',
+        annotations: {
+            readOnlyHint: true,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                requestId: { type: 'string', description: 'The credential request ID to get details for' },
+            },
+            required: ['requestId'],
+        },
+        execute: async (make: Make, args: { requestId: string }) => {
+            return await make.credentialRequests.getDetail(args.requestId);
+        },
+    },
+    {
         name: 'credential_requests_create',
         title: 'Create credential request',
-        description: 'Create a new credential request',
+        description:
+            'Create a credential request for user authorization. When setting up scenarios or connections via MCP, this endpoint generates a URL that allows users to securely authorize their credentials in Make.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'teamId',
@@ -196,13 +218,14 @@ export const tools = [
             required: ['credentialId'],
         },
         execute: async (make: Make, args: { credentialId: string }) => {
-            return await make.credentialRequests.deleteRemoteCredential(args.credentialId);
+            return await make.credentialRequests.deleteCredential(args.credentialId);
         },
     },
     {
         name: 'credential_requests_create_action',
         title: 'Create credential action',
-        description: 'Create a new action for credential creation (connection or key)',
+        description:
+            'Create a new action for credential creation, similar to the create credential request endpoint. Instead it creates the credential request directly for the user themselves, mcp can use it.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'teamId',

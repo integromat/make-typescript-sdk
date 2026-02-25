@@ -1,0 +1,70 @@
+{
+    "requestDetail": {
+        "id": "req-123",
+        "organizationId": 1,
+        "teamId": 123,
+        "userId": 789,
+        "name": "Google Workspace Access",
+        "description": "Request access to Google Workspace APIs",
+        "externalProviderId": null,
+        "makeProviderId": "456",
+        "createdAt": "2025-12-12T10:00:00Z",
+        "updatedAt": "2025-12-12T10:00:00Z",
+        "expiresAt": "2026-01-12T10:00:00Z",
+        "status": "pending",
+        "shouldSendEmail": true,
+        "emailSentAt": null,
+        "makeProvider": {
+            "id": 456,
+            "email": "provider@example.com",
+            "name": "John Provider"
+        },
+        "user": {
+            "id": 789,
+            "email": "user@example.com",
+            "name": "Jane User"
+        },
+        "credentials": [
+            {
+                "id": "cred-456",
+                "requestId": "req-123",
+                "component": "account",
+                "type": "oauth",
+                "name": "google",
+                "label": "Google Drive Connection",
+                "description": "Access to Google Drive for file automation",
+                "scope": ["drive.readonly", "drive.file"],
+                "remoteId": null,
+                "remoteScope": [],
+                "tokenId": null,
+                "createdAt": "2025-12-12T10:00:00Z",
+                "updatedAt": "2025-12-12T10:00:00Z",
+                "state": "pending",
+                "declineReason": null,
+                "appName": "google",
+                "appModules": [],
+                "appVersion": "1.0.0"
+            },
+            {
+                "id": "cred-789",
+                "requestId": "req-123",
+                "component": "account",
+                "type": "oauth",
+                "name": "google-sheets",
+                "label": "Google Sheets Connection",
+                "description": "Access to Google Sheets for spreadsheet automation",
+                "scope": ["spreadsheets.readonly", "spreadsheets"],
+                "remoteId": null,
+                "remoteScope": [],
+                "tokenId": null,
+                "createdAt": "2025-12-12T10:00:00Z",
+                "updatedAt": "2025-12-12T10:00:00Z",
+                "state": "pending",
+                "declineReason": null,
+                "appName": "google-sheets",
+                "appModules": [],
+                "appVersion": "1.0.0"
+            }
+        ]
+    }
+}

@@ -39,6 +39,15 @@ describe('Integration: CredentialRequests', () => {
         expect(request.id).toBe(requestId);
     });
 
+    it('Should get detail of the credential request with credentials', async () => {
+        const detail = await make.credentialRequests.getDetail(requestId);
+        expect(detail.id).toBe(requestId);
+        expect(detail.credentials).toBeDefined();
+        expect(Array.isArray(detail.credentials)).toBe(true);
+        expect(detail.makeProvider).toBeDefined();
+        expect(detail.user).toBeDefined();
+    });
+
     it('Should list credential requests', async () => {
         const requests = await make.credentialRequests.list({ teamId: MAKE_TEAM });
         expect(Array.isArray(requests)).toBe(true);
@@ -66,7 +75,7 @@ describe('Integration: CredentialRequests', () => {
 
     it('Should delete remote credential', async () => {
         if (!credentialId) return;
-        const deleted = await make.credentialRequests.deleteRemoteCredential(credentialId);
+        const deleted = await make.credentialRequests.deleteCredential(credentialId);
         expect(deleted).toBeDefined();
         expect(deleted.state).toBe('pending');
     });

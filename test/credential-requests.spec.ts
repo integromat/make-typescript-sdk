@@ -4,6 +4,7 @@ import { mockFetch } from './test.utils.js';
 
 import * as listMock from './mocks/credential-requests/list.json';
 import * as getMock from './mocks/credential-requests/get.json';
+import * as getDetailMock from './mocks/credential-requests/get-detail.json';
 import * as createMock from './mocks/credential-requests/create.json';
 import * as getCredentialMock from './mocks/credential-requests/get-credential.json';
 import * as declineMock from './mocks/credential-requests/decline.json';
@@ -104,6 +105,17 @@ describe('Endpoints: CredentialRequests', () => {
         expect(result).toStrictEqual(getMock.request);
     });
 
+    it('Should get full detail of a credential request with associated credentials', async () => {
+        mockFetch('GET https://make.local/api/v2/credential-requests/requests/req-123/detail', getDetailMock);
+
+        const result = await make.credentialRequests.getDetail('req-123');
+
+        expect(result).toStrictEqual(getDetailMock.requestDetail);
+        expect(result.credentials).toHaveLength(2);
+        expect(result.makeProvider).toBeDefined();
+        expect(result.user).toBeDefined();
+    });
+
     it('Should delete a credential request by ID', async () => {
         mockFetch('DELETE https://make.local/api/v2/credential-requests/requests/req-123', null);
 
@@ -161,13 +173,13 @@ describe('Endpoints: CredentialRequests', () => {
         expect(result).toStrictEqual(declineMock.credential);
     });
 
-    it('Should delete remote credential', async () => {
+    it('Should delete credential', async () => {
         mockFetch(
             'POST https://make.local/api/v2/credential-requests/credentials/cred-999/delete-remote',
             deleteRemoteMock,
         );
 
-        const result = await make.credentialRequests.deleteRemoteCredential('cred-999');
+        const result = await make.credentialRequests.deleteCredential('cred-999');
 
         expect(result).toStrictEqual(deleteRemoteMock.credential);
     });
