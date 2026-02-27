@@ -47,28 +47,6 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_get',
-        title: 'Get credential request',
-        description:
-            'Retrieve detailed information about a specific credential request by its ID. Use getDetail for complete information including all associated credentials.',
-        category: 'credential-requests',
-        scope: 'credential-requests:read',
-        identifier: 'requestId',
-        annotations: {
-            readOnlyHint: true,
-        },
-        inputSchema: {
-            type: 'object',
-            properties: {
-                requestId: { type: 'string', description: 'The credential request ID to get' },
-            },
-            required: ['requestId'],
-        },
-        execute: async (make: Make, args: { requestId: string }) => {
-            return await make.credentialRequests.get(args.requestId, { cols: ['*'] });
-        },
-    },
-    {
         name: 'credential_requests_get_detail',
         title: 'Get credential request detail',
         description:
@@ -140,7 +118,7 @@ export const tools = [
         name: 'credential_requests_delete',
         title: 'Delete credential request',
         description:
-            'Delete a credential request by ID. If associated credentials exist, the query parameter confirmed is required to also these.',
+            'Delete a credential request by ID. Use the confirmed flag to also delete all associated credentials (connections and keys) along with the request.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'requestId',
@@ -238,7 +216,7 @@ export const tools = [
         name: 'credential_requests_create_action',
         title: 'Create credential action',
         description:
-            'Create a credential request action directly for the current user, bypassing the typical creation flow. This endpoint is designed for MCP (Model Context Protocol) integrations where the user wants to authorizes their own credentials.',
+            'Create a credential request action directly for the current user, bypassing the typical creation flow.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'teamId',
