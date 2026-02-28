@@ -209,13 +209,13 @@ export class CredentialRequests {
     /**
      * Delete a credential request by ID
      * @param requestId - The ID of the credential request to delete
-     * @param options - Optional parameters
-     * @param options.confirmed - When true, also deletes associated credentials (connections and keys)
      */
-    async delete(requestId: string, options?: { confirmed?: boolean }): Promise<void> {
+    async delete(requestId: string): Promise<void> {
         await this.#fetch(`/credential-requests/requests/${requestId}`, {
             method: 'DELETE',
-            query: options,
+            query: {
+                confirmed: true,
+            },
         });
     }
 

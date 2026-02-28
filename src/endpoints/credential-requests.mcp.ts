@@ -117,8 +117,7 @@ export const tools = [
     {
         name: 'credential_requests_delete',
         title: 'Delete credential request',
-        description:
-            'Delete a credential request by ID. Use the confirmed flag to also delete all associated credentials (connections and keys) along with the request.',
+        description: 'Delete a credential request and all associated credentials (connections and keys) by ID.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'requestId',
@@ -129,18 +128,12 @@ export const tools = [
             type: 'object',
             properties: {
                 requestId: { type: 'string', description: 'The credential request ID to delete' },
-                confirmed: {
-                    type: 'boolean',
-                    description: 'When true, also deletes associated credentials (connections and keys)',
-                },
             },
             required: ['requestId'],
         },
-        execute: async (make: Make, args: { requestId: string; confirmed?: boolean }) => {
-            await make.credentialRequests.delete(args.requestId, { confirmed: args.confirmed });
-            return args.confirmed
-                ? 'Credential request and associated credentials have been deleted.'
-                : 'Credential request has been deleted.';
+        execute: async (make: Make, args: { requestId: string }) => {
+            await make.credentialRequests.delete(args.requestId);
+            return 'Credential request and associated credentials have been deleted.';
         },
     },
     {
