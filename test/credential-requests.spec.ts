@@ -117,7 +117,7 @@ describe('Endpoints: CredentialRequests', () => {
     });
 
     it('Should delete a credential request by ID', async () => {
-        mockFetch('DELETE https://make.local/api/v2/credential-requests/requests/req-123', null);
+        mockFetch('DELETE https://make.local/api/v2/credential-requests/requests/req-123?confirmed=true', null);
 
         await make.credentialRequests.delete('req-123');
     });
