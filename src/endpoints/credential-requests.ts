@@ -207,7 +207,7 @@ export class CredentialRequests {
     }
 
     /**
-     * Delete a credential request by ID
+     * Delete a credential request and all associated credentials (connections and keys) by ID
      * @param requestId - The ID of the credential request to delete
      */
     async delete(requestId: string): Promise<void> {
