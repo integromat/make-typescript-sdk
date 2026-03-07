@@ -22,6 +22,14 @@ export type {
     RenameConnectionOptions,
 } from './endpoints/connections.js';
 export type {
+    CredentialRequest,
+    CredentialRequests,
+    CreateCredentialRequestBody,
+    GetCredentialRequestOptions,
+    Credential,
+    ListCredentialRequestsOptions,
+} from './endpoints/credential-requests.js';
+export type {
     DataStore,
     DataStores,
     CreateDataStoreBody,

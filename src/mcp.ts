@@ -10,6 +10,7 @@ import { tools as SDKWebhooksTools } from './endpoints/sdk/webhooks.mcp.js';
 
 import { tools as ScenariosTools } from './endpoints/scenarios.mcp.js';
 import { tools as ConnectionsTools } from './endpoints/connections.mcp.js';
+import { tools as CredentialRequestsTools } from './endpoints/credential-requests.mcp.js';
 import { tools as DataStoresTools } from './endpoints/data-stores.mcp.js';
 import { tools as DataStoreRecordsTools } from './endpoints/data-store-records.mcp.js';
 import { tools as TeamsTools } from './endpoints/teams.mcp.js';
@@ -129,6 +130,7 @@ export const MakeMCPTools = [
     // Core Endpoint Tools
     ...ScenariosTools,
     ...ConnectionsTools,
+    ...CredentialRequestsTools,
     ...DataStoresTools,
     ...DataStoreRecordsTools,
     ...TeamsTools,

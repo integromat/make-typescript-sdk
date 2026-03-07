@@ -1,0 +1,43 @@
+{
+    "requests": [
+        {
+            "id": "req-123",
+            "organizationId": 1,
+            "teamId": 123,
+            "userId": 789,
+            "name": "Google Workspace Access",
+            "description": "Request access to Google Workspace APIs",
+            "externalProviderId": null,
+            "makeProviderId": "456",
+            "createdAt": "2025-12-12T10:00:00Z",
+            "updatedAt": "2025-12-12T10:00:00Z",
+            "expiresAt": "2026-01-12T10:00:00Z",
+            "status": "pending",
+            "shouldSendEmail": true,
+            "emailSentAt": null
+        },
+        {
+            "id": "req-124",
+            "organizationId": 1,
+            "teamId": 123,
+            "userId": 790,
+            "name": "Dropbox Access",
+            "description": "Request access to Dropbox APIs",
+            "externalProviderId": null,
+            "makeProviderId": "457",
+            "createdAt": "2025-12-13T10:00:00Z",
+            "updatedAt": "2025-12-13T10:00:00Z",
+            "expiresAt": "2026-01-13T10:00:00Z",
+            "status": "approved",
+            "shouldSendEmail": false,
+            "emailSentAt": "2025-12-13T11:00:00Z"
+        }
+    ],
+    "pg": {
+        "offset": 0,
+        "limit": 100,
+        "sortBy": "id",
+        "sortDir": "asc",
+        "total": 2
+    }
+}

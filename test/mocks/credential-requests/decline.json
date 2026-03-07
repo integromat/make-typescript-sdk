@@ -1,0 +1,22 @@
+{
+    "credential": {
+        "id": "cred-789",
+        "requestId": "req-123",
+        "component": "account",
+        "type": "oauth",
+        "name": "google",
+        "label": "Google Drive Connection",
+        "description": "Access to Google Drive for file automation",
+        "scope": ["drive.readonly", "drive.file"],
+        "remoteId": null,
+        "remoteScope": [],
+        "tokenId": null,
+        "createdAt": "2025-12-12T10:00:00Z",
+        "updatedAt": "2025-12-12T11:00:00Z",
+        "state": "declined",
+        "declineReason": "Not authorized",
+        "appName": "google",
+        "appModules": [],
+        "appVersion": "1.0.0"
+    }
+}
