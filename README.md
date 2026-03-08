@@ -50,6 +50,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Enums** - Standardized lists (countries, regions, timezones)
 - **Blueprit** - Blueprint management
 - **Connections** - External service connections and authentication
+- **Credential Requests** - Credential authorization requests and management
 - **Data Stores** - Data storage within Make
 - **Data Store Records** - Individual records within data stores
 - **Data Structures** - Data schemas and formats
@@ -187,6 +188,7 @@ Each tool is described as demonstrated in the following example:
 All tools are organized into the following categories:
 
 - `connections`
+- `credential-requests`
 - `data-stores`
 - `data-store-records`
 - `data-structures`
