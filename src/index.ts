@@ -10,7 +10,6 @@ export type {
     RetryOptions,
 } from './types.js';
 
-export type { AppModule, Apps } from './endpoints/apps.js';
 export type { Blueprint, Blueprints, BlueprintNode, BlueprintRoute, BlueprintVersion } from './endpoints/blueprints.js';
 export type {
     Connection,
