@@ -172,8 +172,7 @@ export const tools = [
         name: 'credential_requests_create',
         title: 'Create credential',
         description:
-            'Create a credential request directly for the currently authenticated user. ' +
-            'To find the available modules for an app that credentials can be requested for use the app_modules_with_credentials tool.' +
+            'Create a credential request for the currently authenticated user to setup connections and keys. ' +
             'This will return a url where the user can authorize the credentials, so that they can be used in scenarios.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
@@ -186,28 +185,61 @@ export const tools = [
             type: 'object',
             properties: {
                 teamId: { type: 'number', description: 'Team ID' },
-                accountName: { type: 'string', description: 'Account name' },
-                scopes: {
+                credentials: {
                     type: 'array',
-                    items: { type: 'string' },
-                    description: 'OAuth scopes',
+                    description: 'Array of app/module selections to derive credentials from.',
+                    minItems: 1,
+                    maxItems: 64,
+                    items: {
+                        type: 'object',
+                        properties: {
+                            appName: {
+                                type: 'string',
+                                description: 'Name of the application to request credentials for.',
+                            },
+                            appModules: {
+                                type: 'array',
+                                description:
+                                    'Array of module IDs to request from the user, for example: ["WatchDirectMessages", "WatchFiles"].' +
+                                    'Use ["*"] to select all modules for the given application.',
+                                minItems: 1,
+                                items: { type: 'string' },
+                            },
+                            appVersion: {
+                                type: 'integer',
+                                description:
+                                    'Version of the application. If not provided, it defaults to the latest available version.',
+                            },
+                            nameOverride: {
+                                type: 'string',
+                                description:
+                                    'An optional name to use for the credential when created in the platform, overriding the default generated name.',
+                            },
+                            description: {
+                                type: 'string',
+                                description: 'Description for this credential to be displayed in the Request view.',
+                            },
+                        },
+                        required: ['appName', 'appModules'],
+                    },
                 },
             },
-            required: ['teamId', 'accountName', 'scopes'],
+            required: ['teamId', 'credentials'],
         },
         execute: async (
             make: Make,
             args: {
                 teamId: number;
-                accountName: string;
-                scopes: string[];
+                credentials: {
+                    appName: string;
+                    appModules: string[];
+                    appVersion?: number;
+                    nameOverride?: string;
+                    description?: string;
+                }[];
             },
         ) => {
-            return await make.credentialRequests.createAction({
-                ...args,
-                connections: [], // Add appropriate connections here
-                keys: [], // Add appropriate keys here
-            });
+            return await make.credentialRequests.createAction(args);
         },
     },
 ];

@@ -113,39 +113,29 @@ export type CreateCredentialRequestBody = {
 };
 
 /**
+ * Represents an app/module selection to derive credentials from.
+ */
+export type CredentialSelection = {
+    /** Name of the application to request credentials for */
+    appName: string;
+    /** Array of module IDs to include. Use ["*"] to select all modules with credentials. */
+    appModules: string[];
+    /** Version of the application. Defaults to the latest available version if not provided. */
+    appVersion?: number;
+    /** Optional name override for the credential when created in the platform */
+    nameOverride?: string;
+    /** Description for this credential to be displayed in the Request view */
+    description?: string;
+};
+
+/**
  * Body for creating a credential action
  */
 export type CreateCredentialActionBody = {
     /** Team ID */
     teamId: number;
-    /** Array of connections to create */
-    connections: {
-        /** Account name for the connection */
-        accountName: string;
-        /** OAuth scopes required */
-        scopes: string[];
-        /** Name of the connection */
-        name: string;
-        /** App name */
-        appName: string;
-        /** App modules */
-        appModules: string[];
-        /** App version */
-        appVersion: string[];
-    }[];
-    /** Array of keys to create */
-    keys: {
-        /** Type of key */
-        type: string;
-        /** Name of the key */
-        name: string;
-        /** App name */
-        appName: string;
-        /** App modules */
-        appModules: string[];
-        /** App version */
-        appVersion: string;
-    }[];
+    /** Array of app/module selections to derive credentials from */
+    credentials: CredentialSelection[];
 };
 
 /**

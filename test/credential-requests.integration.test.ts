@@ -55,11 +55,9 @@ describe('Integration: CredentialRequests', () => {
     });
 
     it('Should get credential from request', async () => {
-        const request = await make.credentialRequests.get(requestId);
-        // If credentials are not part of the response, skip this test
-        const credentials = (request as any)?.credentials;
-        if (!Array.isArray(credentials) || credentials.length === 0) return;
-        credentialId = credentials[0]?.id;
+        const detail = await make.credentialRequests.getDetail(requestId);
+        if (detail.credentials.length === 0) return;
+        credentialId = detail.credentials[0]!.id;
         if (!credentialId) return;
         const fetched = await make.credentialRequests.getCredential(credentialId);
         expect(fetched).toBeDefined();
@@ -91,16 +89,13 @@ describe('Integration: CredentialRequests', () => {
     it('Should create a credential request using the create action', async () => {
         const action = await make.credentialRequests.createAction({
             teamId: MAKE_TEAM,
-            keys: [
+            credentials: [
                 {
-                    name: 'Basic Auth',
-                    type: 'basicauth',
-                    appModules: ['ActionSendDataBasicAuth'],
                     appName: 'http',
-                    appVersion: '3',
+                    appModules: ['ActionSendDataBasicAuth'],
+                    appVersion: 3,
                 },
             ],
-            connections: [],
         });
         expect(action.request.id).toBeDefined();
         expect(action.publicUri).toBeDefined();

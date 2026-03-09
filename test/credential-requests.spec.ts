@@ -187,14 +187,11 @@ describe('Endpoints: CredentialRequests', () => {
     it('Should create a credential action', async () => {
         const body = {
             teamId: 123,
-            connections: [],
-            keys: [
+            credentials: [
                 {
-                    appModules: ['ActionSendDataBasicAuth'],
                     appName: 'http',
-                    appVersion: '3',
-                    name: 'Basic Auth',
-                    type: 'basicauth',
+                    appModules: ['ActionSendDataBasicAuth'],
+                    appVersion: 3,
                 },
             ],
         };
@@ -206,14 +203,11 @@ describe('Endpoints: CredentialRequests', () => {
 
         const result = await make.credentialRequests.createAction({
             teamId: 123,
-            connections: [],
-            keys: [
+            credentials: [
                 {
-                    name: 'Basic Auth',
-                    type: 'basicauth',
-                    appModules: ['ActionSendDataBasicAuth'],
                     appName: 'http',
-                    appVersion: '3',
+                    appModules: ['ActionSendDataBasicAuth'],
+                    appVersion: 3,
                 },
             ],
         });
