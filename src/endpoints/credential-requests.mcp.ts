@@ -1,5 +1,4 @@
 import type { Make } from '../make.js';
-import type { JSONValue } from '../types.js';
 
 export const tools = [
     {
@@ -47,7 +46,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_get_detail',
+        name: 'credential_requests_get',
         title: 'Get credential request detail',
         description:
             'Retrieve detailed information about a specific credential request by its ID, including all associated credentials with their authorization status, provider configuration, and user details.',
@@ -66,52 +65,6 @@ export const tools = [
         },
         execute: async (make: Make, args: { requestId: string }) => {
             return await make.credentialRequests.getDetail(args.requestId);
-        },
-    },
-    {
-        name: 'credential_requests_create',
-        title: 'Create credential request',
-        description:
-            'Create a new credential request to obtain user authorization for accessing external services. When setting up scenarios or connections programmatically, this endpoint generates an authorization URL that users can visit to grant permissions.',
-        category: 'credential-requests',
-        scope: 'credential-requests:write',
-        identifier: 'teamId',
-        annotations: {
-            idempotentHint: true,
-            destructiveHint: false,
-        },
-        inputSchema: {
-            type: 'object',
-            properties: {
-                name: { type: 'string', description: 'Name of the request' },
-                teamId: { type: 'number', description: 'Team ID' },
-                description: { type: 'string', description: 'Description of the request' },
-                connections: {
-                    type: 'array',
-                    items: { type: 'object' },
-                    description: 'Array of connections to include in the request',
-                },
-                keys: {
-                    type: 'array',
-                    items: { type: 'object' },
-                    description: 'Array of keys to include in the request',
-                },
-                provider: { type: 'object', description: 'Provider information' },
-            },
-            required: ['name', 'teamId', 'provider'],
-        },
-        execute: async (
-            make: Make,
-            args: {
-                name: string;
-                teamId: number;
-                description?: string;
-                connections?: Record<string, JSONValue>[];
-                keys?: Record<string, JSONValue>[];
-                provider: Record<string, JSONValue>;
-            },
-        ) => {
-            return await make.credentialRequests.create(args);
         },
     },
     {
@@ -137,7 +90,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_get_credential',
+        name: 'credential_get',
         title: 'Get credential',
         description:
             'Get details of a specific credential by ID. Returns metadata about the credential including its authorization status, associated request, and timestamps.',
@@ -159,7 +112,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_decline_credential',
+        name: 'credential_decline',
         title: 'Decline credential',
         description:
             'Decline a credential authorization request by ID with an optional reason. The credential status will be updated to declined.',
@@ -183,7 +136,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_delete_credential',
+        name: 'credential_delete',
         title: 'Delete credential',
         description:
             'Delete a credential (e.g., revoke OAuth tokens) and reset its state to pending. This allows the credential to be re-authorized with fresh permissions.',
@@ -206,8 +159,8 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_create_action',
-        title: 'Create credential action',
+        name: 'credential_requests_create',
+        title: 'Create credential',
         description:
             'Create a credential request action directly for the current user, bypassing the typical creation flow.',
         category: 'credential-requests',
