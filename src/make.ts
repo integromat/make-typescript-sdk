@@ -13,6 +13,7 @@ import { Connections } from './endpoints/connections.js';
 import { CredentialRequests } from './endpoints/credential-requests.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
+import { Apps } from './endpoints/apps.js';
 import { Enums } from './endpoints/enums.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
 import { SDKModules } from './endpoints/sdk/modules.js';
@@ -151,6 +152,12 @@ export class Make {
     public readonly organizations: Organizations;
 
     /**
+     * Access to app-related endpoints (IMT)
+     * Apps provide information about Make apps, their modules, and credential requirements
+     */
+    public readonly apps: Apps;
+
+    /**
      * Access to enum-related endpoints
      * Enums provide access to standardized lists like countries, regions, and timezones
      */
@@ -238,6 +245,7 @@ export class Make {
         this.connections = new Connections(this.fetch.bind(this));
         this.functions = new Functions(this.fetch.bind(this));
         this.organizations = new Organizations(this.fetch.bind(this));
+        this.apps = new Apps(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
         this.credentialRequests = new CredentialRequests(this.fetch.bind(this));
         this.sdk = {

@@ -173,6 +173,7 @@ export const tools = [
         title: 'Create credential',
         description:
             'Create a credential request directly for the currently authenticated user. ' +
+            'To find the available modules for an app that credentials can be requested for use the app_modules_with_credentials tool.' +
             'This will return a url where the user can authorize the credentials, so that they can be used in scenarios.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
