@@ -5,7 +5,7 @@ export const tools = [
         name: 'credential_requests_list',
         title: 'List credential requests',
         description:
-            'Retrieve a list of credential requests with optional filtering and pagination. Use this to view pending authorization requests, track credential request history, or find specific requests.',
+            'Retrieve a list of credential requests. Each request can contain multiple credentials (connections and API keys). Filter by team, user, provider, status, or name to find specific requests.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         identifier: 'teamId',
@@ -47,9 +47,11 @@ export const tools = [
     },
     {
         name: 'credential_requests_get',
-        title: 'Get credential request detail',
+        title: 'Get credential request details',
         description:
-            'Retrieve detailed information about a specific credential request by its ID, including all associated credentials with their authorization status, provider configuration, and user details.',
+            'Retrieve detailed information about a specific credential request by its ID. ' +
+            'Returns all associated credentials with their authorization status, provider configuration, user details, and authorization URLs for pending credentials. ' +
+            'Use this to check the state of credentials within a request.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         identifier: 'requestId',
@@ -70,7 +72,9 @@ export const tools = [
     {
         name: 'credential_requests_delete',
         title: 'Delete credential request',
-        description: 'Delete a credential request and all associated credentials (connections and keys) by ID.',
+        description:
+            'Permanently delete a credential request and all associated credentials (connections and API keys) by ID. ' +
+            'Any scenarios using connections from this request will lose access to the corresponding services. This action cannot be undone.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'requestId',
@@ -93,7 +97,9 @@ export const tools = [
         name: 'credential_get',
         title: 'Get credential',
         description:
-            'Get details of a specific credential by ID. Returns metadata about the credential including its authorization status, associated request, and timestamps.',
+            'Get details of a specific credential (connection or API key) by its ID. ' +
+            'Returns metadata including authorization status, the parent credential request, provider and account type information, and timestamps. ' +
+            'Use this to check the current state of an individual credential within a request.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         identifier: 'credentialId',
@@ -115,7 +121,9 @@ export const tools = [
         name: 'credential_decline',
         title: 'Decline credential',
         description:
-            'Decline a credential authorization request by ID with an optional reason. The credential status will be updated to declined.',
+            'Decline a credential authorization request by ID, setting its status to "declined" and preventing it from being authorized. ' +
+            'An optional reason can be provided to explain the decision. ' +
+            'This operation is idempotent - declining an already-declined credential has no additional effect.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'credentialId',
@@ -139,7 +147,9 @@ export const tools = [
         name: 'credential_delete',
         title: 'Delete credential',
         description:
-            'Delete a credential (e.g., revoke OAuth tokens) and reset its state to pending. This allows the credential to be re-authorized with fresh permissions.',
+            'Delete a credential (e.g., revoke OAuth tokens or remove stored API keys) and reset its state to pending. ' +
+            'Use this when a credential needs re-authorization with updated permissions, tokens have become stale, or you want to force re-authentication. ' +
+            'After deletion, the credential can be authorized again through the normal flow.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'credentialId',
@@ -162,7 +172,8 @@ export const tools = [
         name: 'credential_requests_create',
         title: 'Create credential',
         description:
-            'Create a credential request action directly for the current user, bypassing the typical creation flow.',
+            'Create a credential request directly for the currently authenticated user. ' +
+            'This will return a url where the user can authorize the credentials, so that they can be used in scenarios.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'teamId',
