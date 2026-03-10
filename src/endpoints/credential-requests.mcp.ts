@@ -170,10 +170,10 @@ export const tools = [
     },
     {
         name: 'credential_requests_create',
-        title: 'Create credential',
+        title: 'Create credential request',
         description:
-            'Create a credential request for the currently authenticated user to setup connections and keys. ' +
-            'This will return a url where the user can authorize the credentials, so that they can be used in scenarios.',
+            'Create a credential request for the currently authenticated user to set up connections and keys. ' +
+            'This will return a URL where the user can authorize the credentials, so that they can be used in scenarios.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'teamId',
@@ -200,13 +200,13 @@ export const tools = [
                             appModules: {
                                 type: 'array',
                                 description:
-                                    'Array of module IDs to request from the user, for example: ["WatchDirectMessages", "WatchFiles"].' +
+                                    'Array of module IDs to request from the user, for example: ["WatchDirectMessages", "WatchFiles"]. ' +
                                     'Use ["*"] to select all modules for the given application.',
                                 minItems: 1,
                                 items: { type: 'string' },
                             },
                             appVersion: {
-                                type: 'integer',
+                                type: 'number',
                                 description:
                                     'Version of the application. If not provided, it defaults to the latest available version.',
                             },
