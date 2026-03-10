@@ -1,12 +1,11 @@
 import type { Make } from '../make.js';
-import type { JSONValue } from '../types.js';
 
 export const tools = [
     {
         name: 'credential_requests_list',
         title: 'List credential requests',
         description:
-            'Retrieve a list of credential requests with optional filtering and pagination. Use this to view pending authorization requests, track credential request history, or find specific requests.',
+            'Retrieve a list of credential requests. Each request can contain multiple credentials (connections and API keys). Filter by team, user, provider, status, or name to find specific requests.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         identifier: 'teamId',
@@ -47,10 +46,12 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_get_detail',
-        title: 'Get credential request detail',
+        name: 'credential_requests_get',
+        title: 'Get credential request details',
         description:
-            'Retrieve detailed information about a specific credential request by its ID, including all associated credentials with their authorization status, provider configuration, and user details.',
+            'Retrieve detailed information about a specific credential request by its ID. ' +
+            'Returns all associated credentials with their authorization status, provider configuration, user details, and authorization URLs for pending credentials. ' +
+            'Use this to check the state of credentials within a request.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         identifier: 'requestId',
@@ -69,55 +70,11 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_create',
-        title: 'Create credential request',
-        description:
-            'Create a new credential request to obtain user authorization for accessing external services. When setting up scenarios or connections programmatically, this endpoint generates an authorization URL that users can visit to grant permissions.',
-        category: 'credential-requests',
-        scope: 'credential-requests:write',
-        identifier: 'teamId',
-        annotations: {
-            idempotentHint: true,
-            destructiveHint: false,
-        },
-        inputSchema: {
-            type: 'object',
-            properties: {
-                name: { type: 'string', description: 'Name of the request' },
-                teamId: { type: 'number', description: 'Team ID' },
-                description: { type: 'string', description: 'Description of the request' },
-                connections: {
-                    type: 'array',
-                    items: { type: 'object' },
-                    description: 'Array of connections to include in the request',
-                },
-                keys: {
-                    type: 'array',
-                    items: { type: 'object' },
-                    description: 'Array of keys to include in the request',
-                },
-                provider: { type: 'object', description: 'Provider information' },
-            },
-            required: ['name', 'teamId', 'provider'],
-        },
-        execute: async (
-            make: Make,
-            args: {
-                name: string;
-                teamId: number;
-                description?: string;
-                connections?: Record<string, JSONValue>[];
-                keys?: Record<string, JSONValue>[];
-                provider: Record<string, JSONValue>;
-            },
-        ) => {
-            return await make.credentialRequests.create(args);
-        },
-    },
-    {
         name: 'credential_requests_delete',
         title: 'Delete credential request',
-        description: 'Delete a credential request and all associated credentials (connections and keys) by ID.',
+        description:
+            'Permanently delete a credential request and all associated credentials (connections and API keys) by ID. ' +
+            'Any scenarios using connections from this request will lose access to the corresponding services. This action cannot be undone.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'requestId',
@@ -137,10 +94,12 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_get_credential',
+        name: 'credential_get',
         title: 'Get credential',
         description:
-            'Get details of a specific credential by ID. Returns metadata about the credential including its authorization status, associated request, and timestamps.',
+            'Get details of a specific credential (connection or API key) by its ID. ' +
+            'Returns metadata including authorization status, the parent credential request, provider and account type information, and timestamps. ' +
+            'Use this to check the current state of an individual credential within a request.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         identifier: 'credentialId',
@@ -159,10 +118,12 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_decline_credential',
+        name: 'credential_decline',
         title: 'Decline credential',
         description:
-            'Decline a credential authorization request by ID with an optional reason. The credential status will be updated to declined.',
+            'Decline a credential authorization request by ID, setting its status to "declined" and preventing it from being authorized. ' +
+            'An optional reason can be provided to explain the decision. ' +
+            'This operation is idempotent - declining an already-declined credential has no additional effect.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'credentialId',
@@ -183,10 +144,12 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_delete_credential',
+        name: 'credential_delete',
         title: 'Delete credential',
         description:
-            'Delete a credential (e.g., revoke OAuth tokens) and reset its state to pending. This allows the credential to be re-authorized with fresh permissions.',
+            'Delete a credential (e.g., revoke OAuth tokens or remove stored API keys) and reset its state to pending. ' +
+            'Use this when a credential needs re-authorization with updated permissions, tokens have become stale, or you want to force re-authentication. ' +
+            'After deletion, the credential can be authorized again through the normal flow.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'credentialId',
@@ -206,10 +169,11 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_create_action',
-        title: 'Create credential action',
+        name: 'credential_requests_create',
+        title: 'Create credential request',
         description:
-            'Create a credential request action directly for the current user, bypassing the typical creation flow.',
+            'Create a credential request for the currently authenticated user to set up connections and keys. ' +
+            'This will return a URL where the user can authorize the credentials, so that they can be used in scenarios.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         identifier: 'teamId',
@@ -221,28 +185,61 @@ export const tools = [
             type: 'object',
             properties: {
                 teamId: { type: 'number', description: 'Team ID' },
-                accountName: { type: 'string', description: 'Account name' },
-                scopes: {
+                credentials: {
                     type: 'array',
-                    items: { type: 'string' },
-                    description: 'OAuth scopes',
+                    description: 'Array of app/module selections to derive credentials from.',
+                    minItems: 1,
+                    maxItems: 64,
+                    items: {
+                        type: 'object',
+                        properties: {
+                            appName: {
+                                type: 'string',
+                                description: 'Name of the application to request credentials for.',
+                            },
+                            appModules: {
+                                type: 'array',
+                                description:
+                                    'Array of module IDs to request from the user, for example: ["WatchDirectMessages", "WatchFiles"]. ' +
+                                    'Use ["*"] to select all modules for the given application.',
+                                minItems: 1,
+                                items: { type: 'string' },
+                            },
+                            appVersion: {
+                                type: 'number',
+                                description:
+                                    'Version of the application. If not provided, it defaults to the latest available version.',
+                            },
+                            nameOverride: {
+                                type: 'string',
+                                description:
+                                    'An optional name to use for the credential when created in the platform, overriding the default generated name.',
+                            },
+                            description: {
+                                type: 'string',
+                                description: 'Description for this credential to be displayed in the Request view.',
+                            },
+                        },
+                        required: ['appName', 'appModules'],
+                    },
                 },
             },
-            required: ['teamId', 'accountName', 'scopes'],
+            required: ['teamId', 'credentials'],
         },
         execute: async (
             make: Make,
             args: {
                 teamId: number;
-                accountName: string;
-                scopes: string[];
+                credentials: {
+                    appName: string;
+                    appModules: string[];
+                    appVersion?: number;
+                    nameOverride?: string;
+                    description?: string;
+                }[];
             },
         ) => {
-            return await make.credentialRequests.createAction({
-                ...args,
-                connections: [], // Add appropriate connections here
-                keys: [], // Add appropriate keys here
-            });
+            return await make.credentialRequests.createAction(args);
         },
     },
 ];

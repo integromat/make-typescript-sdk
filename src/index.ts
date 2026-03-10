@@ -25,6 +25,8 @@ export type {
     CredentialRequest,
     CredentialRequests,
     CreateCredentialRequestBody,
+    CreateCredentialActionBody,
+    CredentialSelection,
     GetCredentialRequestOptions,
     Credential,
     ListCredentialRequestsOptions,
