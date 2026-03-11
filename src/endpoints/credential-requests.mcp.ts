@@ -74,7 +74,7 @@ export const tools = [
         description:
             'Create a new credential request to obtain user authorization for accessing external services. When setting up scenarios or connections programmatically, this endpoint generates an authorization URL that users can visit to grant permissions.',
         category: 'credential-requests',
-        scope: 'credential-requests:write',
+        scope: 'connections:write',
         identifier: 'teamId',
         annotations: {
             idempotentHint: true,
