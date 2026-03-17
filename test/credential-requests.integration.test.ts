@@ -59,7 +59,6 @@ describe('Integration: CredentialRequests', () => {
         expect(requests.some(r => r.id === requestId)).toBe(true);
     });
 
-    //
     it('Should get credential from request', async () => {
         const detail = await make.credentialRequests.getDetail(requestId);
         if (detail.credentials.length === 0) return;

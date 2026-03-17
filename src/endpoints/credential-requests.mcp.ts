@@ -234,7 +234,7 @@ export const tools = [
         description:
             'Create a credential request for one or more connections (OAuth) and/or keys (API keys) by their type identifiers (e.g. "google", "slack", "apikeyauth"). ' +
             'Use this when you know the exact connection or key types needed. ' +
-            'The response includes a publicUri where the end-user must go to authorize the requested credentials. ' +
+            'The response includes the created request, an array of credentials associated with the request, and a publicUri where the end-user must go to authorize the requested credentials. ' +
             'At least one connection or one key must be provided.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
