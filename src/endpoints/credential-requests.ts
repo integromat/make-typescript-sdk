@@ -132,10 +132,80 @@ export type CredentialSelection = {
  * Body for creating a credential action
  */
 export type CreateCredentialActionBody = {
-    /** Team ID */
+    /** Name of the Request which will be displayed to the End Users who open it */
+    name?: string;
+    /** Description of the Request which will be displayed to the End Users who open it */
+    description?: string;
+    /** ID of the Team to which the credentials will belong */
     teamId: number;
     /** Array of app/module selections to derive credentials from */
     credentials: CredentialSelection[];
+};
+
+/**
+ * Prefill values for a connection or key
+ */
+export type CredentialPrefill = {
+    /** Hard prefill values that the user cannot change */
+    hard?: Record<string, string | number | boolean>;
+    /** Soft prefill values that the user can change */
+    soft?: Record<string, string | number | boolean>;
+};
+
+/**
+ * Connection selection for create-by-credentials action
+ */
+export type ConnectionSelection = {
+    /** Type of the Connection to be included in the Request */
+    type: string;
+    /** Description of the particular Connection to be displayed in the Request view */
+    description?: string;
+    /** Array of Scopes that the Connection should ask for */
+    scope?: string[];
+    /** Prefill values for the connection */
+    prefill?: CredentialPrefill;
+    /** Optional name override for the credential when created in the platform */
+    nameOverride?: string;
+};
+
+/**
+ * Key selection for create-by-credentials action
+ */
+export type KeySelection = {
+    /** Type of the Key to be included in the Request */
+    type: string;
+    /** Description of the particular Key to be displayed in the Request view */
+    description?: string;
+    /** Prefill values for the key */
+    prefill?: CredentialPrefill;
+    /** Optional name override for the credential when created in the platform */
+    nameOverride?: string;
+};
+
+/**
+ * Body for creating a credential request by connection/key types
+ */
+export type CreateByCredentialsBody = {
+    /** Human-readable name for the credential request */
+    name?: string;
+    /** Instructions or context for the end-user */
+    description?: string;
+    /** The numeric ID of the Make team where the connections/keys will be created once authorized */
+    teamId: number;
+    /** Array of OAuth or basic-auth connections to request */
+    connections?: ConnectionSelection[];
+    /** Array of API keys to request */
+    keys?: KeySelection[];
+};
+
+/**
+ * Body for extending an existing connection's OAuth scopes
+ */
+export type ExtendConnectionBody = {
+    /** The numeric ID of an existing Make connection whose OAuth scopes need to be expanded */
+    connectionId: number;
+    /** One or more new OAuth scope strings to add to the connection */
+    scopes: string[];
 };
 
 /**
@@ -246,6 +316,36 @@ export class CredentialRequests {
             },
         );
     }
+
+    /**
+     * Create a credential request by connection/key types.
+     * Use this when you know the exact connection or key types needed.
+     */
+    async createByCredentials(
+        body: CreateByCredentialsBody,
+    ): Promise<{ request: CredentialRequest; credentials: Credential[]; publicUri: string }> {
+        return await this.#fetch<{ request: CredentialRequest; credentials: Credential[]; publicUri: string }>(
+            '/credential-requests/actions/create-by-credentials',
+            {
+                method: 'POST',
+                body,
+            },
+        );
+    }
+
+    /**
+     * Extend an existing connection's OAuth scopes.
+     * Creates a credential request that the end-user must authorize to grant additional scopes.
+     */
+    async extendConnection(body: ExtendConnectionBody): Promise<{ request: CredentialRequest; publicUri: string }> {
+        return await this.#fetch<{ request: CredentialRequest; publicUri: string }>(
+            '/credential-requests/actions/extend',
+            {
+                method: 'POST',
+                body,
+            },
+        );
+    }
 }
 
 /**
@@ -288,4 +388,6 @@ export type Credential = {
     appModules?: string[];
     /** App version */
     appVersion?: string;
+    /** Optional name override for the credential */
+    nameOverride?: string;
 };

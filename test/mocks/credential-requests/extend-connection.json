@@ -1,0 +1,19 @@
+{
+    "request": {
+        "id": "req-127",
+        "organizationId": 1,
+        "teamId": 123,
+        "userId": 789,
+        "name": "Scope Extension Request",
+        "description": null,
+        "externalProviderId": null,
+        "makeProviderId": "456",
+        "createdAt": "2025-12-14T10:00:00Z",
+        "updatedAt": "2025-12-14T10:00:00Z",
+        "expiresAt": "2026-01-14T10:00:00Z",
+        "status": "pending",
+        "shouldSendEmail": true,
+        "emailSentAt": null
+    },
+    "publicUri": "https://make.com/credential-requests/req-127/authorize"
+}
