@@ -210,20 +210,6 @@ export class CredentialRequests {
     }
 
     /**
-     * Get a credential detail by credential ID
-     */
-    async getCredential<C extends keyof Credential = never>(
-        credentialId: string,
-        options: { cols?: C[] | ['*'] } = {},
-    ): Promise<PickColumns<Credential, C>> {
-        const response = await this.#fetch<{ credential: PickColumns<Credential, C> }>(
-            `/credential-requests/credentials/${credentialId}`,
-            { query: options },
-        );
-        return response.credential;
-    }
-
-    /**
      * Decline a credential by ID
      */
     async declineCredential(credentialId: string, reason?: string): Promise<Credential> {

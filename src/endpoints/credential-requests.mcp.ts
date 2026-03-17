@@ -94,30 +94,6 @@ export const tools = [
         },
     },
     {
-        name: 'credential_get',
-        title: 'Get credential',
-        description:
-            'Get details of a specific credential (connection or API key) by its ID. ' +
-            'Returns metadata including authorization status, the parent credential request, provider and account type information, and timestamps. ' +
-            'Use this to check the current state of an individual credential within a request.',
-        category: 'credential-requests',
-        scope: 'credential-requests:read',
-        identifier: 'credentialId',
-        annotations: {
-            readOnlyHint: true,
-        },
-        inputSchema: {
-            type: 'object',
-            properties: {
-                credentialId: { type: 'string', description: 'The credential ID to get' },
-            },
-            required: ['credentialId'],
-        },
-        execute: async (make: Make, args: { credentialId: string }) => {
-            return await make.credentialRequests.getCredential(args.credentialId, { cols: ['*'] });
-        },
-    },
-    {
         name: 'credential_decline',
         title: 'Decline credential',
         description:

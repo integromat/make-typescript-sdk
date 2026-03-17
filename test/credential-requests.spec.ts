@@ -6,7 +6,6 @@ import * as listMock from './mocks/credential-requests/list.json';
 import * as getMock from './mocks/credential-requests/get.json';
 import * as getDetailMock from './mocks/credential-requests/get-detail.json';
 import * as createMock from './mocks/credential-requests/create.json';
-import * as getCredentialMock from './mocks/credential-requests/get-credential.json';
 import * as declineMock from './mocks/credential-requests/decline.json';
 import * as deleteRemoteMock from './mocks/credential-requests/delete-remote.json';
 import * as createActionMock from './mocks/credential-requests/create-action.json';
@@ -120,27 +119,6 @@ describe('Endpoints: CredentialRequests', () => {
         mockFetch('DELETE https://make.local/api/v2/credential-requests/requests/req-123?confirmed=true', null);
 
         await make.credentialRequests.delete('req-123');
-    });
-
-    it('Should get a credential by ID', async () => {
-        mockFetch('GET https://make.local/api/v2/credential-requests/credentials/cred-456', getCredentialMock);
-
-        const result = await make.credentialRequests.getCredential('cred-456');
-
-        expect(result).toStrictEqual(getCredentialMock.credential);
-    });
-
-    it('Should get a credential by ID with column selection', async () => {
-        mockFetch(
-            'GET https://make.local/api/v2/credential-requests/credentials/cred-456?cols%5B%5D=id&cols%5B%5D=state',
-            getCredentialMock,
-        );
-
-        const result = await make.credentialRequests.getCredential('cred-456', {
-            cols: ['id', 'state'],
-        });
-
-        expect(result).toStrictEqual(getCredentialMock.credential);
     });
 
     it('Should decline a credential without reason', async () => {
