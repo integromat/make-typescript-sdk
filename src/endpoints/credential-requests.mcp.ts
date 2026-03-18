@@ -2,7 +2,7 @@ import type { Make } from '../make.js';
 
 export const tools = [
     {
-        name: 'credential_requests_list',
+        name: 'credential-requests_list',
         title: 'List credential requests',
         description:
             'Retrieve a list of credential requests. Each request can contain multiple credentials (connections and API keys). Filter by team, user, provider, status, or name to find specific requests.',
@@ -46,7 +46,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_get',
+        name: 'credential-requests_get',
         title: 'Get credential request details',
         description:
             'Retrieve detailed information about a specific credential request by its ID. ' +
@@ -70,7 +70,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_delete',
+        name: 'credential-requests_delete',
         title: 'Delete credential request',
         description:
             'Permanently delete a credential request and all associated credentials (connections and API keys) by ID. ' +
@@ -94,7 +94,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_decline',
+        name: 'credential-requests_credential-decline',
         title: 'Decline credential',
         description:
             'Decline a credential authorization request by ID, setting its status to "declined" and preventing it from being authorized. ' +
@@ -120,7 +120,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_delete',
+        name: 'credential-requests_credential-delete',
         title: 'Delete credential',
         description:
             'Delete a credential (e.g., revoke OAuth tokens or remove stored API keys) and reset its state to pending. ' +
@@ -145,7 +145,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_create',
+        name: 'credential-requests_create',
         title: 'Create credential request',
         description:
             'Create a credential request for the currently authenticated user to set up connections and keys. ' +
@@ -229,7 +229,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_create_by_credentials',
+        name: 'credential-requests_create-by-credentials',
         title: 'Create credential request by connection/key types',
         description:
             'Create a credential request for one or more connections (OAuth) and/or keys (API keys) by their type identifiers (e.g. "google", "slack", "apikeyauth"). ' +
@@ -376,7 +376,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_extend_connection',
+        name: 'credential-requests_extend-connection',
         title: 'Extend connection OAuth scopes',
         description:
             'Add new OAuth scopes to an existing connection. Use this when a connection exists but lacks the permissions (scopes) needed for a specific operation. ' +
