@@ -73,7 +73,7 @@ export const tools = [
                 spec: {
                     type: 'array',
                     items: { type: 'object' },
-                    description: 'Sets the data structure specification',
+                    description: 'Sets the data structure specification. Each item follows the Make Parameters Syntax.',
                 },
             },
             required: ['teamId', 'name', 'strict', 'spec'],
@@ -111,7 +111,7 @@ export const tools = [
                 spec: {
                     type: 'array',
                     items: { type: 'object' },
-                    description: 'Sets the data structure specification',
+                    description: 'Sets the data structure specification. Each item follows the Make Parameters Syntax.',
                 },
             },
             required: ['dataStructureId'],
