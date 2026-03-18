@@ -6,10 +6,11 @@ import * as listMock from './mocks/credential-requests/list.json';
 import * as getMock from './mocks/credential-requests/get.json';
 import * as getDetailMock from './mocks/credential-requests/get-detail.json';
 import * as createMock from './mocks/credential-requests/create.json';
-import * as getCredentialMock from './mocks/credential-requests/get-credential.json';
 import * as declineMock from './mocks/credential-requests/decline.json';
 import * as deleteRemoteMock from './mocks/credential-requests/delete-remote.json';
 import * as createActionMock from './mocks/credential-requests/create-action.json';
+import * as createByCredentialsMock from './mocks/credential-requests/create-by-credentials.json';
+import * as extendConnectionMock from './mocks/credential-requests/extend-connection.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -122,27 +123,6 @@ describe('Endpoints: CredentialRequests', () => {
         await make.credentialRequests.delete('req-123');
     });
 
-    it('Should get a credential by ID', async () => {
-        mockFetch('GET https://make.local/api/v2/credential-requests/credentials/cred-456', getCredentialMock);
-
-        const result = await make.credentialRequests.getCredential('cred-456');
-
-        expect(result).toStrictEqual(getCredentialMock.credential);
-    });
-
-    it('Should get a credential by ID with column selection', async () => {
-        mockFetch(
-            'GET https://make.local/api/v2/credential-requests/credentials/cred-456?cols%5B%5D=id&cols%5B%5D=state',
-            getCredentialMock,
-        );
-
-        const result = await make.credentialRequests.getCredential('cred-456', {
-            cols: ['id', 'state'],
-        });
-
-        expect(result).toStrictEqual(getCredentialMock.credential);
-    });
-
     it('Should decline a credential without reason', async () => {
         mockFetch(
             'POST https://make.local/api/v2/credential-requests/credentials/cred-789/decline',
@@ -186,6 +166,8 @@ describe('Endpoints: CredentialRequests', () => {
 
     it('Should create a credential action', async () => {
         const body = {
+            name: 'Google Sheets and Slack Access',
+            description: 'Action to create Google Sheets connection and Slack integration',
             teamId: 123,
             credentials: [
                 {
@@ -202,6 +184,8 @@ describe('Endpoints: CredentialRequests', () => {
         });
 
         const result = await make.credentialRequests.createAction({
+            name: 'Google Sheets and Slack Access',
+            description: 'Action to create Google Sheets connection and Slack integration',
             teamId: 123,
             credentials: [
                 {
@@ -215,6 +199,61 @@ describe('Endpoints: CredentialRequests', () => {
         expect(result).toStrictEqual({
             request: createActionMock.request,
             publicUri: createActionMock.publicUri,
+        });
+    });
+
+    it('Should create a credential request by connection/key types', async () => {
+        const body = {
+            teamId: 123,
+            name: 'Google Sheets and HTTP Access',
+            connections: [
+                {
+                    type: 'google',
+                    scope: ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets'],
+                },
+            ],
+            keys: [
+                {
+                    type: 'apikeyauth',
+                    description: 'API Key for HTTP service',
+                },
+            ],
+        };
+
+        mockFetch(
+            'POST https://make.local/api/v2/credential-requests/actions/create-by-credentials',
+            createByCredentialsMock,
+            req => {
+                expect(req.body).toStrictEqual(body);
+                expect(req.headers.get('content-type')).toBe('application/json');
+            },
+        );
+
+        const result = await make.credentialRequests.createByCredentials(body);
+
+        expect(result).toStrictEqual({
+            request: createByCredentialsMock.request,
+            credentials: createByCredentialsMock.credentials,
+            publicUri: createByCredentialsMock.publicUri,
+        });
+    });
+
+    it('Should extend an existing connection OAuth scopes', async () => {
+        const body = {
+            connectionId: 123,
+            scopes: ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/calendar'],
+        };
+
+        mockFetch('POST https://make.local/api/v2/credential-requests/actions/extend', extendConnectionMock, req => {
+            expect(req.body).toStrictEqual(body);
+            expect(req.headers.get('content-type')).toBe('application/json');
+        });
+
+        const result = await make.credentialRequests.extendConnection(body);
+
+        expect(result).toStrictEqual({
+            request: extendConnectionMock.request,
+            publicUri: extendConnectionMock.publicUri,
         });
     });
 });

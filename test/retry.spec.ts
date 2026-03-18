@@ -26,12 +26,9 @@ describe('Make SDK Retry Logic', () => {
         fetchMock.mockResponses(
             [
                 JSON.stringify({ message: 'Rate limit exceeded' }),
-                { status: 429, headers: { 'content-type': 'application/json' } }
+                { status: 429, headers: { 'content-type': 'application/json' } },
             ],
-            [
-                JSON.stringify({ authUser: { id: 1 } }),
-                { status: 200, headers: { 'content-type': 'application/json' } }
-            ]
+            [JSON.stringify({ authUser: { id: 1 } }), { status: 200, headers: { 'content-type': 'application/json' } }],
         );
 
         const result = await make.users.me();
@@ -42,9 +39,9 @@ describe('Make SDK Retry Logic', () => {
     it('Should NOT retry on 429 if disabled (default)', async () => {
         const make = new Make(MAKE_API_KEY, MAKE_ZONE); // Default options
 
-        fetchMock.mockResponse(JSON.stringify({ message: 'Rate limit exceeded' }), { 
-            status: 429, 
-            headers: { 'content-type': 'application/json' } 
+        fetchMock.mockResponse(JSON.stringify({ message: 'Rate limit exceeded' }), {
+            status: 429,
+            headers: { 'content-type': 'application/json' },
         });
 
         await expect(make.users.me()).rejects.toThrow(MakeError);
@@ -61,9 +58,9 @@ describe('Make SDK Retry Logic', () => {
         });
 
         // All calls fail with 429
-        fetchMock.mockResponse(JSON.stringify({ message: 'Rate limit exceeded' }), { 
-            status: 429, 
-            headers: { 'content-type': 'application/json' } 
+        fetchMock.mockResponse(JSON.stringify({ message: 'Rate limit exceeded' }), {
+            status: 429,
+            headers: { 'content-type': 'application/json' },
         });
 
         await expect(make.users.me()).rejects.toThrow(MakeError);
@@ -84,12 +81,9 @@ describe('Make SDK Retry Logic', () => {
         fetchMock.mockResponses(
             [
                 JSON.stringify({ message: 'Rate limit exceeded' }),
-                { status: 429, headers: { 'Retry-After': '1', 'content-type': 'application/json' } } // 1 second
+                { status: 429, headers: { 'Retry-After': '1', 'content-type': 'application/json' } }, // 1 second
             ],
-            [
-                JSON.stringify({ authUser: { id: 1 } }),
-                { status: 200, headers: { 'content-type': 'application/json' } }
-            ]
+            [JSON.stringify({ authUser: { id: 1 } }), { status: 200, headers: { 'content-type': 'application/json' } }],
         );
 
         const startTime = Date.now();
@@ -116,12 +110,9 @@ describe('Make SDK Retry Logic', () => {
         fetchMock.mockResponses(
             [
                 JSON.stringify({ message: 'Rate limit exceeded' }),
-                { status: 429, headers: { 'Retry-After': '10', 'content-type': 'application/json' } }
+                { status: 429, headers: { 'Retry-After': '10', 'content-type': 'application/json' } },
             ],
-            [
-                JSON.stringify({ authUser: { id: 1 } }),
-                { status: 200, headers: { 'content-type': 'application/json' } }
-            ]
+            [JSON.stringify({ authUser: { id: 1 } }), { status: 200, headers: { 'content-type': 'application/json' } }],
         );
 
         const startTime = Date.now();
@@ -148,16 +139,13 @@ describe('Make SDK Retry Logic', () => {
         fetchMock.mockResponses(
             [
                 JSON.stringify({ message: 'Internal Server Error' }),
-                { status: 500, headers: { 'content-type': 'application/json' } }
+                { status: 500, headers: { 'content-type': 'application/json' } },
             ],
             [
                 JSON.stringify({ message: 'Rate limit exceeded' }),
-                { status: 429, headers: { 'content-type': 'application/json' } }
+                { status: 429, headers: { 'content-type': 'application/json' } },
             ],
-            [
-                JSON.stringify({ authUser: { id: 1 } }),
-                { status: 200, headers: { 'content-type': 'application/json' } }
-            ]
+            [JSON.stringify({ authUser: { id: 1 } }), { status: 200, headers: { 'content-type': 'application/json' } }],
         );
 
         const result = await make.users.me();
@@ -178,12 +166,9 @@ describe('Make SDK Retry Logic', () => {
         fetchMock.mockResponses(
             [
                 JSON.stringify({ message: 'Internal Server Error' }),
-                { status: 500, headers: { 'content-type': 'application/json' } }
+                { status: 500, headers: { 'content-type': 'application/json' } },
             ],
-            [
-                JSON.stringify({ authUser: { id: 1 } }),
-                { status: 200, headers: { 'content-type': 'application/json' } }
-            ]
+            [JSON.stringify({ authUser: { id: 1 } }), { status: 200, headers: { 'content-type': 'application/json' } }],
         );
 
         const result = await make.users.me();
@@ -200,9 +185,9 @@ describe('Make SDK Retry Logic', () => {
             },
         });
 
-        fetchMock.mockResponse(JSON.stringify({ message: 'Internal Server Error' }), { 
+        fetchMock.mockResponse(JSON.stringify({ message: 'Internal Server Error' }), {
             status: 500,
-            headers: { 'content-type': 'application/json' }
+            headers: { 'content-type': 'application/json' },
         });
 
         await expect(make.users.me()).rejects.toThrow(MakeError);
@@ -219,9 +204,9 @@ describe('Make SDK Retry Logic', () => {
         });
 
         // 400 Bad Request
-        fetchMock.mockResponse(JSON.stringify({ message: 'Bad Request' }), { 
+        fetchMock.mockResponse(JSON.stringify({ message: 'Bad Request' }), {
             status: 400,
-            headers: { 'content-type': 'application/json' }
+            headers: { 'content-type': 'application/json' },
         });
 
         await expect(make.users.me()).rejects.toThrow(MakeError);

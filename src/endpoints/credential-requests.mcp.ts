@@ -2,7 +2,7 @@ import type { Make } from '../make.js';
 
 export const tools = [
     {
-        name: 'credential_requests_list',
+        name: 'credential-requests_list',
         title: 'List credential requests',
         description:
             'Retrieve a list of credential requests. Each request can contain multiple credentials (connections and API keys). Filter by team, user, provider, status, or name to find specific requests.',
@@ -46,7 +46,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_get',
+        name: 'credential-requests_get',
         title: 'Get credential request details',
         description:
             'Retrieve detailed information about a specific credential request by its ID. ' +
@@ -70,7 +70,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_delete',
+        name: 'credential-requests_delete',
         title: 'Delete credential request',
         description:
             'Permanently delete a credential request and all associated credentials (connections and API keys) by ID. ' +
@@ -94,31 +94,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_get',
-        title: 'Get credential',
-        description:
-            'Get details of a specific credential (connection or API key) by its ID. ' +
-            'Returns metadata including authorization status, the parent credential request, provider and account type information, and timestamps. ' +
-            'Use this to check the current state of an individual credential within a request.',
-        category: 'credential-requests',
-        scope: 'credential-requests:read',
-        identifier: 'credentialId',
-        annotations: {
-            readOnlyHint: true,
-        },
-        inputSchema: {
-            type: 'object',
-            properties: {
-                credentialId: { type: 'string', description: 'The credential ID to get' },
-            },
-            required: ['credentialId'],
-        },
-        execute: async (make: Make, args: { credentialId: string }) => {
-            return await make.credentialRequests.getCredential(args.credentialId, { cols: ['*'] });
-        },
-    },
-    {
-        name: 'credential_decline',
+        name: 'credential-requests_credential-decline',
         title: 'Decline credential',
         description:
             'Decline a credential authorization request by ID, setting its status to "declined" and preventing it from being authorized. ' +
@@ -144,7 +120,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_delete',
+        name: 'credential-requests_credential-delete',
         title: 'Delete credential',
         description:
             'Delete a credential (e.g., revoke OAuth tokens or remove stored API keys) and reset its state to pending. ' +
@@ -169,7 +145,7 @@ export const tools = [
         },
     },
     {
-        name: 'credential_requests_create',
+        name: 'credential-requests_create',
         title: 'Create credential request',
         description:
             'Create a credential request for the currently authenticated user to set up connections and keys. ' +
@@ -184,6 +160,14 @@ export const tools = [
         inputSchema: {
             type: 'object',
             properties: {
+                name: {
+                    type: 'string',
+                    description: 'Name of the Request which will be displayed to the End Users who open it.',
+                },
+                description: {
+                    type: 'string',
+                    description: 'Description of the Request which will be displayed to the End Users who open it.',
+                },
                 teamId: { type: 'number', description: 'Team ID' },
                 credentials: {
                     type: 'array',
@@ -229,6 +213,8 @@ export const tools = [
         execute: async (
             make: Make,
             args: {
+                name?: string;
+                description?: string;
                 teamId: number;
                 credentials: {
                     appName: string;
@@ -240,6 +226,198 @@ export const tools = [
             },
         ) => {
             return await make.credentialRequests.createAction(args);
+        },
+    },
+    {
+        name: 'credential-requests_create-by-credentials',
+        title: 'Create credential request by connection/key types',
+        description:
+            'Create a credential request for one or more connections (OAuth) and/or keys (API keys) by their type identifiers (e.g. "google", "slack", "apikeyauth"). ' +
+            'Use this when you know the exact connection or key types needed. ' +
+            'The response includes the created request, an array of credentials associated with the request, and a publicUri where the end-user must go to authorize the requested credentials. ' +
+            'At least one connection or one key must be provided.',
+        category: 'credential-requests',
+        scope: 'credential-requests:write',
+        identifier: 'teamId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                name: {
+                    type: 'string',
+                    description:
+                        'Human-readable name for the credential request, displayed to the end-user who will authorize it.',
+                },
+                description: {
+                    type: 'string',
+                    description: 'Instructions or context for the end-user, displayed on the authorization page.',
+                },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'The numeric ID of the Make team where the connections/keys will be created once authorized.',
+                },
+                connections: {
+                    type: 'array',
+                    description:
+                        'Array of OAuth or basic-auth connections to request. Each item needs at least a "type" (e.g. "google", "slack", "github").',
+                    maxItems: 32,
+                    items: {
+                        type: 'object',
+                        properties: {
+                            type: {
+                                type: 'string',
+                                description: 'Type of the Connection to be included in the Request.',
+                            },
+                            description: {
+                                type: 'string',
+                                description:
+                                    'Description of the particular Connection to be displayed in the Request view.',
+                            },
+                            scope: {
+                                type: 'array',
+                                description: 'Array of Scopes that the Connection should ask for.',
+                                items: { type: 'string' },
+                            },
+                            prefill: {
+                                type: 'object',
+                                description: 'Prefill values for the connection.',
+                                properties: {
+                                    hard: {
+                                        type: 'object',
+                                        description: 'Hard prefill values that the user cannot change.',
+                                    },
+                                    soft: {
+                                        type: 'object',
+                                        description: 'Soft prefill values that the user can change.',
+                                    },
+                                },
+                            },
+                            nameOverride: {
+                                type: 'string',
+                                description: 'An optional name to use for the credential when created in the platform.',
+                            },
+                        },
+                        required: ['type'],
+                    },
+                },
+                keys: {
+                    type: 'array',
+                    description:
+                        'Array of API keys to request. Each item needs at least a "type" (e.g. "apikeyauth", "basicauth").',
+                    maxItems: 32,
+                    items: {
+                        type: 'object',
+                        properties: {
+                            type: {
+                                type: 'string',
+                                description: 'Type of the Key to be included in the Request.',
+                            },
+                            description: {
+                                type: 'string',
+                                description: 'Description of the particular Key to be displayed in the Request view.',
+                            },
+                            prefill: {
+                                type: 'object',
+                                description: 'Prefill values for the key.',
+                                properties: {
+                                    hard: {
+                                        type: 'object',
+                                        description: 'Hard prefill values that the user cannot change.',
+                                    },
+                                    soft: {
+                                        type: 'object',
+                                        description: 'Soft prefill values that the user can change.',
+                                    },
+                                },
+                            },
+                            nameOverride: {
+                                type: 'string',
+                                description: 'An optional name to use for the credential when created in the platform.',
+                            },
+                        },
+                        required: ['type'],
+                    },
+                },
+            },
+            required: ['teamId'],
+        },
+        execute: async (
+            make: Make,
+            args: {
+                name?: string;
+                description?: string;
+                teamId: number;
+                connections?: {
+                    type: string;
+                    description?: string;
+                    scope?: string[];
+                    prefill?: {
+                        hard?: Record<string, string | number | boolean>;
+                        soft?: Record<string, string | number | boolean>;
+                    };
+                    nameOverride?: string;
+                }[];
+                keys?: {
+                    type: string;
+                    description?: string;
+                    prefill?: {
+                        hard?: Record<string, string | number | boolean>;
+                        soft?: Record<string, string | number | boolean>;
+                    };
+                    nameOverride?: string;
+                }[];
+            },
+        ) => {
+            return await make.credentialRequests.createByCredentials(args);
+        },
+    },
+    {
+        name: 'credential-requests_extend-connection',
+        title: 'Extend connection OAuth scopes',
+        description:
+            'Add new OAuth scopes to an existing connection. Use this when a connection exists but lacks the permissions (scopes) needed for a specific operation. ' +
+            'Creates a credential request that the end-user must authorize via the returned publicUri to grant the additional scopes. ' +
+            'Fails if all requested scopes are already present on the connection.',
+        category: 'credential-requests',
+        scope: 'credential-requests:write',
+        identifier: 'connectionId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                connectionId: {
+                    type: 'number',
+                    description:
+                        'The numeric ID of an existing Make connection whose OAuth scopes need to be expanded.',
+                },
+                scopes: {
+                    type: 'array',
+                    description:
+                        'One or more new OAuth scope strings to add to the connection. At least one scope must be new (not already granted).',
+                    minItems: 1,
+                    items: {
+                        type: 'string',
+                        description: 'An OAuth scope string to add.',
+                    },
+                },
+            },
+            required: ['connectionId', 'scopes'],
+        },
+        execute: async (
+            make: Make,
+            args: {
+                connectionId: number;
+                scopes: string[];
+            },
+        ) => {
+            return await make.credentialRequests.extendConnection(args);
         },
     },
 ];

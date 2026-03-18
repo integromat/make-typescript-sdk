@@ -132,5 +132,5 @@ describe('Make SDK', () => {
 
             expect(result).toBe(jsonc);
         });
-    })
+    });
 });
