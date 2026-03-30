@@ -49,6 +49,12 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 
 The SDK ships with a `make-cli` binary that provides command-line access to the Make API.
 
+### Installation
+
+```bash
+npm install -g @makehq/sdk
+```
+
 ### Authentication
 
 Provide credentials via flags or environment variables:
