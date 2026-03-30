@@ -256,7 +256,7 @@ export const tools = [
         },
     },
     {
-        name: 'scenarios_set_interface',
+        name: 'scenarios_set-interface',
         title: 'Set scenario interface',
         description: 'Update the interface for a scenario',
         category: 'scenarios',

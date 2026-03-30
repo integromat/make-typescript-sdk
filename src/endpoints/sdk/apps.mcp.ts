@@ -3,7 +3,7 @@ import type { JSONValue } from '../../types.js';
 
 export const tools = [
     {
-        name: 'sdk_apps_list',
+        name: 'sdk-apps_list',
         title: 'List SDK apps',
         description: 'List SDK apps with optional filtering',
         category: 'sdk.apps',
@@ -21,7 +21,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_apps_get',
+        name: 'sdk-apps_get',
         title: 'Get SDK app',
         description: 'Get a SDK app by name and version',
         category: 'sdk.apps',
@@ -43,7 +43,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_apps_create',
+        name: 'sdk-apps_create',
         title: 'Create SDK app',
         description: 'Create a new SDK app',
         category: 'sdk.apps',
@@ -88,7 +88,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_apps_update',
+        name: 'sdk-apps_update',
         title: 'Update SDK app',
         description: 'Update an existing SDK app',
         category: 'sdk.apps',
@@ -134,7 +134,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_apps_delete',
+        name: 'sdk-apps_delete',
         title: 'Delete SDK app',
         description: 'Delete a SDK app by name and version',
         category: 'sdk.apps',
@@ -157,7 +157,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_apps_get_section',
+        name: 'sdk-apps_get-section',
         title: 'Get SDK app section',
         description: 'Get a specific section of a SDK app',
         category: 'sdk.apps',
@@ -187,7 +187,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_apps_set_section',
+        name: 'sdk-apps_set-section',
         title: 'Set SDK app section',
         description: 'Set/update a specific section of a SDK app',
         category: 'sdk.apps',
@@ -225,7 +225,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_apps_get_docs',
+        name: 'sdk-apps_get-docs',
         title: 'Get SDK app documentation',
         description: 'Get app documentation (readme)',
         category: 'sdk.apps',
@@ -247,7 +247,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_apps_set_docs',
+        name: 'sdk-apps_set-docs',
         title: 'Set SDK app documentation',
         description: 'Set app documentation (readme)',
         category: 'sdk.apps',
@@ -272,7 +272,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_apps_get_common',
+        name: 'sdk-apps_get-common',
         title: 'Get SDK app common data',
         description: 'Get app common data (client credentials and shared configuration)',
         category: 'sdk.apps',
@@ -294,7 +294,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_apps_set_common',
+        name: 'sdk-apps_set-common',
         title: 'Set SDK app common data',
         description: 'Set app common data (client credentials and shared configuration)',
         category: 'sdk.apps',

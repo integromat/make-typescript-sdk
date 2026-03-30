@@ -27,7 +27,7 @@ export const tools = [
         },
     },
     {
-        name: 'executions_get_detail',
+        name: 'executions_get-detail',
         title: 'Get execution detail',
         description: 'Get detailed result of a specific execution',
         category: 'executions',
@@ -71,7 +71,7 @@ export const tools = [
         },
     },
     {
-        name: 'executions_list_for_incomp_exec',
+        name: 'executions_list-for-incomp-exec',
         title: 'List executions for incomplete execution',
         description: 'List executions for an incomplete execution',
         category: 'executions',
@@ -97,7 +97,7 @@ export const tools = [
         },
     },
     {
-        name: 'executions_get_for_incomp_exec',
+        name: 'executions_get-for-incomp-exec',
         title: 'Get execution for incomplete execution',
         description: 'Get execution details for an incomplete execution',
         category: 'executions',
