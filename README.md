@@ -45,6 +45,63 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 });
 ```
 
+## CLI Usage
+
+The SDK ships with a `make-cli` binary that provides command-line access to the Make API.
+
+### Authentication
+
+Provide credentials via flags or environment variables:
+
+```bash
+export MAKE_API_KEY="your-api-key"
+export MAKE_ZONE="eu2.make.com"
+```
+
+Or pass them directly:
+
+```bash
+make-cli <command> --api-key="your-api-key" --zone="eu2.make.com"
+```
+
+### Global Options
+
+| Option      | Description                                         |
+| ----------- | --------------------------------------------------- |
+| `--api-key` | Make API key                                        |
+| `--zone`    | Make zone (e.g. `eu2.make.com`)                     |
+| `--output`  | Output format: `json` (default), `compact`, `table` |
+
+### Commands
+
+Commands follow the pattern `make-cli <category> <action> [options]`. SDK/custom app commands are nested under `sdk`:
+
+```bash
+# Platform commands
+make-cli scenarios list --team-id=123
+make-cli scenarios get --scenario-id=456
+make-cli connections list --team-id=123
+make-cli data-stores list --team-id=123
+make-cli data-store-records list --data-store-id=1
+make-cli teams list --organization-id=1
+make-cli users me
+
+# Creating a scenario
+make-cli scenarios create \
+  --team-id=123 \
+  --scheduling='{"type":"on-demand"}' \
+  --blueprint='{"name":"My Scenario","flow":[],"metadata":{}}'
+
+# SDK / custom app commands
+make-cli sdk apps list --organization-id=1
+make-cli sdk functions get-code --app-name=myapp --app-version=1 --function-name=myFn
+
+# Output formatting
+make-cli scenarios list --team-id=123 --output=table
+```
+
+Run `make-cli --help` or `make-cli <category> --help` for a full list.
+
 ## Platform Endpoints
 
 - **Enums** - Standardized lists (countries, regions, timezones)
@@ -81,6 +138,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - Built-in error handling and response typing
 - Comprehensive test coverage
 - Model Context Protocol (MCP) support
+- CLI (`make-cli`) for command-line access to all endpoints
 
 ## Configuration Options
 
