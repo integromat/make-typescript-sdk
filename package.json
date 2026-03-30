@@ -1,6 +1,6 @@
 {
     "name": "@makehq/sdk",
-    "version": "0.12.0",
+    "version": "0.13.0",
     "description": "Make TypeScript SDK",
     "license": "MIT",
     "author": "Make",
@@ -12,6 +12,9 @@
     "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.cts",
+    "bin": {
+        "make-cli": "./dist/cli.js"
+    },
     "scripts": {
         "watch": "tsc -w",
         "build": "tsup",
@@ -71,5 +74,8 @@
         "typedoc": "^0.28.0",
         "typescript": "^5.8.2",
         "typescript-eslint": "^8.26.1"
+    },
+    "dependencies": {
+        "commander": "^14.0.3"
     }
 }
