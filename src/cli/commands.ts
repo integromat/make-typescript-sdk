@@ -158,6 +158,9 @@ function registerToolAsCommand(parent: Command, tool: MakeMCPTool, category: str
             } else if (error instanceof Error) {
                 process.stderr.write(`Error: ${error.message}\n`);
                 process.exit(1);
+            } else {
+                process.stderr.write(`Unknown error: ${String(error)}\n`);
+                process.exit(1);
             }
         }
     });
