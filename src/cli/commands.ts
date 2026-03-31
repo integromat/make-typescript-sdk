@@ -85,10 +85,9 @@ function registerToolAsCommand(parent: Command, tool: MakeMCPTool, category: str
     for (const [propName, schema] of Object.entries(properties)) {
         const flagName = camelToKebab(propName);
         const type = Array.isArray(schema.type) ? schema.type[0] : schema.type;
-        const isRequired = required.has(propName);
 
-        const isBooleanFlag = type === 'boolean' && !isRequired;
-        const flag = isRequired ? `--${flagName} <value>` : isBooleanFlag ? `--${flagName}` : `--${flagName} [value]`;
+        const isBooleanFlag = type === 'boolean';
+        const flag = isBooleanFlag ? `--${flagName}` : `--${flagName} <value>`;
 
         const option = cmd.createOption(flag, schema.description ?? '');
 
