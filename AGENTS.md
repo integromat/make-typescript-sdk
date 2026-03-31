@@ -701,7 +701,7 @@ export const tools = [
         },
     },
     {
-        name: 'sdk-functions_set_code',
+        name: 'sdk-functions_set-code',
         title: 'Set SDK function code',
         description: 'Set/update function code',
         category: 'sdk.functions',
