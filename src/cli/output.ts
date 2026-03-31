@@ -27,17 +27,20 @@ function formatTable(data: unknown): string {
         return s.length > MAX_COL_WIDTH ? `${s.slice(0, MAX_COL_WIDTH - 1)}…` : s;
     };
 
+    const getCell = (row: unknown, key: string): unknown =>
+        row && typeof row === 'object' ? (row as Record<string, unknown>)[key] : undefined;
+
     const widths: Record<string, number> = Object.fromEntries(
         keys.map((k) => [
             k,
-            Math.max(k.length, ...rows.map((r) => serialize((r as Record<string, unknown>)[k]).length)),
+            Math.max(k.length, ...rows.map((r) => serialize(getCell(r, k)).length)),
         ]),
     );
 
     const header = keys.map((k) => k.padEnd(widths[k]!)).join(' | ');
     const sep = keys.map((k) => '-'.repeat(widths[k]!)).join('-+-');
     const body = rows.map((r) =>
-        keys.map((k) => serialize((r as Record<string, unknown>)[k]).padEnd(widths[k]!)).join(' | '),
+        keys.map((k) => serialize(getCell(r, k)).padEnd(widths[k]!)).join(' | '),
     );
 
     return [header, sep, ...body].join('\n');
