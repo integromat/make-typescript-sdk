@@ -92,6 +92,9 @@ function registerToolAsCommand(parent: Command, tool: MakeMCPTool, category: str
 
         const option = cmd.createOption(flag, schema.description ?? '');
 
+        if (isRequired) {
+            option.makeOptionMandatory(true);
+        }
         if (schema.enum) {
             option.choices(schema.enum.map(String));
         }
