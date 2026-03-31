@@ -54,9 +54,30 @@ export function coerceValue(value: string, schema: JSONSchema): JSONValue {
         case 'object':
         case 'array':
             try {
-                return JSON.parse(value) as JSONValue;
-            } catch {
-                throw new Error(`Expected valid JSON, got: ${value}`);
+                const parsed = JSON.parse(value);
+
+                if (type === 'array') {
+                    if (!Array.isArray(parsed)) {
+                        throw new Error(`Expected JSON array for schema type "array", got: ${value}`);
+                    }
+                } else {
+                    if (
+                        parsed === null ||
+                        Array.isArray(parsed) ||
+                        typeof parsed !== 'object'
+                    ) {
+                        throw new Error(`Expected JSON object for schema type "object", got: ${value}`);
+                    }
+                }
+
+                return parsed as JSONValue;
+            } catch (err) {
+                // Preserve existing behavior for invalid JSON syntax while also
+                // surfacing clear errors for type/shape mismatches above.
+                if (err instanceof SyntaxError) {
+                    throw new Error(`Expected valid JSON, got: ${value}`);
+                }
+                throw err;
             }
         default:
             return value;
