@@ -1,6 +1,6 @@
 {
     "name": "@makehq/sdk",
-    "version": "0.13.0",
+    "version": "1.0.0",
     "description": "Make TypeScript SDK",
     "license": "MIT",
     "author": "Make",
@@ -50,7 +50,7 @@
         }
     },
     "engines": {
-        "node": ">=18"
+        "node": ">=20"
     },
     "files": [
         "dist"
