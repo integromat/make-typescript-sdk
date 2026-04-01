@@ -5,7 +5,7 @@ export const tools = [
         name: 'sdk-functions_list',
         title: 'List SDK functions',
         description: 'List functions for the app',
-        category: 'sdk.functions',
+        category: 'sdk-functions',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -27,7 +27,7 @@ export const tools = [
         name: 'sdk-functions_get',
         title: 'Get SDK function',
         description: 'Get a single function by name',
-        category: 'sdk.functions',
+        category: 'sdk-functions',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -50,7 +50,7 @@ export const tools = [
         name: 'sdk-functions_create',
         title: 'Create SDK function',
         description: 'Create a new function',
-        category: 'sdk.functions',
+        category: 'sdk-functions',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -75,7 +75,7 @@ export const tools = [
         name: 'sdk-functions_delete',
         title: 'Delete SDK function',
         description: 'Delete a function',
-        category: 'sdk.functions',
+        category: 'sdk-functions',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -99,7 +99,7 @@ export const tools = [
         name: 'sdk-functions_get-code',
         title: 'Get SDK function code',
         description: 'Get function code',
-        category: 'sdk.functions',
+        category: 'sdk-functions',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -122,7 +122,7 @@ export const tools = [
         name: 'sdk-functions_set-code',
         title: 'Set SDK function code',
         description: 'Set/update function code',
-        category: 'sdk.functions',
+        category: 'sdk-functions',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -151,7 +151,7 @@ export const tools = [
         name: 'sdk-functions_get-test',
         title: 'Get SDK function test',
         description: 'Get function test code',
-        category: 'sdk.functions',
+        category: 'sdk-functions',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -174,7 +174,7 @@ export const tools = [
         name: 'sdk-functions_set-test',
         title: 'Set SDK function test',
         description: 'Set/update function test code',
-        category: 'sdk.functions',
+        category: 'sdk-functions',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {

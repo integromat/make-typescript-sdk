@@ -1,10 +1,12 @@
 import type { Command } from 'commander';
+import { Command as CommandClass } from 'commander';
 import type { MakeMCPTool, JSONSchema } from '../mcp.js';
 import type { JSONValue } from '../types.js';
 import { Make } from '../make.js';
 import { MakeError } from '../utils.js';
 import { resolveAuth } from './auth.js';
 import { formatOutput, type OutputFormat } from './output.js';
+import { CATEGORY_TITLES, CATEGORY_GROUPS } from './categories.js';
 
 /**
  * Derives the CLI action name from an MCP tool name and its category.
@@ -27,7 +29,7 @@ export function deriveActionName(toolName: string, category: string): string {
  * Converts a camelCase string to kebab-case.
  */
 export function camelToKebab(str: string): string {
-    return str.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+    return str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
 }
 
 /**
@@ -61,19 +63,13 @@ export function coerceValue(value: string, schema: JSONSchema): JSONValue {
                         throw new Error(`Expected JSON array for schema type "array", got: ${value}`);
                     }
                 } else {
-                    if (
-                        parsed === null ||
-                        Array.isArray(parsed) ||
-                        typeof parsed !== 'object'
-                    ) {
+                    if (parsed === null || Array.isArray(parsed) || typeof parsed !== 'object') {
                         throw new Error(`Expected JSON object for schema type "object", got: ${value}`);
                     }
                 }
 
                 return parsed as JSONValue;
             } catch (err) {
-                // Preserve existing behavior for invalid JSON syntax while also
-                // surfacing clear errors for type/shape mismatches above.
                 if (err instanceof SyntaxError) {
                     throw new Error(`Expected valid JSON, got: ${value}`);
                 }
@@ -88,7 +84,7 @@ export function coerceValue(value: string, schema: JSONSchema): JSONValue {
  * Gets or creates a subcommand on a parent command.
  */
 function getOrCreateSubcommand(parent: Command, name: string, description: string): Command {
-    const existing = parent.commands.find((cmd) => cmd.name() === name);
+    const existing = parent.commands.find(cmd => cmd.name() === name);
     if (existing) return existing;
     return parent.command(name).description(description);
 }
@@ -107,12 +103,18 @@ function registerToolAsCommand(parent: Command, tool: MakeMCPTool, category: str
         const flagName = camelToKebab(propName);
         const type = Array.isArray(schema.type) ? schema.type[0] : schema.type;
 
+        const isRequired = required.has(propName);
+
         const isBooleanFlag = type === 'boolean';
-        const flag = isBooleanFlag ? `--${flagName}` : `--${flagName} <value>`;
+        const flag = isBooleanFlag
+            ? schema.default === true
+                ? `--no-${flagName}`
+                : `--${flagName}`
+            : `--${flagName} <value>`;
 
         const option = cmd.createOption(flag, schema.description ?? '');
 
-        if (isRequired) {
+        if (isRequired && !isBooleanFlag) {
             option.makeOptionMandatory(true);
         }
         if (schema.enum) {
@@ -180,18 +182,20 @@ export function buildCommands(program: Command, tools: MakeMCPTool[]): void {
     }
 
     for (const [category, categoryTools] of categories) {
-        if (category.startsWith('sdk.')) {
-            const sdkCommand = getOrCreateSubcommand(program, 'sdk', 'Custom app development commands');
-            const subcategory = category.slice(4);
-            const subCommand = getOrCreateSubcommand(sdkCommand, subcategory, `SDK ${subcategory} commands`);
-            for (const tool of categoryTools) {
-                registerToolAsCommand(subCommand, tool, category);
-            }
-        } else {
-            const categoryCommand = getOrCreateSubcommand(program, category, `${category} commands`);
-            for (const tool of categoryTools) {
-                registerToolAsCommand(categoryCommand, tool, category);
-            }
+        const categoryCommand = getOrCreateSubcommand(
+            program,
+            category,
+            CATEGORY_TITLES[category] ?? `${category} commands`,
+        );
+        const group = CATEGORY_GROUPS[category];
+        if (group) categoryCommand.helpGroup(group);
+
+        for (const tool of categoryTools) {
+            registerToolAsCommand(categoryCommand, tool, category);
         }
     }
+
+    program.addHelpCommand(
+        new CommandClass('help [command]').description('Display help for command').helpGroup('Others:'),
+    );
 }

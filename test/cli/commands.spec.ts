@@ -174,20 +174,29 @@ describe('CLI: buildCommands', () => {
         buildCommands(program, [makeTool()]);
 
         const cat = program.commands.find((c) => c.name() === 'scenarios');
-        expect(cat?.description()).toBe('scenarios commands');
+        expect(cat?.description()).toBe('Scenarios');
+        expect((cat as any).helpGroup()).toBe('Scenarios:');
     });
 
-    it('should nest sdk tools under sdk/<subcategory>', () => {
+    it('should create a top-level command for sdk-apps category', () => {
         const program = new Command();
         buildCommands(program, [
-            makeTool({ name: 'sdk-apps_list', title: 'List apps', description: 'List apps', category: 'sdk.apps' }),
+            makeTool({ name: 'sdk-apps_list', title: 'List apps', description: 'List apps', category: 'sdk-apps' }),
         ]);
 
-        const sdk = program.commands.find((c) => c.name() === 'sdk');
-        expect(sdk).toBeDefined();
-        const apps = sdk?.commands.find((c) => c.name() === 'apps');
-        expect(apps).toBeDefined();
-        expect(apps?.commands.find((c) => c.name() === 'list')).toBeDefined();
+        const sdkApps = program.commands.find((c) => c.name() === 'sdk-apps');
+        expect(sdkApps).toBeDefined();
+        expect(sdkApps?.commands.find((c) => c.name() === 'list')).toBeDefined();
+    });
+
+    it('should assign helpGroup for sdk-apps category', () => {
+        const program = new Command();
+        buildCommands(program, [
+            makeTool({ name: 'sdk-apps_list', title: 'List apps', description: 'List apps', category: 'sdk-apps' }),
+        ]);
+
+        const sdkApps = program.commands.find((c) => c.name() === 'sdk-apps');
+        expect((sdkApps as any).helpGroup()).toBe('Custom App Development:');
     });
 
     it('should register required options with <value> syntax', () => {
@@ -210,7 +219,7 @@ describe('CLI: buildCommands', () => {
         expect(opt?.required).toBe(true);
     });
 
-    it('should register optional options with [value] syntax', () => {
+    it('should register optional non-boolean options with <value> syntax', () => {
         const program = new Command();
         buildCommands(program, [
             makeTool({
@@ -227,10 +236,11 @@ describe('CLI: buildCommands', () => {
             ?.commands.find((c) => c.name() === 'list')
             ?.options.find((o) => o.long === '--name');
         expect(opt).toBeDefined();
-        expect(opt?.required).toBe(false);
+        expect(opt?.required).toBe(true);
+        expect(opt?.optional).toBe(false);
     });
 
-    it('should register optional boolean as bare flag', () => {
+    it('should register boolean as bare flag', () => {
         const program = new Command();
         buildCommands(program, [
             makeTool({
@@ -247,9 +257,49 @@ describe('CLI: buildCommands', () => {
             ?.commands.find((c) => c.name() === 'list')
             ?.options.find((o) => o.long === '--active');
         expect(opt).toBeDefined();
-        // bare boolean flag: not required, no optional argument
         expect(opt?.required).toBe(false);
         expect(opt?.optional).toBe(false);
+    });
+
+    it('should register boolean with default true as --no-flag', () => {
+        const program = new Command();
+        buildCommands(program, [
+            makeTool({
+                inputSchema: {
+                    type: 'object',
+                    properties: { active: { type: 'boolean', description: 'Active flag', default: true } },
+                    required: [],
+                },
+            }),
+        ]);
+
+        const opt = program.commands
+            .find((c) => c.name() === 'scenarios')
+            ?.commands.find((c) => c.name() === 'list')
+            ?.options.find((o) => o.long === '--no-active');
+        expect(opt).toBeDefined();
+        expect(opt?.required).toBe(false);
+        expect(opt?.optional).toBe(false);
+    });
+
+    it('should not make required boolean flags mandatory', () => {
+        const program = new Command();
+        buildCommands(program, [
+            makeTool({
+                inputSchema: {
+                    type: 'object',
+                    properties: { active: { type: 'boolean', description: 'Active flag' } },
+                    required: ['active'],
+                },
+            }),
+        ]);
+
+        const opt = program.commands
+            .find((c) => c.name() === 'scenarios')
+            ?.commands.find((c) => c.name() === 'list')
+            ?.options.find((o) => o.long === '--active');
+        expect(opt).toBeDefined();
+        expect(opt?.mandatory).toBe(false);
     });
 
     it('should share a single category command across multiple tools', () => {
