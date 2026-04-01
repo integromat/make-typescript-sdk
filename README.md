@@ -80,7 +80,7 @@ make-cli <command> --api-key="your-api-key" --zone="eu2.make.com"
 
 ### Commands
 
-Commands follow the pattern `make-cli <category> <action> [options]`. SDK/custom app commands are nested under `sdk`:
+Commands follow the pattern `make-cli <category> <action> [options]`.
 
 ```bash
 # Platform commands
@@ -97,10 +97,6 @@ make-cli scenarios create \
   --team-id=123 \
   --scheduling='{"type":"on-demand"}' \
   --blueprint='{"name":"My Scenario","flow":[],"metadata":{}}'
-
-# SDK / custom app commands
-make-cli sdk apps list --organization-id=1
-make-cli sdk functions get-code --app-name=myapp --app-version=1 --function-name=myFn
 
 # Output formatting
 make-cli scenarios list --team-id=123 --output=table
