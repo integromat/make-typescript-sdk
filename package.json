@@ -1,6 +1,6 @@
 {
     "name": "@makehq/sdk",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Make TypeScript SDK",
     "license": "MIT",
     "author": "Make",
@@ -71,8 +71,5 @@
         "typedoc": "^0.28.0",
         "typescript": "^5.8.2",
         "typescript-eslint": "^8.26.1"
-    },
-    "dependencies": {
-        "commander": "^14.0.3"
     }
 }
