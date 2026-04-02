@@ -2,10 +2,10 @@ import type { Make } from '../../make.js';
 
 export const tools = [
     {
-        name: 'sdk_modules_list',
+        name: 'sdk-modules_list',
         title: 'List SDK modules',
         description: 'List modules for the app with optional filtering',
-        category: 'sdk.modules',
+        category: 'sdk-modules',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -24,10 +24,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_modules_get',
+        name: 'sdk-modules_get',
         title: 'Get SDK module',
         description: 'Get a single module by name',
-        category: 'sdk.modules',
+        category: 'sdk-modules',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -47,10 +47,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_modules_create',
+        name: 'sdk-modules_create',
         title: 'Create SDK module',
         description: 'Create a new module',
-        category: 'sdk.modules',
+        category: 'sdk-modules',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -91,10 +91,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_modules_update',
+        name: 'sdk-modules_update',
         title: 'Update SDK module',
         description: 'Update an existing module',
-        category: 'sdk.modules',
+        category: 'sdk-modules',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -129,10 +129,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_modules_delete',
+        name: 'sdk-modules_delete',
         title: 'Delete SDK module',
         description: 'Delete a module',
-        category: 'sdk.modules',
+        category: 'sdk-modules',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -153,10 +153,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_modules_get_section',
+        name: 'sdk-modules_get-section',
         title: 'Get SDK module section',
         description: 'Get a specific section of a module',
-        category: 'sdk.modules',
+        category: 'sdk-modules',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -189,10 +189,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_modules_set_section',
+        name: 'sdk-modules_set-section',
         title: 'Set SDK module section',
         description: 'Set/update a specific section of a module',
-        category: 'sdk.modules',
+        category: 'sdk-modules',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {

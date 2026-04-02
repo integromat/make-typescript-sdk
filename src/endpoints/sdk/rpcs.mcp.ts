@@ -3,10 +3,10 @@ import type { JSONValue } from '../../types.js';
 
 export const tools = [
     {
-        name: 'sdk_rpcs_list',
+        name: 'sdk-rpcs_list',
         title: 'List SDK RPCs',
         description: 'List all RPCs for the app',
-        category: 'sdk.rpcs',
+        category: 'sdk-rpcs',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -25,10 +25,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_rpcs_get',
+        name: 'sdk-rpcs_get',
         title: 'Get SDK RPC',
         description: 'Get a single RPC by name',
-        category: 'sdk.rpcs',
+        category: 'sdk-rpcs',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -48,10 +48,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_rpcs_create',
+        name: 'sdk-rpcs_create',
         title: 'Create SDK RPC',
         description: 'Create a new RPC',
-        category: 'sdk.rpcs',
+        category: 'sdk-rpcs',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -74,10 +74,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_rpcs_update',
+        name: 'sdk-rpcs_update',
         title: 'Update SDK RPC',
         description: 'Update an existing RPC',
-        category: 'sdk.rpcs',
+        category: 'sdk-rpcs',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -112,10 +112,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_rpcs_delete',
+        name: 'sdk-rpcs_delete',
         title: 'Delete SDK RPC',
         description: 'Delete an RPC',
-        category: 'sdk.rpcs',
+        category: 'sdk-rpcs',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -136,10 +136,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_rpcs_test',
+        name: 'sdk-rpcs_test',
         title: 'Test SDK RPC',
         description: 'Test an RPC with provided data and schema',
-        category: 'sdk.rpcs',
+        category: 'sdk-rpcs',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -187,10 +187,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_rpcs_get_section',
+        name: 'sdk-rpcs_get-section',
         title: 'Get SDK RPC section',
         description: 'Get RPC section data',
-        category: 'sdk.rpcs',
+        category: 'sdk-rpcs',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -223,10 +223,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_rpcs_set_section',
+        name: 'sdk-rpcs_set-section',
         title: 'Set SDK RPC section',
         description: 'Set RPC section data',
-        category: 'sdk.rpcs',
+        category: 'sdk-rpcs',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {

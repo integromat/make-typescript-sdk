@@ -69,21 +69,21 @@ describe('MCP Tools', () => {
     });
 
     it('Should have tools from SDK endpoints', () => {
-        const sdkTools = MakeMCPTools.filter(tool => tool.category.startsWith('sdk.'));
+        const sdkTools = MakeMCPTools.filter(tool => tool.category.startsWith('sdk-'));
         expect(sdkTools.length).toBeGreaterThan(0);
 
         // Check for expected SDK categories
         const sdkCategories = [...new Set(sdkTools.map(tool => tool.category))];
-        expect(sdkCategories).toContain('sdk.apps');
-        expect(sdkCategories).toContain('sdk.connections');
-        expect(sdkCategories).toContain('sdk.functions');
-        expect(sdkCategories).toContain('sdk.modules');
-        expect(sdkCategories).toContain('sdk.rpcs');
-        expect(sdkCategories).toContain('sdk.webhooks');
+        expect(sdkCategories).toContain('sdk-apps');
+        expect(sdkCategories).toContain('sdk-connections');
+        expect(sdkCategories).toContain('sdk-functions');
+        expect(sdkCategories).toContain('sdk-modules');
+        expect(sdkCategories).toContain('sdk-rpcs');
+        expect(sdkCategories).toContain('sdk-webhooks');
     });
 
     it('Should have tools from core endpoints', () => {
-        const coreTools = MakeMCPTools.filter(tool => !tool.category.startsWith('sdk.'));
+        const coreTools = MakeMCPTools.filter(tool => !tool.category.startsWith('sdk-'));
         expect(coreTools.length).toBeGreaterThan(0);
 
         // Check for some expected core categories

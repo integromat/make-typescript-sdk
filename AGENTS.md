@@ -532,7 +532,7 @@ import type { JSONValue } from '../../types.js';
 
 export const tools = [
     {
-        name: 'endpoint_action',
+        name: 'endpoint-name_action',
         title: 'Human Readable Title',
         description: 'Detailed description of what this tool does',
         category: 'endpoint.category',
@@ -584,34 +584,34 @@ Each tool must follow this exact structure:
 
 #### Tool Names
 
-Follow the pattern: `{endpoint}_{action}` or `sdk_{endpoint}_{action}`
+Follow the pattern: `{category}_{action}` where:
+
+- The category prefix **exactly matches** the `category` field (preserving hyphens)
+- Multi-word actions use hyphens, not underscores (e.g., `get-section`, not `get_section`)
 
 ```typescript
-// Standard endpoints
-'teams_list';
-'teams_get';
-'teams_create';
-
-// SDK endpoints
-'sdk_apps_list';
-'sdk_apps_get_section';
-'sdk_functions_set_code';
+'teams_list'; // category: 'teams'
+'teams_get'; // category: 'teams'
+'data-stores_list'; // category: 'data-stores'
+'data-store-records_create'; // category: 'data-store-records'
+'credential-requests_list'; // category: 'credential-requests'
+'incomplete-executions_get'; // category: 'incomplete-executions'
+'sdk-apps_list'; // category: 'sdk-apps'
+'sdk-apps_get-section'; // category: 'sdk-apps'
+'sdk-functions_set-code'; // category: 'sdk-functions'
 ```
 
 #### Categories
 
-Use dot notation for hierarchical organization:
+Use kebab-case for all categories:
 
 ```typescript
-// Standard endpoints
 'teams';
 'scenarios';
 'data-stores';
-
-// SDK endpoints
-'sdk.apps';
-'sdk.connections';
-'sdk.functions';
+'sdk-apps';
+'sdk-connections';
+'sdk-functions';
 ```
 
 ### Input Schema Patterns
@@ -678,10 +678,10 @@ import type { Make } from '../../make.js';
 
 export const tools = [
     {
-        name: 'sdk_functions_list',
+        name: 'sdk-functions_list',
         title: 'List SDK functions',
         description: 'List functions for the app',
-        category: 'sdk.functions',
+        category: 'sdk-functions',
         inputSchema: {
             type: 'object',
             properties: {
@@ -695,10 +695,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_functions_set_code',
+        name: 'sdk-functions_set-code',
         title: 'Set SDK function code',
         description: 'Set/update function code',
-        category: 'sdk.functions',
+        category: 'sdk-functions',
         inputSchema: {
             type: 'object',
             properties: {
@@ -744,8 +744,8 @@ Before completing MCP tool definitions:
 1. **Using runtime imports** - Always use `type` imports only
 2. **Incorrect parameter extraction** - Ensure body parameters are properly separated
 3. **Missing required parameters** - Mark all truly required parameters in schema
-4. **Inconsistent naming** - Follow the established `{endpoint}_{action}` pattern
-5. **Wrong categories** - Use dot notation for proper hierarchical organization
+4. **Inconsistent naming** - Follow the established `{category}_{action}` pattern with hyphens throughout
+5. **Wrong categories** - Use kebab-case for all categories, including SDK (e.g., `sdk-apps`, not `sdk.apps`)
 6. **Missing descriptions** - Every parameter and tool needs clear documentation
 7. **Type mismatches** - Ensure TypeScript types match actual SDK signatures
 8. **Incomplete coverage** - All public methods should have corresponding MCP tools

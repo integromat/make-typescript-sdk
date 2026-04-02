@@ -2,10 +2,10 @@ import type { Make } from '../../make.js';
 
 export const tools = [
     {
-        name: 'sdk_webhooks_list',
+        name: 'sdk-webhooks_list',
         title: 'List SDK webhooks',
         description: 'List webhooks for a specific app',
-        category: 'sdk.webhooks',
+        category: 'sdk-webhooks',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -23,10 +23,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_webhooks_get',
+        name: 'sdk-webhooks_get',
         title: 'Get SDK webhook',
         description: 'Get a single webhook by name',
-        category: 'sdk.webhooks',
+        category: 'sdk-webhooks',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -44,10 +44,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_webhooks_create',
+        name: 'sdk-webhooks_create',
         title: 'Create SDK webhook',
         description: 'Create a new webhook for an app',
-        category: 'sdk.webhooks',
+        category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -69,10 +69,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_webhooks_update',
+        name: 'sdk-webhooks_update',
         title: 'Update SDK webhook',
         description: 'Update an existing webhook',
-        category: 'sdk.webhooks',
+        category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -93,10 +93,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_webhooks_delete',
+        name: 'sdk-webhooks_delete',
         title: 'Delete SDK webhook',
         description: 'Delete a webhook',
-        category: 'sdk.webhooks',
+        category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
@@ -115,10 +115,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_webhooks_get_section',
+        name: 'sdk-webhooks_get-section',
         title: 'Get SDK webhook section',
         description: 'Get a specific section of a webhook',
-        category: 'sdk.webhooks',
+        category: 'sdk-webhooks',
         scope: 'sdk-apps:read',
         identifier: undefined,
         annotations: {
@@ -147,10 +147,10 @@ export const tools = [
         },
     },
     {
-        name: 'sdk_webhooks_set_section',
+        name: 'sdk-webhooks_set-section',
         title: 'Set SDK webhook section',
         description: 'Set a specific section of a webhook',
-        category: 'sdk.webhooks',
+        category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
         identifier: undefined,
         annotations: {
