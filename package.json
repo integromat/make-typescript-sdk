@@ -1,6 +1,6 @@
 {
     "name": "@makehq/sdk",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Make TypeScript SDK",
     "license": "MIT",
     "author": "Make",
@@ -12,9 +12,6 @@
     "type": "module",
     "main": "./dist/index.js",
     "types": "./dist/index.d.cts",
-    "bin": {
-        "make-cli": "./dist/cli.js"
-    },
     "scripts": {
         "watch": "tsc -w",
         "build": "tsup",
