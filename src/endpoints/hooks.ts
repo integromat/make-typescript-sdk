@@ -36,6 +36,10 @@ export type Hook = {
     data: Record<string, JSONValue>;
     /** ID of the scenario associated with this hook, if any */
     scenarioId?: number;
+    /** Name of the scenario associated with this hook, if any */
+    scenarioName?: string;
+    /** Whether the associated scenario is currently active */
+    scenarioIsActive?: boolean;
     /** The webhook URL that receives callbacks */
     url?: string;
 };

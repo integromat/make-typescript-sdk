@@ -11,6 +11,7 @@ import { IncompleteExecutions } from './endpoints/incomplete-executions.js';
 import { Keys } from './endpoints/keys.js';
 import { Connections } from './endpoints/connections.js';
 import { CredentialRequests } from './endpoints/credential-requests.js';
+import { Devices } from './endpoints/devices.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
@@ -151,6 +152,12 @@ export class Make {
     public readonly organizations: Organizations;
 
     /**
+     * Access to device-related endpoints
+     * Devices are mobile phones or tablets connected to Make that can trigger or interact with scenarios
+     */
+    public readonly devices: Devices;
+
+    /**
      * Access to enum-related endpoints
      * Enums provide access to standardized lists like countries, regions, and timezones
      */
@@ -236,6 +243,7 @@ export class Make {
         this.incompleteExecutions = new IncompleteExecutions(this.fetch.bind(this));
         this.keys = new Keys(this.fetch.bind(this));
         this.connections = new Connections(this.fetch.bind(this));
+        this.devices = new Devices(this.fetch.bind(this));
         this.functions = new Functions(this.fetch.bind(this));
         this.organizations = new Organizations(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
