@@ -1,0 +1,36 @@
+{
+    "devices": [
+        {
+            "id": 3527,
+            "name": "Patrik's iPhone XR",
+            "teamId": 103,
+            "udid": "rE8xGJpZdkoJvoEiFdd45BhmIOUfECml",
+            "scope": [
+                "new_contact",
+                "save_contact",
+                "new_calendar_event",
+                "save_calendar_event",
+                "photo_taken",
+                "save_photo",
+                "new_geofencing_event",
+                "new_reminder",
+                "save_reminder",
+                "apn",
+                "button",
+                "scan",
+                "share"
+            ],
+            "info": {
+                "os": "iOS",
+                "brand": "Apple",
+                "model": "iPhone",
+                "osversion": "18.3",
+                "appversion": "2.0.3"
+            },
+            "gone": false,
+            "queueCount": 0,
+            "queueLimit": 10000,
+            "scenarioId": [10539]
+        }
+    ]
+}

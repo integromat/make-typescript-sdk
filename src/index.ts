@@ -60,6 +60,7 @@ export type {
     UpdateDataStructureBody,
     CloneDataStructureBody,
 } from './endpoints/data-structures.js';
+export type { Device, DeviceInfo, Devices, ListDevicesOptions } from './endpoints/devices.js';
 export type { Enums, Country, Region, Timezone } from './endpoints/enums.js';
 export type { Execution, ExecutionDetail, Executions, ListExecutionsOptions } from './endpoints/executions.js';
 export type {
