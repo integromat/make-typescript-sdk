@@ -38,6 +38,8 @@ export type Connection = {
     uid: number | null;
     /** External identifier of the connected system */
     connectedSystemId: string | null;
+    /** Scenarios that use this connection */
+    scenarioUsages?: Array<{ id: number; name: string }>;
 };
 
 /**
