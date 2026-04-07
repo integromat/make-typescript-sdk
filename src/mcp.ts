@@ -19,6 +19,7 @@ import { tools as UsersTools } from './endpoints/users.mcp.js';
 import { tools as FunctionsTools } from './endpoints/functions.mcp.js';
 import { tools as ExecutionsTools } from './endpoints/executions.mcp.js';
 import { tools as HooksTools } from './endpoints/hooks.mcp.js';
+import { tools as DevicesTools } from './endpoints/devices.mcp.js';
 import { tools as KeysTools } from './endpoints/keys.mcp.js';
 import { tools as FoldersTools } from './endpoints/folders.mcp.js';
 import { tools as IncompleteExecutionsTools } from './endpoints/incomplete-executions.mcp.js';
@@ -134,6 +135,7 @@ export const MakeMCPTools = [
     ...FoldersTools,
     ...FunctionsTools,
     ...HooksTools,
+    ...DevicesTools,
     ...DataStructuresTools,
     ...ConnectionsTools,
     ...KeysTools,
