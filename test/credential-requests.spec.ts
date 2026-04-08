@@ -20,7 +20,7 @@ describe('Endpoints: CredentialRequests', () => {
 
     it('Should list credential requests with filters and pagination', async () => {
         mockFetch(
-            'GET https://make.local/api/v2/credential-requests/requests?teamId=123&status=pending&pg%5Blimit%5D=50',
+            'GET https://make.local/api/v2/credential-requests/requests?status=pending&pg%5Blimit%5D=50&teamId=123',
             listMock,
         );
 
@@ -44,7 +44,7 @@ describe('Endpoints: CredentialRequests', () => {
 
     it('Should list credential requests using deprecated options object signature', async () => {
         mockFetch(
-            'GET https://make.local/api/v2/credential-requests/requests?teamId=123&status=pending',
+            'GET https://make.local/api/v2/credential-requests/requests?status=pending&teamId=123',
             listMock,
         );
 
@@ -56,7 +56,7 @@ describe('Endpoints: CredentialRequests', () => {
 
     it('Should list credential requests with multiple filters', async () => {
         mockFetch(
-            'GET https://make.local/api/v2/credential-requests/requests?teamId=123&userId=789&makeProviderId=456&name=Google+Workspace+Access',
+            'GET https://make.local/api/v2/credential-requests/requests?userId=789&makeProviderId=456&name=Google+Workspace+Access&teamId=123',
             listMock,
         );
 
