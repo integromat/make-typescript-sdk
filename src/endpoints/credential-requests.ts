@@ -219,7 +219,9 @@ export class CredentialRequests {
     }
 
     /**
-     * List credential requests with optional filtering and pagination
+     * List credential requests for a given team, with optional additional filtering and pagination.
+     *
+     * @param options - Query options. `teamId` is required, the API returns an error if it is omitted.
      */
     async list<C extends keyof CredentialRequest = never>(
         options: ListCredentialRequestsOptions<C>,
