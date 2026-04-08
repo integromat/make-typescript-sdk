@@ -248,7 +248,7 @@ export class CredentialRequests {
 
         const response = await this.#fetch<{ requests: PickColumns<CredentialRequest, C>[] }>(
             '/credential-requests/requests',
-            { query: { teamId, ...options } },
+            { query: { ...options, teamId } },
         );
         return response.requests;
     }
