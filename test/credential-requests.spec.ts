@@ -34,6 +34,26 @@ describe('Endpoints: CredentialRequests', () => {
         expect(result).toStrictEqual(listMock.requests);
     });
 
+    it('Should list credential requests with teamId only', async () => {
+        mockFetch('GET https://make.local/api/v2/credential-requests/requests?teamId=123', listMock);
+
+        const result = await make.credentialRequests.list(123);
+
+        expect(result).toStrictEqual(listMock.requests);
+    });
+
+    it('Should list credential requests using deprecated options object signature', async () => {
+        mockFetch(
+            'GET https://make.local/api/v2/credential-requests/requests?teamId=123&status=pending',
+            listMock,
+        );
+
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        const result = await make.credentialRequests.list({ teamId: 123, status: 'pending' });
+
+        expect(result).toStrictEqual(listMock.requests);
+    });
+
     it('Should list credential requests with multiple filters', async () => {
         mockFetch(
             'GET https://make.local/api/v2/credential-requests/requests?teamId=123&userId=789&makeProviderId=456&name=Google+Workspace+Access',

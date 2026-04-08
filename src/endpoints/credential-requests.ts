@@ -224,8 +224,28 @@ export class CredentialRequests {
      */
     async list<C extends keyof CredentialRequest = never>(
         teamId: number,
-        options: ListCredentialRequestsOptions<C> = {},
+        options?: ListCredentialRequestsOptions<C>,
+    ): Promise<PickColumns<CredentialRequest, C>[]>;
+
+    /**
+     * @deprecated Pass `teamId` as the first argument: `list(teamId, options?)`.
+     */
+    async list<C extends keyof CredentialRequest = never>(
+        options: ListCredentialRequestsOptions<C> & { teamId: number },
+    ): Promise<PickColumns<CredentialRequest, C>[]>;
+
+    async list<C extends keyof CredentialRequest = never>(
+        teamIdOrOptions: number | (ListCredentialRequestsOptions<C> & { teamId: number }),
+        options?: ListCredentialRequestsOptions<C>,
     ): Promise<PickColumns<CredentialRequest, C>[]> {
+        let teamId: number;
+        if (typeof teamIdOrOptions === 'number') {
+            teamId = teamIdOrOptions;
+            options ??= {} as ListCredentialRequestsOptions<C>;
+        } else {
+            ({ teamId, ...options } = teamIdOrOptions as { teamId: number } & ListCredentialRequestsOptions<C>);
+        }
+
         const response = await this.#fetch<{ requests: PickColumns<CredentialRequest, C>[] }>(
             '/credential-requests/requests',
             { query: { teamId, ...options } },
