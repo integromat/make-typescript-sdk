@@ -243,7 +243,7 @@ export class CredentialRequests {
             teamId = teamIdOrOptions;
             options ??= {} as ListCredentialRequestsOptions<C>;
         } else {
-            ({ teamId, ...options } = teamIdOrOptions as { teamId: number } & ListCredentialRequestsOptions<C>);
+            ({ teamId, ...options } = teamIdOrOptions);
         }
 
         const response = await this.#fetch<{ requests: PickColumns<CredentialRequest, C>[] }>(
