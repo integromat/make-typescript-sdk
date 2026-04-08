@@ -24,8 +24,7 @@ describe('Endpoints: CredentialRequests', () => {
             listMock,
         );
 
-        const result = await make.credentialRequests.list({
-            teamId: 123,
+        const result = await make.credentialRequests.list(123, {
             status: 'pending',
             pg: {
                 limit: 50,
@@ -41,8 +40,7 @@ describe('Endpoints: CredentialRequests', () => {
             listMock,
         );
 
-        const result = await make.credentialRequests.list({
-            teamId: 123,
+        const result = await make.credentialRequests.list(123, {
             userId: 789,
             makeProviderId: '456',
             name: 'Google Workspace Access',

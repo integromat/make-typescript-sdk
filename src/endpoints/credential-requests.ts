@@ -80,8 +80,6 @@ export type GetCredentialRequestOptions<C extends keyof CredentialRequest = neve
 export type ListCredentialRequestsOptions<C extends keyof CredentialRequest = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
-    /** Filter by team ID */
-    teamId: number;
     /** Filter by user ID */
     userId?: number;
     /** Filter by Make provider ID */
@@ -221,14 +219,16 @@ export class CredentialRequests {
     /**
      * List credential requests for a given team, with optional additional filtering and pagination.
      *
-     * @param options - Query options. `teamId` is required, the API returns an error if it is omitted.
+     * @param teamId - The team to list credential requests for.
+     * @param options - Optional filters (user, provider, status, name) and pagination.
      */
     async list<C extends keyof CredentialRequest = never>(
-        options: ListCredentialRequestsOptions<C>,
+        teamId: number,
+        options: ListCredentialRequestsOptions<C> = {},
     ): Promise<PickColumns<CredentialRequest, C>[]> {
         const response = await this.#fetch<{ requests: PickColumns<CredentialRequest, C>[] }>(
             '/credential-requests/requests',
-            { query: options },
+            { query: { teamId, ...options } },
         );
         return response.requests;
     }
