@@ -24,11 +24,12 @@ export const tools = [
                 status: { type: 'string', description: 'Filter by status' },
                 name: { type: 'string', description: 'Filter by name' },
             },
+            required: ['teamId'],
         },
         execute: async (
             make: Make,
             args: {
-                teamId?: number;
+                teamId: number;
                 userId?: number;
                 makeProviderId?: string | number;
                 status?: string;

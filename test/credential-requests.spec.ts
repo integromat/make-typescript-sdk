@@ -18,14 +18,6 @@ const MAKE_ZONE = 'make.local';
 describe('Endpoints: CredentialRequests', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
-    it('Should list credential requests', async () => {
-        mockFetch('GET https://make.local/api/v2/credential-requests/requests', listMock);
-
-        const result = await make.credentialRequests.list();
-
-        expect(result).toStrictEqual(listMock.requests);
-    });
-
     it('Should list credential requests with filters and pagination', async () => {
         mockFetch(
             'GET https://make.local/api/v2/credential-requests/requests?teamId=123&status=pending&pg%5Blimit%5D=50',

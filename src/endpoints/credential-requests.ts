@@ -81,7 +81,7 @@ export type ListCredentialRequestsOptions<C extends keyof CredentialRequest = ne
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
     /** Filter by team ID */
-    teamId?: number;
+    teamId: number;
     /** Filter by user ID */
     userId?: number;
     /** Filter by Make provider ID */
@@ -222,7 +222,7 @@ export class CredentialRequests {
      * List credential requests with optional filtering and pagination
      */
     async list<C extends keyof CredentialRequest = never>(
-        options: ListCredentialRequestsOptions<C> = {},
+        options: ListCredentialRequestsOptions<C>,
     ): Promise<PickColumns<CredentialRequest, C>[]> {
         const response = await this.#fetch<{ requests: PickColumns<CredentialRequest, C>[] }>(
             '/credential-requests/requests',
