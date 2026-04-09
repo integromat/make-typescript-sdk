@@ -80,8 +80,6 @@ export type GetCredentialRequestOptions<C extends keyof CredentialRequest = neve
 export type ListCredentialRequestsOptions<C extends keyof CredentialRequest = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
-    /** Filter by team ID */
-    teamId?: number;
     /** Filter by user ID */
     userId?: number;
     /** Filter by Make provider ID */
@@ -219,14 +217,38 @@ export class CredentialRequests {
     }
 
     /**
-     * List credential requests with optional filtering and pagination
+     * List credential requests for a given team, with optional additional filtering and pagination.
+     *
+     * @param teamId - The team to list credential requests for.
+     * @param options - Optional filters (user, provider, status, name) and pagination.
      */
     async list<C extends keyof CredentialRequest = never>(
-        options: ListCredentialRequestsOptions<C> = {},
+        teamId: number,
+        options?: ListCredentialRequestsOptions<C>,
+    ): Promise<PickColumns<CredentialRequest, C>[]>;
+
+    /**
+     * @deprecated Pass `teamId` as the first argument: `list(teamId, options?)`.
+     */
+    async list<C extends keyof CredentialRequest = never>(
+        options: ListCredentialRequestsOptions<C> & { teamId: number },
+    ): Promise<PickColumns<CredentialRequest, C>[]>;
+
+    async list<C extends keyof CredentialRequest = never>(
+        teamIdOrOptions: number | (ListCredentialRequestsOptions<C> & { teamId: number }),
+        options?: ListCredentialRequestsOptions<C>,
     ): Promise<PickColumns<CredentialRequest, C>[]> {
+        let teamId: number;
+        if (teamIdOrOptions !== null && typeof teamIdOrOptions === 'object') {
+            ({ teamId, ...options } = teamIdOrOptions);
+        } else {
+            teamId = teamIdOrOptions as number;
+            options ??= {} as ListCredentialRequestsOptions<C>;
+        }
+
         const response = await this.#fetch<{ requests: PickColumns<CredentialRequest, C>[] }>(
             '/credential-requests/requests',
-            { query: options },
+            { query: { ...options, teamId } },
         );
         return response.requests;
     }

@@ -18,22 +18,13 @@ const MAKE_ZONE = 'make.local';
 describe('Endpoints: CredentialRequests', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
-    it('Should list credential requests', async () => {
-        mockFetch('GET https://make.local/api/v2/credential-requests/requests', listMock);
-
-        const result = await make.credentialRequests.list();
-
-        expect(result).toStrictEqual(listMock.requests);
-    });
-
     it('Should list credential requests with filters and pagination', async () => {
         mockFetch(
-            'GET https://make.local/api/v2/credential-requests/requests?teamId=123&status=pending&pg%5Blimit%5D=50',
+            'GET https://make.local/api/v2/credential-requests/requests?status=pending&pg%5Blimit%5D=50&teamId=123',
             listMock,
         );
 
-        const result = await make.credentialRequests.list({
-            teamId: 123,
+        const result = await make.credentialRequests.list(123, {
             status: 'pending',
             pg: {
                 limit: 50,
@@ -43,14 +34,33 @@ describe('Endpoints: CredentialRequests', () => {
         expect(result).toStrictEqual(listMock.requests);
     });
 
-    it('Should list credential requests with multiple filters', async () => {
+    it('Should list credential requests with teamId only', async () => {
+        mockFetch('GET https://make.local/api/v2/credential-requests/requests?teamId=123', listMock);
+
+        const result = await make.credentialRequests.list(123);
+
+        expect(result).toStrictEqual(listMock.requests);
+    });
+
+    it('Should list credential requests using deprecated options object signature', async () => {
         mockFetch(
-            'GET https://make.local/api/v2/credential-requests/requests?teamId=123&userId=789&makeProviderId=456&name=Google+Workspace+Access',
+            'GET https://make.local/api/v2/credential-requests/requests?status=pending&teamId=123',
             listMock,
         );
 
-        const result = await make.credentialRequests.list({
-            teamId: 123,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        const result = await make.credentialRequests.list({ teamId: 123, status: 'pending' });
+
+        expect(result).toStrictEqual(listMock.requests);
+    });
+
+    it('Should list credential requests with multiple filters', async () => {
+        mockFetch(
+            'GET https://make.local/api/v2/credential-requests/requests?userId=789&makeProviderId=456&name=Google+Workspace+Access&teamId=123',
+            listMock,
+        );
+
+        const result = await make.credentialRequests.list(123, {
             userId: 789,
             makeProviderId: '456',
             name: 'Google Workspace Access',

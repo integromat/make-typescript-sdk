@@ -24,23 +24,20 @@ export const tools = [
                 status: { type: 'string', description: 'Filter by status' },
                 name: { type: 'string', description: 'Filter by name' },
             },
+            required: ['teamId'],
         },
         execute: async (
             make: Make,
             args: {
-                teamId?: number;
+                teamId: number;
                 userId?: number;
                 makeProviderId?: string | number;
                 status?: string;
                 name?: string;
             },
         ) => {
-            return await make.credentialRequests.list({
-                teamId: args.teamId,
-                userId: args.userId,
-                makeProviderId: args.makeProviderId,
-                status: args.status,
-                name: args.name,
+            return await make.credentialRequests.list(args.teamId, {
+                ...args,
                 cols: ['*'],
             });
         },

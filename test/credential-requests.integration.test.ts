@@ -54,7 +54,7 @@ describe('Integration: CredentialRequests', () => {
     });
 
     it('Should list credential requests', async () => {
-        const requests = await make.credentialRequests.list({ teamId: MAKE_TEAM });
+        const requests = await make.credentialRequests.list(MAKE_TEAM);
         expect(Array.isArray(requests)).toBe(true);
         expect(requests.some(r => r.id === requestId)).toBe(true);
     });
@@ -86,7 +86,7 @@ describe('Integration: CredentialRequests', () => {
         await make.credentialRequests.delete(requestId);
 
         // Check that request is deleted
-        const requests = await make.credentialRequests.list({ teamId: MAKE_TEAM });
+        const requests = await make.credentialRequests.list(MAKE_TEAM);
         expect(requests.some(r => r.id === requestId)).toBe(false);
     });
 
@@ -116,7 +116,7 @@ describe('Integration: CredentialRequests', () => {
         await make.credentialRequests.delete(actionRequestId);
 
         // Check that request is deleted
-        const requests = await make.credentialRequests.list({ teamId: MAKE_TEAM });
+        const requests = await make.credentialRequests.list(MAKE_TEAM);
         expect(requests.some(r => r.id === actionRequestId)).toBe(false);
     });
 
@@ -169,7 +169,7 @@ describe('Integration: CredentialRequests', () => {
     it('Should delete the credential request created with a connection', async () => {
         await make.credentialRequests.delete(connectionRequestId);
 
-        const requests = await make.credentialRequests.list({ teamId: MAKE_TEAM });
+        const requests = await make.credentialRequests.list(MAKE_TEAM);
         expect(requests.some(r => r.id === connectionRequestId)).toBe(false);
     });
 
@@ -196,7 +196,7 @@ describe('Integration: CredentialRequests', () => {
     it('Should delete the credential request created with a key', async () => {
         await make.credentialRequests.delete(keyRequestId);
 
-        const requests = await make.credentialRequests.list({ teamId: MAKE_TEAM });
+        const requests = await make.credentialRequests.list(MAKE_TEAM);
         expect(requests.some(r => r.id === keyRequestId)).toBe(false);
     });
 
@@ -232,7 +232,7 @@ describe('Integration: CredentialRequests', () => {
     it('Should delete the credential request created with both connections and keys', async () => {
         await make.credentialRequests.delete(mixedRequestId);
 
-        const requests = await make.credentialRequests.list({ teamId: MAKE_TEAM });
+        const requests = await make.credentialRequests.list(MAKE_TEAM);
         expect(requests.some(r => r.id === mixedRequestId)).toBe(false);
     });
 
@@ -256,7 +256,7 @@ describe('Integration: CredentialRequests', () => {
     it('Should delete the credential request created with nameOverride', async () => {
         await make.credentialRequests.delete(nameOverrideRequestId);
 
-        const requests = await make.credentialRequests.list({ teamId: MAKE_TEAM });
+        const requests = await make.credentialRequests.list(MAKE_TEAM);
         expect(requests.some(r => r.id === nameOverrideRequestId)).toBe(false);
     });
 });
