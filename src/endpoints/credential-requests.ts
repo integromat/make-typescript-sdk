@@ -239,11 +239,11 @@ export class CredentialRequests {
         options?: ListCredentialRequestsOptions<C>,
     ): Promise<PickColumns<CredentialRequest, C>[]> {
         let teamId: number;
-        if (typeof teamIdOrOptions === 'number') {
-            teamId = teamIdOrOptions;
-            options ??= {} as ListCredentialRequestsOptions<C>;
-        } else {
+        if (teamIdOrOptions !== null && typeof teamIdOrOptions === 'object') {
             ({ teamId, ...options } = teamIdOrOptions);
+        } else {
+            teamId = teamIdOrOptions as number;
+            options ??= {} as ListCredentialRequestsOptions<C>;
         }
 
         const response = await this.#fetch<{ requests: PickColumns<CredentialRequest, C>[] }>(
