@@ -36,9 +36,8 @@ export const tools = [
                 name?: string;
             },
         ) => {
-            const { teamId, ...options } = args;
-            return await make.credentialRequests.list(teamId, {
-                ...options,
+            return await make.credentialRequests.list(args.teamId, {
+                ...args,
                 cols: ['*'],
             });
         },
