@@ -21,6 +21,7 @@ export const tools = [
             },
             required: ['scenarioId'],
         },
+        examples: [{ scenarioId: 925 }],
         execute: async (make: Make, args: { scenarioId: number; status?: number; from?: number; to?: number }) => {
             const { scenarioId, ...options } = args;
             return await make.executions.list(scenarioId, options);
@@ -44,6 +45,7 @@ export const tools = [
             },
             required: ['scenarioId', 'executionId'],
         },
+        examples: [{ scenarioId: 925, executionId: 'a07e16f2ad134bf49cf83a00aa95c0a5' }],
         execute: async (make: Make, args: { scenarioId: number; executionId: string }) => {
             return await make.executions.getDetail(args.scenarioId, args.executionId);
         },
@@ -66,6 +68,7 @@ export const tools = [
             },
             required: ['scenarioId', 'executionId'],
         },
+        examples: [{ scenarioId: 925, executionId: 'a07e16f2ad134bf49cf83a00aa95c0a5' }],
         execute: async (make: Make, args: { scenarioId: number; executionId: string }) => {
             return await make.executions.get(args.scenarioId, args.executionId);
         },
@@ -91,6 +94,7 @@ export const tools = [
             },
             required: ['incompleteExecutionId'],
         },
+        examples: [{ incompleteExecutionId: 'a07e16f2ad134bf49cf83a00aa95c0a5' }],
         execute: async (make: Make, args: { incompleteExecutionId: string; limit?: number }) => {
             const { incompleteExecutionId } = args;
             return await make.executions.listForIncompleteExecution(incompleteExecutionId);
@@ -114,6 +118,12 @@ export const tools = [
             },
             required: ['incompleteExecutionId', 'executionId'],
         },
+        examples: [
+            {
+                incompleteExecutionId: 'a07e16f2ad134bf49cf83a00aa95c0a5',
+                executionId: '1356b72d781649a18692a0d4d09cd977',
+            },
+        ],
         execute: async (make: Make, args: { incompleteExecutionId: string; executionId: string }) => {
             return await make.executions.getForIncompleteExecution(args.incompleteExecutionId, args.executionId);
         },

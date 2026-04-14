@@ -32,6 +32,10 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [
+            { teamId: 5 },
+            { teamId: 5, type: ['google'], scopes: { google: ['https://www.googleapis.com/auth/drive'] } },
+        ],
         execute: async (make: Make, args: { teamId: number; type?: string[]; scopes?: Record<string, string[]> }) => {
             return await make.connections.list(args.teamId, { type: args.type, scopes: args.scopes, cols: ['*'] });
         },
@@ -53,6 +57,7 @@ export const tools = [
             },
             required: ['connectionId'],
         },
+        examples: [{ connectionId: 2 }],
         execute: async (make: Make, args: { connectionId: number }) => {
             return await make.connections.get(args.connectionId, { cols: ['*'] });
         },
@@ -71,9 +76,8 @@ export const tools = [
         inputSchema: {
             type: 'object',
             properties: {
-                name: { type: 'string', description: 'Connection type name (internal identifier)' },
-                accountName: { type: 'string', description: 'Human-readable name for the connection' },
-                accountType: { type: 'string', description: 'Authentication type (basic, oauth)' },
+                name: { type: 'string', description: 'Human-readable name for the connection' },
+                accountName: { type: 'string', description: 'Connection type name (internal identifier)' },
                 teamId: { type: 'number', description: 'ID of the team to create the connection in' },
                 data: { type: 'object', description: 'Connection configuration data' },
                 scope: {
@@ -82,8 +86,9 @@ export const tools = [
                     description: 'OAuth scopes',
                 },
             },
-            required: ['name', 'accountName', 'accountType', 'teamId'],
+            required: ['name', 'accountName', 'teamId'],
         },
+        examples: [{ name: 'My Google Connection', accountName: 'google', teamId: 5 }],
         execute: async (
             make: Make,
             args: {
@@ -118,6 +123,7 @@ export const tools = [
             },
             required: ['connectionId'],
         },
+        examples: [{ connectionId: 2, name: 'Updated Connection' }],
         execute: async (
             make: Make,
             args: { connectionId: number; name?: string; data?: Record<string, JSONValue> },
@@ -149,6 +155,7 @@ export const tools = [
             },
             required: ['connectionId'],
         },
+        examples: [{ connectionId: 2 }],
         execute: async (make: Make, args: { connectionId: number }) => {
             return (await make.connections.verify(args.connectionId))
                 ? 'Connection is valid.'
@@ -172,6 +179,7 @@ export const tools = [
             },
             required: ['connectionId'],
         },
+        examples: [{ connectionId: 2 }],
         execute: async (make: Make, args: { connectionId: number }) => {
             await make.connections.delete(args.connectionId);
             return 'Connection has been deleted.';

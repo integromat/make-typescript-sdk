@@ -110,6 +110,9 @@ export type MakeMCPTool = {
     /** JSON Schema defining the input parameters */
     inputSchema: JSONSchema;
 
+    /** Example input payloads illustrating how to use the tool */
+    examples?: Record<string, JSONValue>[];
+
     /**
      * Function that executes the tool's operation.
      * @param make The Make SDK client instance

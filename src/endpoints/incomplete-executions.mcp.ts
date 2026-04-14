@@ -18,6 +18,7 @@ export const tools = [
             },
             required: ['scenarioId'],
         },
+        examples: [{ scenarioId: 925 }],
         execute: async (make: Make, args: { scenarioId: number }) => {
             return await make.incompleteExecutions.list(args.scenarioId);
         },
@@ -39,6 +40,7 @@ export const tools = [
             },
             required: ['incompleteExecutionId'],
         },
+        examples: [{ incompleteExecutionId: 'a07e16f2ad134bf49cf83a00aa95c0a5' }],
         execute: async (make: Make, args: { incompleteExecutionId: string }) => {
             return await make.incompleteExecutions.get(args.incompleteExecutionId);
         },

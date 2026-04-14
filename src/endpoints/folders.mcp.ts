@@ -18,6 +18,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.folders.list(args.teamId, { cols: ['*'] });
         },
@@ -41,6 +42,7 @@ export const tools = [
             },
             required: ['teamId', 'name'],
         },
+        examples: [{ teamId: 5, name: 'My Folder' }],
         execute: async (make: Make, args: { teamId: number; name: string }) => {
             return await make.folders.create(args);
         },
@@ -64,6 +66,7 @@ export const tools = [
             },
             required: ['folderId'],
         },
+        examples: [{ folderId: 1576, name: 'Updated Folder' }],
         execute: async (make: Make, args: { folderId: number; name?: string }) => {
             const { folderId, ...body } = args;
             return await make.folders.update(folderId, body, { cols: ['*'] });
@@ -86,6 +89,7 @@ export const tools = [
             },
             required: ['folderId'],
         },
+        examples: [{ folderId: 1576 }],
         execute: async (make: Make, args: { folderId: number }) => {
             await make.folders.delete(args.folderId);
             return `Folder has been deleted.`;

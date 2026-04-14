@@ -18,6 +18,7 @@ export const tools = [
             },
             required: ['organizationId'],
         },
+        examples: [{ organizationId: 5 }],
         execute: async (make: Make, args: { organizationId: number }) => {
             return await make.teams.list(args.organizationId);
         },
@@ -39,6 +40,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.teams.get(args.teamId);
         },
@@ -67,6 +69,7 @@ export const tools = [
             },
             required: ['name', 'organizationId'],
         },
+        examples: [{ name: 'My Team', organizationId: 5 }],
         execute: async (
             make: Make,
             args: { name: string; organizationId: number; operationsLimit?: number; transferLimit?: number },
@@ -91,6 +94,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             await make.teams.delete(args.teamId);
             return `Team has been deleted.`;

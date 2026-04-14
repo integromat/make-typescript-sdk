@@ -19,6 +19,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1 }],
         execute: async (make: Make, args: { appName: string; appVersion: number }) => {
             return await make.sdk.functions.list(args.appName, args.appVersion);
         },
@@ -42,6 +43,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'functionName'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, functionName: 'parseDate' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; functionName: string }) => {
             return await make.sdk.functions.get(args.appName, args.appVersion, args.functionName);
         },
@@ -66,6 +68,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'name'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, name: 'parseDate' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; name: string }) => {
             const { appName, appVersion, ...body } = args;
             return await make.sdk.functions.create(appName, appVersion, body);
@@ -90,6 +93,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'functionName'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, functionName: 'parseDate' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; functionName: string }) => {
             await make.sdk.functions.delete(args.appName, args.appVersion, args.functionName);
             return `Function has been deleted.`;
@@ -114,6 +118,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'functionName'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, functionName: 'parseDate' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; functionName: string }) => {
             return await make.sdk.functions.getCode(args.appName, args.appVersion, args.functionName);
         },
@@ -139,6 +144,14 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'functionName', 'code'],
         },
+        examples: [
+            {
+                appName: 'my-app',
+                appVersion: 1,
+                functionName: 'parseDate',
+                code: 'function parseDate(value) { return new Date(value).toISOString(); }',
+            },
+        ],
         execute: async (
             make: Make,
             args: { appName: string; appVersion: number; functionName: string; code: string },
@@ -166,6 +179,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'functionName'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, functionName: 'parseDate' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; functionName: string }) => {
             return await make.sdk.functions.getTest(args.appName, args.appVersion, args.functionName);
         },
@@ -191,6 +205,14 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'functionName', 'test'],
         },
+        examples: [
+            {
+                appName: 'my-app',
+                appVersion: 1,
+                functionName: 'parseDate',
+                test: 'assert.equal(parseDate("2024-01-01"), "2024-01-01T00:00:00.000Z")',
+            },
+        ],
         execute: async (
             make: Make,
             args: { appName: string; appVersion: number; functionName: string; test: string },

@@ -20,6 +20,7 @@ export const tools = [
             },
             required: ['dataStoreId'],
         },
+        examples: [{ dataStoreId: 137 }, { dataStoreId: 137, limit: 10 }],
         execute: async (make: Make, args: { dataStoreId: number; limit?: number }) => {
             return await make.dataStores.records.list(args.dataStoreId, { pg: { limit: args.limit } });
         },
@@ -44,6 +45,12 @@ export const tools = [
             },
             required: ['dataStoreId', 'data'],
         },
+        examples: [
+            {
+                dataStoreId: 137,
+                data: { name: 'John Doe', email: 'john.doe@example.com', status: 'active' },
+            },
+        ],
         execute: async (make: Make, args: { dataStoreId: number; data: Record<string, JSONValue>; key?: string }) => {
             if (args.key) {
                 return await make.dataStores.records.create(args.dataStoreId, args.key, args.data);
@@ -72,6 +79,7 @@ export const tools = [
             },
             required: ['dataStoreId', 'key', 'data'],
         },
+        examples: [{ dataStoreId: 137, key: 'ecc4819b2260', data: { status: 'inactive' } }],
         execute: async (make: Make, args: { dataStoreId: number; key: string; data: Record<string, JSONValue> }) => {
             return await make.dataStores.records.update(args.dataStoreId, args.key, args.data);
         },
@@ -96,6 +104,13 @@ export const tools = [
             },
             required: ['dataStoreId', 'key', 'data'],
         },
+        examples: [
+            {
+                dataStoreId: 137,
+                key: 'ecc4819b2260',
+                data: { name: 'Jane Doe', email: 'jane.doe@example.com', status: 'active' },
+            },
+        ],
         execute: async (make: Make, args: { dataStoreId: number; key: string; data: Record<string, JSONValue> }) => {
             return await make.dataStores.records.replace(args.dataStoreId, args.key, args.data);
         },
@@ -118,6 +133,7 @@ export const tools = [
             },
             required: ['dataStoreId', 'keys'],
         },
+        examples: [{ dataStoreId: 137, keys: ['ecc4819b2260', '8f7162828bc0'] }],
         execute: async (make: Make, args: { dataStoreId: number; keys: string[] }) => {
             await make.dataStores.records.delete(args.dataStoreId, args.keys);
             return `Records have been deleted.`;

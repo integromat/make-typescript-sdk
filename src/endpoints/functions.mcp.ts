@@ -18,6 +18,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.functions.list(args.teamId, { cols: ['*'] });
         },
@@ -39,6 +40,7 @@ export const tools = [
             },
             required: ['functionId'],
         },
+        examples: [{ functionId: 2 }],
         execute: async (make: Make, args: { functionId: number }) => {
             return await make.functions.get(args.functionId);
         },
@@ -64,6 +66,14 @@ export const tools = [
             },
             required: ['teamId', 'name', 'code'],
         },
+        examples: [
+            {
+                teamId: 5,
+                name: 'checkType',
+                code: 'function checkType(param) { return typeof param; }',
+                description: 'Returns the data type of the argument.',
+            },
+        ],
         execute: async (make: Make, args: { teamId: number; name: string; code: string; description?: string }) => {
             const { teamId, ...body } = args;
             return await make.functions.create(teamId, {
@@ -93,6 +103,13 @@ export const tools = [
             },
             required: ['functionId'],
         },
+        examples: [
+            {
+                functionId: 2,
+                name: 'checkType',
+                code: 'function checkType(param) { return typeof param; }',
+            },
+        ],
         execute: async (
             make: Make,
             args: { functionId: number; name?: string; code?: string; description?: string },
@@ -118,6 +135,7 @@ export const tools = [
             },
             required: ['functionId'],
         },
+        examples: [{ functionId: 2 }],
         execute: async (make: Make, args: { functionId: number }) => {
             await make.functions.delete(args.functionId);
             return `Function has been deleted.`;
@@ -141,6 +159,7 @@ export const tools = [
             },
             required: ['teamId', 'code'],
         },
+        examples: [{ teamId: 5, code: 'function myFn(x) { return x * 2; }' }],
         execute: async (make: Make, args: { teamId: number; code: string }) => {
             const result = await make.functions.check(args.teamId, args.code);
             return result.success ? 'Function code is valid.' : `Function code is not valid: ${result.error}`;
