@@ -18,6 +18,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.dataStores.list(args.teamId, { cols: ['*'] });
         },
@@ -39,6 +40,7 @@ export const tools = [
             },
             required: ['dataStoreId'],
         },
+        examples: [{ dataStoreId: 137 }],
         execute: async (make: Make, args: { dataStoreId: number }) => {
             return await make.dataStores.get(args.dataStoreId, { cols: ['*'] });
         },
@@ -67,6 +69,7 @@ export const tools = [
             },
             required: ['name', 'teamId', 'maxSizeMB'],
         },
+        examples: [{ name: 'Customers', teamId: 5, maxSizeMB: 1, datastructureId: 178 }],
         execute: async (
             make: Make,
             args: { name: string; teamId: number; maxSizeMB: number; datastructureId?: number },
@@ -95,6 +98,7 @@ export const tools = [
             },
             required: ['dataStoreId'],
         },
+        examples: [{ dataStoreId: 137, name: 'Updated Store', maxSizeMB: 2 }],
         execute: async (
             make: Make,
             args: { dataStoreId: number; name?: string; maxSizeMB?: number; datastructureId?: number },
@@ -120,6 +124,7 @@ export const tools = [
             },
             required: ['dataStoreId'],
         },
+        examples: [{ dataStoreId: 137 }],
         execute: async (make: Make, args: { dataStoreId: number }) => {
             await make.dataStores.delete(args.dataStoreId);
             return `Data store has been deleted.`;

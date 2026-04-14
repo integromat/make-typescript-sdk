@@ -18,6 +18,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.devices.list(args.teamId);
         },

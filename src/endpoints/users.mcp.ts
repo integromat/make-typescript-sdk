@@ -15,6 +15,7 @@ export const tools = [
             type: 'object',
             properties: {},
         },
+        examples: [{}],
         execute: async (make: Make) => {
             return await make.users.me();
         },

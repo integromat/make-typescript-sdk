@@ -21,6 +21,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.scenarios.list(args.teamId, { cols: ['*'] });
         },
@@ -42,6 +43,7 @@ export const tools = [
             },
             required: ['scenarioId'],
         },
+        examples: [{ scenarioId: 925 }],
         execute: async (make: Make, args: { scenarioId: number }) => {
             const scenario = await make.scenarios.get(args.scenarioId, { cols: ['*'] });
             const blueprint = await make.blueprints.get(scenario.id);
@@ -78,6 +80,14 @@ export const tools = [
             },
             required: ['teamId', 'scheduling', 'blueprint'],
         },
+        examples: [
+            {
+                teamId: 5,
+                scheduling: '{"type":"indefinitely","interval":60}',
+                blueprint:
+                    '{"name":"Gmail Attachments to Google Drive","flow":[{"id":1,"module":"google-email:watchEmails","version":1,"parameters":{"connection":5,"folder":"INBOX","filter":"has:attachment"},"mapper":{},"metadata":{"expect":[]}},{"id":2,"module":"google-drive:uploadFile","version":1,"parameters":{"connection":6},"mapper":{"folderId":"your-folder-id-here","file":"{{1.attachments[]}}"},"metadata":{"expect":[]}}],"metadata":{"version":1}}',
+            },
+        ],
         execute: async (
             make: Make,
             args: {
@@ -120,6 +130,13 @@ export const tools = [
             },
             required: ['scenarioId'],
         },
+        examples: [
+            {
+                scenarioId: 925,
+                name: 'Updated Scenario',
+                scheduling: '{"type":"indefinitely","interval":900}',
+            },
+        ],
         execute: async (
             make: Make,
             args: {
@@ -153,6 +170,7 @@ export const tools = [
             },
             required: ['scenarioId'],
         },
+        examples: [{ scenarioId: 925 }],
         execute: async (make: Make, args: { scenarioId: number }) => {
             await make.scenarios.delete(args.scenarioId);
             return `Scenario has been deleted.`;
@@ -176,6 +194,7 @@ export const tools = [
             },
             required: ['scenarioId'],
         },
+        examples: [{ scenarioId: 925 }],
         execute: async (make: Make, args: { scenarioId: number }) => {
             return (await make.scenarios.activate(args.scenarioId))
                 ? 'Scenario has been activated.'
@@ -200,6 +219,7 @@ export const tools = [
             },
             required: ['scenarioId'],
         },
+        examples: [{ scenarioId: 925 }],
         execute: async (make: Make, args: { scenarioId: number }) => {
             return (await make.scenarios.deactivate(args.scenarioId))
                 ? 'Scenario has been deactivated.'
@@ -226,6 +246,7 @@ export const tools = [
             },
             required: ['scenarioId'],
         },
+        examples: [{ scenarioId: 925, data: { name: 'John' }, responsive: true }],
         execute: async (
             make: Make,
             args: { scenarioId: number; data?: Record<string, JSONValue>; responsive?: boolean; callbackUrl?: string },
@@ -251,6 +272,7 @@ export const tools = [
             },
             required: ['scenarioId'],
         },
+        examples: [{ scenarioId: 925 }],
         execute: async (make: Make, args: { scenarioId: number }) => {
             return await make.scenarios.getInterface(args.scenarioId);
         },
@@ -293,6 +315,15 @@ export const tools = [
             },
             required: ['scenarioId', 'interface'],
         },
+        examples: [
+            {
+                scenarioId: 925,
+                interface: {
+                    input: [{ name: 'myInput', type: 'text', required: true }],
+                    output: [],
+                },
+            },
+        ],
         execute: async (
             make: Make,
             args: {

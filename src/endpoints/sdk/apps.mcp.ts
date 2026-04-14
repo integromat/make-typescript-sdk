@@ -16,6 +16,7 @@ export const tools = [
             type: 'object',
             properties: {},
         },
+        examples: [{}],
         execute: async (make: Make) => {
             return await make.sdk.apps.list({ cols: ['*'] });
         },
@@ -38,6 +39,7 @@ export const tools = [
             },
             required: ['name', 'version'],
         },
+        examples: [{ name: 'my-app', version: 1 }],
         execute: async (make: Make, args: { name: string; version: number }) => {
             return await make.sdk.apps.get(args.name, args.version, { cols: ['*'] });
         },
@@ -69,8 +71,18 @@ export const tools = [
                 private: { type: 'boolean', description: 'Whether the app is private' },
                 audience: { type: 'string', description: 'Audience setting for the app' },
             },
-            required: ['name', 'label', 'audience'],
+            required: ['name', 'label', 'theme', 'language', 'audience'],
         },
+        examples: [
+            {
+                name: 'my-app',
+                label: 'My App',
+                description: 'A custom app',
+                theme: '#FF5733',
+                language: 'en',
+                audience: 'global',
+            },
+        ],
         execute: async (
             make: Make,
             args: {
@@ -116,6 +128,7 @@ export const tools = [
             },
             required: ['name', 'version'],
         },
+        examples: [{ name: 'my-app', version: 1, label: 'My Updated App' }],
         execute: async (
             make: Make,
             args: {
@@ -151,6 +164,7 @@ export const tools = [
             },
             required: ['name', 'version'],
         },
+        examples: [{ name: 'my-app', version: 1 }],
         execute: async (make: Make, args: { name: string; version: number }) => {
             await make.sdk.apps.delete(args.name, args.version);
             return `App has been deleted.`;
@@ -179,6 +193,7 @@ export const tools = [
             },
             required: ['name', 'version', 'section'],
         },
+        examples: [{ name: 'my-app', version: 1, section: 'base' }],
         execute: async (
             make: Make,
             args: { name: string; version: number; section: 'base' | 'groups' | 'install' | 'installSpec' },
@@ -211,6 +226,7 @@ export const tools = [
             },
             required: ['name', 'version', 'section', 'body'],
         },
+        examples: [{ name: 'my-app', version: 1, section: 'base', body: '{"baseUrl": "https://api.example.com"}' }],
         execute: async (
             make: Make,
             args: {
@@ -242,6 +258,7 @@ export const tools = [
             },
             required: ['name', 'version'],
         },
+        examples: [{ name: 'my-app', version: 1 }],
         execute: async (make: Make, args: { name: string; version: number }) => {
             return await make.sdk.apps.getDocs(args.name, args.version);
         },
@@ -266,6 +283,7 @@ export const tools = [
             },
             required: ['name', 'version', 'docs'],
         },
+        examples: [{ name: 'my-app', version: 1, docs: '# My App\n\nThis app integrates with the Example API.' }],
         execute: async (make: Make, args: { name: string; version: number; docs: string }) => {
             await make.sdk.apps.setDocs(args.name, args.version, args.docs);
             return `Documentation has been set.`;
@@ -289,6 +307,7 @@ export const tools = [
             },
             required: ['name', 'version'],
         },
+        examples: [{ name: 'my-app', version: 1 }],
         execute: async (make: Make, args: { name: string; version: number }) => {
             return await make.sdk.apps.getCommon(args.name, args.version);
         },
@@ -313,6 +332,9 @@ export const tools = [
             },
             required: ['name', 'version', 'common'],
         },
+        examples: [
+            { name: 'my-app', version: 1, common: { clientId: 'my-client-id', clientSecret: 'my-client-secret' } },
+        ],
         execute: async (make: Make, args: { name: string; version: number; common: Record<string, JSONValue> }) => {
             await make.sdk.apps.setCommon(args.name, args.version, args.common);
             return `Common data has been set.`;

@@ -19,6 +19,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1 }],
         execute: async (make: Make, args: { appName: string; appVersion: number }) => {
             return await make.sdk.modules.list(args.appName, args.appVersion);
         },
@@ -42,6 +43,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'moduleName'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, moduleName: 'listItems' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; moduleName: string }) => {
             return await make.sdk.modules.get(args.appName, args.appVersion, args.moduleName);
         },
@@ -74,6 +76,16 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'name', 'typeId', 'label', 'description'],
         },
+        examples: [
+            {
+                appName: 'my-app',
+                appVersion: 1,
+                name: 'listItems',
+                typeId: 4,
+                label: 'List Items',
+                description: 'Returns a list of items from the API.',
+            },
+        ],
         execute: async (
             make: Make,
             args: {
@@ -113,6 +125,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'moduleName'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, moduleName: 'listItems', label: 'List Items (Updated)' }],
         execute: async (
             make: Make,
             args: {
@@ -147,6 +160,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'moduleName'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, moduleName: 'listItems' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; moduleName: string }) => {
             await make.sdk.modules.delete(args.appName, args.appVersion, args.moduleName);
             return `Module has been deleted.`;
@@ -176,6 +190,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'moduleName', 'section'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, moduleName: 'listItems', section: 'api' }],
         execute: async (
             make: Make,
             args: {
@@ -214,6 +229,15 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'moduleName', 'section', 'body'],
         },
+        examples: [
+            {
+                appName: 'my-app',
+                appVersion: 1,
+                moduleName: 'listItems',
+                section: 'api',
+                body: '{"url": "/items", "method": "GET"}',
+            },
+        ],
         execute: async (
             make: Make,
             args: {

@@ -19,6 +19,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.hooks.list(args.teamId);
         },
@@ -40,6 +41,7 @@ export const tools = [
             },
             required: ['hookId'],
         },
+        examples: [{ hookId: 11 }],
         execute: async (make: Make, args: { hookId: number }) => {
             return await make.hooks.get(args.hookId);
         },
@@ -68,6 +70,7 @@ export const tools = [
             },
             required: ['teamId', 'name', 'typeName'],
         },
+        examples: [{ teamId: 5, name: 'My Webhook', typeName: 'gateway-webhook' }],
         execute: async (
             make: Make,
             args: {
@@ -99,6 +102,7 @@ export const tools = [
             },
             required: ['hookId', 'data'],
         },
+        examples: [{ hookId: 11, data: { method: true, headers: true } }],
         execute: async (make: Make, args: { hookId: number; data: Record<string, JSONValue> }) => {
             await make.hooks.update(args.hookId, { data: args.data });
             return `Hook has been updated.`;
@@ -121,6 +125,7 @@ export const tools = [
             },
             required: ['hookId'],
         },
+        examples: [{ hookId: 11 }],
         execute: async (make: Make, args: { hookId: number }) => {
             await make.hooks.delete(args.hookId);
             return `Hook has been deleted.`;

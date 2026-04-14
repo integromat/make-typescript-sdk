@@ -15,6 +15,7 @@ export const tools = [
             type: 'object',
             properties: {},
         },
+        examples: [{}],
         execute: async (make: Make) => {
             return await make.enums.countries();
         },
@@ -33,6 +34,7 @@ export const tools = [
             type: 'object',
             properties: {},
         },
+        examples: [{}],
         execute: async (make: Make) => {
             return await make.enums.regions();
         },
@@ -51,6 +53,7 @@ export const tools = [
             type: 'object',
             properties: {},
         },
+        examples: [{}],
         execute: async (make: Make) => {
             return await make.enums.timezones();
         },

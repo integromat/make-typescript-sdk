@@ -19,6 +19,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.keys.list(args.teamId, { cols: ['*'] });
         },
@@ -40,6 +41,7 @@ export const tools = [
             },
             required: ['keyId'],
         },
+        examples: [{ keyId: 1 }],
         execute: async (make: Make, args: { keyId: number }) => {
             return await make.keys.get(args.keyId, { cols: ['*'] });
         },
@@ -65,6 +67,14 @@ export const tools = [
             },
             required: ['teamId', 'name', 'typeName', 'parameters'],
         },
+        examples: [
+            {
+                teamId: 5,
+                name: 'My API Key',
+                typeName: 'basicauth',
+                parameters: { user: 'admin', pass: 'secret' },
+            },
+        ],
         execute: async (
             make: Make,
             args: { teamId: number; name: string; typeName: string; parameters: Record<string, JSONValue> },
@@ -92,6 +102,7 @@ export const tools = [
             },
             required: ['keyId'],
         },
+        examples: [{ keyId: 1, name: 'My Updated Key' }],
         execute: async (make: Make, args: { keyId: number; name?: string; parameters?: Record<string, JSONValue> }) => {
             const { keyId, ...body } = args;
             await make.keys.update(keyId, body);
@@ -115,6 +126,7 @@ export const tools = [
             },
             required: ['keyId'],
         },
+        examples: [{ keyId: 1 }],
         execute: async (make: Make, args: { keyId: number }) => {
             await make.keys.delete(args.keyId);
             return `Key has been deleted.`;

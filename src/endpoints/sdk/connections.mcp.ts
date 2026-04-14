@@ -19,6 +19,7 @@ export const tools = [
             },
             required: ['appName'],
         },
+        examples: [{ appName: 'my-app' }],
         execute: async (make: Make, args: { appName: string }) => {
             return await make.sdk.connections.list(args.appName);
         },
@@ -40,6 +41,7 @@ export const tools = [
             },
             required: ['connectionName'],
         },
+        examples: [{ connectionName: 'my-app' }],
         execute: async (make: Make, args: { connectionName: string }) => {
             return await make.sdk.connections.get(args.connectionName);
         },
@@ -64,6 +66,7 @@ export const tools = [
             },
             required: ['appName', 'type', 'label'],
         },
+        examples: [{ appName: 'my-app', type: 'oauth2', label: 'OAuth 2.0' }],
         execute: async (make: Make, args: { appName: string; type: string; label: string }) => {
             const { appName, ...body } = args;
             return await make.sdk.connections.create(appName, body);
@@ -88,6 +91,7 @@ export const tools = [
             },
             required: ['connectionName'],
         },
+        examples: [{ connectionName: 'my-app', label: 'Updated OAuth 2.0' }],
         execute: async (make: Make, args: { connectionName: string; label?: string }) => {
             const { connectionName, ...body } = args;
             return await make.sdk.connections.update(connectionName, body);
@@ -110,6 +114,7 @@ export const tools = [
             },
             required: ['connectionName'],
         },
+        examples: [{ connectionName: 'my-app' }],
         execute: async (make: Make, args: { connectionName: string }) => {
             await make.sdk.connections.delete(args.connectionName);
             return `Connection has been deleted.`;
@@ -137,6 +142,7 @@ export const tools = [
             },
             required: ['connectionName', 'section'],
         },
+        examples: [{ connectionName: 'my-app', section: 'api' }],
         execute: async (
             make: Make,
             args: {
@@ -171,6 +177,13 @@ export const tools = [
             },
             required: ['connectionName', 'section', 'body'],
         },
+        examples: [
+            {
+                connectionName: 'my-app',
+                section: 'api',
+                body: '{"url": "https://api.example.com/oauth/token", "method": "POST"}',
+            },
+        ],
         execute: async (
             make: Make,
             args: {
@@ -200,6 +213,7 @@ export const tools = [
             },
             required: ['connectionName'],
         },
+        examples: [{ connectionName: 'my-app' }],
         execute: async (make: Make, args: { connectionName: string }) => {
             return await make.sdk.connections.getCommon(args.connectionName);
         },
@@ -223,6 +237,12 @@ export const tools = [
             },
             required: ['connectionName', 'common'],
         },
+        examples: [
+            {
+                connectionName: 'my-app',
+                common: { clientId: '{{common.clientId}}', clientSecret: '{{common.clientSecret}}' },
+            },
+        ],
         execute: async (make: Make, args: { connectionName: string; common: Record<string, JSONValue> }) => {
             await make.sdk.connections.setCommon(args.connectionName, args.common);
             return `Common data has been set.`;

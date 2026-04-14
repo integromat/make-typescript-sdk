@@ -20,6 +20,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1 }],
         execute: async (make: Make, args: { appName: string; appVersion: number }) => {
             return await make.sdk.rpcs.list(args.appName, args.appVersion);
         },
@@ -43,6 +44,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'rpcName'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, rpcName: 'getFields' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; rpcName: string }) => {
             return await make.sdk.rpcs.get(args.appName, args.appVersion, args.rpcName);
         },
@@ -68,6 +70,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'name', 'label'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, name: 'getFields', label: 'Get Fields' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; name: string; label: string }) => {
             const { appName, appVersion, ...body } = args;
             return await make.sdk.rpcs.create(appName, appVersion, body);
@@ -96,6 +99,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'rpcName'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, rpcName: 'getFields', label: 'Get Fields (Updated)' }],
         execute: async (
             make: Make,
             args: {
@@ -130,6 +134,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'rpcName'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, rpcName: 'getFields' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; rpcName: string }) => {
             await make.sdk.rpcs.delete(args.appName, args.appVersion, args.rpcName);
             return `RPC has been deleted.`;
@@ -168,6 +173,15 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'rpcName', 'data', 'schema'],
         },
+        examples: [
+            {
+                appName: 'my-app',
+                appVersion: 1,
+                rpcName: 'getFields',
+                data: { connectionId: 2 },
+                schema: [{ name: 'connectionId', type: 'number', required: true }],
+            },
+        ],
         execute: async (
             make: Make,
             args: {
@@ -210,6 +224,7 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'rpcName', 'section'],
         },
+        examples: [{ appName: 'my-app', appVersion: 1, rpcName: 'getFields', section: 'api' }],
         execute: async (
             make: Make,
             args: {
@@ -248,6 +263,15 @@ export const tools = [
             },
             required: ['appName', 'appVersion', 'rpcName', 'section', 'body'],
         },
+        examples: [
+            {
+                appName: 'my-app',
+                appVersion: 1,
+                rpcName: 'getFields',
+                section: 'api',
+                body: '{"url": "/fields", "method": "GET"}',
+            },
+        ],
         execute: async (
             make: Make,
             args: {

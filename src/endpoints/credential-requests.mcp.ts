@@ -26,6 +26,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (
             make: Make,
             args: {
@@ -62,6 +63,7 @@ export const tools = [
             },
             required: ['requestId'],
         },
+        examples: [{ requestId: 'a07e16f2ad134bf49cf83a00aa95c0a5' }],
         execute: async (make: Make, args: { requestId: string }) => {
             return await make.credentialRequests.getDetail(args.requestId);
         },
@@ -85,6 +87,7 @@ export const tools = [
             },
             required: ['requestId'],
         },
+        examples: [{ requestId: 'a07e16f2ad134bf49cf83a00aa95c0a5' }],
         execute: async (make: Make, args: { requestId: string }) => {
             await make.credentialRequests.delete(args.requestId);
             return 'Credential request and associated credentials have been deleted.';
@@ -112,6 +115,7 @@ export const tools = [
             },
             required: ['credentialId'],
         },
+        examples: [{ credentialId: 'b12f9e3c2d15af8', reason: 'Not required for this project' }],
         execute: async (make: Make, args: { credentialId: string; reason?: string }) => {
             return await make.credentialRequests.declineCredential(args.credentialId, args.reason);
         },
@@ -137,6 +141,7 @@ export const tools = [
             },
             required: ['credentialId'],
         },
+        examples: [{ credentialId: 'b12f9e3c2d15af8' }],
         execute: async (make: Make, args: { credentialId: string }) => {
             return await make.credentialRequests.deleteCredential(args.credentialId);
         },
@@ -207,6 +212,13 @@ export const tools = [
             },
             required: ['teamId', 'credentials'],
         },
+        examples: [
+            {
+                name: 'Google Connection Request',
+                teamId: 5,
+                credentials: [{ appName: 'google', appModules: ['*'] }],
+            },
+        ],
         execute: async (
             make: Make,
             args: {
@@ -342,6 +354,14 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [
+            {
+                name: 'My Credential Request',
+                teamId: 5,
+                connections: [{ type: 'google', scope: ['https://www.googleapis.com/auth/drive'] }],
+                keys: [{ type: 'apikeyauth' }],
+            },
+        ],
         execute: async (
             make: Make,
             args: {
@@ -407,6 +427,12 @@ export const tools = [
             },
             required: ['connectionId', 'scopes'],
         },
+        examples: [
+            {
+                connectionId: 2,
+                scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+            },
+        ],
         execute: async (
             make: Make,
             args: {

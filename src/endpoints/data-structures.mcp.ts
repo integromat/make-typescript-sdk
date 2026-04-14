@@ -19,6 +19,7 @@ export const tools = [
             },
             required: ['teamId'],
         },
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.dataStructures.list(args.teamId, { cols: ['*'] });
         },
@@ -40,6 +41,7 @@ export const tools = [
             },
             required: ['dataStructureId'],
         },
+        examples: [{ dataStructureId: 178 }],
         execute: async (make: Make, args: { dataStructureId: number }) => {
             return await make.dataStructures.get(args.dataStructureId);
         },
@@ -78,6 +80,18 @@ export const tools = [
             },
             required: ['teamId', 'name', 'strict', 'spec'],
         },
+        examples: [
+            {
+                teamId: 5,
+                name: 'Customer Data',
+                strict: true,
+                spec: [
+                    { name: 'name', type: 'text', label: 'Name', required: true },
+                    { name: 'email', type: 'text', label: 'Email', required: true },
+                    { name: 'status', type: 'text', label: 'Status', required: false },
+                ],
+            },
+        ],
         execute: async (
             make: Make,
             args: { teamId: number; name: string; strict: boolean; spec: DataStructureField[] },
@@ -116,6 +130,7 @@ export const tools = [
             },
             required: ['dataStructureId'],
         },
+        examples: [{ dataStructureId: 178, name: 'Updated Structure' }],
         execute: async (
             make: Make,
             args: {
@@ -146,6 +161,7 @@ export const tools = [
             },
             required: ['dataStructureId'],
         },
+        examples: [{ dataStructureId: 178 }],
         execute: async (make: Make, args: { dataStructureId: number }) => {
             await make.dataStructures.delete(args.dataStructureId);
             return `Data structure has been deleted.`;

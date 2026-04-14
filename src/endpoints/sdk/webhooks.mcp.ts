@@ -18,6 +18,7 @@ export const tools = [
             },
             required: ['appName'],
         },
+        examples: [{ appName: 'my-app' }],
         execute: async (make: Make, args: { appName: string }) => {
             return await make.sdk.webhooks.list(args.appName);
         },
@@ -39,6 +40,7 @@ export const tools = [
             },
             required: ['webhookName'],
         },
+        examples: [{ webhookName: 'my-app' }],
         execute: async (make: Make, args: { webhookName: string }) => {
             return await make.sdk.webhooks.get(args.webhookName);
         },
@@ -63,6 +65,7 @@ export const tools = [
             },
             required: ['appName', 'type', 'label'],
         },
+        examples: [{ appName: 'my-app', type: 'web', label: 'New Item' }],
         execute: async (make: Make, args: { appName: string; type: string; label: string }) => {
             const { appName, ...body } = args;
             return await make.sdk.webhooks.create(appName, body);
@@ -87,6 +90,7 @@ export const tools = [
             },
             required: ['webhookName'],
         },
+        examples: [{ webhookName: 'my-app', label: 'New Item (Updated)' }],
         execute: async (make: Make, args: { webhookName: string; label?: string }) => {
             const { webhookName, ...body } = args;
             return await make.sdk.webhooks.update(webhookName, body);
@@ -109,6 +113,7 @@ export const tools = [
             },
             required: ['webhookName'],
         },
+        examples: [{ webhookName: 'my-app' }],
         execute: async (make: Make, args: { webhookName: string }) => {
             await make.sdk.webhooks.delete(args.webhookName);
             return `Webhook has been deleted.`;
@@ -136,6 +141,7 @@ export const tools = [
             },
             required: ['webhookName', 'section'],
         },
+        examples: [{ webhookName: 'my-app', section: 'api' }],
         execute: async (
             make: Make,
             args: {
@@ -170,6 +176,7 @@ export const tools = [
             },
             required: ['webhookName', 'section', 'body'],
         },
+        examples: [{ webhookName: 'my-app', section: 'api', body: '{"url": "/webhooks/subscribe", "method": "POST"}' }],
         execute: async (
             make: Make,
             args: {

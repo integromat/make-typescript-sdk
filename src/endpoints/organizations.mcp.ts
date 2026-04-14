@@ -15,6 +15,7 @@ export const tools = [
             type: 'object',
             properties: {},
         },
+        examples: [{}],
         execute: async (make: Make) => {
             return await make.organizations.list({ cols: ['*'] });
         },
@@ -36,6 +37,7 @@ export const tools = [
             },
             required: ['organizationId'],
         },
+        examples: [{ organizationId: 5 }],
         execute: async (make: Make, args: { organizationId: number }) => {
             return await make.organizations.get(args.organizationId);
         },
@@ -61,6 +63,7 @@ export const tools = [
             },
             required: ['name', 'regionId', 'timezoneId', 'countryId'],
         },
+        examples: [{ name: 'My Organization', regionId: 1, timezoneId: 113, countryId: 1 }],
         execute: async (
             make: Make,
             args: { name: string; regionId: number; timezoneId: number; countryId: number },
@@ -89,6 +92,7 @@ export const tools = [
             },
             required: ['organizationId'],
         },
+        examples: [{ organizationId: 5, name: 'Updated Organization' }],
         execute: async (
             make: Make,
             args: {
@@ -119,6 +123,7 @@ export const tools = [
             },
             required: ['organizationId'],
         },
+        examples: [{ organizationId: 5 }],
         execute: async (make: Make, args: { organizationId: number }) => {
             await make.organizations.delete(args.organizationId);
             return `Organization has been deleted.`;
