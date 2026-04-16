@@ -1,0 +1,26 @@
+{
+    "templates": [
+        {
+            "id": 61,
+            "name": "My Private Template",
+            "teamId": 1,
+            "description": "A template for testing",
+            "usedApps": ["http", "json"],
+            "public": false,
+            "published": null,
+            "approved": null,
+            "approvedId": null,
+            "requestedApproval": false,
+            "publishedId": null,
+            "publicUrl": null,
+            "approvedName": null,
+            "publishedName": null
+        }
+    ],
+    "pg": {
+        "sortBy": "name",
+        "limit": 10,
+        "sortDir": "asc",
+        "offset": 0
+    }
+}
