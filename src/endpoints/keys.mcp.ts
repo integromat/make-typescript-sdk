@@ -5,7 +5,7 @@ export const tools = [
     {
         name: 'keys_list',
         title: 'List keys',
-        description: 'List all keys for a team',
+        description: 'List all keys for a team.',
         category: 'keys',
         scope: 'keys:read',
         identifier: 'teamId',
@@ -27,7 +27,7 @@ export const tools = [
     {
         name: 'keys_get',
         title: 'Get key',
-        description: 'Get details of a specific key',
+        description: 'Get details of a specific key.',
         category: 'keys',
         scope: 'keys:read',
         identifier: 'keyId',
@@ -49,7 +49,7 @@ export const tools = [
     {
         name: 'keys_create',
         title: 'Create key',
-        description: 'Create a new key',
+        description: 'Create a new key.',
         category: 'keys',
         scope: 'keys:write',
         identifier: 'teamId',
@@ -85,7 +85,7 @@ export const tools = [
     {
         name: 'keys_update',
         title: 'Update key',
-        description: 'Update an existing key',
+        description: 'Update an existing key.',
         category: 'keys',
         scope: 'keys:write',
         identifier: 'keyId',
@@ -112,7 +112,7 @@ export const tools = [
     {
         name: 'keys_delete',
         title: 'Delete key',
-        description: 'Delete a key',
+        description: 'Delete a key.',
         category: 'keys',
         scope: 'keys:write',
         identifier: 'keyId',

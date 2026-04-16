@@ -5,7 +5,7 @@ export const tools = [
     {
         name: 'connections_list',
         title: 'List connections',
-        description: 'List connections for a team',
+        description: 'List connections for a team.',
         category: 'connections',
         scope: 'connections:read',
         identifier: 'teamId',
@@ -43,7 +43,7 @@ export const tools = [
     {
         name: 'connections_get',
         title: 'Get connection',
-        description: 'Get details of a specific connection',
+        description: 'Get details of a specific connection.',
         category: 'connections',
         scope: 'connections:read',
         identifier: 'connectionId',
@@ -65,7 +65,7 @@ export const tools = [
     {
         name: 'connections_create',
         title: 'Create connection',
-        description: 'Create a new connection',
+        description: 'Create a new connection.',
         category: 'connections',
         scope: 'connections:write',
         identifier: 'teamId',
@@ -106,7 +106,7 @@ export const tools = [
     {
         name: 'connections_update',
         title: 'Update connection',
-        description: "Update a connection's configuration data",
+        description: "Update a connection's configuration data.",
         category: 'connections',
         scope: 'connections:write',
         identifier: 'connectionId',
@@ -140,7 +140,7 @@ export const tools = [
     {
         name: 'connections_verify',
         title: 'Verify connection',
-        description: 'Verify if a connection is working correctly',
+        description: 'Verify if a connection is working correctly.',
         category: 'connections',
         scope: 'connections:write',
         identifier: 'connectionId',
@@ -165,7 +165,7 @@ export const tools = [
     {
         name: 'connections_delete',
         title: 'Delete connection',
-        description: 'Delete a connection',
+        description: 'Delete a connection.',
         category: 'connections',
         scope: 'connections:write',
         identifier: 'connectionId',

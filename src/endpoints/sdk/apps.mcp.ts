@@ -5,7 +5,7 @@ export const tools = [
     {
         name: 'sdk-apps_list',
         title: 'List SDK apps',
-        description: 'List SDK apps with optional filtering',
+        description: 'List SDK apps with optional filtering.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -24,7 +24,7 @@ export const tools = [
     {
         name: 'sdk-apps_get',
         title: 'Get SDK app',
-        description: 'Get a SDK app by name and version',
+        description: 'Get a SDK app by name and version.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -47,7 +47,7 @@ export const tools = [
     {
         name: 'sdk-apps_create',
         title: 'Create SDK app',
-        description: 'Create a new SDK app',
+        description: 'Create a new SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -102,7 +102,7 @@ export const tools = [
     {
         name: 'sdk-apps_update',
         title: 'Update SDK app',
-        description: 'Update an existing SDK app',
+        description: 'Update an existing SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -149,7 +149,7 @@ export const tools = [
     {
         name: 'sdk-apps_delete',
         title: 'Delete SDK app',
-        description: 'Delete a SDK app by name and version',
+        description: 'Delete a SDK app by name and version.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -173,7 +173,7 @@ export const tools = [
     {
         name: 'sdk-apps_get-section',
         title: 'Get SDK app section',
-        description: 'Get a specific section of a SDK app',
+        description: 'Get a specific section of a SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -204,7 +204,7 @@ export const tools = [
     {
         name: 'sdk-apps_set-section',
         title: 'Set SDK app section',
-        description: 'Set/update a specific section of a SDK app',
+        description: 'Set/update a specific section of a SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -243,7 +243,7 @@ export const tools = [
     {
         name: 'sdk-apps_get-docs',
         title: 'Get SDK app documentation',
-        description: 'Get app documentation (readme)',
+        description: 'Get app documentation (readme).',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -266,7 +266,7 @@ export const tools = [
     {
         name: 'sdk-apps_set-docs',
         title: 'Set SDK app documentation',
-        description: 'Set app documentation (readme)',
+        description: 'Set app documentation (readme).',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -292,7 +292,7 @@ export const tools = [
     {
         name: 'sdk-apps_get-common',
         title: 'Get SDK app common data',
-        description: 'Get app common data (client credentials and shared configuration)',
+        description: 'Get app common data (client credentials and shared configuration).',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -315,7 +315,7 @@ export const tools = [
     {
         name: 'sdk-apps_set-common',
         title: 'Set SDK app common data',
-        description: 'Set app common data (client credentials and shared configuration)',
+        description: 'Set app common data (client credentials and shared configuration).',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         identifier: undefined,

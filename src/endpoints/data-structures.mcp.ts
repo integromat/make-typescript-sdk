@@ -5,7 +5,7 @@ export const tools = [
     {
         name: 'data-structures_list',
         title: 'List data structures',
-        description: 'List data structures for a team',
+        description: 'List data structures for a team.',
         category: 'data-structures',
         scope: 'udts:read',
         identifier: 'teamId',
@@ -27,7 +27,7 @@ export const tools = [
     {
         name: 'data-structures_get',
         title: 'Get data structure',
-        description: 'Get details of a specific data structure',
+        description: 'Get details of a specific data structure.',
         category: 'data-structures',
         scope: 'udts:read',
         identifier: 'dataStructureId',
@@ -49,7 +49,7 @@ export const tools = [
     {
         name: 'data-structures_create',
         title: 'Create data structure',
-        description: 'Create a new data structure',
+        description: 'Create a new data structure.',
         category: 'data-structures',
         scope: 'udts:write',
         identifier: 'teamId',
@@ -102,7 +102,7 @@ export const tools = [
     {
         name: 'data-structures_update',
         title: 'Update data structure',
-        description: 'Update an existing data structure',
+        description: 'Update an existing data structure.',
         category: 'data-structures',
         scope: 'udts:write',
         identifier: 'dataStructureId',
@@ -147,7 +147,7 @@ export const tools = [
     {
         name: 'data-structures_delete',
         title: 'Delete data structure',
-        description: 'Delete a data structure',
+        description: 'Delete a data structure.',
         category: 'data-structures',
         scope: 'udts:write',
         identifier: 'dataStructureId',

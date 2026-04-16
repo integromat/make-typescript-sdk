@@ -5,7 +5,7 @@ export const tools = [
     {
         name: 'sdk-connections_list',
         title: 'List SDK connections',
-        description: 'List connections for a specific app',
+        description: 'List connections for a specific app.',
         category: 'sdk-connections',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -27,7 +27,7 @@ export const tools = [
     {
         name: 'sdk-connections_get',
         title: 'Get SDK connection',
-        description: 'Get a single connection by name',
+        description: 'Get a single connection by name.',
         category: 'sdk-connections',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -49,7 +49,7 @@ export const tools = [
     {
         name: 'sdk-connections_create',
         title: 'Create SDK connection',
-        description: 'Create a new connection for a specific app',
+        description: 'Create a new connection for a specific app.',
         category: 'sdk-connections',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -75,7 +75,7 @@ export const tools = [
     {
         name: 'sdk-connections_update',
         title: 'Update SDK connection',
-        description: 'Update an existing connection',
+        description: 'Update an existing connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -100,7 +100,7 @@ export const tools = [
     {
         name: 'sdk-connections_delete',
         title: 'Delete SDK connection',
-        description: 'Delete a connection',
+        description: 'Delete a connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -123,7 +123,7 @@ export const tools = [
     {
         name: 'sdk-connections_get-section',
         title: 'Get SDK connection section',
-        description: 'Get a specific section of a connection',
+        description: 'Get a specific section of a connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -156,7 +156,7 @@ export const tools = [
     {
         name: 'sdk-connections_set-section',
         title: 'Set SDK connection section',
-        description: 'Set a specific section of a connection',
+        description: 'Set a specific section of a connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -199,7 +199,7 @@ export const tools = [
     {
         name: 'sdk-connections_get-common',
         title: 'Get SDK connection common data',
-        description: 'Get common configuration for a connection',
+        description: 'Get common configuration for a connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -221,7 +221,7 @@ export const tools = [
     {
         name: 'sdk-connections_set-common',
         title: 'Set SDK connection common data',
-        description: 'Set common configuration for a connection',
+        description: 'Set common configuration for a connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:write',
         identifier: undefined,

@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'enums_countries',
         title: 'List countries',
-        description: 'List all available countries',
+        description: 'List all available countries.',
         category: 'enums',
         scope: undefined,
         identifier: undefined,
@@ -23,7 +23,7 @@ export const tools = [
     {
         name: 'enums_regions',
         title: 'List regions',
-        description: 'List all available regions',
+        description: 'List all available regions.',
         category: 'enums',
         scope: undefined,
         identifier: undefined,
@@ -42,7 +42,7 @@ export const tools = [
     {
         name: 'enums_timezones',
         title: 'List timezones',
-        description: 'List all available timezones',
+        description: 'List all available timezones.',
         category: 'enums',
         scope: undefined,
         identifier: undefined,
