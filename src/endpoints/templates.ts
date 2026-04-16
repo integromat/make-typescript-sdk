@@ -170,7 +170,8 @@ export class Templates {
     }
 
     /**
-     * List private team-scoped templates.
+     * List private templates accessible to the authenticated user.
+     * Results can be filtered by team, public status, and used apps.
      * @param options Optional parameters for filtering and pagination
      * @returns Promise with the list of templates
      *
@@ -178,6 +179,9 @@ export class Templates {
      * ```typescript
      * // List all templates for team 1
      * const templates = await make.templates.list({ teamId: 1 });
+     *
+     * // List only public templates
+     * const publicTemplates = await make.templates.list({ public: true });
      * ```
      */
     async list<C extends keyof Template = never>(options: ListTemplatesOptions<C> = {}): Promise<PickColumns<Template, C>[]> {
@@ -196,26 +200,30 @@ export class Templates {
     }
 
     /**
-     * List publicly available approved templates.
-     * @param options Optional parameters for filtering and pagination
+     * List public (approved) templates available for anyone.
+     * Supports name-based search for template discovery.
+     * Results are sorted by usage in descending order by default.
+     * @param options Optional parameters for searching, filtering, and pagination
      * @returns Promise with the list of public templates
      *
      * @example
      * ```typescript
      * // Search public templates by name
-     * const templates = await make.templates.listPublic({ name: 'Http' });
+     * const templates = await make.templates.listPublic({ name: 'webhook' });
+     *
+     * // Filter by apps used
+     * const gmailTemplates = await make.templates.listPublic({ usedApps: ['gmail'] });
      * ```
      */
     async listPublic<C extends keyof TemplatePublic = never>(options: ListTemplatesPublicOptions<C> = {}): Promise<PickColumns<TemplatePublic, C>[]> {
-        const { name, usedApps, includeEn, cols, pg } = options;
         return (
             await this.#fetch<ListTemplatesPublicResponse<C>>('/templates/public', {
                 query: {
-                    name,
-                    usedApps,
-                    includeEn,
-                    cols,
-                    pg,
+                    name: options.name,
+                    usedApps: options.usedApps,
+                    includeEn: options.includeEn,
+                    cols: options.cols,
+                    pg: options.pg,
                 },
             })
         ).templatesPublic;
