@@ -15,6 +15,7 @@ import { Devices } from './endpoints/devices.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
+import { Templates } from './endpoints/templates.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
 import { SDKModules } from './endpoints/sdk/modules.js';
 import { SDKConnections } from './endpoints/sdk/connections.js';
@@ -164,6 +165,13 @@ export class Make {
     public readonly enums: Enums;
 
     /**
+     * Access to template-related endpoints
+     * Templates allow users to create reusable scenario configurations
+     * that can be shared, published, and discovered by other users
+     */
+    public readonly templates: Templates;
+
+    /**
      * Access to SDK-related endpoints
      */
     public readonly sdk: {
@@ -248,6 +256,7 @@ export class Make {
         this.organizations = new Organizations(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
         this.credentialRequests = new CredentialRequests(this.fetch.bind(this));
+        this.templates = new Templates(this.fetch.bind(this));
         this.sdk = {
             apps: new SDKApps(this.fetch.bind(this)),
             modules: new SDKModules(this.fetch.bind(this)),
