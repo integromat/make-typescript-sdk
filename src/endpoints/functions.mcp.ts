@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'functions_list',
         title: 'List functions',
-        description: 'List custom functions for a team',
+        description: 'List custom functions for a team.',
         category: 'functions',
         scope: 'functions:read',
         identifier: 'teamId',
@@ -26,7 +26,7 @@ export const tools = [
     {
         name: 'functions_get',
         title: 'Get function',
-        description: 'Get details of a specific custom function',
+        description: 'Get details of a specific custom function.',
         category: 'functions',
         scope: 'functions:read',
         identifier: 'functionId',
@@ -48,7 +48,7 @@ export const tools = [
     {
         name: 'functions_create',
         title: 'Create function',
-        description: 'Create a new custom function',
+        description: 'Create a new custom function.',
         category: 'functions',
         scope: 'functions:write',
         identifier: 'teamId',
@@ -85,7 +85,7 @@ export const tools = [
     {
         name: 'functions_update',
         title: 'Update function',
-        description: 'Update an existing custom function',
+        description: 'Update an existing custom function.',
         category: 'functions',
         scope: 'functions:write',
         identifier: 'functionId',
@@ -121,7 +121,7 @@ export const tools = [
     {
         name: 'functions_delete',
         title: 'Delete function',
-        description: 'Delete a custom function',
+        description: 'Delete a custom function.',
         category: 'functions',
         scope: 'functions:write',
         identifier: 'functionId',
@@ -144,7 +144,7 @@ export const tools = [
     {
         name: 'functions_check',
         title: 'Check function syntax',
-        description: 'Check the syntax of a function without saving it',
+        description: 'Check the syntax of a function without saving it.',
         category: 'functions',
         scope: 'functions:write',
         identifier: 'teamId',

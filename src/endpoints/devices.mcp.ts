@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'devices_list',
         title: 'List devices',
-        description: 'List devices registered in a team',
+        description: 'List devices registered in a team.',
         category: 'devices',
         scope: 'devices:read',
         identifier: 'teamId',

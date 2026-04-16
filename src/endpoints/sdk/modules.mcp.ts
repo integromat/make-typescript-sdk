@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'sdk-modules_list',
         title: 'List SDK modules',
-        description: 'List modules for the app with optional filtering',
+        description: 'List modules for the app with optional filtering.',
         category: 'sdk-modules',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -27,7 +27,7 @@ export const tools = [
     {
         name: 'sdk-modules_get',
         title: 'Get SDK module',
-        description: 'Get a single module by name',
+        description: 'Get a single module by name.',
         category: 'sdk-modules',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -51,7 +51,7 @@ export const tools = [
     {
         name: 'sdk-modules_create',
         title: 'Create SDK module',
-        description: 'Create a new module',
+        description: 'Create a new module.',
         category: 'sdk-modules',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -105,7 +105,7 @@ export const tools = [
     {
         name: 'sdk-modules_update',
         title: 'Update SDK module',
-        description: 'Update an existing module',
+        description: 'Update an existing module.',
         category: 'sdk-modules',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -144,7 +144,7 @@ export const tools = [
     {
         name: 'sdk-modules_delete',
         title: 'Delete SDK module',
-        description: 'Delete a module',
+        description: 'Delete a module.',
         category: 'sdk-modules',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -169,7 +169,7 @@ export const tools = [
     {
         name: 'sdk-modules_get-section',
         title: 'Get SDK module section',
-        description: 'Get a specific section of a module',
+        description: 'Get a specific section of a module.',
         category: 'sdk-modules',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -206,7 +206,7 @@ export const tools = [
     {
         name: 'sdk-modules_set-section',
         title: 'Set SDK module section',
-        description: 'Set/update a specific section of a module',
+        description: 'Set/update a specific section of a module.',
         category: 'sdk-modules',
         scope: 'sdk-apps:write',
         identifier: undefined,

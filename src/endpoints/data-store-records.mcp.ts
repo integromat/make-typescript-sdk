@@ -5,7 +5,7 @@ export const tools = [
     {
         name: 'data-store-records_list',
         title: 'List data store records',
-        description: 'List all records in a data store',
+        description: 'List all records in a data store.',
         category: 'data-store-records',
         scope: 'datastores:read',
         identifier: 'dataStoreId',
@@ -28,7 +28,7 @@ export const tools = [
     {
         name: 'data-store-records_create',
         title: 'Create data store record',
-        description: 'Create a new record in a data store',
+        description: 'Create a new record in a data store.',
         category: 'data-store-records',
         scope: 'datastores:write',
         identifier: 'dataStoreId',
@@ -62,7 +62,7 @@ export const tools = [
     {
         name: 'data-store-records_update',
         title: 'Update data store record',
-        description: 'Update an existing record in a data store',
+        description: 'Update an existing record in a data store.',
         category: 'data-store-records',
         scope: 'datastores:write',
         identifier: 'dataStoreId',
@@ -87,7 +87,7 @@ export const tools = [
     {
         name: 'data-store-records_replace',
         title: 'Replace data store record',
-        description: "Replace an existing record in a data store or create if it doesn't exist",
+        description: "Replace an existing record in a data store or create if it doesn't exist.",
         category: 'data-store-records',
         scope: 'datastores:write',
         identifier: 'dataStoreId',
@@ -118,7 +118,7 @@ export const tools = [
     {
         name: 'data-store-records_delete',
         title: 'Delete data store records',
-        description: 'Delete specific records from a data store by keys',
+        description: 'Delete specific records from a data store by keys.',
         category: 'data-store-records',
         scope: 'datastores:write',
         identifier: 'dataStoreId',

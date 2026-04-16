@@ -5,7 +5,7 @@ export const tools = [
     {
         name: 'hooks_list',
         title: 'List webhooks/mailhooks',
-        description: 'List webhooks/mailhooks for a specific team',
+        description: 'List webhooks/mailhooks for a specific team.',
         category: 'hooks',
         scope: 'hooks:read',
         identifier: 'teamId',
@@ -27,7 +27,7 @@ export const tools = [
     {
         name: 'hooks_get',
         title: 'Get webhook/mailhook',
-        description: 'Get details of a specific webhook/mailhook',
+        description: 'Get details of a specific webhook/mailhook.',
         category: 'hooks',
         scope: 'hooks:read',
         identifier: 'hookId',
@@ -49,7 +49,7 @@ export const tools = [
     {
         name: 'hooks_create',
         title: 'Create webhook/mailhook',
-        description: 'Create a new webhook/mailhook',
+        description: 'Create a new webhook/mailhook.',
         category: 'hooks',
         scope: 'hooks:write',
         identifier: 'teamId',
@@ -86,7 +86,7 @@ export const tools = [
     {
         name: 'hooks_update',
         title: 'Update webhook/mailhook',
-        description: 'Update an existing webhook/mailhook',
+        description: 'Update an existing webhook/mailhook.',
         category: 'hooks',
         scope: 'hooks:write',
         identifier: 'hookId',
@@ -111,7 +111,7 @@ export const tools = [
     {
         name: 'hooks_delete',
         title: 'Delete webhook/mailhook',
-        description: 'Delete a webhook/mailhook',
+        description: 'Delete a webhook/mailhook.',
         category: 'hooks',
         scope: 'hooks:write',
         identifier: 'hookId',
