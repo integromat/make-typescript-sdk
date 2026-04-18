@@ -25,6 +25,7 @@ import { tools as FoldersTools } from './endpoints/folders.mcp.js';
 import { tools as IncompleteExecutionsTools } from './endpoints/incomplete-executions.mcp.js';
 import { tools as DataStructuresTools } from './endpoints/data-structures.mcp.js';
 import { tools as EnumsTools } from './endpoints/enums.mcp.js';
+import { tools as TemplatesTools } from './endpoints/templates.mcp.js';
 
 /**
  * JSON Schema definition for input parameters.
@@ -149,4 +150,5 @@ export const MakeMCPTools = [
     ...OrganizationsTools,
     ...UsersTools,
     ...EnumsTools,
+    ...TemplatesTools,
 ] as MakeMCPTool[];
