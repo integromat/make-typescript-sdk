@@ -22,10 +22,6 @@ describe('Integration: Templates', () => {
         });
 
         expect(Array.isArray(templates)).toBe(true);
-        if (templates.length > 0) {
-            expect(templates[0]).toHaveProperty('id');
-            expect(templates[0]).toHaveProperty('name');
-        }
     });
 
     it('Should list public templates', async () => {
@@ -33,18 +29,19 @@ describe('Integration: Templates', () => {
 
         expect(Array.isArray(templates)).toBe(true);
         expect(templates.length).toBeGreaterThan(0);
+        expect(templates[0]).toHaveProperty('id');
+        expect(templates[0]).toHaveProperty('name');
+        expect(templates[0]).toHaveProperty('url');
+        expect(templates[0]).toHaveProperty('usage');
     });
 
     it('Should search public templates by name', async () => {
         const templates = await make.templates.listPublic({ name: 'http' });
 
         expect(Array.isArray(templates)).toBe(true);
-        if (templates.length > 0) {
-            expect(templates[0]).toHaveProperty('id');
-            expect(templates[0]).toHaveProperty('name');
-            expect(templates[0]).toHaveProperty('url');
-            expect(templates[0]).toHaveProperty('usage');
-        }
+        expect(templates.length).toBeGreaterThan(0);
+        expect(templates[0]).toHaveProperty('id');
+        expect(templates[0]).toHaveProperty('name');
     });
 
     it('Should search public templates with usedApps filter', async () => {

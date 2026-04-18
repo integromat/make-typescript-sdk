@@ -105,10 +105,7 @@ export const tools = [
             required: ['templateId'],
         },
         examples: [{ templateId: 61 }],
-        execute: async (
-            make: Make,
-            args: { templateId: number; forUse?: boolean; templatePublicId?: number },
-        ) => {
+        execute: async (make: Make, args: { templateId: number; forUse?: boolean; templatePublicId?: number }) => {
             const { templateId, ...options } = args;
             return await make.templates.getBlueprint(templateId, options);
         },

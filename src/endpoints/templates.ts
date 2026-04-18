@@ -184,7 +184,9 @@ export class Templates {
      * const publicTemplates = await make.templates.list({ public: true });
      * ```
      */
-    async list<C extends keyof Template = never>(options: ListTemplatesOptions<C> = {}): Promise<PickColumns<Template, C>[]> {
+    async list<C extends keyof Template = never>(
+        options: ListTemplatesOptions<C> = {},
+    ): Promise<PickColumns<Template, C>[]> {
         const { teamId, public: isPublic, usedApps, cols, pg } = options;
         return (
             await this.#fetch<ListTemplatesResponse<C>>('/templates', {
@@ -215,7 +217,9 @@ export class Templates {
      * const gmailTemplates = await make.templates.listPublic({ usedApps: ['gmail'] });
      * ```
      */
-    async listPublic<C extends keyof TemplatePublic = never>(options: ListTemplatesPublicOptions<C> = {}): Promise<PickColumns<TemplatePublic, C>[]> {
+    async listPublic<C extends keyof TemplatePublic = never>(
+        options: ListTemplatesPublicOptions<C> = {},
+    ): Promise<PickColumns<TemplatePublic, C>[]> {
         return (
             await this.#fetch<ListTemplatesPublicResponse<C>>('/templates/public', {
                 query: {
@@ -240,7 +244,10 @@ export class Templates {
      * const template = await make.templates.get(61);
      * ```
      */
-    async get<C extends keyof Template = never>(templateId: number, options: GetTemplateOptions<C> = {}): Promise<PickColumns<Template, C>> {
+    async get<C extends keyof Template = never>(
+        templateId: number,
+        options: GetTemplateOptions<C> = {},
+    ): Promise<PickColumns<Template, C>> {
         return (
             await this.#fetch<GetTemplateResponse<C>>(`/templates/${templateId}`, {
                 query: {
