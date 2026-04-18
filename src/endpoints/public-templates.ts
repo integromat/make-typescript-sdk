@@ -6,7 +6,7 @@ import type { Scheduling } from './scenarios.js';
  * Represents a publicly available approved template in Make.
  * Public templates can be discovered and used by all Make users.
  */
-export type Template = {
+export type PublicTemplate = {
     /** Unique identifier of the public template */
     id: number;
     /** Name of the public template */
@@ -25,7 +25,7 @@ export type Template = {
  * Blueprint payload returned by the public-template blueprint endpoint.
  * Wraps the scenario blueprint together with its scheduling and controller configuration.
  */
-export type TemplateBlueprint = {
+export type PublicTemplateBlueprint = {
     /** The scenario blueprint definition (modules, flow, metadata). Scheduling is exposed at the top level of this payload instead. */
     blueprint: Omit<Blueprint, 'scheduling' | 'interface'>;
     /** Controller configuration for the scenario */
@@ -47,13 +47,13 @@ export type TemplateBlueprint = {
 
 /**
  * Options for listing public (approved) templates.
- * @template C Keys of the Template type to include in the response
+ * @template C Keys of the PublicTemplate type to include in the response
  */
-export type ListTemplatesOptions<C extends keyof Template = never> = {
+export type ListPublicTemplatesOptions<C extends keyof PublicTemplate = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
     /** Pagination options */
-    pg?: Partial<Pagination<Template>>;
+    pg?: Partial<Pagination<PublicTemplate>>;
     /** Search public templates by name */
     name?: string;
     /** Filter public templates by apps used */
@@ -64,9 +64,9 @@ export type ListTemplatesOptions<C extends keyof Template = never> = {
 
 /**
  * Options for getting a single public template.
- * @template C Keys of the Template type to include in the response
+ * @template C Keys of the PublicTemplate type to include in the response
  */
-export type GetTemplateOptions<C extends keyof Template = never> = {
+export type GetPublicTemplateOptions<C extends keyof PublicTemplate = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
 };
@@ -74,19 +74,19 @@ export type GetTemplateOptions<C extends keyof Template = never> = {
 /**
  * Response format for listing public templates.
  */
-type ListTemplatesResponse<C extends keyof Template = never> = {
+type ListPublicTemplatesResponse<C extends keyof PublicTemplate = never> = {
     /** List of public templates matching the query */
-    templatesPublic: PickColumns<Template, C>[];
+    templatesPublic: PickColumns<PublicTemplate, C>[];
     /** Pagination information */
-    pg: Pagination<Template>;
+    pg: Pagination<PublicTemplate>;
 };
 
 /**
  * Response format for getting a single public template.
  */
-type GetTemplateResponse<C extends keyof Template = never> = {
+type GetPublicTemplateResponse<C extends keyof PublicTemplate = never> = {
     /** The requested public template */
-    templatePublic: PickColumns<Template, C>;
+    templatePublic: PickColumns<PublicTemplate, C>;
 };
 
 /**
@@ -94,11 +94,11 @@ type GetTemplateResponse<C extends keyof Template = never> = {
  * Public templates are approved scenario configurations that can be
  * discovered and used by any Make user.
  */
-export class Templates {
+export class PublicTemplates {
     readonly #fetch: FetchFunction;
 
     /**
-     * Create a new Templates instance.
+     * Create a new PublicTemplates instance.
      * @param fetch Function for making API requests
      */
     constructor(fetch: FetchFunction) {
@@ -121,11 +121,11 @@ export class Templates {
      * const gmailTemplates = await make.templates.list({ usedApps: ['gmail'] });
      * ```
      */
-    async list<C extends keyof Template = never>(
-        options: ListTemplatesOptions<C> = {},
-    ): Promise<PickColumns<Template, C>[]> {
+    async list<C extends keyof PublicTemplate = never>(
+        options: ListPublicTemplatesOptions<C> = {},
+    ): Promise<PickColumns<PublicTemplate, C>[]> {
         return (
-            await this.#fetch<ListTemplatesResponse<C>>('/templates/public', {
+            await this.#fetch<ListPublicTemplatesResponse<C>>('/templates/public', {
                 query: {
                     name: options.name,
                     usedApps: options.usedApps,
@@ -149,12 +149,12 @@ export class Templates {
      * const template = await make.templates.get('12289-add-webhook-data-to-a-google-sheet');
      * ```
      */
-    async get<C extends keyof Template = never>(
+    async get<C extends keyof PublicTemplate = never>(
         templateUrl: string,
-        options: GetTemplateOptions<C> = {},
-    ): Promise<PickColumns<Template, C>> {
+        options: GetPublicTemplateOptions<C> = {},
+    ): Promise<PickColumns<PublicTemplate, C>> {
         return (
-            await this.#fetch<GetTemplateResponse<C>>(`/templates/public/${templateUrl}`, {
+            await this.#fetch<GetPublicTemplateResponse<C>>(`/templates/public/${templateUrl}`, {
                 query: {
                     cols: options.cols,
                 },
@@ -174,7 +174,7 @@ export class Templates {
      * const blueprint = await make.templates.getBlueprint('12289-add-webhook-data-to-a-google-sheet');
      * ```
      */
-    async getBlueprint(templateUrl: string): Promise<TemplateBlueprint> {
-        return await this.#fetch<TemplateBlueprint>(`/templates/public/${templateUrl}/blueprint`);
+    async getBlueprint(templateUrl: string): Promise<PublicTemplateBlueprint> {
+        return await this.#fetch<PublicTemplateBlueprint>(`/templates/public/${templateUrl}/blueprint`);
     }
 }

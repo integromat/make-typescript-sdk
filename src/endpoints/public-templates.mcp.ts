@@ -2,11 +2,11 @@ import type { Make } from '../make.js';
 
 export const tools = [
     {
-        name: 'templates_list',
+        name: 'public-templates_list',
         title: 'List public templates',
         description:
             'Search and list public (approved) templates available for anyone. Supports name-based search for template discovery. Results are sorted by usage by default.',
-        category: 'templates',
+        category: 'public-templates',
         scope: 'templates:read',
         annotations: {
             readOnlyHint: true,
@@ -14,15 +14,15 @@ export const tools = [
         inputSchema: {
             type: 'object',
             properties: {
-                name: { type: 'string', description: 'Search templates by name' },
+                name: { type: 'string', description: 'Search public templates by name' },
                 usedApps: {
                     type: 'array',
                     items: { type: 'string' },
-                    description: 'Filter templates by apps used',
+                    description: 'Filter public templates by apps used',
                 },
                 includeEn: {
                     type: 'boolean',
-                    description: 'Whether to include English-language templates in results',
+                    description: 'Whether to include English-language public templates in results',
                 },
             },
         },
@@ -32,11 +32,11 @@ export const tools = [
         },
     },
     {
-        name: 'templates_get',
+        name: 'public-templates_get',
         title: 'Get public template',
         description:
-            'Get details of a public template by its URL slug (e.g. "12289-add-webhook-data-to-a-google-sheet"). Use this for templates discovered via templates_list.',
-        category: 'templates',
+            'Get details of a public template by its URL slug (e.g. "12289-add-webhook-data-to-a-google-sheet"). Use this for templates discovered via public-templates_list.',
+        category: 'public-templates',
         scope: 'templates:read',
         identifier: 'templateUrl',
         annotations: {
@@ -47,7 +47,7 @@ export const tools = [
             properties: {
                 templateUrl: {
                     type: 'string',
-                    description: 'The URL slug of the template (e.g. "12289-add-webhook-data-to-a-google-sheet")',
+                    description: 'The URL slug of the public template (e.g. "12289-add-webhook-data-to-a-google-sheet")',
                 },
             },
             required: ['templateUrl'],
@@ -58,11 +58,11 @@ export const tools = [
         },
     },
     {
-        name: 'templates_get-blueprint',
+        name: 'public-templates_get-blueprint',
         title: 'Get public template blueprint',
         description:
-            'Get the full blueprint of a public template including scenario flow, controller configuration, scheduling, and metadata. Use this for templates discovered via templates_list.',
-        category: 'templates',
+            'Get the full blueprint of a public template including scenario flow, controller configuration, scheduling, and metadata. Use this for templates discovered via public-templates_list.',
+        category: 'public-templates',
         scope: 'templates:read',
         identifier: 'templateUrl',
         annotations: {
@@ -73,7 +73,7 @@ export const tools = [
             properties: {
                 templateUrl: {
                     type: 'string',
-                    description: 'The URL slug of the template (e.g. "12289-add-webhook-data-to-a-google-sheet")',
+                    description: 'The URL slug of the public template (e.g. "12289-add-webhook-data-to-a-google-sheet")',
                 },
             },
             required: ['templateUrl'],

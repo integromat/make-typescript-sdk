@@ -167,10 +167,10 @@ export type {
 } from './endpoints/sdk/webhooks.js';
 export type { Team, Teams, CreateTeamBody, ListTeamsOptions, GetTeamOptions } from './endpoints/teams.js';
 export type {
-    Template,
-    TemplateBlueprint,
-    Templates,
-    ListTemplatesOptions,
-    GetTemplateOptions,
-} from './endpoints/templates.js';
+    PublicTemplate,
+    PublicTemplateBlueprint,
+    PublicTemplates,
+    ListPublicTemplatesOptions,
+    GetPublicTemplateOptions,
+} from './endpoints/public-templates.js';
 export type { User, Users } from './endpoints/users.js';

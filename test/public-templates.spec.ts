@@ -2,14 +2,14 @@ import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
 import { mockFetch } from './test.utils.js';
 
-import * as listMock from './mocks/templates/list.json';
-import * as getMock from './mocks/templates/get.json';
-import * as blueprintMock from './mocks/templates/blueprint.json';
+import * as listMock from './mocks/public-templates/list.json';
+import * as getMock from './mocks/public-templates/get.json';
+import * as blueprintMock from './mocks/public-templates/blueprint.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
 
-describe('Endpoints: Templates', () => {
+describe('Endpoints: PublicTemplates', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
     it('Should list public templates with name search', async () => {

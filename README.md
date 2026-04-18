@@ -203,7 +203,7 @@ All tools are organized into the following categories:
 - `organizations`
 - `scenarios`
 - `teams`
-- `templates`
+- `public-templates`
 - `users`
 - `sdk.apps`
 - `sdk.connections`

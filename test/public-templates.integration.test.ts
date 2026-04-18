@@ -5,7 +5,7 @@ import { Make } from '../src/make.js';
 const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
 
-describe('Integration: Templates', () => {
+describe('Integration: PublicTemplates', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
     it('Should list public templates', async () => {
