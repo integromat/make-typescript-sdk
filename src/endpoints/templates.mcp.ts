@@ -110,4 +110,54 @@ export const tools = [
             return await make.templates.getBlueprint(templateId, options);
         },
     },
+    {
+        name: 'templates_get-public',
+        title: 'Get public template',
+        description: 'Get details of a public template by its URL slug (e.g. "12289-add-webhook-data-to-a-google-sheet"). Use this for templates discovered via templates_list-public.',
+        category: 'templates',
+        scope: 'templates:read',
+        identifier: 'templateUrl',
+        annotations: {
+            readOnlyHint: true,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                templateUrl: {
+                    type: 'string',
+                    description: 'The URL slug of the template (e.g. "12289-add-webhook-data-to-a-google-sheet")',
+                },
+            },
+            required: ['templateUrl'],
+        },
+        examples: [{ templateUrl: '12289-add-webhook-data-to-a-google-sheet' }],
+        execute: async (make: Make, args: { templateUrl: string }) => {
+            return await make.templates.getPublic(args.templateUrl, { cols: ['*'] });
+        },
+    },
+    {
+        name: 'templates_get-public-blueprint',
+        title: 'Get public template blueprint',
+        description: 'Get the full blueprint of a public template including scenario flow, controller configuration, scheduling, and metadata. Use this for templates discovered via templates_list-public.',
+        category: 'templates',
+        scope: 'templates:read',
+        identifier: 'templateUrl',
+        annotations: {
+            readOnlyHint: true,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                templateUrl: {
+                    type: 'string',
+                    description: 'The URL slug of the template (e.g. "12289-add-webhook-data-to-a-google-sheet")',
+                },
+            },
+            required: ['templateUrl'],
+        },
+        examples: [{ templateUrl: '12289-add-webhook-data-to-a-google-sheet' }],
+        execute: async (make: Make, args: { templateUrl: string }) => {
+            return await make.templates.getPublicBlueprint(args.templateUrl);
+        },
+    },
 ];

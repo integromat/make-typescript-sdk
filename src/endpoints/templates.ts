@@ -126,6 +126,25 @@ export type GetTemplateBlueprintOptions = {
 };
 
 /**
+ * Options for getting a single public template.
+ * @template C Keys of the TemplatePublic type to include in the response
+ */
+export type GetTemplatePublicOptions<C extends keyof TemplatePublic = never> = {
+    /** Specific columns/fields to include in the response */
+    cols?: C[] | ['*'];
+    /** ID of the public template to retrieve */
+    templatePublicId?: number;
+};
+
+/**
+ * Options for getting a public template blueprint.
+ */
+export type GetTemplatePublicBlueprintOptions = {
+    /** ID of the public template to retrieve the blueprint for */
+    templatePublicId?: number;
+};
+
+/**
  * Response format for listing private templates.
  */
 type ListTemplatesResponse<C extends keyof Template = never> = {
@@ -151,6 +170,14 @@ type ListTemplatesPublicResponse<C extends keyof TemplatePublic = never> = {
 type GetTemplateResponse<C extends keyof Template = never> = {
     /** The requested template */
     template: PickColumns<Template, C>;
+};
+
+/**
+ * Response format for getting a single public template.
+ */
+type GetTemplatePublicResponse<C extends keyof TemplatePublic = never> = {
+    /** The requested public template */
+    templatePublic: PickColumns<TemplatePublic, C>;
 };
 
 /**
@@ -275,6 +302,57 @@ export class Templates {
         return await this.#fetch<TemplateBlueprint>(`/templates/${templateId}/blueprint`, {
             query: {
                 forUse: options.forUse,
+                templatePublicId: options.templatePublicId,
+            },
+        });
+    }
+
+    /**
+     * Get a single public template by its URL slug.
+     * Use this for templates discovered via {@link listPublic}.
+     * @param templateUrl The URL slug of the template (e.g. "12289-add-webhook-data-to-a-google-sheet")
+     * @param options Optional parameters for field selection
+     * @returns Promise with the public template details
+     *
+     * @example
+     * ```typescript
+     * const template = await make.templates.getPublic('12289-add-webhook-data-to-a-google-sheet');
+     * ```
+     */
+    async getPublic<C extends keyof TemplatePublic = never>(
+        templateUrl: string,
+        options: GetTemplatePublicOptions<C> = {},
+    ): Promise<PickColumns<TemplatePublic, C>> {
+        return (
+            await this.#fetch<GetTemplatePublicResponse<C>>(`/templates/public/${templateUrl}`, {
+                query: {
+                    cols: options.cols,
+                    templatePublicId: options.templatePublicId,
+                },
+            })
+        ).templatePublic;
+    }
+
+    /**
+     * Get the blueprint (scenario definition) for a public template.
+     * Use this for templates discovered via {@link listPublic}.
+     * The full response object is returned directly since the API returns a flat
+     * structure rather than wrapping the blueprint in a named property.
+     * @param templateUrl The URL slug of the template (e.g. "12289-add-webhook-data-to-a-google-sheet")
+     * @param options Optional parameters for blueprint retrieval
+     * @returns Promise with the full blueprint response
+     *
+     * @example
+     * ```typescript
+     * const blueprint = await make.templates.getPublicBlueprint('12289-add-webhook-data-to-a-google-sheet');
+     * ```
+     */
+    async getPublicBlueprint(
+        templateUrl: string,
+        options: GetTemplatePublicBlueprintOptions = {},
+    ): Promise<TemplateBlueprint> {
+        return await this.#fetch<TemplateBlueprint>(`/templates/public/${templateUrl}/blueprint`, {
+            query: {
                 templatePublicId: options.templatePublicId,
             },
         });

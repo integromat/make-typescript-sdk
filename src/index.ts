@@ -175,5 +175,7 @@ export type {
     ListTemplatesPublicOptions,
     GetTemplateOptions,
     GetTemplateBlueprintOptions,
+    GetTemplatePublicOptions,
+    GetTemplatePublicBlueprintOptions,
 } from './endpoints/templates.js';
 export type { User, Users } from './endpoints/users.js';
