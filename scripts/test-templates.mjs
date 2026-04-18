@@ -17,12 +17,14 @@ if (!process.env.MAKE_ZONE) {
     process.exit(1);
 }
 
-const searchTerm = process.argv[2] || 'webhook';
+const searchTerm = process.argv[2] ?? 'webhook';
+const usedApps = process.argv[3] ? process.argv[3].split(',').map(s => s.trim()).filter(Boolean) : undefined;
 
 const make = new Make(process.env.MAKE_API_KEY, process.env.MAKE_ZONE);
 
-console.log(`\n=== Searching public templates for "${searchTerm}" ===\n`);
-const templates = await make.templates.list({ name: searchTerm });
+const filterDesc = usedApps ? `"${searchTerm}" with apps [${usedApps.join(', ')}]` : `"${searchTerm}"`;
+console.log(`\n=== Searching public templates for ${filterDesc} ===\n`);
+const templates = await make.templates.list({ name: searchTerm, usedApps });
 
 console.log(`Found ${templates.length} template(s):`);
 templates.slice(0, 5).forEach(t => {
