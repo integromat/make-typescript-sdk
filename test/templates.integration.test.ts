@@ -36,6 +36,7 @@ describe('Integration: Templates', () => {
 
     it('Should get a public template by URL slug', async () => {
         const [first] = await make.templates.list({ name: 'http' });
+        expect(first).toBeDefined();
         const template = await make.templates.get(first!.url);
 
         expect(template.id).toBe(first!.id);
@@ -44,6 +45,7 @@ describe('Integration: Templates', () => {
 
     it('Should get a public template blueprint by URL slug', async () => {
         const [first] = await make.templates.list({ name: 'http' });
+        expect(first).toBeDefined();
         const blueprint = await make.templates.getBlueprint(first!.url);
 
         expect(blueprint).toHaveProperty('blueprint');

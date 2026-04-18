@@ -1,6 +1,6 @@
 {
     "blueprint": {
-        "name": "My Private Template",
+        "name": "Http template example",
         "flow": [
             {
                 "id": 1,
@@ -21,7 +21,7 @@
         }
     },
     "controller": {
-        "name": "My Private Template",
+        "name": "Http template example",
         "modules": {},
         "idSequence": 2
     },

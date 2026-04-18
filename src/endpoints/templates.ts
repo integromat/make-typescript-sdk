@@ -1,4 +1,6 @@
 import type { FetchFunction, Pagination, PickColumns } from '../types.js';
+import type { Blueprint } from './blueprints.js';
+import type { Scheduling } from './scenarios.js';
 
 /**
  * Represents a publicly available approved template in Make.
@@ -9,35 +11,42 @@ export type Template = {
     id: number;
     /** Name of the public template */
     name: string;
-    /** Human-readable description of what the template does, or null if not set */
+    /** Human-readable description of what the public template does, or null if not set */
     description: string | null;
     /** URL slug identifying this public template */
     url: string;
-    /** List of app identifiers used in the template */
+    /** List of app identifiers used in the public template */
     usedApps: string[];
-    /** Number of times this template has been used */
+    /** Number of times this public template has been used */
     usage: number;
 };
 
 /**
- * Represents the blueprint (scenario definition) extracted from a template.
- * Contains the full scenario configuration including flow, scheduling, and metadata.
+ * Blueprint payload returned by the public-template blueprint endpoint.
+ * Wraps the scenario blueprint together with its scheduling and controller configuration.
  */
 export type TemplateBlueprint = {
-    /** The scenario blueprint definition */
-    blueprint: Record<string, unknown>;
+    /** The scenario blueprint definition (modules, flow, metadata). Scheduling is exposed at the top level of this payload instead. */
+    blueprint: Omit<Blueprint, 'scheduling' | 'interface'>;
     /** Controller configuration for the scenario */
-    controller: Record<string, unknown>;
+    controller: {
+        /** Controller name */
+        name: string;
+        /** Controller-tracked module state, keyed by module ID */
+        modules: Record<string, unknown>;
+        /** Next ID to assign when adding a module */
+        idSequence: number;
+    };
     /** Scheduling configuration for the scenario */
-    scheduling: Record<string, unknown>;
-    /** Language code for the template */
+    scheduling: Scheduling;
+    /** Language code for the public template (e.g. "en") */
     language: string;
-    /** Additional metadata for the template, or null if not set */
+    /** Additional metadata for the public template, or null if not set */
     metadata: Record<string, unknown> | null;
 };
 
 /**
- * Options for listing public approved templates.
+ * Options for listing public (approved) templates.
  * @template C Keys of the Template type to include in the response
  */
 export type ListTemplatesOptions<C extends keyof Template = never> = {
@@ -45,11 +54,11 @@ export type ListTemplatesOptions<C extends keyof Template = never> = {
     cols?: C[] | ['*'];
     /** Pagination options */
     pg?: Partial<Pagination<Template>>;
-    /** Search templates by name */
+    /** Search public templates by name */
     name?: string;
-    /** Filter templates by apps used */
+    /** Filter public templates by apps used */
     usedApps?: string[];
-    /** Whether to include English-language templates in results */
+    /** Whether to include English-language public templates in results */
     includeEn?: boolean;
 };
 
@@ -154,7 +163,7 @@ export class Templates {
     }
 
     /**
-     * Get the blueprint (scenario definition) for a public template.
+     * Get the blueprint (scenario definition) for a public template by its URL slug.
      * The full response object is returned directly since the API returns a flat
      * structure rather than wrapping the blueprint in a named property.
      * @param templateUrl The URL slug of the template (e.g. "12289-add-webhook-data-to-a-google-sheet")

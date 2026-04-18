@@ -18,6 +18,15 @@ describe('Endpoints: Templates', () => {
         expect(result).toStrictEqual(listMock.templatesPublic);
     });
 
+    it('Should serialize usedApps array and includeEn boolean query params', async () => {
+        mockFetch(
+            'GET https://make.local/api/v2/templates/public?usedApps%5B%5D=gmail&usedApps%5B%5D=http&includeEn=true',
+            listMock,
+        );
+        const result = await make.templates.list({ usedApps: ['gmail', 'http'], includeEn: true });
+        expect(result).toStrictEqual(listMock.templatesPublic);
+    });
+
     it('Should get public template by URL slug', async () => {
         mockFetch('GET https://make.local/api/v2/templates/public/13-http-template-example', getMock);
         const result = await make.templates.get('13-http-template-example');

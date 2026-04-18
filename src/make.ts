@@ -165,9 +165,8 @@ export class Make {
     public readonly enums: Enums;
 
     /**
-     * Access to template-related endpoints
-     * Templates allow users to create reusable scenario configurations
-     * that can be shared, published, and discovered by other users
+     * Access to public template endpoints.
+     * Public templates are approved, read-only scenario configurations discoverable and usable by any Make user.
      */
     public readonly templates: Templates;
 
