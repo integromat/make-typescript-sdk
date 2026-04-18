@@ -4,28 +4,12 @@ import { Make } from '../src/make.js';
 
 const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
-const MAKE_TEAM = Number(process.env.MAKE_TEAM || 0);
 
 describe('Integration: Templates', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
-    it('Should list templates for a team', async () => {
-        const templates = await make.templates.list({ teamId: MAKE_TEAM });
-
-        expect(Array.isArray(templates)).toBe(true);
-    });
-
-    it('Should list templates with column selection', async () => {
-        const templates = await make.templates.list({
-            teamId: MAKE_TEAM,
-            cols: ['id', 'name'],
-        });
-
-        expect(Array.isArray(templates)).toBe(true);
-    });
-
     it('Should list public templates', async () => {
-        const templates = await make.templates.listPublic();
+        const templates = await make.templates.list();
 
         expect(Array.isArray(templates)).toBe(true);
         expect(templates.length).toBeGreaterThan(0);
@@ -36,7 +20,7 @@ describe('Integration: Templates', () => {
     });
 
     it('Should search public templates by name', async () => {
-        const templates = await make.templates.listPublic({ name: 'http' });
+        const templates = await make.templates.list({ name: 'http' });
 
         expect(Array.isArray(templates)).toBe(true);
         expect(templates.length).toBeGreaterThan(0);
@@ -45,8 +29,25 @@ describe('Integration: Templates', () => {
     });
 
     it('Should search public templates with usedApps filter', async () => {
-        const templates = await make.templates.listPublic({ usedApps: ['http'] });
+        const templates = await make.templates.list({ usedApps: ['http'] });
 
         expect(Array.isArray(templates)).toBe(true);
+    });
+
+    it('Should get a public template by URL slug', async () => {
+        const [first] = await make.templates.list({ name: 'http' });
+        const template = await make.templates.get(first!.url);
+
+        expect(template.id).toBe(first!.id);
+        expect(template.url).toBe(first!.url);
+    });
+
+    it('Should get a public template blueprint by URL slug', async () => {
+        const [first] = await make.templates.list({ name: 'http' });
+        const blueprint = await make.templates.getBlueprint(first!.url);
+
+        expect(blueprint).toHaveProperty('blueprint');
+        expect(blueprint).toHaveProperty('scheduling');
+        expect(blueprint).toHaveProperty('language');
     });
 });

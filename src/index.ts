@@ -168,14 +168,9 @@ export type {
 export type { Team, Teams, CreateTeamBody, ListTeamsOptions, GetTeamOptions } from './endpoints/teams.js';
 export type {
     Template,
-    TemplatePublic,
     TemplateBlueprint,
     Templates,
     ListTemplatesOptions,
-    ListTemplatesPublicOptions,
     GetTemplateOptions,
-    GetTemplateBlueprintOptions,
-    GetTemplatePublicOptions,
-    GetTemplatePublicBlueprintOptions,
 } from './endpoints/templates.js';
 export type { User, Users } from './endpoints/users.js';

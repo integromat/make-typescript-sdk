@@ -22,7 +22,7 @@ const searchTerm = process.argv[2] || 'webhook';
 const make = new Make(process.env.MAKE_API_KEY, process.env.MAKE_ZONE);
 
 console.log(`\n=== Searching public templates for "${searchTerm}" ===\n`);
-const templates = await make.templates.listPublic({ name: searchTerm });
+const templates = await make.templates.list({ name: searchTerm });
 
 console.log(`Found ${templates.length} template(s):`);
 templates.slice(0, 5).forEach(t => {
@@ -36,7 +36,7 @@ if (templates.length === 0) {
 
 const first = templates[0];
 console.log(`\n=== Fetching blueprint for template [${first.id}] "${first.name}" (url: ${first.url}) ===\n`);
-const blueprint = await make.templates.getPublicBlueprint(first.url);
+const blueprint = await make.templates.getBlueprint(first.url);
 
 console.log('Language:', blueprint.language);
 console.log('Scheduling:', JSON.stringify(blueprint.scheduling));
