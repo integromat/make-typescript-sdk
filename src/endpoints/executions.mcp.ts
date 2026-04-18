@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'executions_list',
         title: 'List executions',
-        description: 'List executions for a scenario',
+        description: 'List executions for a scenario.',
         category: 'executions',
         scope: 'scenarios:read',
         identifier: 'scenarioId',
@@ -30,7 +30,7 @@ export const tools = [
     {
         name: 'executions_get-detail',
         title: 'Get execution detail',
-        description: 'Get detailed result of a specific execution',
+        description: 'Get detailed result of a specific execution.',
         category: 'executions',
         scope: 'scenarios:read',
         identifier: 'scenarioId',
@@ -53,7 +53,7 @@ export const tools = [
     {
         name: 'executions_get',
         title: 'Get execution',
-        description: 'Get details of a specific execution',
+        description: 'Get details of a specific execution.',
         category: 'executions',
         scope: 'scenarios:read',
         identifier: 'scenarioId',
@@ -76,7 +76,7 @@ export const tools = [
     {
         name: 'executions_list-for-incomp-exec',
         title: 'List executions for incomplete execution',
-        description: 'List executions for an incomplete execution',
+        description: 'List executions for an incomplete execution.',
         category: 'executions',
         scope: 'dlqs:read',
         identifier: 'incompleteExecutionId',
@@ -103,7 +103,7 @@ export const tools = [
     {
         name: 'executions_get-for-incomp-exec',
         title: 'Get execution for incomplete execution',
-        description: 'Get execution details for an incomplete execution',
+        description: 'Get execution details for an incomplete execution.',
         category: 'executions',
         scope: 'dlqs:read',
         identifier: 'incompleteExecutionId',

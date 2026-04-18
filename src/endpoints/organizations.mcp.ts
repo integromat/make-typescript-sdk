@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'organizations_list',
         title: 'List organizations',
-        description: 'List organizations for the current user',
+        description: 'List organizations for the current user.',
         category: 'organizations',
         scope: 'organizations:read',
         identifier: undefined,
@@ -23,7 +23,7 @@ export const tools = [
     {
         name: 'organizations_get',
         title: 'Get organization',
-        description: 'Get details of a specific organization',
+        description: 'Get details of a specific organization.',
         category: 'organizations',
         scope: 'organizations:read',
         identifier: 'organizationId',
@@ -45,7 +45,7 @@ export const tools = [
     {
         name: 'organizations_create',
         title: 'Create organization',
-        description: 'Create a new organization',
+        description: 'Create a new organization.',
         category: 'organizations',
         scope: 'organizations:write',
         identifier: undefined,
@@ -74,7 +74,7 @@ export const tools = [
     {
         name: 'organizations_update',
         title: 'Update organization',
-        description: 'Update an existing organization',
+        description: 'Update an existing organization.',
         category: 'organizations',
         scope: 'organizations:write',
         identifier: 'organizationId',
@@ -109,7 +109,7 @@ export const tools = [
     {
         name: 'organizations_delete',
         title: 'Delete organization',
-        description: 'Delete an organization',
+        description: 'Delete an organization.',
         category: 'organizations',
         scope: 'organizations:write',
         identifier: 'organizationId',

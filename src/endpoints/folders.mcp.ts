@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'folders_list',
         title: 'List folders',
-        description: 'List folders for a team',
+        description: 'List folders for a team.',
         category: 'folders',
         scope: 'scenarios:read',
         identifier: 'teamId',
@@ -26,7 +26,7 @@ export const tools = [
     {
         name: 'folders_create',
         title: 'Create folder',
-        description: 'Create a new folder',
+        description: 'Create a new folder.',
         category: 'folders',
         scope: 'scenarios:write',
         identifier: 'teamId',
@@ -50,7 +50,7 @@ export const tools = [
     {
         name: 'folders_update',
         title: 'Update folder',
-        description: 'Update an existing folder',
+        description: 'Update an existing folder.',
         category: 'folders',
         scope: 'scenarios:write',
         identifier: 'folderId',
@@ -75,7 +75,7 @@ export const tools = [
     {
         name: 'folders_delete',
         title: 'Delete folder',
-        description: 'Delete a folder',
+        description: 'Delete a folder.',
         category: 'folders',
         scope: 'scenarios:write',
         identifier: 'folderId',

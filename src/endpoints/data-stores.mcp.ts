@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'data-stores_list',
         title: 'List data stores',
-        description: 'List all data stores for a team',
+        description: 'List all data stores for a team.',
         category: 'data-stores',
         scope: 'datastores:read',
         identifier: 'teamId',
@@ -26,7 +26,7 @@ export const tools = [
     {
         name: 'data-stores_get',
         title: 'Get data store',
-        description: 'Get data store details by ID',
+        description: 'Get data store details by ID.',
         category: 'data-stores',
         scope: 'datastores:read',
         identifier: 'dataStoreId',
@@ -48,7 +48,7 @@ export const tools = [
     {
         name: 'data-stores_create',
         title: 'Create data store',
-        description: 'Create a new data store',
+        description: 'Create a new data store.',
         category: 'data-stores',
         scope: 'datastores:write',
         identifier: 'teamId',
@@ -80,7 +80,7 @@ export const tools = [
     {
         name: 'data-stores_update',
         title: 'Update data store',
-        description: 'Update a data store',
+        description: 'Update a data store.',
         category: 'data-stores',
         scope: 'datastores:write',
         identifier: 'dataStoreId',
@@ -110,7 +110,7 @@ export const tools = [
     {
         name: 'data-stores_delete',
         title: 'Delete data store',
-        description: 'Delete a data store',
+        description: 'Delete a data store.',
         category: 'data-stores',
         scope: 'datastores:write',
         identifier: 'dataStoreId',

@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'teams_list',
         title: 'List teams',
-        description: 'List teams for the current user',
+        description: 'List teams for the current user.',
         category: 'teams',
         scope: 'teams:read',
         identifier: 'organizationId',
@@ -26,7 +26,7 @@ export const tools = [
     {
         name: 'teams_get',
         title: 'Get team',
-        description: 'Get details of a specific team',
+        description: 'Get details of a specific team.',
         category: 'teams',
         scope: 'teams:read',
         identifier: 'teamId',
@@ -48,7 +48,7 @@ export const tools = [
     {
         name: 'teams_create',
         title: 'Create team',
-        description: 'Create a new team',
+        description: 'Create a new team.',
         category: 'teams',
         scope: 'teams:write',
         identifier: 'organizationId',
@@ -80,7 +80,7 @@ export const tools = [
     {
         name: 'teams_delete',
         title: 'Delete team',
-        description: 'Delete a team',
+        description: 'Delete a team.',
         category: 'teams',
         scope: 'teams:write',
         identifier: 'teamId',

@@ -7,7 +7,7 @@ export const tools = [
     {
         name: 'scenarios_list',
         title: 'List scenarios',
-        description: 'List all scenarios for a team',
+        description: 'List all scenarios for a team.',
         category: 'scenarios',
         scope: 'scenarios:read',
         identifier: 'teamId',
@@ -29,7 +29,7 @@ export const tools = [
     {
         name: 'scenarios_get',
         title: 'Get scenario',
-        description: 'Get a scenario and its blueprint by ID',
+        description: 'Get a scenario and its blueprint by ID.',
         category: 'scenarios',
         scope: 'scenarios:read',
         identifier: 'scenarioId',
@@ -57,7 +57,7 @@ export const tools = [
     {
         name: 'scenarios_create',
         title: 'Create scenario',
-        description: 'Create a new scenario',
+        description: 'Create a new scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'teamId',
@@ -106,7 +106,7 @@ export const tools = [
     {
         name: 'scenarios_update',
         title: 'Update scenario',
-        description: 'Update a scenario',
+        description: 'Update a scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'scenarioId',
@@ -156,7 +156,7 @@ export const tools = [
     {
         name: 'scenarios_delete',
         title: 'Delete scenario',
-        description: 'Delete a scenario',
+        description: 'Delete a scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'scenarioId',
@@ -179,7 +179,7 @@ export const tools = [
     {
         name: 'scenarios_activate',
         title: 'Activate scenario',
-        description: 'Activate a scenario',
+        description: 'Activate a scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'scenarioId',
@@ -204,7 +204,7 @@ export const tools = [
     {
         name: 'scenarios_deactivate',
         title: 'Deactivate scenario',
-        description: 'Deactivate a scenario',
+        description: 'Deactivate a scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'scenarioId',
@@ -229,7 +229,7 @@ export const tools = [
     {
         name: 'scenarios_run',
         title: 'Run scenario',
-        description: 'Execute a scenario with optional input data',
+        description: 'Execute a scenario with optional input data.',
         category: 'scenarios',
         scope: 'scenarios:run',
         identifier: 'scenarioId',
@@ -258,7 +258,7 @@ export const tools = [
     {
         name: 'scenarios_interface',
         title: 'Get scenario interface',
-        description: 'Get the interface for a scenario',
+        description: 'Get the interface for a scenario.',
         category: 'scenarios',
         scope: 'scenarios:read',
         identifier: 'scenarioId',
@@ -280,7 +280,7 @@ export const tools = [
     {
         name: 'scenarios_set-interface',
         title: 'Set scenario interface',
-        description: 'Update the interface for a scenario',
+        description: 'Update the interface for a scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
         identifier: 'scenarioId',

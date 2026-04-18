@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'sdk-webhooks_list',
         title: 'List SDK webhooks',
-        description: 'List webhooks for a specific app',
+        description: 'List webhooks for a specific app.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -26,7 +26,7 @@ export const tools = [
     {
         name: 'sdk-webhooks_get',
         title: 'Get SDK webhook',
-        description: 'Get a single webhook by name',
+        description: 'Get a single webhook by name.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -48,7 +48,7 @@ export const tools = [
     {
         name: 'sdk-webhooks_create',
         title: 'Create SDK webhook',
-        description: 'Create a new webhook for an app',
+        description: 'Create a new webhook for an app.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -74,7 +74,7 @@ export const tools = [
     {
         name: 'sdk-webhooks_update',
         title: 'Update SDK webhook',
-        description: 'Update an existing webhook',
+        description: 'Update an existing webhook.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -99,7 +99,7 @@ export const tools = [
     {
         name: 'sdk-webhooks_delete',
         title: 'Delete SDK webhook',
-        description: 'Delete a webhook',
+        description: 'Delete a webhook.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
         identifier: undefined,
@@ -122,7 +122,7 @@ export const tools = [
     {
         name: 'sdk-webhooks_get-section',
         title: 'Get SDK webhook section',
-        description: 'Get a specific section of a webhook',
+        description: 'Get a specific section of a webhook.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:read',
         identifier: undefined,
@@ -155,7 +155,7 @@ export const tools = [
     {
         name: 'sdk-webhooks_set-section',
         title: 'Set SDK webhook section',
-        description: 'Set a specific section of a webhook',
+        description: 'Set a specific section of a webhook.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
         identifier: undefined,

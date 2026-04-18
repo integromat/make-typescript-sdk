@@ -4,7 +4,7 @@ export const tools = [
     {
         name: 'incomplete-executions_list',
         title: 'List incomplete executions',
-        description: 'List all incomplete executions',
+        description: 'List all incomplete executions.',
         category: 'incomplete-executions',
         scope: 'dlqs:read',
         identifier: 'scenarioId',
@@ -26,7 +26,7 @@ export const tools = [
     {
         name: 'incomplete-executions_get',
         title: 'Get incomplete execution',
-        description: 'Get details of a specific incomplete execution',
+        description: 'Get details of a specific incomplete execution.',
         category: 'incomplete-executions',
         scope: 'dlqs:read',
         identifier: 'incompleteExecutionId',
