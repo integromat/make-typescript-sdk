@@ -27,8 +27,8 @@ export const tools = [
             },
         },
         examples: [{ name: 'webhook' }],
-        execute: async (make: Make, args: { name?: string; usedApps?: string[]; includeEn?: boolean }) => {
-            return await make.templates.list({ ...args, cols: ['*'] });
+        execute: async (make: Make, args?: { name?: string; usedApps?: string[]; includeEn?: boolean }) => {
+            return await make.templates.list({ ...(args ?? {}), cols: ['*'] });
         },
     },
     {
