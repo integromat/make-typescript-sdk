@@ -259,4 +259,18 @@ describe('Integration: CredentialRequests', () => {
         const requests = await make.credentialRequests.list(MAKE_TEAM);
         expect(requests.some(r => r.id === nameOverrideRequestId)).toBe(false);
     });
+
+    it('Should list app modules with credentials for a public app', async () => {
+        const modules = await make.credentialRequests.listAppModulesWithCredentials('google-email', 'latest');
+        expect(Array.isArray(modules)).toBe(true);
+        expect(modules.length).toBeGreaterThan(0);
+
+        const module = modules[0]!;
+        expect(typeof module.id).toBe('string');
+        expect(typeof module.name).toBe('string');
+        expect(typeof module.label).toBe('string');
+        expect(typeof module.type).toBe('string');
+        expect(Array.isArray(module.scope)).toBe(true);
+        expect(typeof module.hook).toBe('boolean');
+    });
 });

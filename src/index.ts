@@ -35,6 +35,7 @@ export type {
     GetCredentialRequestOptions,
     Credential,
     ListCredentialRequestsOptions,
+    AppModuleWithCredentials,
 } from './endpoints/credential-requests.js';
 export type {
     DataStore,
