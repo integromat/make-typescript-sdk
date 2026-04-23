@@ -8,6 +8,7 @@ export const tools = [
         description: 'List data structures for a team.',
         category: 'data-structures',
         scope: 'udts:read',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
@@ -30,7 +31,9 @@ export const tools = [
         description: 'Get details of a specific data structure.',
         category: 'data-structures',
         scope: 'udts:read',
+        scopeId: 'dataStructureId',
         identifier: 'dataStructureId',
+        resourceId: 'dataStructureId',
         annotations: {
             readOnlyHint: true,
         },
@@ -52,6 +55,7 @@ export const tools = [
         description: 'Create a new data structure.',
         category: 'data-structures',
         scope: 'udts:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             idempotentHint: true,
@@ -105,7 +109,9 @@ export const tools = [
         description: 'Update an existing data structure.',
         category: 'data-structures',
         scope: 'udts:write',
+        scopeId: 'dataStructureId',
         identifier: 'dataStructureId',
+        resourceId: 'dataStructureId',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -150,7 +156,9 @@ export const tools = [
         description: 'Delete a data structure.',
         category: 'data-structures',
         scope: 'udts:write',
+        scopeId: 'dataStructureId',
         identifier: 'dataStructureId',
+        resourceId: 'dataStructureId',
         annotations: {
             destructiveHint: true,
         },

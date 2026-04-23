@@ -80,7 +80,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - Support for majority of Make API endpoints
 - Built-in error handling and response typing
 - Comprehensive test coverage
-- Model Context Protocol (MCP) support
+- Harness-agnostic tool definitions powering the [Make MCP Server](https://developers.make.com/mcp-server) and the [Make CLI](https://github.com/integromat/make-cli)
 
 ## Configuration Options
 
@@ -124,21 +124,24 @@ The SDK supports automatic retries with exponential backoff for handling rate li
 
 The retry mechanism uses exponential backoff with jitter to prevent thundering herd problems. When a `Retry-After` header is present in the response, the SDK respects it (capped at `maxDelay`).
 
-## MCP Server Support
+## Tool Definitions
 
-This SDK includes full support for the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), allowing AI agents to interact with the Make API through standardized tools. All SDK endpoints are automatically exposed as MCP tools.
+Every SDK endpoint is also described as a harness-agnostic **tool definition** - a self-contained record with a JSON Schema, examples, and an executor. The same definitions power:
 
-### Integrating with MCP Server (experimental)
+- the official [Make MCP Server](https://developers.make.com/mcp-server),
+- the official [Make CLI](https://github.com/integromat/make-cli),
+- and any future consumer.
+
+Import them directly via the `./tools` subpath:
 
 ```ts
 import { Make } from '@makehq/sdk';
-import { MakeMCPTools } from '@makehq/sdk/mcp';
+import { MakeTools } from '@makehq/sdk/tools';
 
-// Initialize the Make client
 const make = new Make('your-api-key', 'eu2.make.com');
 
 // List tools
-const tools = MakeMCPTools.map(tool => {
+const tools = MakeTools.map(tool => {
     return {
         name: tool.name,
         title: tool.title,
@@ -147,8 +150,8 @@ const tools = MakeMCPTools.map(tool => {
     };
 });
 
-// Execute tool
-const tool = MakeMCPTools.find(tool => tool.name === 'scenarios_list');
+// Execute a tool
+const tool = MakeTools.find(tool => tool.name === 'scenarios_list');
 
 try {
     await tool.execute(make, { teamId: 1 });
@@ -221,9 +224,10 @@ make-sdk/
 ├── src/                       # Source code
 │   ├── endpoints/             # API endpoint implementations
 │   │   ├── *.ts               # Endpoints
-│   │   └── *.mcp.ts           # MCP Tools
+│   │   └── *.tools.ts         # Tool definitions (MCP / CLI / …)
 │   ├── index.ts               # Main entry point
 │   ├── make.ts                # Core Make client
+│   ├── tools.ts               # Aggregated tool definitions (./tools export)
 │   ├── types.ts               # Common type definitions
 │   └── utils.ts               # Utility functions
 ├── test/                      # Test files

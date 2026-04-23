@@ -8,6 +8,7 @@ export const tools = [
         description: 'List connections for a specific app.',
         category: 'sdk-connections',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -30,6 +31,7 @@ export const tools = [
         description: 'Get a single connection by name.',
         category: 'sdk-connections',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -52,6 +54,7 @@ export const tools = [
         description: 'Create a new connection for a specific app.',
         category: 'sdk-connections',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -78,6 +81,7 @@ export const tools = [
         description: 'Update an existing connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -103,6 +107,7 @@ export const tools = [
         description: 'Delete a connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             destructiveHint: true,
@@ -126,6 +131,7 @@ export const tools = [
         description: 'Get a specific section of a connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -159,6 +165,7 @@ export const tools = [
         description: 'Set a specific section of a connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -202,6 +209,7 @@ export const tools = [
         description: 'Get common configuration for a connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -224,6 +232,7 @@ export const tools = [
         description: 'Set common configuration for a connection.',
         category: 'sdk-connections',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,

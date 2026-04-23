@@ -7,6 +7,7 @@ export const tools = [
         description: 'List devices registered in a team.',
         category: 'devices',
         scope: 'devices:read',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,

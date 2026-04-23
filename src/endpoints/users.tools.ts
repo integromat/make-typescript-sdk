@@ -7,6 +7,7 @@ export const tools = [
         description: 'Get details of the current user.',
         category: 'users',
         scope: undefined,
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,

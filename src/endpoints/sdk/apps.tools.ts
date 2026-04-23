@@ -8,6 +8,7 @@ export const tools = [
         description: 'List SDK apps with optional filtering.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -27,6 +28,7 @@ export const tools = [
         description: 'Get a SDK app by name and version.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -50,6 +52,7 @@ export const tools = [
         description: 'Create a new SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -105,6 +108,7 @@ export const tools = [
         description: 'Update an existing SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -152,6 +156,7 @@ export const tools = [
         description: 'Delete a SDK app by name and version.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             destructiveHint: true,
@@ -176,6 +181,7 @@ export const tools = [
         description: 'Get a specific section of a SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -207,6 +213,7 @@ export const tools = [
         description: 'Set/update a specific section of a SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -246,6 +253,7 @@ export const tools = [
         description: 'Get app documentation (readme).',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -269,6 +277,7 @@ export const tools = [
         description: 'Set app documentation (readme).',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -295,6 +304,7 @@ export const tools = [
         description: 'Get app common data (client credentials and shared configuration).',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -318,6 +328,7 @@ export const tools = [
         description: 'Set app common data (client credentials and shared configuration).',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
