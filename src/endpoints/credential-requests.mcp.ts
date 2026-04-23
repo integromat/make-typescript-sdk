@@ -465,7 +465,7 @@ export const tools = [
                         'App name (e.g. `slack`). For custom/SDK apps, prefix with `app#` (e.g. `app#my-custom-app`).',
                 },
                 appVersion: {
-                    type: ['number', 'string'],
+                    oneOf: [{ type: 'number' }, { type: 'string', const: 'latest' }],
                     description: 'App major version number (e.g. `4`), or the literal string `"latest"`.',
                 },
             },
