@@ -8,6 +8,7 @@ export const tools = [
         description: 'List all records in a data store.',
         category: 'data-store-records',
         scope: 'datastores:read',
+        scopeId: 'dataStoreId',
         identifier: 'dataStoreId',
         annotations: {
             readOnlyHint: true,
@@ -31,6 +32,7 @@ export const tools = [
         description: 'Create a new record in a data store.',
         category: 'data-store-records',
         scope: 'datastores:write',
+        scopeId: 'dataStoreId',
         identifier: 'dataStoreId',
         annotations: {
             idempotentHint: true,
@@ -65,7 +67,9 @@ export const tools = [
         description: 'Update an existing record in a data store.',
         category: 'data-store-records',
         scope: 'datastores:write',
+        scopeId: 'dataStoreId',
         identifier: 'dataStoreId',
+        resourceId: 'key',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -90,7 +94,9 @@ export const tools = [
         description: "Replace an existing record in a data store or create if it doesn't exist.",
         category: 'data-store-records',
         scope: 'datastores:write',
+        scopeId: 'dataStoreId',
         identifier: 'dataStoreId',
+        resourceId: 'key',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -121,6 +127,7 @@ export const tools = [
         description: 'Delete specific records from a data store by keys.',
         category: 'data-store-records',
         scope: 'datastores:write',
+        scopeId: 'dataStoreId',
         identifier: 'dataStoreId',
         annotations: {
             destructiveHint: true,

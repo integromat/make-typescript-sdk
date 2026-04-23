@@ -7,6 +7,7 @@ export const tools = [
         description: 'List executions for a scenario.',
         category: 'executions',
         scope: 'scenarios:read',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
         annotations: {
             readOnlyHint: true,
@@ -33,7 +34,9 @@ export const tools = [
         description: 'Get detailed result of a specific execution.',
         category: 'executions',
         scope: 'scenarios:read',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
+        resourceId: 'executionId',
         annotations: {
             readOnlyHint: true,
         },
@@ -56,7 +59,9 @@ export const tools = [
         description: 'Get details of a specific execution.',
         category: 'executions',
         scope: 'scenarios:read',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
+        resourceId: 'executionId',
         annotations: {
             readOnlyHint: true,
         },
@@ -79,6 +84,7 @@ export const tools = [
         description: 'List executions for an incomplete execution.',
         category: 'executions',
         scope: 'dlqs:read',
+        scopeId: 'incompleteExecutionId',
         identifier: 'incompleteExecutionId',
         annotations: {
             readOnlyHint: true,
@@ -106,7 +112,9 @@ export const tools = [
         description: 'Get execution details for an incomplete execution.',
         category: 'executions',
         scope: 'dlqs:read',
+        scopeId: 'incompleteExecutionId',
         identifier: 'incompleteExecutionId',
+        resourceId: 'executionId',
         annotations: {
             readOnlyHint: true,
         },

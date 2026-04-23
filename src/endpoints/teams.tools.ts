@@ -7,6 +7,7 @@ export const tools = [
         description: 'List teams for the current user.',
         category: 'teams',
         scope: 'teams:read',
+        scopeId: 'organizationId',
         identifier: 'organizationId',
         annotations: {
             readOnlyHint: true,
@@ -29,7 +30,9 @@ export const tools = [
         description: 'Get details of a specific team.',
         category: 'teams',
         scope: 'teams:read',
+        scopeId: 'teamId',
         identifier: 'teamId',
+        resourceId: 'teamId',
         annotations: {
             readOnlyHint: true,
         },
@@ -51,6 +54,7 @@ export const tools = [
         description: 'Create a new team.',
         category: 'teams',
         scope: 'teams:write',
+        scopeId: 'organizationId',
         identifier: 'organizationId',
         annotations: {
             idempotentHint: true,
@@ -83,7 +87,9 @@ export const tools = [
         description: 'Delete a team.',
         category: 'teams',
         scope: 'teams:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
+        resourceId: 'teamId',
         annotations: {
             destructiveHint: true,
         },

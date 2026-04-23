@@ -8,6 +8,7 @@ export const tools = [
         description: 'List webhooks/mailhooks for a specific team.',
         category: 'hooks',
         scope: 'hooks:read',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
@@ -30,7 +31,9 @@ export const tools = [
         description: 'Get details of a specific webhook/mailhook.',
         category: 'hooks',
         scope: 'hooks:read',
+        scopeId: 'hookId',
         identifier: 'hookId',
+        resourceId: 'hookId',
         annotations: {
             readOnlyHint: true,
         },
@@ -52,6 +55,7 @@ export const tools = [
         description: 'Create a new webhook/mailhook.',
         category: 'hooks',
         scope: 'hooks:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             idempotentHint: true,
@@ -89,7 +93,9 @@ export const tools = [
         description: 'Update an existing webhook/mailhook.',
         category: 'hooks',
         scope: 'hooks:write',
+        scopeId: 'hookId',
         identifier: 'hookId',
+        resourceId: 'hookId',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -114,7 +120,9 @@ export const tools = [
         description: 'Delete a webhook/mailhook.',
         category: 'hooks',
         scope: 'hooks:write',
+        scopeId: 'hookId',
         identifier: 'hookId',
+        resourceId: 'hookId',
         annotations: {
             destructiveHint: true,
         },
