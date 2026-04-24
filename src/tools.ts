@@ -60,10 +60,14 @@ export type JSONSchema = {
     minimum?: number;
     /** Maximum value for numbers */
     maximum?: number;
-    /** Minimum length for strings/arrays */
+    /** Minimum length for strings */
     minLength?: number;
-    /** Maximum length for strings/arrays */
+    /** Maximum length for strings */
     maxLength?: number;
+    /** Minimum number of items for arrays */
+    minItems?: number;
+    /** Maximum number of items for arrays */
+    maxItems?: number;
     /** Pattern for string validation */
     pattern?: string;
 };

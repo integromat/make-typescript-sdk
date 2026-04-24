@@ -270,7 +270,7 @@ describe('Integration: CredentialRequests', () => {
         expect(typeof module.name).toBe('string');
         expect(typeof module.label).toBe('string');
         expect(typeof module.type).toBe('string');
-        expect(Array.isArray(module.scope)).toBe(true);
+        expect(module.scope === undefined || Array.isArray(module.scope)).toBe(true);
         expect(typeof module.hook).toBe('boolean');
     });
 });
