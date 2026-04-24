@@ -8,6 +8,7 @@ export const tools = [
         description: 'List all keys for a team.',
         category: 'keys',
         scope: 'keys:read',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
@@ -30,7 +31,9 @@ export const tools = [
         description: 'Get details of a specific key.',
         category: 'keys',
         scope: 'keys:read',
+        scopeId: 'keyId',
         identifier: 'keyId',
+        resourceId: 'keyId',
         annotations: {
             readOnlyHint: true,
         },
@@ -52,6 +55,7 @@ export const tools = [
         description: 'Create a new key.',
         category: 'keys',
         scope: 'keys:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             idempotentHint: true,
@@ -88,7 +92,9 @@ export const tools = [
         description: 'Update an existing key.',
         category: 'keys',
         scope: 'keys:write',
+        scopeId: 'keyId',
         identifier: 'keyId',
+        resourceId: 'keyId',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -115,7 +121,9 @@ export const tools = [
         description: 'Delete a key.',
         category: 'keys',
         scope: 'keys:write',
+        scopeId: 'keyId',
         identifier: 'keyId',
+        resourceId: 'keyId',
         annotations: {
             destructiveHint: true,
         },

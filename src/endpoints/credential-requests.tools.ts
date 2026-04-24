@@ -8,6 +8,7 @@ export const tools = [
             'Retrieve a list of credential requests. Each request can contain multiple credentials (connections and API keys). Filter by team, user, provider, status, or name to find specific requests.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
@@ -52,7 +53,9 @@ export const tools = [
             'Use this to check the state of credentials within a request.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
+        scopeId: 'requestId',
         identifier: 'requestId',
+        resourceId: 'requestId',
         annotations: {
             readOnlyHint: true,
         },
@@ -76,7 +79,9 @@ export const tools = [
             'Any scenarios using connections from this request will lose access to the corresponding services. This action cannot be undone.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
+        scopeId: 'requestId',
         identifier: 'requestId',
+        resourceId: 'requestId',
         annotations: {
             destructiveHint: true,
         },
@@ -102,7 +107,9 @@ export const tools = [
             'This operation is idempotent - declining an already-declined credential has no additional effect.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
+        scopeId: 'credentialId',
         identifier: 'credentialId',
+        resourceId: 'credentialId',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -129,7 +136,9 @@ export const tools = [
             'After deletion, the credential can be authorized again through the normal flow.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
+        scopeId: 'credentialId',
         identifier: 'credentialId',
+        resourceId: 'credentialId',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -154,6 +163,7 @@ export const tools = [
             'This will return a URL where the user can authorize the credentials, so that they can be used in scenarios.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             idempotentHint: true,
@@ -247,6 +257,7 @@ export const tools = [
             'At least one connection or one key must be provided.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             idempotentHint: true,
@@ -401,7 +412,9 @@ export const tools = [
             'Fails if all requested scopes are already present on the connection.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
+        scopeId: 'connectionId',
         identifier: 'connectionId',
+        resourceId: 'connectionId',
         annotations: {
             idempotentHint: true,
             destructiveHint: false,

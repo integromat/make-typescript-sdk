@@ -11,7 +11,7 @@ make-sdk/
 ├── src/
 │   ├── endpoints/            # API endpoint implementations
 │   │   ├── *.ts              # Endpoints
-│   │   └── *.mcp.ts          # MCP Tools
+│   │   └── *.tools.ts        # Tool definitions (MCP / CLI / …)
 │   ├── index.ts              # Main entry point with all exports
 │   ├── make.ts               # Core Make client class
 │   ├── types.ts              # Common type definitions
@@ -518,13 +518,13 @@ export type ListEntityNamesOptions<C extends keyof EntityName = never> = {
 };
 ```
 
-## MCP (Model Context Protocol) Integration
+## Tool Definitions
 
-The Make TypeScript SDK supports MCP tool integration to provide AI agents with access to all SDK functionality. This section covers the patterns and conventions for creating MCP tool definitions.
+Every endpoint ships with a companion **tool definitions** file that describes its operations in a harness-agnostic shape. The same definitions power the MCP server (`@makehq/sdk/mcp`), the Make CLI, and any other integration that wants a uniform view of SDK operations — nothing here is specific to MCP. This section covers the patterns and conventions for creating those definitions.
 
-### MCP File Structure
+### Tool Definitions File Structure
 
-**File Location**: `src/endpoints/{endpoint-name}.mcp.ts` or `src/endpoints/sdk/{endpoint-name}.mcp.ts`
+**File Location**: `src/endpoints/{endpoint-name}.tools.ts` or `src/endpoints/sdk/{endpoint-name}.tools.ts`
 
 ```typescript
 import type { Make } from '../../make.js';
@@ -553,7 +553,7 @@ export const tools = [
 
 ### Import Patterns
 
-**Always use type imports** for MCP files since they only reference types:
+**Always use type imports** for tool definition files since they only reference types:
 
 ```typescript
 // ✅ Correct - Type imports only
@@ -724,11 +724,11 @@ export const tools = [
 ];
 ```
 
-### MCP Integration Checklist
+### Tool Definitions Checklist
 
-Before completing MCP tool definitions:
+Before completing tool definitions:
 
-- [ ] File uses `.mcp.ts` extension
+- [ ] File uses `.tools.ts` extension
 - [ ] Uses `type` imports only (no runtime imports)
 - [ ] All tools follow the exact naming convention
 - [ ] Categories are properly hierarchical
@@ -738,8 +738,9 @@ Before completing MCP tool definitions:
 - [ ] TypeScript types match the actual SDK method signatures
 - [ ] Descriptions are clear and helpful
 - [ ] All public SDK methods are covered
+- [ ] New file is registered in `src/tools.ts` (the aggregator consumed by both `./tools` and `./mcp` exports)
 
-### Common MCP Mistakes to Avoid
+### Common Tool Definition Mistakes to Avoid
 
 1. **Using runtime imports** - Always use `type` imports only
 2. **Incorrect parameter extraction** - Ensure body parameters are properly separated
@@ -748,8 +749,9 @@ Before completing MCP tool definitions:
 5. **Wrong categories** - Use kebab-case for all categories, including SDK (e.g., `sdk-apps`, not `sdk.apps`)
 6. **Missing descriptions** - Every parameter and tool needs clear documentation
 7. **Type mismatches** - Ensure TypeScript types match actual SDK signatures
-8. **Incomplete coverage** - All public methods should have corresponding MCP tools
+8. **Incomplete coverage** - All public methods should have corresponding tool definitions
+9. **Forgetting to register in `src/tools.ts`** - A new `*.tools.ts` file is only live once its `tools` array is spread into `MakeTools`
 
-This MCP integration ensures that AI agents can access the full Make SDK functionality through a standardized protocol interface while maintaining type safety and clear documentation.
+These tool definitions ensure that AI agents, CLIs, and other harnesses can access the full Make SDK functionality through a standardized shape while maintaining type safety and clear documentation.
 
 This guide ensures consistent, maintainable, and well-tested extensions to the Make TypeScript SDK.

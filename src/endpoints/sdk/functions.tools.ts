@@ -7,6 +7,7 @@ export const tools = [
         description: 'List functions for the app.',
         category: 'sdk-functions',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -30,6 +31,7 @@ export const tools = [
         description: 'Get a single function by name.',
         category: 'sdk-functions',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -54,6 +56,7 @@ export const tools = [
         description: 'Create a new function.',
         category: 'sdk-functions',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -80,6 +83,7 @@ export const tools = [
         description: 'Delete a function.',
         category: 'sdk-functions',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             destructiveHint: true,
@@ -105,6 +109,7 @@ export const tools = [
         description: 'Get function code.',
         category: 'sdk-functions',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -129,6 +134,7 @@ export const tools = [
         description: 'Set/update function code.',
         category: 'sdk-functions',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -166,6 +172,7 @@ export const tools = [
         description: 'Get function test code.',
         category: 'sdk-functions',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -190,6 +197,7 @@ export const tools = [
         description: 'Set/update function test code.',
         category: 'sdk-functions',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,

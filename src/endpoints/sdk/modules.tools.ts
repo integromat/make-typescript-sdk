@@ -7,6 +7,7 @@ export const tools = [
         description: 'List modules for the app with optional filtering.',
         category: 'sdk-modules',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -30,6 +31,7 @@ export const tools = [
         description: 'Get a single module by name.',
         category: 'sdk-modules',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -54,6 +56,7 @@ export const tools = [
         description: 'Create a new module.',
         category: 'sdk-modules',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -108,6 +111,7 @@ export const tools = [
         description: 'Update an existing module.',
         category: 'sdk-modules',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -147,6 +151,7 @@ export const tools = [
         description: 'Delete a module.',
         category: 'sdk-modules',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             destructiveHint: true,
@@ -172,6 +177,7 @@ export const tools = [
         description: 'Get a specific section of a module.',
         category: 'sdk-modules',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -209,6 +215,7 @@ export const tools = [
         description: 'Set/update a specific section of a module.',
         category: 'sdk-modules',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,

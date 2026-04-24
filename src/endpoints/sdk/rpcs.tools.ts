@@ -8,6 +8,7 @@ export const tools = [
         description: 'List all RPCs for the app.',
         category: 'sdk-rpcs',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -31,6 +32,7 @@ export const tools = [
         description: 'Get a single RPC by name.',
         category: 'sdk-rpcs',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -55,6 +57,7 @@ export const tools = [
         description: 'Create a new RPC.',
         category: 'sdk-rpcs',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -82,6 +85,7 @@ export const tools = [
         description: 'Update an existing RPC.',
         category: 'sdk-rpcs',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -121,6 +125,7 @@ export const tools = [
         description: 'Delete an RPC.',
         category: 'sdk-rpcs',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             destructiveHint: true,
@@ -146,6 +151,7 @@ export const tools = [
         description: 'Test an RPC with provided data and schema.',
         category: 'sdk-rpcs',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             destructiveHint: true,
@@ -206,6 +212,7 @@ export const tools = [
         description: 'Get RPC section data.',
         category: 'sdk-rpcs',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -243,6 +250,7 @@ export const tools = [
         description: 'Set RPC section data.',
         category: 'sdk-rpcs',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,

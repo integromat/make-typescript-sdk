@@ -7,6 +7,7 @@ export const tools = [
         description: 'List all incomplete executions.',
         category: 'incomplete-executions',
         scope: 'dlqs:read',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
         annotations: {
             readOnlyHint: true,
@@ -29,7 +30,9 @@ export const tools = [
         description: 'Get details of a specific incomplete execution.',
         category: 'incomplete-executions',
         scope: 'dlqs:read',
+        scopeId: 'incompleteExecutionId',
         identifier: 'incompleteExecutionId',
+        resourceId: 'incompleteExecutionId',
         annotations: {
             readOnlyHint: true,
         },

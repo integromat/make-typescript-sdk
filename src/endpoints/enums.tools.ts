@@ -7,6 +7,7 @@ export const tools = [
         description: 'List all available countries.',
         category: 'enums',
         scope: undefined,
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -26,6 +27,7 @@ export const tools = [
         description: 'List all available regions.',
         category: 'enums',
         scope: undefined,
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -45,6 +47,7 @@ export const tools = [
         description: 'List all available timezones.',
         category: 'enums',
         scope: undefined,
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
