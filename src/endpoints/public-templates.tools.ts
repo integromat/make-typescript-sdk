@@ -38,7 +38,9 @@ export const tools = [
             'Get details of a public template by its URL slug (e.g. "12289-add-webhook-data-to-a-google-sheet"). Use this for templates discovered via public-templates_list.',
         category: 'public-templates',
         scope: 'templates:read',
+        scopeId: 'templateUrl',
         identifier: 'templateUrl',
+        resourceId: 'templateUrl',
         annotations: {
             readOnlyHint: true,
         },
@@ -64,7 +66,9 @@ export const tools = [
             'Get the full blueprint of a public template including scenario flow, controller configuration, scheduling, and metadata. Use this for templates discovered via public-templates_list.',
         category: 'public-templates',
         scope: 'templates:read',
+        scopeId: 'templateUrl',
         identifier: 'templateUrl',
+        resourceId: 'templateUrl',
         annotations: {
             readOnlyHint: true,
         },

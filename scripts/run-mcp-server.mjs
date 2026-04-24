@@ -7,7 +7,7 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { Make } from '../dist/index.js';
-import { MakeMCPTools } from '../dist/mcp.js';
+import { MakeTools } from '../dist/tools.js';
 
 const server = new Server(
     {
@@ -34,7 +34,7 @@ const make = new Make(process.env.MAKE_API_KEY, process.env.MAKE_ZONE);
 
 server.setRequestHandler(ListToolsRequestSchema, async () => {
     return {
-        tools: MakeMCPTools.map(tool => {
+        tools: MakeTools.map(tool => {
             return {
                 name: tool.name,
                 title: tool.title,
@@ -46,7 +46,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 });
 
 server.setRequestHandler(CallToolRequestSchema, async request => {
-    const tool = MakeMCPTools.find(tool => tool.name === request.params.name);
+    const tool = MakeTools.find(tool => tool.name === request.params.name);
     if (!tool) {
         throw new Error(`Unknown tool: ${request.params.name}`);
     }

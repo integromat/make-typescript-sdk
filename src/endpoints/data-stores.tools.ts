@@ -7,6 +7,7 @@ export const tools = [
         description: 'List all data stores for a team.',
         category: 'data-stores',
         scope: 'datastores:read',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
@@ -29,7 +30,9 @@ export const tools = [
         description: 'Get data store details by ID.',
         category: 'data-stores',
         scope: 'datastores:read',
+        scopeId: 'dataStoreId',
         identifier: 'dataStoreId',
+        resourceId: 'dataStoreId',
         annotations: {
             readOnlyHint: true,
         },
@@ -51,6 +54,7 @@ export const tools = [
         description: 'Create a new data store.',
         category: 'data-stores',
         scope: 'datastores:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             idempotentHint: true,
@@ -83,7 +87,9 @@ export const tools = [
         description: 'Update a data store.',
         category: 'data-stores',
         scope: 'datastores:write',
+        scopeId: 'dataStoreId',
         identifier: 'dataStoreId',
+        resourceId: 'dataStoreId',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -113,7 +119,9 @@ export const tools = [
         description: 'Delete a data store.',
         category: 'data-stores',
         scope: 'datastores:write',
+        scopeId: 'dataStoreId',
         identifier: 'dataStoreId',
+        resourceId: 'dataStoreId',
         annotations: {
             destructiveHint: true,
         },

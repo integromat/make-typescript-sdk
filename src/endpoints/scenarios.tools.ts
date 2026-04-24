@@ -10,6 +10,7 @@ export const tools = [
         description: 'List all scenarios for a team.',
         category: 'scenarios',
         scope: 'scenarios:read',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
@@ -32,7 +33,9 @@ export const tools = [
         description: 'Get a scenario and its blueprint by ID.',
         category: 'scenarios',
         scope: 'scenarios:read',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
+        resourceId: 'scenarioId',
         annotations: {
             readOnlyHint: true,
         },
@@ -60,6 +63,7 @@ export const tools = [
         description: 'Create a new scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             idempotentHint: true,
@@ -109,7 +113,9 @@ export const tools = [
         description: 'Update a scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
+        resourceId: 'scenarioId',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -159,7 +165,9 @@ export const tools = [
         description: 'Delete a scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
+        resourceId: 'scenarioId',
         annotations: {
             destructiveHint: true,
         },
@@ -182,7 +190,9 @@ export const tools = [
         description: 'Activate a scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
+        resourceId: 'scenarioId',
         annotations: {
             idempotentHint: true,
             destructiveHint: false,
@@ -207,7 +217,9 @@ export const tools = [
         description: 'Deactivate a scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
+        resourceId: 'scenarioId',
         annotations: {
             idempotentHint: true,
             destructiveHint: false,
@@ -232,7 +244,9 @@ export const tools = [
         description: 'Execute a scenario with optional input data.',
         category: 'scenarios',
         scope: 'scenarios:run',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
+        resourceId: 'scenarioId',
         annotations: {
             destructiveHint: true,
         },
@@ -261,7 +275,9 @@ export const tools = [
         description: 'Get the interface for a scenario.',
         category: 'scenarios',
         scope: 'scenarios:read',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
+        resourceId: 'scenarioId',
         annotations: {
             readOnlyHint: true,
         },
@@ -283,7 +299,9 @@ export const tools = [
         description: 'Update the interface for a scenario.',
         category: 'scenarios',
         scope: 'scenarios:write',
+        scopeId: 'scenarioId',
         identifier: 'scenarioId',
+        resourceId: 'scenarioId',
         annotations: {
             idempotentHint: true,
             destructiveHint: false,

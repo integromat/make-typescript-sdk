@@ -7,6 +7,7 @@ export const tools = [
         description: 'List custom functions for a team.',
         category: 'functions',
         scope: 'functions:read',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
@@ -29,7 +30,9 @@ export const tools = [
         description: 'Get details of a specific custom function.',
         category: 'functions',
         scope: 'functions:read',
+        scopeId: 'functionId',
         identifier: 'functionId',
+        resourceId: 'functionId',
         annotations: {
             readOnlyHint: true,
         },
@@ -51,6 +54,7 @@ export const tools = [
         description: 'Create a new custom function.',
         category: 'functions',
         scope: 'functions:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             idempotentHint: true,
@@ -88,7 +92,9 @@ export const tools = [
         description: 'Update an existing custom function.',
         category: 'functions',
         scope: 'functions:write',
+        scopeId: 'functionId',
         identifier: 'functionId',
+        resourceId: 'functionId',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -124,7 +130,9 @@ export const tools = [
         description: 'Delete a custom function.',
         category: 'functions',
         scope: 'functions:write',
+        scopeId: 'functionId',
         identifier: 'functionId',
+        resourceId: 'functionId',
         annotations: {
             destructiveHint: true,
         },
@@ -147,6 +155,7 @@ export const tools = [
         description: 'Check the syntax of a function without saving it.',
         category: 'functions',
         scope: 'functions:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,

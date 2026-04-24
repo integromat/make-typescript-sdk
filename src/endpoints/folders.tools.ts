@@ -7,6 +7,7 @@ export const tools = [
         description: 'List folders for a team.',
         category: 'folders',
         scope: 'scenarios:read',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
@@ -29,6 +30,7 @@ export const tools = [
         description: 'Create a new folder.',
         category: 'folders',
         scope: 'scenarios:write',
+        scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
             idempotentHint: true,
@@ -53,7 +55,9 @@ export const tools = [
         description: 'Update an existing folder.',
         category: 'folders',
         scope: 'scenarios:write',
+        scopeId: 'folderId',
         identifier: 'folderId',
+        resourceId: 'folderId',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -78,7 +82,9 @@ export const tools = [
         description: 'Delete a folder.',
         category: 'folders',
         scope: 'scenarios:write',
+        scopeId: 'folderId',
         identifier: 'folderId',
+        resourceId: 'folderId',
         annotations: {
             destructiveHint: true,
         },

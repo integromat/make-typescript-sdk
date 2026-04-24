@@ -7,6 +7,7 @@ export const tools = [
         description: 'List organizations for the current user.',
         category: 'organizations',
         scope: 'organizations:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -26,7 +27,9 @@ export const tools = [
         description: 'Get details of a specific organization.',
         category: 'organizations',
         scope: 'organizations:read',
+        scopeId: 'organizationId',
         identifier: 'organizationId',
+        resourceId: 'organizationId',
         annotations: {
             readOnlyHint: true,
         },
@@ -48,6 +51,7 @@ export const tools = [
         description: 'Create a new organization.',
         category: 'organizations',
         scope: 'organizations:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -77,7 +81,9 @@ export const tools = [
         description: 'Update an existing organization.',
         category: 'organizations',
         scope: 'organizations:write',
+        scopeId: 'organizationId',
         identifier: 'organizationId',
+        resourceId: 'organizationId',
         annotations: {
             idempotentHint: true,
             destructiveHint: true,
@@ -112,7 +118,9 @@ export const tools = [
         description: 'Delete an organization.',
         category: 'organizations',
         scope: 'organizations:write',
+        scopeId: 'organizationId',
         identifier: 'organizationId',
+        resourceId: 'organizationId',
         annotations: {
             destructiveHint: true,
         },

@@ -7,6 +7,7 @@ export const tools = [
         description: 'List webhooks for a specific app.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -29,6 +30,7 @@ export const tools = [
         description: 'Get a single webhook by name.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -51,6 +53,7 @@ export const tools = [
         description: 'Create a new webhook for an app.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -77,6 +80,7 @@ export const tools = [
         description: 'Update an existing webhook.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
@@ -102,6 +106,7 @@ export const tools = [
         description: 'Delete a webhook.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             destructiveHint: true,
@@ -125,6 +130,7 @@ export const tools = [
         description: 'Get a specific section of a webhook.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:read',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
@@ -158,6 +164,7 @@ export const tools = [
         description: 'Set a specific section of a webhook.',
         category: 'sdk-webhooks',
         scope: 'sdk-apps:write',
+        scopeId: undefined,
         identifier: undefined,
         annotations: {
             idempotentHint: true,
