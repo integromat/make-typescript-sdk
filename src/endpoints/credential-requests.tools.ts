@@ -465,6 +465,7 @@ export const tools = [
             'For custom/SDK apps, prefix the app name with `app#` (e.g. `app#my-custom-app`).',
         category: 'credential-requests',
         scope: 'apps:read',
+        scopeId: 'appName',
         identifier: 'appName',
         annotations: {
             readOnlyHint: true,
