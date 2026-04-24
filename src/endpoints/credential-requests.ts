@@ -227,8 +227,11 @@ export type AppModuleWithCredentials = {
      * Multiple types may be comma-separated (e.g. `account:slack2,slack3`).
      */
     type: string;
-    /** OAuth scopes required by this module */
-    scope: string[];
+    /**
+     * OAuth scopes required by this module.
+     * Omitted by the API for non-OAuth credential types (e.g. keychain-based auth).
+     */
+    scope?: string[];
     /** Whether this module is a hook-based trigger */
     hook: boolean;
 };
