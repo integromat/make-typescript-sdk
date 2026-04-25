@@ -1,7 +1,8 @@
 import type { Make } from '../make.js';
 import type { DataStructureField } from './data-structures.js';
+import type { MakeTool } from '../tools.js';
 
-export const tools = [
+export const tools: MakeTool[] = [
     {
         name: 'data-structures_list',
         title: 'List data structures',

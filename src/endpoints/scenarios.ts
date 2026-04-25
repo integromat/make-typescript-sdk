@@ -58,7 +58,7 @@ export type Scenario = {
     /** Data transfer consumed in the current period */
     transfer: number;
     /** Custom properties defined for the scenario */
-    customProperties?: Record<string, unknown>;
+    customProperties?: Record<string, JSONValue>;
 };
 
 export type Scheduling = {
@@ -168,7 +168,7 @@ export type RunScenarioResponse = {
     /** Status of the scenario execution when run in responsive mode (1 = successful, 2 = successful with warnings, 3 = failed) */
     status?: 1 | 2 | 3;
     /** Output data from the scenario execution (when run in responsive mode) */
-    outputs: unknown;
+    outputs?: JSONValue;
 };
 
 /**

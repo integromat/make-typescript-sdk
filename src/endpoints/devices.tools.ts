@@ -1,6 +1,7 @@
 import type { Make } from '../make.js';
+import type { MakeTool } from '../tools.js';
 
-export const tools = [
+export const tools: MakeTool[] = [
     {
         name: 'devices_list',
         title: 'List devices',

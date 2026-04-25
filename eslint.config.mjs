@@ -33,7 +33,7 @@ export default tseslint.config(
     },
     {
         // enable jest rules on test files
-        files: ['**/*.test.ts'],
+        files: ['**/*.test.ts', '**/*.spec.ts'],
         extends: [jestPlugin.configs['flat/recommended']],
         rules: {
             'jest/no-standalone-expect': ['error', { additionalTestBlockFunctions: ['itif'] }],

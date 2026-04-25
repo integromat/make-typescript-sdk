@@ -39,6 +39,8 @@ export type JSONSchema = {
     type?: 'object' | 'string' | 'number' | 'boolean' | 'array' | 'null';
     /** Properties definition for object types */
     properties?: Record<string, JSONSchema>;
+    /** Schemas for properties whose names match a regex pattern (object types) */
+    patternProperties?: Record<string, JSONSchema>;
     /** Required property names for object types */
     required?: string[];
     /** Items schema for array types */
@@ -177,7 +179,7 @@ export type MakeTool = {
      * @param args The input arguments matching the inputSchema
      * @returns Promise resolving to the operation result
      */
-    execute: (make: Make, args?: Record<string, JSONValue>) => Promise<JSONValue>;
+    execute(make: Make, args: Record<string, JSONValue>): Promise<JSONValue>;
 };
 
 /**
