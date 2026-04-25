@@ -1,6 +1,7 @@
 import type { Make } from '../make.js';
+import type { MakeTool } from '../tools.js';
 
-export const tools = [
+export const tools: MakeTool[] = [
     {
         name: 'credential-requests_list',
         title: 'List credential requests',
@@ -19,7 +20,7 @@ export const tools = [
                 teamId: { type: 'number', description: 'Filter by team ID' },
                 userId: { type: 'number', description: 'Filter by user ID' },
                 makeProviderId: {
-                    type: ['string', 'number'],
+                    oneOf: [{ type: 'string' }, { type: 'number' }],
                     description: 'Filter by Make provider ID',
                 },
                 status: { type: 'string', description: 'Filter by status' },
@@ -465,8 +466,9 @@ export const tools = [
             'For custom/SDK apps, prefix the app name with `app#` (e.g. `app#my-custom-app`).',
         category: 'credential-requests',
         scope: 'apps:read',
-        scopeId: 'appName',
-        identifier: 'appName',
+        scopeId: undefined,
+        identifier: undefined,
+        resourceId: 'appName',
         annotations: {
             readOnlyHint: true,
         },

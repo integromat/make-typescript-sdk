@@ -8,6 +8,8 @@ export const tools = [
             'Search and list public (approved) templates available for anyone. Supports name-based search for template discovery. Results are sorted by usage by default.',
         category: 'public-templates',
         scope: 'templates:read',
+        scopeId: undefined,
+        identifier: undefined,
         annotations: {
             readOnlyHint: true,
         },
@@ -38,8 +40,8 @@ export const tools = [
             'Get details of a public template by its URL slug (e.g. "12289-add-webhook-data-to-a-google-sheet"). Use this for templates discovered via public-templates_list.',
         category: 'public-templates',
         scope: 'templates:read',
-        scopeId: 'templateUrl',
-        identifier: 'templateUrl',
+        scopeId: undefined,
+        identifier: undefined,
         resourceId: 'templateUrl',
         annotations: {
             readOnlyHint: true,
@@ -67,8 +69,8 @@ export const tools = [
             'Get the full blueprint of a public template including scenario flow, controller configuration, scheduling, and metadata. Use this for templates discovered via public-templates_list.',
         category: 'public-templates',
         scope: 'templates:read',
-        scopeId: 'templateUrl',
-        identifier: 'templateUrl',
+        scopeId: undefined,
+        identifier: undefined,
         resourceId: 'templateUrl',
         annotations: {
             readOnlyHint: true,

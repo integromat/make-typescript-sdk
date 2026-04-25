@@ -32,7 +32,7 @@ export type SDKApp = {
     /** The manifest version */
     manifestVersion: number;
     /** Stack of changes made to the app */
-    changes?: unknown[];
+    changes?: Record<string, JSONValue>[];
 };
 
 /**

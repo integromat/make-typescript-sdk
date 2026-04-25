@@ -1,4 +1,4 @@
-import type { FetchFunction, Pagination, PickColumns } from '../types.js';
+import type { FetchFunction, JSONValue, Pagination, PickColumns } from '../types.js';
 
 /**
  * Represents an organization in Make.
@@ -131,7 +131,7 @@ export type Organization = {
     /** Unused transfer */
     unusedTransfer: string;
     /** Organization features */
-    features: Record<string, unknown>;
+    features: Record<string, JSONValue>;
     /** External ID for white label instances */
     externalId: string;
     /** Number of active apps */

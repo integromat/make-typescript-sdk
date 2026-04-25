@@ -1,7 +1,8 @@
 import type { Make } from '../../make.js';
 import type { JSONValue } from '../../types.js';
+import type { MakeTool } from '../../tools.js';
 
-export const tools = [
+export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_list',
         title: 'List SDK apps',

@@ -37,12 +37,12 @@ describe('MCP Tools', () => {
             expect(tool.title.length).toBeGreaterThan(0);
             expect(tool.description.length).toBeGreaterThan(0);
             expect(tool.category.length).toBeGreaterThan(0);
+        });
 
-            // Scope is optional, but if present should be a string
-            if (tool.scope !== undefined) {
-                expect(typeof tool.scope).toBe('string');
-                expect(tool.scope.length).toBeGreaterThan(0);
-            }
+        // Scope is optional, but if present should be a non-empty string
+        MakeTools.filter(tool => tool.scope !== undefined).forEach(tool => {
+            expect(typeof tool.scope).toBe('string');
+            expect(tool.scope!.length).toBeGreaterThan(0);
         });
     });
 
@@ -64,7 +64,7 @@ describe('MCP Tools', () => {
                 seen.add(name);
             });
 
-            fail(`Duplicate tool names found: ${duplicates.join(', ')}`);
+            throw new Error(`Duplicate tool names found: ${duplicates.join(', ')}`);
         }
     });
 
@@ -103,11 +103,11 @@ describe('MCP Tools', () => {
             // Categories should use dot notation for hierarchy
             const categoryPattern = /^[a-z][a-z.-]*[a-z]$/;
             expect(tool.category).toMatch(categoryPattern);
+        });
 
-            // SDK categories should start with "sdk."
-            if (tool.name.startsWith('sdk_')) {
-                expect(tool.category).toMatch(/^sdk\./);
-            }
+        // SDK categories should start with "sdk."
+        MakeTools.filter(tool => tool.name.startsWith('sdk_')).forEach(tool => {
+            expect(tool.category).toMatch(/^sdk\./);
         });
     });
 

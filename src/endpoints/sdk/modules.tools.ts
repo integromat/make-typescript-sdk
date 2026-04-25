@@ -1,6 +1,7 @@
 import type { Make } from '../../make.js';
+import type { MakeTool } from '../../tools.js';
 
-export const tools = [
+export const tools: MakeTool[] = [
     {
         name: 'sdk-modules_list',
         title: 'List SDK modules',

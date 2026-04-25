@@ -1,7 +1,8 @@
 import type { Make } from '../make.js';
 import type { JSONValue } from '../types.js';
+import type { MakeTool } from '../tools.js';
 
-export const tools = [
+export const tools: MakeTool[] = [
     {
         name: 'keys_list',
         title: 'List keys',
