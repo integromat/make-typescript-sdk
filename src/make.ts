@@ -168,7 +168,7 @@ export class Make {
      * Access to public template endpoints.
      * Public templates are approved, read-only scenario configurations discoverable and usable by any Make user.
      */
-    public readonly templates: PublicTemplates;
+    public readonly publicTemplates: PublicTemplates;
 
     /**
      * Access to SDK-related endpoints
@@ -255,7 +255,7 @@ export class Make {
         this.organizations = new Organizations(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
         this.credentialRequests = new CredentialRequests(this.fetch.bind(this));
-        this.templates = new PublicTemplates(this.fetch.bind(this));
+        this.publicTemplates = new PublicTemplates(this.fetch.bind(this));
         this.sdk = {
             apps: new SDKApps(this.fetch.bind(this)),
             modules: new SDKModules(this.fetch.bind(this)),

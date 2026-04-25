@@ -63,7 +63,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Organizations** - Top-level account and billing management
 - **Scenarios** - Scenario management
 - **Teams** - Team management and collaboration
-- **Templates** - Public template discovery and blueprint export (read-only)
+- **Public Templates** - Public template discovery and blueprint export (read-only)
 - **Users** - Current user information and authentication
 
 ## Custom Apps Development Endpoints
