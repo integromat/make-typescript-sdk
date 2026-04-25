@@ -11,6 +11,7 @@ import * as deleteRemoteMock from './mocks/credential-requests/delete-remote.jso
 import * as createActionMock from './mocks/credential-requests/create-action.json';
 import * as createByCredentialsMock from './mocks/credential-requests/create-by-credentials.json';
 import * as extendConnectionMock from './mocks/credential-requests/extend-connection.json';
+import * as listAppModulesWithCredentialsMock from './mocks/credential-requests/list-app-modules-with-credentials.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -265,5 +266,38 @@ describe('Endpoints: CredentialRequests', () => {
             request: extendConnectionMock.request,
             publicUri: extendConnectionMock.publicUri,
         });
+    });
+
+    it('Should list app modules with credentials by numeric version', async () => {
+        mockFetch(
+            'GET https://make.local/api/v2/credential-requests/apps/slack/4/modules-with-credentials',
+            listAppModulesWithCredentialsMock,
+        );
+
+        const result = await make.credentialRequests.listAppModulesWithCredentials('slack', 4);
+
+        expect(result).toStrictEqual(listAppModulesWithCredentialsMock.appModules);
+    });
+
+    it('Should list app modules with credentials by latest version', async () => {
+        mockFetch(
+            'GET https://make.local/api/v2/credential-requests/apps/slack/latest/modules-with-credentials',
+            listAppModulesWithCredentialsMock,
+        );
+
+        const result = await make.credentialRequests.listAppModulesWithCredentials('slack', 'latest');
+
+        expect(result).toStrictEqual(listAppModulesWithCredentialsMock.appModules);
+    });
+
+    it('Should list app modules with credentials for SDK apps (app# prefix URL-encoded)', async () => {
+        mockFetch(
+            'GET https://make.local/api/v2/credential-requests/apps/app%23my-custom-app/1/modules-with-credentials',
+            listAppModulesWithCredentialsMock,
+        );
+
+        const result = await make.credentialRequests.listAppModulesWithCredentials('app#my-custom-app', 1);
+
+        expect(result).toStrictEqual(listAppModulesWithCredentialsMock.appModules);
     });
 });

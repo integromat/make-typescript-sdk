@@ -456,4 +456,41 @@ export const tools = [
             return await make.credentialRequests.extendConnection(args);
         },
     },
+    {
+        name: 'credential-requests_list-app-modules-with-credentials',
+        title: 'List app modules with credentials',
+        description:
+            'List all modules of a given Make app (and version) that require credentials, along with the required credential type and OAuth scopes. ' +
+            'Use this to discover which modules exist for an app before constructing a credential request — the returned `id` values are what you pass in `credentials[].appModules` for `credential-requests_create`. ' +
+            'For custom/SDK apps, prefix the app name with `app#` (e.g. `app#my-custom-app`).',
+        category: 'credential-requests',
+        scope: 'apps:read',
+        scopeId: 'appName',
+        identifier: 'appName',
+        annotations: {
+            readOnlyHint: true,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                appName: {
+                    type: 'string',
+                    description:
+                        'App name (e.g. `slack`). For custom/SDK apps, prefix with `app#` (e.g. `app#my-custom-app`).',
+                },
+                appVersion: {
+                    oneOf: [{ type: 'number' }, { type: 'string', const: 'latest' }],
+                    description: 'App major version number (e.g. `4`), or the literal string `"latest"`.',
+                },
+            },
+            required: ['appName', 'appVersion'],
+        },
+        examples: [
+            { appName: 'slack', appVersion: 4 },
+            { appName: 'slack', appVersion: 'latest' },
+        ],
+        execute: async (make: Make, args: { appName: string; appVersion: number | 'latest' }) => {
+            return await make.credentialRequests.listAppModulesWithCredentials(args.appName, args.appVersion);
+        },
+    },
 ];

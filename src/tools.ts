@@ -31,8 +31,12 @@ import { tools as PublicTemplatesTools } from './endpoints/public-templates.tool
  * JSON Schema definition for input parameters.
  */
 export type JSONSchema = {
-    /** The type of the schema (object, string, number, boolean, array, etc.) */
-    type: 'object' | 'string' | 'number' | 'boolean' | 'array' | 'null';
+    /**
+     * The type of the schema (object, string, number, boolean, array, etc.).
+     * Optional when the schema is expressed purely through composition
+     * (`oneOf`/`anyOf`/`allOf`) or a `const` value.
+     */
+    type?: 'object' | 'string' | 'number' | 'boolean' | 'array' | 'null';
     /** Properties definition for object types */
     properties?: Record<string, JSONSchema>;
     /** Required property names for object types */
@@ -43,16 +47,28 @@ export type JSONSchema = {
     description?: string;
     /** Enum values for restricted choices */
     enum?: JSONValue[];
+    /** Constant literal value the schema must equal */
+    const?: JSONValue;
+    /** Value must match exactly one of these schemas */
+    oneOf?: JSONSchema[];
+    /** Value must match at least one of these schemas */
+    anyOf?: JSONSchema[];
+    /** Value must match all of these schemas */
+    allOf?: JSONSchema[];
     /** Default value */
     default?: JSONValue;
     /** Minimum value for numbers */
     minimum?: number;
     /** Maximum value for numbers */
     maximum?: number;
-    /** Minimum length for strings/arrays */
+    /** Minimum length for strings */
     minLength?: number;
-    /** Maximum length for strings/arrays */
+    /** Maximum length for strings */
     maxLength?: number;
+    /** Minimum number of items for arrays */
+    minItems?: number;
+    /** Maximum number of items for arrays */
+    maxItems?: number;
     /** Pattern for string validation */
     pattern?: string;
 };

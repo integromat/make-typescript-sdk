@@ -207,6 +207,36 @@ export type ExtendConnectionBody = {
 };
 
 /**
+ * Module of an app that requires credentials, as returned by
+ * {@link CredentialRequests.listAppModulesWithCredentials}.
+ */
+export type AppModuleWithCredentials = {
+    /**
+     * Unique identifier for the module credential configuration.
+     * For modules with a single credential this matches the module `name`;
+     * for modules with multiple credentials it is suffixed (e.g. `moduleName:paramName`).
+     */
+    id: string;
+    /** Technical module name */
+    name: string;
+    /** Human-readable module label */
+    label: string;
+    /**
+     * Credential type required by the module.
+     * Typically `account:<app-name>` or `keychain:<app-name>`.
+     * Multiple types may be comma-separated (e.g. `account:slack2,slack3`).
+     */
+    type: string;
+    /**
+     * OAuth scopes required by this module.
+     * Omitted by the API for non-OAuth credential types (e.g. keychain-based auth).
+     */
+    scope?: string[];
+    /** Whether this module is a hook-based trigger */
+    hook: boolean;
+};
+
+/**
  * Class providing methods for working with credential requests
  */
 export class CredentialRequests {
@@ -367,6 +397,26 @@ export class CredentialRequests {
                 body,
             },
         );
+    }
+
+    /**
+     * List all modules of an app that require credentials, along with the required
+     * credential type and OAuth scopes. Useful for populating
+     * {@link CredentialSelection.appModules} when creating a credential request.
+     *
+     * For SDK/custom apps, prefix `appName` with `app#` — the SDK URL-encodes it.
+     *
+     * @param appName - The app name (e.g. `slack`, or `app#my-custom-app` for SDK apps).
+     * @param appVersion - App major version number, or `'latest'` for the most recent version.
+     */
+    async listAppModulesWithCredentials(
+        appName: string,
+        appVersion: number | 'latest',
+    ): Promise<AppModuleWithCredentials[]> {
+        const response = await this.#fetch<{ appModules: AppModuleWithCredentials[] }>(
+            `/credential-requests/apps/${encodeURIComponent(appName)}/${appVersion}/modules-with-credentials`,
+        );
+        return response.appModules;
     }
 }
 
