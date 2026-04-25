@@ -261,7 +261,7 @@ describe('Integration: CredentialRequests', () => {
     });
 
     it('Should list app modules with credentials for a public app', async () => {
-        const modules = await make.credentialRequests.listAppModulesWithCredentials('google-email', 'latest');
+        const modules = await make.credentialRequests.listAppModulesWithCredentials('google-email', 4);
         expect(Array.isArray(modules)).toBe(true);
         expect(modules.length).toBeGreaterThan(0);
 
