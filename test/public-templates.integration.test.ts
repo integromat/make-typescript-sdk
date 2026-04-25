@@ -37,16 +37,22 @@ describe('Integration: PublicTemplates', () => {
     it('Should get a public template by URL slug', async () => {
         const [first] = await make.templates.list({ name: 'http' });
         expect(first).toBeDefined();
-        const template = await make.templates.get(first!.url);
+        if (!first) {
+            throw new Error('Expected at least one public template matching "http"');
+        }
+        const template = await make.templates.get(first.url);
 
-        expect(template.id).toBe(first!.id);
-        expect(template.url).toBe(first!.url);
+        expect(template.id).toBe(first.id);
+        expect(template.url).toBe(first.url);
     });
 
     it('Should get a public template blueprint by URL slug', async () => {
         const [first] = await make.templates.list({ name: 'http' });
         expect(first).toBeDefined();
-        const blueprint = await make.templates.getBlueprint(first!.url);
+        if (!first) {
+            throw new Error('Expected at least one public template matching "http"');
+        }
+        const blueprint = await make.templates.getBlueprint(first.url);
 
         expect(blueprint).toHaveProperty('blueprint');
         expect(blueprint).toHaveProperty('scheduling');
