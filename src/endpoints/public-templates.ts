@@ -115,10 +115,10 @@ export class PublicTemplates {
      * @example
      * ```typescript
      * // Search public templates by name
-     * const templates = await make.templates.list({ name: 'webhook' });
+     * const templates = await make.publicTemplates.list({ name: 'webhook' });
      *
      * // Filter by apps used
-     * const gmailTemplates = await make.templates.list({ usedApps: ['gmail'] });
+     * const gmailTemplates = await make.publicTemplates.list({ usedApps: ['gmail'] });
      * ```
      */
     async list<C extends keyof PublicTemplate = never>(
@@ -146,7 +146,7 @@ export class PublicTemplates {
      *
      * @example
      * ```typescript
-     * const template = await make.templates.get('12289-add-webhook-data-to-a-google-sheet');
+     * const template = await make.publicTemplates.get('12289-add-webhook-data-to-a-google-sheet');
      * ```
      */
     async get<C extends keyof PublicTemplate = never>(
@@ -171,7 +171,7 @@ export class PublicTemplates {
      *
      * @example
      * ```typescript
-     * const blueprint = await make.templates.getBlueprint('12289-add-webhook-data-to-a-google-sheet');
+     * const blueprint = await make.publicTemplates.getBlueprint('12289-add-webhook-data-to-a-google-sheet');
      * ```
      */
     async getBlueprint(templateUrl: string): Promise<PublicTemplateBlueprint> {

@@ -28,7 +28,7 @@ export const tools = [
         },
         examples: [{ name: 'webhook' }],
         execute: async (make: Make, args?: { name?: string; usedApps?: string[]; includeEn?: boolean }) => {
-            return await make.templates.list({ ...(args ?? {}), cols: ['*'] });
+            return await make.publicTemplates.list({ ...(args ?? {}), cols: ['*'] });
         },
     },
     {
@@ -49,14 +49,15 @@ export const tools = [
             properties: {
                 templateUrl: {
                     type: 'string',
-                    description: 'The URL slug of the public template (e.g. "12289-add-webhook-data-to-a-google-sheet")',
+                    description:
+                        'The URL slug of the public template (e.g. "12289-add-webhook-data-to-a-google-sheet")',
                 },
             },
             required: ['templateUrl'],
         },
         examples: [{ templateUrl: '12289-add-webhook-data-to-a-google-sheet' }],
         execute: async (make: Make, args: { templateUrl: string }) => {
-            return await make.templates.get(args.templateUrl, { cols: ['*'] });
+            return await make.publicTemplates.get(args.templateUrl, { cols: ['*'] });
         },
     },
     {
@@ -77,14 +78,15 @@ export const tools = [
             properties: {
                 templateUrl: {
                     type: 'string',
-                    description: 'The URL slug of the public template (e.g. "12289-add-webhook-data-to-a-google-sheet")',
+                    description:
+                        'The URL slug of the public template (e.g. "12289-add-webhook-data-to-a-google-sheet")',
                 },
             },
             required: ['templateUrl'],
         },
         examples: [{ templateUrl: '12289-add-webhook-data-to-a-google-sheet' }],
         execute: async (make: Make, args: { templateUrl: string }) => {
-            return await make.templates.getBlueprint(args.templateUrl);
+            return await make.publicTemplates.getBlueprint(args.templateUrl);
         },
     },
 ];

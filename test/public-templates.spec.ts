@@ -14,7 +14,7 @@ describe('Endpoints: PublicTemplates', () => {
 
     it('Should list public templates with name search', async () => {
         mockFetch('GET https://make.local/api/v2/templates/public?name=Http', listMock);
-        const result = await make.templates.list({ name: 'Http' });
+        const result = await make.publicTemplates.list({ name: 'Http' });
         expect(result).toStrictEqual(listMock.templatesPublic);
     });
 
@@ -23,22 +23,19 @@ describe('Endpoints: PublicTemplates', () => {
             'GET https://make.local/api/v2/templates/public?usedApps%5B%5D=gmail&usedApps%5B%5D=http&includeEn=true',
             listMock,
         );
-        const result = await make.templates.list({ usedApps: ['gmail', 'http'], includeEn: true });
+        const result = await make.publicTemplates.list({ usedApps: ['gmail', 'http'], includeEn: true });
         expect(result).toStrictEqual(listMock.templatesPublic);
     });
 
     it('Should get public template by URL slug', async () => {
         mockFetch('GET https://make.local/api/v2/templates/public/13-http-template-example', getMock);
-        const result = await make.templates.get('13-http-template-example');
+        const result = await make.publicTemplates.get('13-http-template-example');
         expect(result).toStrictEqual(getMock.templatePublic);
     });
 
     it('Should get public template blueprint by URL slug', async () => {
-        mockFetch(
-            'GET https://make.local/api/v2/templates/public/13-http-template-example/blueprint',
-            blueprintMock,
-        );
-        const result = await make.templates.getBlueprint('13-http-template-example');
+        mockFetch('GET https://make.local/api/v2/templates/public/13-http-template-example/blueprint', blueprintMock);
+        const result = await make.publicTemplates.getBlueprint('13-http-template-example');
         expect(result).toStrictEqual(blueprintMock);
     });
 });
