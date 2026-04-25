@@ -25,6 +25,7 @@ import { tools as FoldersTools } from './endpoints/folders.tools.js';
 import { tools as IncompleteExecutionsTools } from './endpoints/incomplete-executions.tools.js';
 import { tools as DataStructuresTools } from './endpoints/data-structures.tools.js';
 import { tools as EnumsTools } from './endpoints/enums.tools.js';
+import { tools as PublicTemplatesTools } from './endpoints/public-templates.tools.js';
 
 /**
  * JSON Schema definition for input parameters.
@@ -212,4 +213,5 @@ export const MakeTools = [
     ...OrganizationsTools,
     ...UsersTools,
     ...EnumsTools,
+    ...PublicTemplatesTools,
 ] as MakeTool[];

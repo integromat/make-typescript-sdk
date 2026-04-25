@@ -1,0 +1,34 @@
+{
+    "blueprint": {
+        "name": "Http template example",
+        "flow": [
+            {
+                "id": 1,
+                "module": "http:ActionSendData",
+                "version": 3,
+                "parameters": {},
+                "mapper": {
+                    "url": "https://example.com",
+                    "method": "get"
+                },
+                "metadata": {
+                    "expect": []
+                }
+            }
+        ],
+        "metadata": {
+            "version": 1
+        }
+    },
+    "controller": {
+        "name": "Http template example",
+        "modules": {},
+        "idSequence": 2
+    },
+    "scheduling": {
+        "type": "indefinitely",
+        "interval": 900
+    },
+    "language": "en",
+    "metadata": null
+}

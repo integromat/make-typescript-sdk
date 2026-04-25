@@ -1,0 +1,26 @@
+{
+    "templatesPublic": [
+        {
+            "id": 13,
+            "name": "Http template example",
+            "description": null,
+            "url": "13-http-template-example",
+            "usedApps": ["http"],
+            "usage": 321
+        },
+        {
+            "id": 17,
+            "name": "Webhook to Email",
+            "description": "Send email when webhook is triggered",
+            "url": "17-webhook-to-email",
+            "usedApps": ["gateway", "gmail"],
+            "usage": 52
+        }
+    ],
+    "pg": {
+        "sortBy": "usage",
+        "limit": 100,
+        "sortDir": "desc",
+        "offset": 0
+    }
+}
