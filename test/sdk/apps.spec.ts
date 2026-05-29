@@ -148,6 +148,8 @@ describe('Endpoints: SDK > Apps', () => {
     it('Should upload app icon as raw PNG data', async () => {
         const iconData = new Uint8Array([137, 80, 78, 71]);
         mockFetch('PUT https://make.local/api/v2/sdk/apps/test-app/1/icon', null, req => {
+            expect(req.body).toBeInstanceOf(ArrayBuffer);
+            expect([...new Uint8Array(req.body as ArrayBuffer)]).toStrictEqual([...iconData]);
             expect(req.headers.get('content-type')).toBe('image/png');
             expect(req.headers.get('imt-apps-sdk-version')).toBe('2.5.0');
         });
