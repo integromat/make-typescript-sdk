@@ -137,6 +137,16 @@ type UpdateSDKAppResponse = {
     app: Pick<SDKApp, 'name' | 'label' | 'description' | 'version' | 'theme' | 'public' | 'approved'>;
 };
 
+export type SDKAppVisibilityResponse = {
+    app?: SDKApp;
+    changed?: boolean;
+};
+
+type IconUploadResponse = {
+    success?: boolean;
+    changed?: boolean;
+};
+
 /**
  * Class providing methods for working with Apps
  */
@@ -264,5 +274,59 @@ export class SDKApps {
             body: common,
         });
         return response.changed;
+    }
+
+    /**
+     * Upload an app icon. Use PNG icon data for Make app icons.
+     */
+    async setIcon(
+        name: string,
+        version: number,
+        iconData: Uint8Array | ArrayBuffer,
+        options: { contentType?: string; sdkVersion?: string } = {},
+    ): Promise<boolean> {
+        const response = await this.#fetch<IconUploadResponse | string>(`/sdk/apps/${name}/${version}/icon`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': options.contentType ?? 'image/png',
+                'imt-apps-sdk-version': options.sdkVersion ?? '2.5.0',
+            },
+            body: iconData,
+        });
+
+        if (response && typeof response === 'object') {
+            return response.success ?? response.changed ?? true;
+        }
+        return true;
+    }
+
+    /**
+     * Download an app icon at a given rendered size.
+     */
+    async getIcon(name: string, version: number, size = 512, options: { sdkVersion?: string } = {}): Promise<ArrayBuffer> {
+        return await this.#fetch<ArrayBuffer>(`/sdk/apps/${name}/${version}/icon/${size}`, {
+            headers: {
+                'imt-apps-sdk-version': options.sdkVersion ?? '2.5.0',
+            },
+            responseType: 'arrayBuffer',
+        });
+    }
+
+    /**
+     * Make app private.
+     */
+    async makePrivate(name: string, version: number): Promise<SDKAppVisibilityResponse> {
+        return await this.#fetch<SDKAppVisibilityResponse>(`/sdk/apps/${name}/${version}/private`, {
+            method: 'POST',
+        });
+    }
+
+    /**
+     * Make app public.
+     */
+    async makePublic(name: string, version: number): Promise<SDKAppVisibilityResponse> {
+        return await this.#fetch<SDKAppVisibilityResponse>(`/sdk/apps/${name}/${version}/public`, {
+            method: 'POST',
+        });
     }
 }

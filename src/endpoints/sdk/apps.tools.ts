@@ -1,6 +1,43 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { basename } from 'node:path';
 import type { Make } from '../../make.js';
 import type { JSONValue } from '../../types.js';
 import type { MakeTool } from '../../tools.js';
+
+type PngInfo = {
+    width: number;
+    height: number;
+};
+
+const PNG_SIGNATURE = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+
+export function readPngInfo(buffer: Buffer): PngInfo {
+    if (buffer.length < 24 || !buffer.subarray(0, 8).equals(PNG_SIGNATURE)) {
+        throw new Error('Icon file must be a PNG image.');
+    }
+
+    const ihdrType = buffer.subarray(12, 16).toString('ascii');
+    if (ihdrType !== 'IHDR') {
+        throw new Error('Icon file is not a valid PNG image: missing IHDR chunk.');
+    }
+
+    return {
+        width: buffer.readUInt32BE(16),
+        height: buffer.readUInt32BE(20),
+    };
+}
+
+function visibilityResult(scope: 'app', name: string, version: number, visibility: 'public' | 'private', response: JSONValue) {
+    return {
+        changed: true,
+        scope,
+        appName: name,
+        version,
+        visibility,
+        public: visibility === 'public',
+        response,
+    };
+}
 
 export const tools: MakeTool[] = [
     {
@@ -321,6 +358,155 @@ export const tools: MakeTool[] = [
         examples: [{ name: 'my-app', version: 1 }],
         execute: async (make: Make, args: { name: string; version: number }) => {
             return await make.sdk.apps.getCommon(args.name, args.version);
+        },
+    },
+    {
+        name: 'sdk-apps_set-icon',
+        title: 'Set SDK app icon',
+        description: 'Upload a PNG icon for a SDK app.',
+        category: 'sdk-apps',
+        scope: 'sdk-apps:write',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                name: { type: 'string', description: 'The name of the app' },
+                version: { type: 'number', description: 'The version of the app' },
+                file: { type: 'string', description: 'Path to the PNG icon file to upload' },
+                allowNon512: { type: 'boolean', description: 'Allow PNG icons that are not 512x512', default: false },
+                sdkVersion: { type: 'string', description: 'Apps SDK version header', default: '2.5.0' },
+            },
+            required: ['name', 'version', 'file'],
+        },
+        examples: [{ name: 'my-app', version: 1, file: './assets/icon.png' }],
+        execute: async (
+            make: Make,
+            args: { name: string; version: number; file: string; allowNon512?: boolean; sdkVersion?: string },
+        ) => {
+            const icon = await readFile(args.file);
+            const pngInfo = readPngInfo(icon);
+            if (!args.allowNon512 && (pngInfo.width !== 512 || pngInfo.height !== 512)) {
+                throw new Error(
+                    `Icon must be 512x512 PNG. Got ${pngInfo.width}x${pngInfo.height}. ` +
+                        'Resize it first or pass allowNon512 intentionally.',
+                );
+            }
+
+            const changed = await make.sdk.apps.setIcon(args.name, args.version, icon, { sdkVersion: args.sdkVersion });
+            return {
+                changed,
+                appName: args.name,
+                version: args.version,
+                file: basename(args.file),
+                width: pngInfo.width,
+                height: pngInfo.height,
+                readbackPath: `/sdk/apps/${args.name}/${args.version}/icon/512`,
+            };
+        },
+    },
+    {
+        name: 'sdk-apps_get-icon',
+        title: 'Get SDK app icon',
+        description: 'Download a SDK app icon. Writes to outputFile when provided, otherwise returns base64 PNG data.',
+        category: 'sdk-apps',
+        scope: 'sdk-apps:read',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: {
+            readOnlyHint: true,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                name: { type: 'string', description: 'The name of the app' },
+                version: { type: 'number', description: 'The version of the app' },
+                outputFile: { type: 'string', description: 'Optional path to write the PNG icon' },
+                size: { type: 'number', description: 'Icon size to download', default: 512 },
+                sdkVersion: { type: 'string', description: 'Apps SDK version header', default: '2.5.0' },
+            },
+            required: ['name', 'version'],
+        },
+        examples: [{ name: 'my-app', version: 1, outputFile: '/tmp/my-app-icon.png', size: 512 }],
+        execute: async (
+            make: Make,
+            args: { name: string; version: number; outputFile?: string; size?: number; sdkVersion?: string },
+        ) => {
+            const icon = Buffer.from(
+                await make.sdk.apps.getIcon(args.name, args.version, args.size ?? 512, { sdkVersion: args.sdkVersion }),
+            );
+            const pngInfo = readPngInfo(icon);
+
+            if (args.outputFile) {
+                await writeFile(args.outputFile, icon);
+                return {
+                    appName: args.name,
+                    version: args.version,
+                    file: args.outputFile,
+                    width: pngInfo.width,
+                    height: pngInfo.height,
+                };
+            }
+
+            return {
+                appName: args.name,
+                version: args.version,
+                size: args.size ?? 512,
+                width: pngInfo.width,
+                height: pngInfo.height,
+                contentType: 'image/png',
+                dataBase64: icon.toString('base64'),
+            };
+        },
+    },
+    {
+        name: 'sdk-apps_set-public',
+        title: 'Set SDK app public',
+        description: 'Mark a SDK app version as public.',
+        category: 'sdk-apps',
+        scope: 'sdk-apps:write',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: { idempotentHint: true, destructiveHint: false },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                name: { type: 'string', description: 'The name of the app' },
+                version: { type: 'number', description: 'The version of the app' },
+            },
+            required: ['name', 'version'],
+        },
+        examples: [{ name: 'my-app', version: 1 }],
+        execute: async (make: Make, args: { name: string; version: number }) => {
+            const response = await make.sdk.apps.makePublic(args.name, args.version);
+            return visibilityResult('app', args.name, args.version, 'public', response as JSONValue);
+        },
+    },
+    {
+        name: 'sdk-apps_set-private',
+        title: 'Set SDK app private',
+        description: 'Mark a SDK app version as private.',
+        category: 'sdk-apps',
+        scope: 'sdk-apps:write',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: { idempotentHint: true, destructiveHint: false },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                name: { type: 'string', description: 'The name of the app' },
+                version: { type: 'number', description: 'The version of the app' },
+            },
+            required: ['name', 'version'],
+        },
+        examples: [{ name: 'my-app', version: 1 }],
+        execute: async (make: Make, args: { name: string; version: number }) => {
+            const response = await make.sdk.apps.makePrivate(args.name, args.version);
+            return visibilityResult('app', args.name, args.version, 'private', response as JSONValue);
         },
     },
     {

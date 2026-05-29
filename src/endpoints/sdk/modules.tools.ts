@@ -1,5 +1,25 @@
 import type { Make } from '../../make.js';
+import type { JSONValue } from '../../types.js';
 import type { MakeTool } from '../../tools.js';
+
+function moduleVisibilityResult(
+    appName: string,
+    appVersion: number,
+    moduleName: string,
+    visibility: 'public' | 'private',
+    response: JSONValue,
+) {
+    return {
+        changed: true,
+        scope: 'module',
+        appName,
+        version: appVersion,
+        moduleName,
+        visibility,
+        public: visibility === 'public',
+        response,
+    };
+}
 
 export const tools: MakeTool[] = [
     {
@@ -208,6 +228,54 @@ export const tools: MakeTool[] = [
             },
         ) => {
             return await make.sdk.modules.getSection(args.appName, args.appVersion, args.moduleName, args.section);
+        },
+    },
+    {
+        name: 'sdk-modules_set-public',
+        title: 'Set SDK module public',
+        description: 'Mark a SDK app module as public.',
+        category: 'sdk-modules',
+        scope: 'sdk-apps:write',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: { idempotentHint: true, destructiveHint: false },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                appName: { type: 'string', description: 'The name of the app' },
+                appVersion: { type: 'number', description: 'The version of the app' },
+                moduleName: { type: 'string', description: 'The name of the module' },
+            },
+            required: ['appName', 'appVersion', 'moduleName'],
+        },
+        examples: [{ appName: 'my-app', appVersion: 1, moduleName: 'listItems' }],
+        execute: async (make: Make, args: { appName: string; appVersion: number; moduleName: string }) => {
+            const response = await make.sdk.modules.makePublic(args.appName, args.appVersion, args.moduleName);
+            return moduleVisibilityResult(args.appName, args.appVersion, args.moduleName, 'public', response as JSONValue);
+        },
+    },
+    {
+        name: 'sdk-modules_set-private',
+        title: 'Set SDK module private',
+        description: 'Mark a SDK app module as private.',
+        category: 'sdk-modules',
+        scope: 'sdk-apps:write',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: { idempotentHint: true, destructiveHint: false },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                appName: { type: 'string', description: 'The name of the app' },
+                appVersion: { type: 'number', description: 'The version of the app' },
+                moduleName: { type: 'string', description: 'The name of the module' },
+            },
+            required: ['appName', 'appVersion', 'moduleName'],
+        },
+        examples: [{ appName: 'my-app', appVersion: 1, moduleName: 'listItems' }],
+        execute: async (make: Make, args: { appName: string; appVersion: number; moduleName: string }) => {
+            const response = await make.sdk.modules.makePrivate(args.appName, args.appVersion, args.moduleName);
+            return moduleVisibilityResult(args.appName, args.appVersion, args.moduleName, 'private', response as JSONValue);
         },
     },
     {

@@ -297,7 +297,7 @@ export class Make {
 
             // Success case
             if (res.status < 400) {
-                return this.handleResponse<T>(res);
+                return this.handleResponse<T>(res, options?.responseType);
             }
 
             // Create error for potential retry
@@ -395,14 +395,17 @@ export class Make {
      * @protected
      */
     protected prepareBody(
-        body: Record<string, JSONValue> | Array<JSONValue> | string | undefined,
+        body: Record<string, JSONValue> | Array<JSONValue> | string | Uint8Array | ArrayBuffer | undefined,
         headers: Record<string, string>,
-    ): string {
+    ): string | Uint8Array | ArrayBuffer | undefined {
+        if (body instanceof Uint8Array || body instanceof ArrayBuffer) {
+            return body;
+        }
         if (body && typeof body !== 'string') {
             headers['content-type'] = 'application/json';
             return JSON.stringify(body);
         }
-        return body as string;
+        return body as string | undefined;
     }
 
     /**
@@ -493,7 +496,17 @@ export class Make {
      * @returns Promise resolving to the parsed response data
      * @protected
      */
-    protected async handleResponse<T>(response: Response): Promise<T> {
+    protected async handleResponse<T>(response: Response, responseType?: FetchOptions['responseType']): Promise<T> {
+        if (responseType === 'arrayBuffer') {
+            return (await response.arrayBuffer()) as T;
+        }
+        if (responseType === 'text') {
+            return (await response.text()) as T;
+        }
+        if (responseType === 'json') {
+            return (await response.json()) as T;
+        }
+
         const contentType = response.headers.get('content-type');
         const isJsonType: boolean = Boolean(
             contentType === 'application/json' || contentType?.startsWith('application/json;'),

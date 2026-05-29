@@ -144,4 +144,33 @@ describe('Endpoints: SDK > Apps', () => {
         const result = await make.sdk.apps.setCommon('test-app', 1, common);
         expect(result).toBe(true);
     });
+
+    it('Should upload app icon as raw PNG data', async () => {
+        const iconData = new Uint8Array([137, 80, 78, 71]);
+        mockFetch('PUT https://make.local/api/v2/sdk/apps/test-app/1/icon', null, req => {
+            expect(req.headers.get('content-type')).toBe('image/png');
+            expect(req.headers.get('imt-apps-sdk-version')).toBe('2.5.0');
+        });
+
+        const result = await make.sdk.apps.setIcon('test-app', 1, iconData);
+        expect(result).toBe(true);
+    });
+
+    it('Should download app icon as an ArrayBuffer', async () => {
+        mockFetch('GET https://make.local/api/v2/sdk/apps/test-app/1/icon/512', 'png-bytes');
+
+        const result = await make.sdk.apps.getIcon('test-app', 1);
+        expect(result).toBeInstanceOf(ArrayBuffer);
+        expect(Buffer.from(result).toString()).toBe('png-bytes');
+    });
+
+    it('Should make app public and private', async () => {
+        mockFetch(
+            ['POST https://make.local/api/v2/sdk/apps/test-app/1/public', { changed: true }, undefined],
+            ['POST https://make.local/api/v2/sdk/apps/test-app/1/private', { changed: true }, undefined],
+        );
+
+        await expect(make.sdk.apps.makePublic('test-app', 1)).resolves.toStrictEqual({ changed: true });
+        await expect(make.sdk.apps.makePrivate('test-app', 1)).resolves.toStrictEqual({ changed: true });
+    });
 });

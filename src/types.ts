@@ -31,10 +31,12 @@ export type FetchOptions = {
     headers?: Record<string, string>;
     /** Query parameters to append to the URL */
     query?: Record<string, QueryValue>;
-    /** Request body as an object or string */
-    body?: Record<string, JSONValue> | Array<JSONValue> | string;
+    /** Request body as an object, string, or raw binary payload */
+    body?: Record<string, JSONValue> | Array<JSONValue> | string | Uint8Array | ArrayBuffer;
     /** HTTP method (GET, POST, PATCH, etc.) */
     method?: string;
+    /** Override the default content-type based response parser */
+    responseType?: 'json' | 'text' | 'arrayBuffer';
 };
 
 /**
