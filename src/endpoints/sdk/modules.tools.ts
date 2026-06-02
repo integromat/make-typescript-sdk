@@ -211,6 +211,54 @@ export const tools: MakeTool[] = [
         },
     },
     {
+        name: 'sdk-modules_set-public',
+        title: 'Set SDK module public',
+        description: 'Mark an SDK app module as public.',
+        category: 'sdk-modules',
+        scope: 'sdk-apps:write',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: { idempotentHint: true, destructiveHint: false },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                appName: { type: 'string', description: 'The name of the app' },
+                appVersion: { type: 'number', description: 'The version of the app' },
+                moduleName: { type: 'string', description: 'The name of the module' },
+            },
+            required: ['appName', 'appVersion', 'moduleName'],
+        },
+        examples: [{ appName: 'my-app', appVersion: 1, moduleName: 'listItems' }],
+        execute: async (make: Make, args: { appName: string; appVersion: number; moduleName: string }) => {
+            await make.sdk.modules.makePublic(args.appName, args.appVersion, args.moduleName);
+            return `Module has been made public.`;
+        },
+    },
+    {
+        name: 'sdk-modules_set-private',
+        title: 'Set SDK module private',
+        description: 'Mark an SDK app module as private.',
+        category: 'sdk-modules',
+        scope: 'sdk-apps:write',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: { idempotentHint: true, destructiveHint: false },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                appName: { type: 'string', description: 'The name of the app' },
+                appVersion: { type: 'number', description: 'The version of the app' },
+                moduleName: { type: 'string', description: 'The name of the module' },
+            },
+            required: ['appName', 'appVersion', 'moduleName'],
+        },
+        examples: [{ appName: 'my-app', appVersion: 1, moduleName: 'listItems' }],
+        execute: async (make: Make, args: { appName: string; appVersion: number; moduleName: string }) => {
+            await make.sdk.modules.makePrivate(args.appName, args.appVersion, args.moduleName);
+            return `Module has been made private.`;
+        },
+    },
+    {
         name: 'sdk-modules_set-section',
         title: 'Set SDK module section',
         description: 'Set/update a specific section of a module.',

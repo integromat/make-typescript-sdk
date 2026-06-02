@@ -16,6 +16,16 @@ import { join } from 'path';
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
 
+/** Build a minimal valid PNG header (signature + IHDR) with the given dimensions. */
+function pngIcon(width: number, height: number): Uint8Array {
+    const bytes = new Uint8Array(24);
+    bytes.set([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]); // PNG signature
+    bytes.set([0x49, 0x48, 0x44, 0x52], 12); // "IHDR"
+    new DataView(bytes.buffer).setUint32(16, width);
+    new DataView(bytes.buffer).setUint32(20, height);
+    return bytes;
+}
+
 describe('Endpoints: SDK > Apps', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
@@ -143,5 +153,48 @@ describe('Endpoints: SDK > Apps', () => {
 
         const result = await make.sdk.apps.setCommon('test-app', 1, common);
         expect(result).toBe(true);
+    });
+
+    it('Should upload app icon as raw PNG data', async () => {
+        const iconData = pngIcon(512, 512);
+        mockFetch('PUT https://make.local/api/v2/sdk/apps/test-app/1/icon', { changed: true }, req => {
+            expect(req.body).toBeInstanceOf(ArrayBuffer);
+            expect([...new Uint8Array(req.body as ArrayBuffer)]).toStrictEqual([...iconData]);
+            expect(req.headers.get('content-type')).toBe('image/png');
+        });
+
+        const result = await make.sdk.apps.setIcon('test-app', 1, iconData);
+        expect(result).toBe(true);
+    });
+
+    it('Should reject a non-PNG app icon before upload', async () => {
+        await expect(make.sdk.apps.setIcon('test-app', 1, new Uint8Array([1, 2, 3, 4]))).rejects.toThrow(
+            'App icon must be a PNG image.',
+        );
+    });
+
+    it('Should reject an app icon that is not 512x512', async () => {
+        await expect(make.sdk.apps.setIcon('test-app', 1, pngIcon(256, 256))).rejects.toThrow(
+            'App icon must be 512x512 PNG. Got 256x256.',
+        );
+    });
+
+    it('Should download app icon as an ArrayBuffer', async () => {
+        const iconData = pngIcon(512, 512);
+        mockFetch('GET https://make.local/api/v2/sdk/apps/test-app/1/icon/512', iconData);
+
+        const result = await make.sdk.apps.getIcon('test-app', 1);
+        expect(result).toBeInstanceOf(ArrayBuffer);
+        expect([...new Uint8Array(result)]).toStrictEqual([...iconData]);
+    });
+
+    it('Should make app public and private', async () => {
+        mockFetch(
+            ['POST https://make.local/api/v2/sdk/apps/test-app/1/public', { changed: true }, undefined],
+            ['POST https://make.local/api/v2/sdk/apps/test-app/1/private', { changed: true }, undefined],
+        );
+
+        await expect(make.sdk.apps.makePublic('test-app', 1)).resolves.toBeUndefined();
+        await expect(make.sdk.apps.makePrivate('test-app', 1)).resolves.toBeUndefined();
     });
 });

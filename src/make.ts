@@ -389,20 +389,28 @@ export class Make {
     /**
      * Prepare the request body for API calls
      *
-     * @param body The request body - can be an object, string, or undefined
+     * Objects and arrays are JSON-serialized (setting the JSON content-type),
+     * strings are passed through unchanged, and raw binary payloads
+     * (`Uint8Array`/`ArrayBuffer`) are returned as-is so the caller controls the
+     * content-type.
+     *
+     * @param body The request body - an object/array, string, raw binary payload, or undefined
      * @param headers The headers object to potentially modify the content-type
-     * @returns The body serialized as a string
+     * @returns The JSON string for objects/arrays, or the string/binary/undefined body unchanged
      * @protected
      */
     protected prepareBody(
-        body: Record<string, JSONValue> | Array<JSONValue> | string | undefined,
+        body: Record<string, JSONValue> | Array<JSONValue> | string | Uint8Array | ArrayBuffer | undefined,
         headers: Record<string, string>,
-    ): string {
+    ): string | Uint8Array | ArrayBuffer | undefined {
+        if (body instanceof Uint8Array || body instanceof ArrayBuffer) {
+            return body;
+        }
         if (body && typeof body !== 'string') {
             headers['content-type'] = 'application/json';
             return JSON.stringify(body);
         }
-        return body as string;
+        return body as string | undefined;
     }
 
     /**
@@ -485,8 +493,9 @@ export class Make {
     /**
      * Handle successful API responses
      *
-     * Parses the response based on content-type header.
-     * JSON responses are parsed as objects, other responses as text.
+     * Parses the response based on the content-type header: JSON responses are
+     * parsed as objects, binary responses (e.g. `image/*` or
+     * `application/octet-stream`) as an ArrayBuffer, and everything else as text.
      *
      * @template T The expected response type
      * @param response The successful response from the API
@@ -498,8 +507,16 @@ export class Make {
         const isJsonType: boolean = Boolean(
             contentType === 'application/json' || contentType?.startsWith('application/json;'),
         ); //prevent application/jsonc to be parsed as json
+        const isBinaryType: boolean = Boolean(
+            contentType?.startsWith('image/') || contentType?.startsWith('application/octet-stream'),
+        );
 
-        const result = isJsonType ? await response.json() : await response.text();
-        return result as T;
+        if (isJsonType) {
+            return (await response.json()) as T;
+        }
+        if (isBinaryType) {
+            return (await response.arrayBuffer()) as T;
+        }
+        return (await response.text()) as T;
     }
 }

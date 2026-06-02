@@ -26,7 +26,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_get',
         title: 'Get SDK app',
-        description: 'Get a SDK app by name and version.',
+        description: 'Get an SDK app by name and version.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
         scopeId: undefined,
@@ -154,7 +154,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_delete',
         title: 'Delete SDK app',
-        description: 'Delete a SDK app by name and version.',
+        description: 'Delete an SDK app by name and version.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         scopeId: undefined,
@@ -179,7 +179,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_get-section',
         title: 'Get SDK app section',
-        description: 'Get a specific section of a SDK app.',
+        description: 'Get a specific section of an SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
         scopeId: undefined,
@@ -211,7 +211,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_set-section',
         title: 'Set SDK app section',
-        description: 'Set/update a specific section of a SDK app.',
+        description: 'Set/update a specific section of an SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         scopeId: undefined,
@@ -321,6 +321,105 @@ export const tools: MakeTool[] = [
         examples: [{ name: 'my-app', version: 1 }],
         execute: async (make: Make, args: { name: string; version: number }) => {
             return await make.sdk.apps.getCommon(args.name, args.version);
+        },
+    },
+    {
+        name: 'sdk-apps_set-icon',
+        title: 'Set SDK app icon',
+        description: 'Upload an icon for an SDK app.',
+        category: 'sdk-apps',
+        scope: 'sdk-apps:write',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                name: { type: 'string', description: 'The name of the app' },
+                version: { type: 'number', description: 'The version of the app' },
+                dataBase64: { type: 'string', description: 'Base64-encoded 512x512 PNG icon data to upload' },
+            },
+            required: ['name', 'version', 'dataBase64'],
+        },
+        examples: [{ name: 'my-app', version: 1, dataBase64: 'iVBORw0KGgo...' }],
+        execute: async (make: Make, args: { name: string; version: number; dataBase64: string }) => {
+            await make.sdk.apps.setIcon(args.name, args.version, Buffer.from(args.dataBase64, 'base64'));
+            return `Icon has been set.`;
+        },
+    },
+    {
+        name: 'sdk-apps_get-icon',
+        title: 'Get SDK app icon',
+        description: 'Download an SDK app icon and return it as base64-encoded PNG data.',
+        category: 'sdk-apps',
+        scope: 'sdk-apps:read',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: {
+            readOnlyHint: true,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                name: { type: 'string', description: 'The name of the app' },
+                version: { type: 'number', description: 'The version of the app' },
+                size: { type: 'number', description: 'Icon size to download', default: 512 },
+            },
+            required: ['name', 'version'],
+        },
+        examples: [{ name: 'my-app', version: 1, size: 512 }],
+        execute: async (make: Make, args: { name: string; version: number; size?: number }) => {
+            const icon = Buffer.from(await make.sdk.apps.getIcon(args.name, args.version, args.size ?? 512));
+            return icon.toString('base64');
+        },
+    },
+    {
+        name: 'sdk-apps_set-public',
+        title: 'Set SDK app public',
+        description: 'Mark an SDK app version as public.',
+        category: 'sdk-apps',
+        scope: 'sdk-apps:write',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: { idempotentHint: true, destructiveHint: false },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                name: { type: 'string', description: 'The name of the app' },
+                version: { type: 'number', description: 'The version of the app' },
+            },
+            required: ['name', 'version'],
+        },
+        examples: [{ name: 'my-app', version: 1 }],
+        execute: async (make: Make, args: { name: string; version: number }) => {
+            await make.sdk.apps.makePublic(args.name, args.version);
+            return `App has been made public.`;
+        },
+    },
+    {
+        name: 'sdk-apps_set-private',
+        title: 'Set SDK app private',
+        description: 'Mark an SDK app version as private.',
+        category: 'sdk-apps',
+        scope: 'sdk-apps:write',
+        scopeId: undefined,
+        identifier: undefined,
+        annotations: { idempotentHint: true, destructiveHint: false },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                name: { type: 'string', description: 'The name of the app' },
+                version: { type: 'number', description: 'The version of the app' },
+            },
+            required: ['name', 'version'],
+        },
+        examples: [{ name: 'my-app', version: 1 }],
+        execute: async (make: Make, args: { name: string; version: number }) => {
+            await make.sdk.apps.makePrivate(args.name, args.version);
+            return `App has been made private.`;
         },
     },
     {

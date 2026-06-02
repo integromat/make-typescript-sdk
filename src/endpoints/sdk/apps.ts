@@ -137,6 +137,44 @@ type UpdateSDKAppResponse = {
     app: Pick<SDKApp, 'name' | 'label' | 'description' | 'version' | 'theme' | 'public' | 'approved'>;
 };
 
+type IconUploadResponse = {
+    changed: boolean;
+};
+
+/** PNG file signature (first 8 bytes). */
+const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
+
+/** IHDR chunk type marker ("IHDR"), located at bytes 12-15 of a PNG. */
+const PNG_IHDR = [0x49, 0x48, 0x44, 0x52];
+
+/** Required app icon dimensions (square, in pixels). */
+const APP_ICON_SIZE = 512;
+
+/**
+ * Validate that an icon payload is a 512x512 PNG before upload, mirroring the
+ * server constraint so callers fail fast with a clear error. Platform-neutral
+ * (works with both `Uint8Array` and `ArrayBuffer`, no Node `Buffer` required).
+ */
+function assertAppIcon(iconData: Uint8Array | ArrayBuffer): void {
+    const bytes = iconData instanceof Uint8Array ? iconData : new Uint8Array(iconData);
+    if (bytes.length < 24 || PNG_SIGNATURE.some((byte, index) => bytes[index] !== byte)) {
+        throw new Error('App icon must be a PNG image.');
+    }
+
+    if (PNG_IHDR.some((byte, index) => bytes[12 + index] !== byte)) {
+        throw new Error('App icon is not a valid PNG image: missing IHDR chunk.');
+    }
+
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    const width = view.getUint32(16);
+    const height = view.getUint32(20);
+    if (width !== APP_ICON_SIZE || height !== APP_ICON_SIZE) {
+        throw new Error(
+            `App icon must be ${APP_ICON_SIZE}x${APP_ICON_SIZE} PNG. Got ${width}x${height}. Resize it first.`,
+        );
+    }
+}
+
 /**
  * Class providing methods for working with Apps
  */
@@ -264,5 +302,45 @@ export class SDKApps {
             body: common,
         });
         return response.changed;
+    }
+
+    /**
+     * Upload an app icon. The icon must be a 512x512 PNG; otherwise an error is thrown before upload.
+     */
+    async setIcon(name: string, version: number, iconData: Uint8Array | ArrayBuffer): Promise<boolean> {
+        assertAppIcon(iconData);
+        const response = await this.#fetch<IconUploadResponse>(`/sdk/apps/${name}/${version}/icon`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'image/png',
+            },
+            body: iconData,
+        });
+        return response.changed;
+    }
+
+    /**
+     * Download an app icon at a given rendered size.
+     */
+    async getIcon(name: string, version: number, size = 512): Promise<ArrayBuffer> {
+        return await this.#fetch<ArrayBuffer>(`/sdk/apps/${name}/${version}/icon/${size}`);
+    }
+
+    /**
+     * Make app private.
+     */
+    async makePrivate(name: string, version: number): Promise<void> {
+        await this.#fetch(`/sdk/apps/${name}/${version}/private`, {
+            method: 'POST',
+        });
+    }
+
+    /**
+     * Make app public.
+     */
+    async makePublic(name: string, version: number): Promise<void> {
+        await this.#fetch(`/sdk/apps/${name}/${version}/public`, {
+            method: 'POST',
+        });
     }
 }

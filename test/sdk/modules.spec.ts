@@ -115,4 +115,22 @@ describe('Endpoints: SDK > Modules', () => {
 
         await make.sdk.modules.setSection(appName, appVersion, moduleName, section, body);
     });
+
+    it('Should make module public and private', async () => {
+        mockFetch(
+            [
+                `POST https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/public`,
+                { changed: true },
+                undefined,
+            ],
+            [
+                `POST https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/private`,
+                { changed: true },
+                undefined,
+            ],
+        );
+
+        await expect(make.sdk.modules.makePublic(appName, appVersion, moduleName)).resolves.toBeUndefined();
+        await expect(make.sdk.modules.makePrivate(appName, appVersion, moduleName)).resolves.toBeUndefined();
+    });
 });

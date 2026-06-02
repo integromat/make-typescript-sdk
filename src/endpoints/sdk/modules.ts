@@ -187,4 +187,18 @@ export class SDKModules {
             body: JSONStringifyIfNotString(body),
         });
     }
+
+    /**
+     * Make a module private.
+     */
+    async makePrivate(appName: string, appVersion: number, moduleName: string): Promise<void> {
+        await this.#fetch(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/private`, { method: 'POST' });
+    }
+
+    /**
+     * Make a module public.
+     */
+    async makePublic(appName: string, appVersion: number, moduleName: string): Promise<void> {
+        await this.#fetch(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/public`, { method: 'POST' });
+    }
 }
