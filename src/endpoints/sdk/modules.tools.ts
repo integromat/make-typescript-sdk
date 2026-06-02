@@ -1,25 +1,5 @@
 import type { Make } from '../../make.js';
-import type { JSONValue } from '../../types.js';
 import type { MakeTool } from '../../tools.js';
-
-function moduleVisibilityResult(
-    appName: string,
-    appVersion: number,
-    moduleName: string,
-    visibility: 'public' | 'private',
-    response: JSONValue,
-) {
-    return {
-        changed: true,
-        scope: 'module',
-        appName,
-        version: appVersion,
-        moduleName,
-        visibility,
-        public: visibility === 'public',
-        response,
-    };
-}
 
 export const tools: MakeTool[] = [
     {
@@ -250,8 +230,8 @@ export const tools: MakeTool[] = [
         },
         examples: [{ appName: 'my-app', appVersion: 1, moduleName: 'listItems' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; moduleName: string }) => {
-            const response = await make.sdk.modules.makePublic(args.appName, args.appVersion, args.moduleName);
-            return moduleVisibilityResult(args.appName, args.appVersion, args.moduleName, 'public', response as JSONValue);
+            await make.sdk.modules.makePublic(args.appName, args.appVersion, args.moduleName);
+            return `Module has been made public.`;
         },
     },
     {
@@ -274,8 +254,8 @@ export const tools: MakeTool[] = [
         },
         examples: [{ appName: 'my-app', appVersion: 1, moduleName: 'listItems' }],
         execute: async (make: Make, args: { appName: string; appVersion: number; moduleName: string }) => {
-            const response = await make.sdk.modules.makePrivate(args.appName, args.appVersion, args.moduleName);
-            return moduleVisibilityResult(args.appName, args.appVersion, args.moduleName, 'private', response as JSONValue);
+            await make.sdk.modules.makePrivate(args.appName, args.appVersion, args.moduleName);
+            return `Module has been made private.`;
         },
     },
     {

@@ -120,7 +120,6 @@ export type {
     SDKAppSection,
     SDKAppSectionType,
     SDKAppCommon,
-    SDKAppVisibilityResponse,
     ListSDKAppsOptions,
     GetSDKAppsOptions,
     CreateSDKAppBody,
@@ -131,7 +130,6 @@ export type {
     SDKModules,
     SDKModuleSection,
     SDKModuleSectionType,
-    SDKModuleVisibilityResponse,
     CreateSDKModuleBody,
     UpdateSDKModuleBody,
 } from './endpoints/sdk/modules.js';

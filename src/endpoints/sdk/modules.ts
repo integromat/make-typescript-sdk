@@ -85,12 +85,6 @@ type UpdateSDKModuleResponse = {
     appModule: SDKModule;
 };
 
-export type SDKModuleVisibilityResponse = {
-    appModule?: SDKModule;
-    module?: SDKModule;
-    changed?: boolean;
-};
-
 /**
  * Class providing methods for working with App Modules
  */
@@ -197,20 +191,14 @@ export class SDKModules {
     /**
      * Make a module private.
      */
-    async makePrivate(appName: string, appVersion: number, moduleName: string): Promise<SDKModuleVisibilityResponse> {
-        return await this.#fetch<SDKModuleVisibilityResponse>(
-            `/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/private`,
-            { method: 'POST' },
-        );
+    async makePrivate(appName: string, appVersion: number, moduleName: string): Promise<void> {
+        await this.#fetch(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/private`, { method: 'POST' });
     }
 
     /**
      * Make a module public.
      */
-    async makePublic(appName: string, appVersion: number, moduleName: string): Promise<SDKModuleVisibilityResponse> {
-        return await this.#fetch<SDKModuleVisibilityResponse>(
-            `/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/public`,
-            { method: 'POST' },
-        );
+    async makePublic(appName: string, appVersion: number, moduleName: string): Promise<void> {
+        await this.#fetch(`/sdk/apps/${appName}/${appVersion}/modules/${moduleName}/public`, { method: 'POST' });
     }
 }

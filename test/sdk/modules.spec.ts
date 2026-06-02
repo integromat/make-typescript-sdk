@@ -130,11 +130,7 @@ describe('Endpoints: SDK > Modules', () => {
             ],
         );
 
-        await expect(make.sdk.modules.makePublic(appName, appVersion, moduleName)).resolves.toStrictEqual({
-            changed: true,
-        });
-        await expect(make.sdk.modules.makePrivate(appName, appVersion, moduleName)).resolves.toStrictEqual({
-            changed: true,
-        });
+        await expect(make.sdk.modules.makePublic(appName, appVersion, moduleName)).resolves.toBeUndefined();
+        await expect(make.sdk.modules.makePrivate(appName, appVersion, moduleName)).resolves.toBeUndefined();
     });
 });
