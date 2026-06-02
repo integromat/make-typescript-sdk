@@ -389,9 +389,14 @@ export class Make {
     /**
      * Prepare the request body for API calls
      *
-     * @param body The request body - can be an object, string, or undefined
+     * Objects and arrays are JSON-serialized (setting the JSON content-type),
+     * strings are passed through unchanged, and raw binary payloads
+     * (`Uint8Array`/`ArrayBuffer`) are returned as-is so the caller controls the
+     * content-type.
+     *
+     * @param body The request body - an object/array, string, raw binary payload, or undefined
      * @param headers The headers object to potentially modify the content-type
-     * @returns The body serialized as a string
+     * @returns The JSON string for objects/arrays, or the string/binary/undefined body unchanged
      * @protected
      */
     protected prepareBody(
