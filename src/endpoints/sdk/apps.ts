@@ -323,9 +323,7 @@ export class SDKApps {
      * Download an app icon at a given rendered size.
      */
     async getIcon(name: string, version: number, size = 512): Promise<ArrayBuffer> {
-        return await this.#fetch<ArrayBuffer>(`/sdk/apps/${name}/${version}/icon/${size}`, {
-            responseType: 'arrayBuffer',
-        });
+        return await this.#fetch<ArrayBuffer>(`/sdk/apps/${name}/${version}/icon/${size}`);
     }
 
     /**

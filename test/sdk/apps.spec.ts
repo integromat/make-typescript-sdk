@@ -180,11 +180,12 @@ describe('Endpoints: SDK > Apps', () => {
     });
 
     it('Should download app icon as an ArrayBuffer', async () => {
-        mockFetch('GET https://make.local/api/v2/sdk/apps/test-app/1/icon/512', 'png-bytes');
+        const iconData = pngIcon(512, 512);
+        mockFetch('GET https://make.local/api/v2/sdk/apps/test-app/1/icon/512', iconData);
 
         const result = await make.sdk.apps.getIcon('test-app', 1);
         expect(result).toBeInstanceOf(ArrayBuffer);
-        expect(Buffer.from(result).toString()).toBe('png-bytes');
+        expect([...new Uint8Array(result)]).toStrictEqual([...iconData]);
     });
 
     it('Should make app public and private', async () => {

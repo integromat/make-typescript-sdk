@@ -35,8 +35,6 @@ export type FetchOptions = {
     body?: Record<string, JSONValue> | Array<JSONValue> | string | Uint8Array | ArrayBuffer;
     /** HTTP method (GET, POST, PATCH, etc.) */
     method?: string;
-    /** Override the default content-type based response parser */
-    responseType?: 'json' | 'text' | 'arrayBuffer';
 };
 
 /**

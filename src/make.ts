@@ -297,7 +297,7 @@ export class Make {
 
             // Success case
             if (res.status < 400) {
-                return this.handleResponse<T>(res, options?.responseType);
+                return this.handleResponse<T>(res);
             }
 
             // Create error for potential retry
@@ -488,31 +488,30 @@ export class Make {
     /**
      * Handle successful API responses
      *
-     * Parses the response based on content-type header.
-     * JSON responses are parsed as objects, other responses as text.
+     * Parses the response based on the content-type header: JSON responses are
+     * parsed as objects, binary responses (e.g. `image/*` or
+     * `application/octet-stream`) as an ArrayBuffer, and everything else as text.
      *
      * @template T The expected response type
      * @param response The successful response from the API
      * @returns Promise resolving to the parsed response data
      * @protected
      */
-    protected async handleResponse<T>(response: Response, responseType?: FetchOptions['responseType']): Promise<T> {
-        if (responseType === 'arrayBuffer') {
-            return (await response.arrayBuffer()) as T;
-        }
-        if (responseType === 'text') {
-            return (await response.text()) as T;
-        }
-        if (responseType === 'json') {
-            return (await response.json()) as T;
-        }
-
+    protected async handleResponse<T>(response: Response): Promise<T> {
         const contentType = response.headers.get('content-type');
         const isJsonType: boolean = Boolean(
             contentType === 'application/json' || contentType?.startsWith('application/json;'),
         ); //prevent application/jsonc to be parsed as json
+        const isBinaryType: boolean = Boolean(
+            contentType?.startsWith('image/') || contentType === 'application/octet-stream',
+        );
 
-        const result = isJsonType ? await response.json() : await response.text();
-        return result as T;
+        if (isJsonType) {
+            return (await response.json()) as T;
+        }
+        if (isBinaryType) {
+            return (await response.arrayBuffer()) as T;
+        }
+        return (await response.text()) as T;
     }
 }

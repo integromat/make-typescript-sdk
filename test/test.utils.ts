@@ -60,18 +60,39 @@ export function mockFetch(...args: unknown[]): void {
             );
             const body = isJsonType ? await req.json() : isBinaryType ? await req.arrayBuffer() : await req.text();
             mock.asserts({
-                body: body instanceof ArrayBuffer ? body : isObject(body) ? (body as Record<string, JSONValue>) : Array.isArray(body) ? body : String(body),
+                body:
+                    body instanceof ArrayBuffer
+                        ? body
+                        : isObject(body)
+                          ? (body as Record<string, JSONValue>)
+                          : Array.isArray(body)
+                            ? body
+                            : String(body),
                 headers: req.headers,
                 method: req.method,
                 url: req.url,
             });
         }
 
+        const binaryBody =
+            mock.body instanceof Uint8Array
+                ? mock.body
+                : mock.body instanceof ArrayBuffer
+                  ? new Uint8Array(mock.body)
+                  : null;
         return Promise.resolve({
-            body: typeof mock.body === 'string' ? mock.body : JSON.stringify(mock.body),
+            // Hand the raw bytes to Response so they survive intact; a string body
+            // would be re-encoded as UTF-8 and corrupt any byte > 0x7f. Cast because
+            // jest-fetch-mock types `body` as string, but undici accepts a Uint8Array.
+            body: (binaryBody ??
+                (typeof mock.body === 'string' ? mock.body : JSON.stringify(mock.body))) as unknown as string,
             status: mock.status,
             headers: {
-                'content-type': typeof mock.body === 'string' ? 'text/plain' : 'application/json',
+                'content-type': binaryBody
+                    ? 'image/png'
+                    : typeof mock.body === 'string'
+                      ? 'text/plain'
+                      : 'application/json',
             },
         });
     });
