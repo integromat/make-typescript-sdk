@@ -56,7 +56,7 @@ export function mockFetch(...args: unknown[]): void {
                 contentType === 'application/json' || contentType?.startsWith('application/json;'),
             ); //prevent application/jsonc to be parsed as json
             const isBinaryType = Boolean(
-                contentType?.startsWith('image/') || contentType === 'application/octet-stream',
+                contentType?.startsWith('image/') || contentType?.startsWith('application/octet-stream'),
             );
             const body = isJsonType ? await req.json() : isBinaryType ? await req.arrayBuffer() : await req.text();
             mock.asserts({

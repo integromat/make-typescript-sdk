@@ -26,7 +26,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_get',
         title: 'Get SDK app',
-        description: 'Get a SDK app by name and version.',
+        description: 'Get an SDK app by name and version.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
         scopeId: undefined,
@@ -154,7 +154,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_delete',
         title: 'Delete SDK app',
-        description: 'Delete a SDK app by name and version.',
+        description: 'Delete an SDK app by name and version.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         scopeId: undefined,
@@ -179,7 +179,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_get-section',
         title: 'Get SDK app section',
-        description: 'Get a specific section of a SDK app.',
+        description: 'Get a specific section of an SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
         scopeId: undefined,
@@ -211,7 +211,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_set-section',
         title: 'Set SDK app section',
-        description: 'Set/update a specific section of a SDK app.',
+        description: 'Set/update a specific section of an SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         scopeId: undefined,
@@ -326,7 +326,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_set-icon',
         title: 'Set SDK app icon',
-        description: 'Upload an icon for a SDK app.',
+        description: 'Upload an icon for an SDK app.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         scopeId: undefined,
@@ -353,7 +353,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_get-icon',
         title: 'Get SDK app icon',
-        description: 'Download a SDK app icon and return it as base64-encoded PNG data.',
+        description: 'Download an SDK app icon and return it as base64-encoded PNG data.',
         category: 'sdk-apps',
         scope: 'sdk-apps:read',
         scopeId: undefined,
@@ -379,7 +379,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_set-public',
         title: 'Set SDK app public',
-        description: 'Mark a SDK app version as public.',
+        description: 'Mark an SDK app version as public.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         scopeId: undefined,
@@ -402,7 +402,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-apps_set-private',
         title: 'Set SDK app private',
-        description: 'Mark a SDK app version as private.',
+        description: 'Mark an SDK app version as private.',
         category: 'sdk-apps',
         scope: 'sdk-apps:write',
         scopeId: undefined,

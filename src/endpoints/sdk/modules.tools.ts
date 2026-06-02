@@ -213,7 +213,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-modules_set-public',
         title: 'Set SDK module public',
-        description: 'Mark a SDK app module as public.',
+        description: 'Mark an SDK app module as public.',
         category: 'sdk-modules',
         scope: 'sdk-apps:write',
         scopeId: undefined,
@@ -237,7 +237,7 @@ export const tools: MakeTool[] = [
     {
         name: 'sdk-modules_set-private',
         title: 'Set SDK module private',
-        description: 'Mark a SDK app module as private.',
+        description: 'Mark an SDK app module as private.',
         category: 'sdk-modules',
         scope: 'sdk-apps:write',
         scopeId: undefined,

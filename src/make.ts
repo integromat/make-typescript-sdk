@@ -508,7 +508,7 @@ export class Make {
             contentType === 'application/json' || contentType?.startsWith('application/json;'),
         ); //prevent application/jsonc to be parsed as json
         const isBinaryType: boolean = Boolean(
-            contentType?.startsWith('image/') || contentType === 'application/octet-stream',
+            contentType?.startsWith('image/') || contentType?.startsWith('application/octet-stream'),
         );
 
         if (isJsonType) {
