@@ -1,0 +1,14 @@
+{
+    "connectedSystemApps": [
+        {
+            "name": "http",
+            "label": "HTTP",
+            "icon": "http"
+        },
+        {
+            "name": "sap-agent",
+            "label": "SAP",
+            "icon": "sap"
+        }
+    ]
+}

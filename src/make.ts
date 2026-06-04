@@ -15,6 +15,8 @@ import { Devices } from './endpoints/devices.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
+import { Agents } from './endpoints/agents.js';
+import { ConnectedSystems } from './endpoints/connected-systems.js';
 import { PublicTemplates } from './endpoints/public-templates.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
 import { SDKModules } from './endpoints/sdk/modules.js';
@@ -165,6 +167,18 @@ export class Make {
     public readonly enums: Enums;
 
     /**
+     * Access to on-prem bridge agent endpoints
+     * On-prem agents run on customer infrastructure and connect to Make via the agency service
+     */
+    public readonly agents: Agents;
+
+    /**
+     * Access to on-prem connected system endpoints
+     * Connected systems link on-prem agents to external apps (HTTP, SAP, etc.)
+     */
+    public readonly connectedSystems: ConnectedSystems;
+
+    /**
      * Access to public template endpoints.
      * Public templates are approved, read-only scenario configurations discoverable and usable by any Make user.
      */
@@ -254,6 +268,8 @@ export class Make {
         this.functions = new Functions(this.fetch.bind(this));
         this.organizations = new Organizations(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
+        this.agents = new Agents(this.fetch.bind(this));
+        this.connectedSystems = new ConnectedSystems(this.fetch.bind(this));
         this.credentialRequests = new CredentialRequests(this.fetch.bind(this));
         this.publicTemplates = new PublicTemplates(this.fetch.bind(this));
         this.sdk = {

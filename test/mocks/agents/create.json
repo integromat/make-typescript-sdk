@@ -1,0 +1,11 @@
+{
+    "agent": {
+        "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+        "tenantId": "tenant-1",
+        "name": "New bridge",
+        "clientSecret": "secret-shown-once",
+        "status": "REGISTERED",
+        "alerted": false,
+        "connected": false
+    }
+}

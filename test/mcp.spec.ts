@@ -92,6 +92,30 @@ describe('MCP Tools', () => {
         expect(coreCategories).toContain('connections');
         expect(coreCategories).toContain('teams');
         expect(coreCategories).toContain('data-stores');
+        expect(coreCategories).toContain('on-prem-agent');
+        expect(coreCategories).toContain('connected-system');
+    });
+
+    it('Should expose on-prem agent MCP tools', () => {
+        const onPremAgentTools = MakeTools.filter(tool => tool.category === 'on-prem-agent');
+        const names = onPremAgentTools.map(tool => tool.name);
+        expect(names).toContain('on-prem-agent_list');
+        expect(names).toContain('on-prem-agent_get');
+        expect(names).toContain('on-prem-agent_create');
+        expect(names).toContain('on-prem-agent_update');
+        expect(names).toContain('on-prem-agent_delete');
+        expect(names).toContain('on-prem-agent_get-app-config');
+    });
+
+    it('Should expose connected-system MCP tools', () => {
+        const connectedSystemTools = MakeTools.filter(tool => tool.category === 'connected-system');
+        const names = connectedSystemTools.map(tool => tool.name);
+        expect(names).toContain('connected-system_list');
+        expect(names).toContain('connected-system_get');
+        expect(names).toContain('connected-system_create');
+        expect(names).toContain('connected-system_update');
+        expect(names).toContain('connected-system_delete');
+        expect(names).toContain('connected-system_list-apps');
     });
 
     it('Should have proper naming conventions', () => {

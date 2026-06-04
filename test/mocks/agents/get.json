@@ -1,0 +1,12 @@
+{
+    "agent": {
+        "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "tenantId": "tenant-1",
+        "name": "Production bridge",
+        "status": "ACTIVE",
+        "alerted": false,
+        "connected": true,
+        "version": "1.2.3",
+        "systemConnectionsCount": 2
+    }
+}

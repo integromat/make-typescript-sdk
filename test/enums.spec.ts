@@ -5,6 +5,7 @@ import { mockFetch } from './test.utils.js';
 import * as countriesMock from './mocks/enums/countries.json';
 import * as regionsMock from './mocks/enums/regions.json';
 import * as timezonesMock from './mocks/enums/timezones.json';
+import * as connectedSystemAppsMock from './mocks/enums/connected-system-apps.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -31,5 +32,12 @@ describe('Endpoints: Enums', () => {
 
         const result = await make.enums.timezones();
         expect(result).toStrictEqual(timezonesMock.timezones);
+    });
+
+    it('Should list connected-system apps', async () => {
+        mockFetch('GET https://make.local/api/v2/enums/connected-system-apps', connectedSystemAppsMock);
+
+        const result = await make.enums.connectedSystemApps();
+        expect(result).toStrictEqual(connectedSystemAppsMock.connectedSystemApps);
     });
 });

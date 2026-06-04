@@ -29,6 +29,18 @@ export type Timezone = {
     offset: string;
 };
 
+/**
+ * On-prem connected-system app available for bridge agents.
+ */
+export type ConnectedSystemApp = {
+    /** App slug used as `appName` when creating a connected system */
+    name: string;
+    /** Human-readable label */
+    label: string;
+    /** Icon identifier or URL */
+    icon: string;
+};
+
 type ListCountriesResponse = {
     /** List of countries */
     countries: Country[];
@@ -42,6 +54,11 @@ type ListRegionsResponse = {
 type ListTimezonesResponse = {
     /** List of timezones */
     timezones: Timezone[];
+};
+
+type ListConnectedSystemAppsResponse = {
+    /** List of connected-system apps supported on on-prem agents */
+    connectedSystemApps: ConnectedSystemApp[];
 };
 
 /**
@@ -81,5 +98,15 @@ export class Enums {
      */
     async timezones(): Promise<Timezone[]> {
         return (await this.#fetch<ListTimezonesResponse>('/enums/timezones')).timezones;
+    }
+
+    /**
+     * Get list of apps available for on-prem connected systems (e.g. `http`, `sap-agent`).
+     * @returns Promise with the list of connected-system apps
+     */
+    async connectedSystemApps(): Promise<ConnectedSystemApp[]> {
+        return (
+            await this.#fetch<ListConnectedSystemAppsResponse>('/enums/connected-system-apps')
+        ).connectedSystemApps;
     }
 }

@@ -1,0 +1,22 @@
+{
+    "inputs": [
+        {
+            "name": "inputs",
+            "label": "Inputs",
+            "type": "collection",
+            "spec": [
+                {
+                    "name": "client",
+                    "label": "Client",
+                    "help": "SAP client number",
+                    "required": true
+                },
+                {
+                    "name": "language",
+                    "label": "Language",
+                    "required": false
+                }
+            ]
+        }
+    ]
+}
