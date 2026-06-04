@@ -96,7 +96,7 @@ export const tools: MakeTool[] = [
                 name: 'SAP production',
                 agentId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
                 appName: 'sap-agent',
-                inputs: { ashost: '00', sysnr: '00', client: '00' },
+                inputs: { ashost: '10.0.0.150', sysnr: '00', client: '100' },
             },
         ],
         execute: async (
@@ -150,6 +150,7 @@ export const tools: MakeTool[] = [
                 organizationId: 5,
                 connectedSystemId: 'b2c3d4e5-f6a7-8901-bcde-f12345678901',
                 name: 'SAP staging',
+                inputs: { ashost: '10.0.0.150', sysnr: '00', client: '100' },
             },
         ],
         execute: async (
