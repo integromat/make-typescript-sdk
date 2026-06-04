@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
+import { VERSION } from '../src/version.js';
 import { mockFetch, TestableMake } from './test.utils.js';
 import { randomUUID } from 'node:crypto';
 import type { QueryValue } from '../src/types.js';
@@ -79,7 +80,7 @@ describe('Make SDK', () => {
                 expect(url).toBe('/users/me');
                 expect(options?.headers).toStrictEqual({
                     authorization: `Token ${MAKE_API_KEY}`,
-                    'user-agent': 'MakeTypeScriptSDK/development',
+                    'user-agent': `MakeTypeScriptSDK/${VERSION}`,
                     'x-custom-header': 'test',
                 });
                 return new Response('{"authUser": {"id": 1}}', {
