@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
+import { MakeError } from '../src/utils.js';
 import { mockFetch } from './test.utils.js';
 
 import * as connectedSystemsListMock from './mocks/connected-systems/list.json';
@@ -42,7 +43,7 @@ describe('Endpoints: Connected systems (on-prem)', () => {
             name: 'SAP production',
             agentId: AGENT_ID,
             appName: 'sap-agent',
-            inputs: { client: '100', language: 'EN' },
+            inputs: { ashost: '00', sysnr: '00', client: '00' },
         };
 
         mockFetch(
@@ -80,5 +81,36 @@ describe('Endpoints: Connected systems (on-prem)', () => {
 
         const result = await make.connectedSystems.delete(ORGANIZATION_ID, CONNECTED_SYSTEM_ID);
         expect(result).toStrictEqual(connectedSystemDeleteMock.connectedSystem);
+    });
+
+    it('Should throw MakeError when the connected system is not found', async () => {
+        mockFetch(
+            `GET https://make.local/api/v2/connected-systems/${CONNECTED_SYSTEM_ID}?organizationId=${ORGANIZATION_ID}`,
+            { message: 'Not found' },
+            404,
+        );
+
+        await expect(make.connectedSystems.get(ORGANIZATION_ID, CONNECTED_SYSTEM_ID)).rejects.toMatchObject({
+            name: 'MakeError',
+            statusCode: 404,
+            message: 'Not found',
+        });
+    });
+
+    it('Should throw MakeError when agency rejects create', async () => {
+        const body = {
+            name: 'SAP production',
+            agentId: AGENT_ID,
+            appName: 'sap-agent',
+            inputs: { language: 'EN' },
+        };
+
+        mockFetch(
+            `POST https://make.local/api/v2/connected-systems?organizationId=${ORGANIZATION_ID}`,
+            { message: 'Request to the Agency has failed: [400] Bad Request' },
+            400,
+        );
+
+        await expect(make.connectedSystems.create(ORGANIZATION_ID, body)).rejects.toBeInstanceOf(MakeError);
     });
 });

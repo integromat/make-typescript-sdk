@@ -6,8 +6,9 @@
             "agentId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
             "appName": "sap-agent",
             "inputs": [
-                { "name": "client", "value": "100" },
-                { "name": "language", "value": "EN" }
+                { "name": "ashost", "value": "00" },
+                { "name": "sysnr", "value": "00" },
+                { "name": "client", "value": "00" }
             ]
         }
     ]

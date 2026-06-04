@@ -6,15 +6,20 @@
             "type": "collection",
             "spec": [
                 {
+                    "name": "ashost",
+                    "label": "Application server host",
+                    "required": true
+                },
+                {
+                    "name": "sysnr",
+                    "label": "System number",
+                    "required": true
+                },
+                {
                     "name": "client",
                     "label": "Client",
                     "help": "SAP client number",
                     "required": true
-                },
-                {
-                    "name": "language",
-                    "label": "Language",
-                    "required": false
                 }
             ]
         }

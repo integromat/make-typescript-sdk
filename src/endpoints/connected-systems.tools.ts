@@ -96,7 +96,7 @@ export const tools: MakeTool[] = [
                 name: 'SAP production',
                 agentId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
                 appName: 'sap-agent',
-                inputs: { client: '100', language: 'EN' },
+                inputs: { ashost: '00', sysnr: '00', client: '00' },
             },
         ],
         execute: async (

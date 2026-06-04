@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
+import { MakeError } from '../src/utils.js';
 import { mockFetch } from './test.utils.js';
 
 import * as agentsListMock from './mocks/agents/list.json';
@@ -83,5 +84,32 @@ describe('Endpoints: Agents (on-prem)', () => {
 
         const result = await make.agents.getAppConfig(ORGANIZATION_ID, AGENT_ID, APP_NAME);
         expect(result).toStrictEqual(agentAppConfigMock.inputs);
+    });
+
+    it('Should throw MakeError when the agent is not found', async () => {
+        mockFetch(
+            `GET https://make.local/api/v2/agents/${AGENT_ID}?organizationId=${ORGANIZATION_ID}`,
+            { message: 'Not found' },
+            404,
+        );
+
+        await expect(make.agents.get(ORGANIZATION_ID, AGENT_ID)).rejects.toMatchObject({
+            name: 'MakeError',
+            statusCode: 404,
+            message: 'Not found',
+        });
+    });
+
+    it('Should throw MakeError when agent registration fails validation', async () => {
+        mockFetch(
+            `POST https://make.local/api/v2/agent/register?organizationId=${ORGANIZATION_ID}`,
+            {
+                message: 'Validation failed',
+                suberrors: [{ message: 'Name is required' }],
+            },
+            422,
+        );
+
+        await expect(make.agents.create(ORGANIZATION_ID, { name: '' })).rejects.toBeInstanceOf(MakeError);
     });
 });

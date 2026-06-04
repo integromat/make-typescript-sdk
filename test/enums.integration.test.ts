@@ -53,4 +53,17 @@ describe('Integration: Enums', () => {
         expect(timezone?.code).toBeDefined();
         expect(timezone?.offset).toBeDefined();
     });
+
+    it('Should list connected-system apps', async () => {
+        const apps = await make.enums.connectedSystemApps();
+
+        expect(apps).toBeDefined();
+        expect(Array.isArray(apps)).toBe(true);
+        expect(apps.length).toBeGreaterThan(0);
+
+        const app = apps[0];
+        expect(app?.name).toBeDefined();
+        expect(app?.label).toBeDefined();
+        expect(app?.icon).toBeDefined();
+    });
 });
