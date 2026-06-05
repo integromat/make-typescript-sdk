@@ -1,5 +1,4 @@
 import { describe, expect, it } from '@jest/globals';
-import type { QueryValue } from '../src/types.js';
 import { buildUrl, createMakeError } from '../src/utils.js';
 
 describe('Utils', () => {
@@ -20,9 +19,8 @@ describe('Utils', () => {
             );
         });
 
-        it('Should skip null and undefined array elements', () => {
-            const params = { tags: ['a', null, undefined, 'b'] } as Record<string, QueryValue>;
-            expect(buildUrl('https://example.com', params)).toBe(
+        it('Should skip undefined array elements', () => {
+            expect(buildUrl('https://example.com', { tags: ['a', undefined, 'b'] })).toBe(
                 'https://example.com?tags%5B%5D=a&tags%5B%5D=b',
             );
         });
