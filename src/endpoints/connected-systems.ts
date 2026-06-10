@@ -30,7 +30,7 @@ export type ConnectedSystem = {
 
 /**
  * Parameters for creating a connected system.
- * `inputs` is a keyed object matching the app's dynamic form (see `Agents.getAppConfig`).
+ * `inputs` is a keyed object matching the app's dynamic form (see `OnPremAgents.getAppConfig`).
  */
 export type CreateConnectedSystemBody = {
     /** Display name for the connected system */

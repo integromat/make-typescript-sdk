@@ -64,13 +64,13 @@ export type {
 export type { Device, DeviceInfo, Devices, ListDevicesOptions } from './endpoints/devices.js';
 export type { Enums, Country, Region, Timezone, ConnectedSystemApp } from './endpoints/enums.js';
 export type {
-    Agent,
-    Agents,
-    AgentStatus,
-    AgentAppConfigField,
-    AgentAppConfigInput,
-    CreateAgentBody,
-    UpdateAgentBody,
+    OnPremAgent,
+    OnPremAgents,
+    OnPremAgentStatus,
+    OnPremAgentAppConfigField,
+    OnPremAgentAppConfigInput,
+    CreateOnPremAgentBody,
+    UpdateOnPremAgentBody,
 } from './endpoints/agents.js';
 export type {
     ConnectedSystem,

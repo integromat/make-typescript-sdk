@@ -26,7 +26,7 @@ const NON_EXISTENT_AGENT_ID = '00000000-0000-4000-8000-000000000000';
     });
 
     it('Should register an on-prem agent via /agent/register', async () => {
-        const agent = await make.agents.create(MAKE_ORGANIZATION, { name: agentName });
+        const agent = await make.onPremAgents.create(MAKE_ORGANIZATION, { name: agentName });
 
         expect(agent.id).toBeDefined();
         expect(agent.name).toBe(agentName);
@@ -36,14 +36,14 @@ const NON_EXISTENT_AGENT_ID = '00000000-0000-4000-8000-000000000000';
     });
 
     it('Should list on-prem agents', async () => {
-        const agents = await make.agents.list(MAKE_ORGANIZATION);
+        const agents = await make.onPremAgents.list(MAKE_ORGANIZATION);
 
         expect(Array.isArray(agents)).toBe(true);
         expect(agents.some(a => a.id === agentId)).toBe(true);
     });
 
     it('Should get an on-prem agent', async () => {
-        const agent = await make.agents.get(MAKE_ORGANIZATION, agentId);
+        const agent = await make.onPremAgents.get(MAKE_ORGANIZATION, agentId);
 
         expect(agent.id).toBe(agentId);
         expect(agent.name).toBe(agentName);
@@ -51,14 +51,14 @@ const NON_EXISTENT_AGENT_ID = '00000000-0000-4000-8000-000000000000';
 
     it('Should update an on-prem agent name', async () => {
         const updatedName = `${agentName} updated`;
-        const agent = await make.agents.update(MAKE_ORGANIZATION, agentId, { name: updatedName });
+        const agent = await make.onPremAgents.update(MAKE_ORGANIZATION, agentId, { name: updatedName });
 
         expect(agent.id).toBe(agentId);
         expect(agent.name).toBe(updatedName);
     });
 
     it.each(CONNECTED_SYSTEM_APPS)('Should get app config for %s', async appName => {
-        const inputs = await make.agents.getAppConfig(MAKE_ORGANIZATION, agentId, appName);
+        const inputs = await make.onPremAgents.getAppConfig(MAKE_ORGANIZATION, agentId, appName);
 
         expect(Array.isArray(inputs)).toBe(true);
         expect(inputs.length).toBeGreaterThan(0);
@@ -74,7 +74,7 @@ const NON_EXISTENT_AGENT_ID = '00000000-0000-4000-8000-000000000000';
     });
 
     it('Should throw MakeError for a non-existent on-prem agent', async () => {
-        await expect(make.agents.get(MAKE_ORGANIZATION, NON_EXISTENT_AGENT_ID)).rejects.toMatchObject({
+        await expect(make.onPremAgents.get(MAKE_ORGANIZATION, NON_EXISTENT_AGENT_ID)).rejects.toMatchObject({
             name: 'MakeError',
             statusCode: 400,
         });
@@ -82,7 +82,7 @@ const NON_EXISTENT_AGENT_ID = '00000000-0000-4000-8000-000000000000';
 
     afterAll(async () => {
         if (agentId) {
-            await make.agents.delete(MAKE_ORGANIZATION, agentId);
+            await make.onPremAgents.delete(MAKE_ORGANIZATION, agentId);
         }
     });
 });

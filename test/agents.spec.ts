@@ -22,7 +22,7 @@ describe('Endpoints: Agents (on-prem)', () => {
     it('Should list on-prem agents', async () => {
         mockFetch(`GET https://make.local/api/v2/agents?organizationId=${ORGANIZATION_ID}`, agentsListMock);
 
-        const result = await make.agents.list(ORGANIZATION_ID);
+        const result = await make.onPremAgents.list(ORGANIZATION_ID);
         expect(result).toStrictEqual(agentsListMock.agents);
     });
 
@@ -32,7 +32,7 @@ describe('Endpoints: Agents (on-prem)', () => {
             agentGetMock,
         );
 
-        const result = await make.agents.get(ORGANIZATION_ID, AGENT_ID);
+        const result = await make.onPremAgents.get(ORGANIZATION_ID, AGENT_ID);
         expect(result).toStrictEqual(agentGetMock.agent);
     });
 
@@ -47,7 +47,7 @@ describe('Endpoints: Agents (on-prem)', () => {
             },
         );
 
-        const result = await make.agents.create(ORGANIZATION_ID, body);
+        const result = await make.onPremAgents.create(ORGANIZATION_ID, body);
         expect(result).toStrictEqual(agentCreateMock.agent);
     });
 
@@ -62,7 +62,7 @@ describe('Endpoints: Agents (on-prem)', () => {
             },
         );
 
-        const result = await make.agents.update(ORGANIZATION_ID, AGENT_ID, body);
+        const result = await make.onPremAgents.update(ORGANIZATION_ID, AGENT_ID, body);
         expect(result).toStrictEqual(agentUpdateMock.agent);
     });
 
@@ -72,7 +72,7 @@ describe('Endpoints: Agents (on-prem)', () => {
             agentDeleteMock,
         );
 
-        const result = await make.agents.delete(ORGANIZATION_ID, AGENT_ID);
+        const result = await make.onPremAgents.delete(ORGANIZATION_ID, AGENT_ID);
         expect(result).toStrictEqual(agentDeleteMock.agent);
     });
 
@@ -82,7 +82,7 @@ describe('Endpoints: Agents (on-prem)', () => {
             agentAppConfigMock,
         );
 
-        const result = await make.agents.getAppConfig(ORGANIZATION_ID, AGENT_ID, APP_NAME);
+        const result = await make.onPremAgents.getAppConfig(ORGANIZATION_ID, AGENT_ID, APP_NAME);
         expect(result).toStrictEqual(agentAppConfigMock.inputs);
     });
 
@@ -93,7 +93,7 @@ describe('Endpoints: Agents (on-prem)', () => {
             404,
         );
 
-        await expect(make.agents.get(ORGANIZATION_ID, AGENT_ID)).rejects.toMatchObject({
+        await expect(make.onPremAgents.get(ORGANIZATION_ID, AGENT_ID)).rejects.toMatchObject({
             name: 'MakeError',
             statusCode: 404,
             message: 'Not found',
@@ -110,6 +110,6 @@ describe('Endpoints: Agents (on-prem)', () => {
             422,
         );
 
-        await expect(make.agents.create(ORGANIZATION_ID, { name: '' })).rejects.toBeInstanceOf(MakeError);
+        await expect(make.onPremAgents.create(ORGANIZATION_ID, { name: '' })).rejects.toBeInstanceOf(MakeError);
     });
 });

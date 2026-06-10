@@ -48,7 +48,7 @@ function getTool(name: string) {
     });
 
     it('Should provision a temporary on-prem agent for connected-system reads', async () => {
-        const agent = await make.agents.create(MAKE_ORGANIZATION, {
+        const agent = await make.onPremAgents.create(MAKE_ORGANIZATION, {
             name: `SDK integration CS agent ${Date.now()}`,
         });
         agentId = agent.id;
@@ -66,7 +66,7 @@ function getTool(name: string) {
     });
 
     it.each(CONNECTED_SYSTEM_APPS)('Should get app config for %s', async appName => {
-        const config = await make.agents.getAppConfig(MAKE_ORGANIZATION, agentId, appName);
+        const config = await make.onPremAgents.getAppConfig(MAKE_ORGANIZATION, agentId, appName);
 
         expect(Array.isArray(config)).toBe(true);
         expect(config.length).toBeGreaterThan(0);
@@ -96,7 +96,7 @@ function getTool(name: string) {
 
     afterAll(async () => {
         if (agentId) {
-            await make.agents.delete(MAKE_ORGANIZATION, agentId);
+            await make.onPremAgents.delete(MAKE_ORGANIZATION, agentId);
         }
     });
 });
@@ -117,12 +117,12 @@ for (const appName of CONNECTED_SYSTEM_APPS) {
             const systemName = `SDK integration ${appName} ${Date.now()}`;
 
             beforeAll(async () => {
-                const agent = await make.agents.create(MAKE_ORGANIZATION, {
+                const agent = await make.onPremAgents.create(MAKE_ORGANIZATION, {
                     name: `SDK integration ${appName} create ${Date.now()}`,
                 });
                 agentId = agent.id;
 
-                const config = await make.agents.getAppConfig(MAKE_ORGANIZATION, agentId, appName);
+                const config = await make.onPremAgents.getAppConfig(MAKE_ORGANIZATION, agentId, appName);
                 assertInputsMatchAppConfig(
                     config,
                     parseInputs(inputsRaw, inputsEnv),
@@ -173,7 +173,7 @@ for (const appName of CONNECTED_SYSTEM_APPS) {
                     await make.connectedSystems.delete(MAKE_ORGANIZATION, connectedSystemId);
                 }
                 if (agentId) {
-                    await make.agents.delete(MAKE_ORGANIZATION, agentId);
+                    await make.onPremAgents.delete(MAKE_ORGANIZATION, agentId);
                 }
             });
         },

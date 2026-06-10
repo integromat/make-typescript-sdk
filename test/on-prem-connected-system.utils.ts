@@ -1,4 +1,4 @@
-import type { AgentAppConfigInput } from '../src/endpoints/agents.js';
+import type { OnPremAgentAppConfigInput } from '../src/endpoints/agents.js';
 
 export function parseInputs(raw: string | undefined, envName: string): Record<string, string> {
     if (!raw) {
@@ -13,7 +13,7 @@ export function parseInputs(raw: string | undefined, envName: string): Record<st
     );
 }
 
-export function inputFieldNamesFromAppConfig(config: AgentAppConfigInput[]): {
+export function inputFieldNamesFromAppConfig(config: OnPremAgentAppConfigInput[]): {
     required: string[];
     all: string[];
 } {
@@ -26,7 +26,7 @@ export function inputFieldNamesFromAppConfig(config: AgentAppConfigInput[]): {
 }
 
 export function assertInputsMatchAppConfig(
-    config: AgentAppConfigInput[],
+    config: OnPremAgentAppConfigInput[],
     inputs: Record<string, string>,
     envName: string,
     appName: string,

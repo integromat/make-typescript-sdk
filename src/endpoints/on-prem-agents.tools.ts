@@ -23,7 +23,7 @@ export const tools: MakeTool[] = [
         },
         examples: [{ organizationId: 5 }],
         execute: async (make: Make, args: { organizationId: number }) => {
-            return await make.agents.list(args.organizationId);
+            return await make.onPremAgents.list(args.organizationId);
         },
     },
     {
@@ -48,7 +48,7 @@ export const tools: MakeTool[] = [
         },
         examples: [{ organizationId: 5, agentId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' }],
         execute: async (make: Make, args: { organizationId: number; agentId: string }) => {
-            return await make.agents.get(args.organizationId, args.agentId);
+            return await make.onPremAgents.get(args.organizationId, args.agentId);
         },
     },
     {
@@ -74,7 +74,7 @@ export const tools: MakeTool[] = [
         },
         examples: [{ organizationId: 5, name: 'Production bridge' }],
         execute: async (make: Make, args: { organizationId: number; name: string }) => {
-            return await make.agents.create(args.organizationId, { name: args.name });
+            return await make.onPremAgents.create(args.organizationId, { name: args.name });
         },
     },
     {
@@ -101,7 +101,7 @@ export const tools: MakeTool[] = [
         },
         examples: [{ organizationId: 5, agentId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890', name: 'Renamed agent' }],
         execute: async (make: Make, args: { organizationId: number; agentId: string; name?: string }) => {
-            return await make.agents.update(args.organizationId, args.agentId, { name: args.name });
+            return await make.onPremAgents.update(args.organizationId, args.agentId, { name: args.name });
         },
     },
     {
@@ -127,7 +127,7 @@ export const tools: MakeTool[] = [
         },
         examples: [{ organizationId: 5, agentId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' }],
         execute: async (make: Make, args: { organizationId: number; agentId: string }) => {
-            return await make.agents.delete(args.organizationId, args.agentId);
+            return await make.onPremAgents.delete(args.organizationId, args.agentId);
         },
     },
     {
@@ -166,7 +166,7 @@ export const tools: MakeTool[] = [
             make: Make,
             args: { organizationId: number; agentId: string; appName: string },
         ) => {
-            return await make.agents.getAppConfig(args.organizationId, args.agentId, args.appName);
+            return await make.onPremAgents.getAppConfig(args.organizationId, args.agentId, args.appName);
         },
     },
 ];

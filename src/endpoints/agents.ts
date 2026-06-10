@@ -3,12 +3,12 @@ import type { FetchFunction } from '../types.js';
 /**
  * Status of an on-prem bridge agent.
  */
-export type AgentStatus = 'ACTIVE' | 'STOPPED' | 'NOT_RESPONDING' | 'REGISTERED';
+export type OnPremAgentStatus = 'ACTIVE' | 'STOPPED' | 'NOT_RESPONDING' | 'REGISTERED';
 
 /**
- * Represents a Make on-prem bridge agent (not Make AI `/v1/agents`).
+ * Represents a Make on-prem bridge agent.
  */
-export type Agent = {
+export type OnPremAgent = {
     /** Unique identifier of the agent */
     id: string;
     /** Tenant identifier in the agency service */
@@ -18,7 +18,7 @@ export type Agent = {
     /** Client secret for agent authentication (sensitive; may only be shown at creation) */
     clientSecret?: string;
     /** Current operational status */
-    status: AgentStatus;
+    status: OnPremAgentStatus;
     /** Whether the agent has been alerted */
     alerted: boolean;
     /** Whether the agent is currently connected */
@@ -36,7 +36,7 @@ export type Agent = {
 /**
  * Parameters for registering a new on-prem agent.
  */
-export type CreateAgentBody = {
+export type CreateOnPremAgentBody = {
     /** Display name for the new agent */
     name: string;
 };
@@ -44,7 +44,7 @@ export type CreateAgentBody = {
 /**
  * Parameters for updating an on-prem agent.
  */
-export type UpdateAgentBody = {
+export type UpdateOnPremAgentBody = {
     /** New name for the agent */
     name?: string;
 };
@@ -52,7 +52,7 @@ export type UpdateAgentBody = {
 /**
  * Field definition returned for connected-system configuration on an agent app.
  */
-export type AgentAppConfigField = {
+export type OnPremAgentAppConfigField = {
     /** Field identifier used in `inputs` when creating a connected system */
     name: string;
     /** Human-readable label */
@@ -66,7 +66,7 @@ export type AgentAppConfigField = {
 /**
  * Forman-style input descriptor for an agent app's connected-system form.
  */
-export type AgentAppConfigInput = {
+export type OnPremAgentAppConfigInput = {
     /** Top-level field name (typically `inputs` for a collection) */
     name: string;
     /** Human-readable label */
@@ -74,38 +74,38 @@ export type AgentAppConfigInput = {
     /** Field type (e.g. `collection`) */
     type: string;
     /** Nested field definitions when `type` is `collection` */
-    spec?: AgentAppConfigField[];
+    spec?: OnPremAgentAppConfigField[];
 };
 
-type ListAgentsResponse = {
-    agents: Agent[];
+type ListOnPremAgentsResponse = {
+    agents: OnPremAgent[];
 };
 
-type GetAgentResponse = {
-    agent: Agent;
+type GetOnPremAgentResponse = {
+    agent: OnPremAgent;
 };
 
-type CreateAgentResponse = {
-    agent: Agent;
+type CreateOnPremAgentResponse = {
+    agent: OnPremAgent;
 };
 
-type UpdateAgentResponse = {
-    agent: Agent;
+type UpdateOnPremAgentResponse = {
+    agent: OnPremAgent;
 };
 
-type DeleteAgentResponse = {
+type DeleteOnPremAgentResponse = {
     agent: string;
 };
 
-type GetAgentAppConfigResponse = {
-    inputs: AgentAppConfigInput[];
+type GetOnPremAgentAppConfigResponse = {
+    inputs: OnPremAgentAppConfigInput[];
 };
 
 /**
  * Class providing methods for Make on-prem bridge agents.
  * These agents run on customer infrastructure and connect to Make via the agency service.
  */
-export class Agents {
+export class OnPremAgents {
     readonly #fetch: FetchFunction;
 
     constructor(fetch: FetchFunction) {
@@ -116,9 +116,9 @@ export class Agents {
      * List on-prem agents for an organization.
      * @param organizationId The organization ID
      */
-    async list(organizationId: number): Promise<Agent[]> {
+    async list(organizationId: number): Promise<OnPremAgent[]> {
         return (
-            await this.#fetch<ListAgentsResponse>('/agents', {
+            await this.#fetch<ListOnPremAgentsResponse>('/agents', {
                 query: { organizationId },
             })
         ).agents;
@@ -129,9 +129,9 @@ export class Agents {
      * @param organizationId The organization ID
      * @param agentId The agent UUID
      */
-    async get(organizationId: number, agentId: string): Promise<Agent> {
+    async get(organizationId: number, agentId: string): Promise<OnPremAgent> {
         return (
-            await this.#fetch<GetAgentResponse>(`/agents/${agentId}`, {
+            await this.#fetch<GetOnPremAgentResponse>(`/agents/${agentId}`, {
                 query: { organizationId },
             })
         ).agent;
@@ -142,9 +142,9 @@ export class Agents {
      * @param organizationId The organization ID
      * @param body Agent registration parameters (`name` only)
      */
-    async create(organizationId: number, body: CreateAgentBody): Promise<Agent> {
+    async create(organizationId: number, body: CreateOnPremAgentBody): Promise<OnPremAgent> {
         return (
-            await this.#fetch<CreateAgentResponse>('/agent/register', {
+            await this.#fetch<CreateOnPremAgentResponse>('/agent/register', {
                 method: 'POST',
                 query: { organizationId },
                 body,
@@ -158,9 +158,9 @@ export class Agents {
      * @param agentId The agent UUID
      * @param body Fields to update
      */
-    async update(organizationId: number, agentId: string, body: UpdateAgentBody): Promise<Agent> {
+    async update(organizationId: number, agentId: string, body: UpdateOnPremAgentBody): Promise<OnPremAgent> {
         return (
-            await this.#fetch<UpdateAgentResponse>(`/agents/${agentId}`, {
+            await this.#fetch<UpdateOnPremAgentResponse>(`/agents/${agentId}`, {
                 method: 'PATCH',
                 query: { organizationId },
                 body,
@@ -176,7 +176,7 @@ export class Agents {
      */
     async delete(organizationId: number, agentId: string): Promise<string> {
         return (
-            await this.#fetch<DeleteAgentResponse>(`/agents/${agentId}`, {
+            await this.#fetch<DeleteOnPremAgentResponse>(`/agents/${agentId}`, {
                 method: 'DELETE',
                 query: { organizationId },
             })
@@ -193,9 +193,9 @@ export class Agents {
         organizationId: number,
         agentId: string,
         appName: string,
-    ): Promise<AgentAppConfigInput[]> {
+    ): Promise<OnPremAgentAppConfigInput[]> {
         return (
-            await this.#fetch<GetAgentAppConfigResponse>(
+            await this.#fetch<GetOnPremAgentAppConfigResponse>(
                 `/agents/${agentId}/apps/${appName}/config`,
                 {
                     query: { organizationId },

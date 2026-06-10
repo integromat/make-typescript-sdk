@@ -15,7 +15,7 @@ import { Devices } from './endpoints/devices.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
-import { Agents } from './endpoints/agents.js';
+import { OnPremAgents } from './endpoints/agents.js';
 import { ConnectedSystems } from './endpoints/connected-systems.js';
 import { PublicTemplates } from './endpoints/public-templates.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
@@ -170,7 +170,7 @@ export class Make {
      * Access to on-prem bridge agent endpoints
      * On-prem agents run on customer infrastructure and connect to Make via the agency service
      */
-    public readonly agents: Agents;
+    public readonly onPremAgents: OnPremAgents;
 
     /**
      * Access to on-prem connected system endpoints
@@ -268,7 +268,7 @@ export class Make {
         this.functions = new Functions(this.fetch.bind(this));
         this.organizations = new Organizations(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
-        this.agents = new Agents(this.fetch.bind(this));
+        this.onPremAgents = new OnPremAgents(this.fetch.bind(this));
         this.connectedSystems = new ConnectedSystems(this.fetch.bind(this));
         this.credentialRequests = new CredentialRequests(this.fetch.bind(this));
         this.publicTemplates = new PublicTemplates(this.fetch.bind(this));
