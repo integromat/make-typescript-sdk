@@ -71,7 +71,7 @@ export type {
     OnPremAgentAppConfigInput,
     CreateOnPremAgentBody,
     UpdateOnPremAgentBody,
-} from './endpoints/agents.js';
+} from './endpoints/on-prem-agents.js';
 export type {
     ConnectedSystem,
     ConnectedSystems,

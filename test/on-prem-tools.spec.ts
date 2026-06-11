@@ -3,8 +3,8 @@ import { Make } from '../src/make.js';
 import { MakeTools } from '../src/tools.js';
 import { mockFetch } from './test.utils.js';
 
-import * as agentsListMock from './mocks/agents/list.json';
-import * as agentAppConfigMock from './mocks/agents/app-config.json';
+import * as agentsListMock from './mocks/on-prem-agents/list.json';
+import * as agentAppConfigMock from './mocks/on-prem-agents/app-config.json';
 import * as connectedSystemAppsMock from './mocks/enums/connected-system-apps.json';
 import * as connectedSystemsListMock from './mocks/connected-systems/list.json';
 

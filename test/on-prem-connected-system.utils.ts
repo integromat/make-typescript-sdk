@@ -1,4 +1,4 @@
-import type { OnPremAgentAppConfigInput } from '../src/endpoints/agents.js';
+import type { OnPremAgentAppConfigInput } from '../src/endpoints/on-prem-agents.js';
 
 export function parseInputs(raw: string | undefined, envName: string): Record<string, string> {
     if (!raw) {

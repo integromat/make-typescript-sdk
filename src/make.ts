@@ -15,7 +15,7 @@ import { Devices } from './endpoints/devices.js';
 import { Functions } from './endpoints/functions.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
-import { OnPremAgents } from './endpoints/agents.js';
+import { OnPremAgents } from './endpoints/on-prem-agents.js';
 import { ConnectedSystems } from './endpoints/connected-systems.js';
 import { PublicTemplates } from './endpoints/public-templates.js';
 import { SDKApps } from './endpoints/sdk/apps.js';

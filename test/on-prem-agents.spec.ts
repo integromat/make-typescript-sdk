@@ -3,12 +3,12 @@ import { Make } from '../src/make.js';
 import { MakeError } from '../src/utils.js';
 import { mockFetch } from './test.utils.js';
 
-import * as agentsListMock from './mocks/agents/list.json';
-import * as agentGetMock from './mocks/agents/get.json';
-import * as agentCreateMock from './mocks/agents/create.json';
-import * as agentUpdateMock from './mocks/agents/update.json';
-import * as agentDeleteMock from './mocks/agents/delete.json';
-import * as agentAppConfigMock from './mocks/agents/app-config.json';
+import * as agentsListMock from './mocks/on-prem-agents/list.json';
+import * as agentGetMock from './mocks/on-prem-agents/get.json';
+import * as agentCreateMock from './mocks/on-prem-agents/create.json';
+import * as agentUpdateMock from './mocks/on-prem-agents/update.json';
+import * as agentDeleteMock from './mocks/on-prem-agents/delete.json';
+import * as agentAppConfigMock from './mocks/on-prem-agents/app-config.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -16,7 +16,7 @@ const ORGANIZATION_ID = 5;
 const AGENT_ID = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
 const APP_NAME = 'sap-agent';
 
-describe('Endpoints: Agents (on-prem)', () => {
+describe('Endpoints: OnPremAgents', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
     it('Should list on-prem agents', async () => {

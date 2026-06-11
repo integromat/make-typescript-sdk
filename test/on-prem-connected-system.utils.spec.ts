@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals';
-import type { OnPremAgentAppConfigInput } from '../src/endpoints/agents.js';
+import type { OnPremAgentAppConfigInput } from '../src/endpoints/on-prem-agents.js';
 import {
     assertInputsMatchAppConfig,
     inputFieldNamesFromAppConfig,
