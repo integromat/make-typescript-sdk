@@ -8,6 +8,7 @@ const config: Config = {
     transform: {
         '^.+.tsx?$': ['ts-jest', {}],
     },
+    coveragePathIgnorePatterns: ['/node_modules/', '\\.tools\\.ts$'],
 };
 
 export default config;
