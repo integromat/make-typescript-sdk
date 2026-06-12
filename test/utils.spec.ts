@@ -19,6 +19,12 @@ describe('Utils', () => {
             );
         });
 
+        it('Should skip undefined array elements', () => {
+            expect(buildUrl('https://example.com', { tags: ['a', undefined, 'b'] })).toBe(
+                'https://example.com?tags%5B%5D=a&tags%5B%5D=b',
+            );
+        });
+
         it('Should build URL with nested parameters', () => {
             expect(
                 buildUrl('https://example.com', {

@@ -1,0 +1,13 @@
+{
+    "connectedSystem": {
+        "id": "d4e5f6a7-b8c9-0123-defa-234567890123",
+        "name": "SAP production",
+        "agentId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "appName": "sap-agent",
+        "inputs": [
+            { "name": "ashost", "value": "00" },
+            { "name": "sysnr", "value": "00" },
+            { "name": "client", "value": "00" }
+        ]
+    }
+}

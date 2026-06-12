@@ -25,6 +25,8 @@ import { tools as FoldersTools } from './endpoints/folders.tools.js';
 import { tools as IncompleteExecutionsTools } from './endpoints/incomplete-executions.tools.js';
 import { tools as DataStructuresTools } from './endpoints/data-structures.tools.js';
 import { tools as EnumsTools } from './endpoints/enums.tools.js';
+import { tools as OnPremAgentsTools } from './endpoints/on-prem-agents.tools.js';
+import { tools as ConnectedSystemsTools } from './endpoints/connected-systems.tools.js';
 import { tools as PublicTemplatesTools } from './endpoints/public-templates.tools.js';
 
 /**
@@ -214,6 +216,8 @@ export const MakeTools = [
     ...TeamsTools,
     ...OrganizationsTools,
     ...UsersTools,
+    ...OnPremAgentsTools,
+    ...ConnectedSystemsTools,
     ...EnumsTools,
     ...PublicTemplatesTools,
 ] as MakeTool[];

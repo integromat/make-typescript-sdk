@@ -62,7 +62,23 @@ export type {
     CloneDataStructureBody,
 } from './endpoints/data-structures.js';
 export type { Device, DeviceInfo, Devices, ListDevicesOptions } from './endpoints/devices.js';
-export type { Enums, Country, Region, Timezone } from './endpoints/enums.js';
+export type { Enums, Country, Region, Timezone, ConnectedSystemApp } from './endpoints/enums.js';
+export type {
+    OnPremAgent,
+    OnPremAgents,
+    OnPremAgentStatus,
+    OnPremAgentAppConfigField,
+    OnPremAgentAppConfigInput,
+    CreateOnPremAgentBody,
+    UpdateOnPremAgentBody,
+} from './endpoints/on-prem-agents.js';
+export type {
+    ConnectedSystem,
+    ConnectedSystems,
+    ConnectedSystemInput,
+    CreateConnectedSystemBody,
+    UpdateConnectedSystemBody,
+} from './endpoints/connected-systems.js';
 export type { Execution, ExecutionDetail, Executions, ListExecutionsOptions } from './endpoints/executions.js';
 export type {
     Folder,

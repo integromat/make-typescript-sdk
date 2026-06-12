@@ -269,6 +269,19 @@ MAKE_TEAM="<team-id>"
 MAKE_ORGANIZATION="<organization-id>"
 ```
 
+Required for connected-system **create** integration (field names from `getAppConfig`):
+
+```
+MAKE_CONNECTED_SYSTEM_HTTP_INPUTS='{"url":"https://example.com"}'
+MAKE_CONNECTED_SYSTEM_SAP_AGENT_INPUTS='{"ashost":"00","sysnr":"00","client":"00"}'
+```
+
+Each create suite registers a **new** on-prem agent, then creates the connected system on that agent (no agent ID in `.env`). Use the same input field names and values you would enter in the Make UI. For `sap-agent`, the form uses `ashost`, `sysnr`, and `client` (not `language`); confirm names via `getAppConfig` if your zone differs.
+
+Read tests always cover **http** and **sap-agent**. Create suites run when the matching `MAKE_CONNECTED_SYSTEM_*_INPUTS` is set.
+
+Copy `.env.example` to `.env` and fill in values. The organization must have `license.onPremAgent` enabled; the API token needs `organizations:read`, `agents:read`, and `agents:write` scopes.
+
 Please provide zone without `https://` prefix (e.g. `eu2.make.com`).
 
 ## Building
