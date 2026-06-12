@@ -5,7 +5,7 @@ import { MakeTools } from '../src/tools.js';
 import {
     assertInputsMatchAppConfig,
     parseInputs,
-} from './on-prem-connected-system.utils.js';
+} from './connected-systems.utils.js';
 
 const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');

@@ -4,7 +4,7 @@ import {
     assertInputsMatchAppConfig,
     inputFieldNamesFromAppConfig,
     parseInputs,
-} from './on-prem-connected-system.utils.js';
+} from './connected-systems.utils.js';
 
 const SAP_APP_CONFIG: OnPremAgentAppConfigInput[] = [
     {
@@ -19,7 +19,7 @@ const SAP_APP_CONFIG: OnPremAgentAppConfigInput[] = [
     },
 ];
 
-describe('on-prem connected-system integration utils', () => {
+describe('connected-system integration utils', () => {
     describe('parseInputs', () => {
         it('Should return empty object when raw is undefined', () => {
             expect(parseInputs(undefined, 'MAKE_CONNECTED_SYSTEM_HTTP_INPUTS')).toStrictEqual({});
