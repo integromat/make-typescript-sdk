@@ -485,6 +485,7 @@ Before completing any endpoint addition:
 - [ ] ESLint and Prettier checks pass
 - [ ] Column selection is properly implemented
 - [ ] Error handling follows the established pattern
+- [ ] `README.md` is checked and updated if needed (e.g. endpoint lists, tool categories, environment variables, configuration options)
 
 ## Common Mistakes to Avoid
 
@@ -498,6 +499,7 @@ Before completing any endpoint addition:
 8. **Not handling pagination** - Most list endpoints should support it
 9. **Incorrect HTTP methods** - Follow REST conventions
 10. **Missing integration with main client** - Must be accessible through `Make` class
+11. **Forgetting to update `README.md`** - Always check whether the change affects user-facing docs (endpoint lists, tool categories, environment variables, configuration options) and update accordingly
 
 ## Advanced Patterns
 

@@ -50,6 +50,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Enums** - Standardized lists (countries, regions, timezones)
 - **Blueprit** - Blueprint management
 - **Connections** - External service connections and authentication
+- **Connected Systems** - On-prem connections linking agents to external apps (HTTP, SAP, etc.)
 - **Credential Requests** - Credential authorization requests and management
 - **Data Stores** - Data storage within Make
 - **Data Store Records** - Individual records within data stores
@@ -60,6 +61,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Hooks** - Webhooks and mailhooks for external integrations
 - **Incomplete Executions** - Failed or incomplete scenario runs
 - **Keys** - API keys and secrets
+- **On-Prem Agents** - On-prem bridge agents running on customer infrastructure
 - **Organizations** - Top-level account and billing management
 - **Scenarios** - Scenario management
 - **Teams** - Team management and collaboration
@@ -192,6 +194,7 @@ Each tool is described as demonstrated in the following example:
 All tools are organized into the following categories:
 
 - `connections`
+- `connected-system`
 - `credential-requests`
 - `data-stores`
 - `data-store-records`
@@ -203,6 +206,7 @@ All tools are organized into the following categories:
 - `hooks`
 - `incomplete-executions`
 - `keys`
+- `on-prem-agent`
 - `organizations`
 - `scenarios`
 - `teams`
