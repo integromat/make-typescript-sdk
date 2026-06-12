@@ -12,7 +12,7 @@ const CONNECTED_SYSTEM_APPS = ['http', 'sap-agent'] as const;
 const integrationReady = Boolean(MAKE_API_KEY && MAKE_ZONE && MAKE_ORGANIZATION);
 
 /** Valid UUID that is unlikely to exist in the test org */
-const NON_EXISTENT_AGENT_ID = '00000000-0000-4000-8000-000000000000';
+const NON_EXISTENT_ON_PREM_AGENT_ID = '00000000-0000-4000-8000-000000000000';
 
 (integrationReady ? describe : describe.skip)('Integration: OnPremAgents', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
@@ -74,7 +74,7 @@ const NON_EXISTENT_AGENT_ID = '00000000-0000-4000-8000-000000000000';
     });
 
     it('Should throw MakeError for a non-existent on-prem agent', async () => {
-        await expect(make.onPremAgents.get(MAKE_ORGANIZATION, NON_EXISTENT_AGENT_ID)).rejects.toMatchObject({
+        await expect(make.onPremAgents.get(MAKE_ORGANIZATION, NON_EXISTENT_ON_PREM_AGENT_ID)).rejects.toMatchObject({
             name: 'MakeError',
             statusCode: 400,
         });

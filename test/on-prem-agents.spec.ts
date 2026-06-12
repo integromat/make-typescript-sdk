@@ -3,37 +3,37 @@ import { Make } from '../src/make.js';
 import { MakeError } from '../src/utils.js';
 import { mockFetch } from './test.utils.js';
 
-import * as agentsListMock from './mocks/on-prem-agents/list.json';
-import * as agentGetMock from './mocks/on-prem-agents/get.json';
-import * as agentCreateMock from './mocks/on-prem-agents/create.json';
-import * as agentUpdateMock from './mocks/on-prem-agents/update.json';
-import * as agentDeleteMock from './mocks/on-prem-agents/delete.json';
-import * as agentAppConfigMock from './mocks/on-prem-agents/app-config.json';
+import * as onPremAgentsListMock from './mocks/on-prem-agents/list.json';
+import * as onPremAgentGetMock from './mocks/on-prem-agents/get.json';
+import * as onPremAgentCreateMock from './mocks/on-prem-agents/create.json';
+import * as onPremAgentUpdateMock from './mocks/on-prem-agents/update.json';
+import * as onPremAgentDeleteMock from './mocks/on-prem-agents/delete.json';
+import * as onPremAgentAppConfigMock from './mocks/on-prem-agents/app-config.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
 const ORGANIZATION_ID = 5;
-const AGENT_ID = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
+const ON_PREM_AGENT_ID = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
 const APP_NAME = 'sap-agent';
 
 describe('Endpoints: OnPremAgents', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
     it('Should list on-prem agents', async () => {
-        mockFetch(`GET https://make.local/api/v2/agents?organizationId=${ORGANIZATION_ID}`, agentsListMock);
+        mockFetch(`GET https://make.local/api/v2/agents?organizationId=${ORGANIZATION_ID}`, onPremAgentsListMock);
 
         const result = await make.onPremAgents.list(ORGANIZATION_ID);
-        expect(result).toStrictEqual(agentsListMock.agents);
+        expect(result).toStrictEqual(onPremAgentsListMock.agents);
     });
 
     it('Should get an on-prem agent', async () => {
         mockFetch(
-            `GET https://make.local/api/v2/agents/${AGENT_ID}?organizationId=${ORGANIZATION_ID}`,
-            agentGetMock,
+            `GET https://make.local/api/v2/agents/${ON_PREM_AGENT_ID}?organizationId=${ORGANIZATION_ID}`,
+            onPremAgentGetMock,
         );
 
-        const result = await make.onPremAgents.get(ORGANIZATION_ID, AGENT_ID);
-        expect(result).toStrictEqual(agentGetMock.agent);
+        const result = await make.onPremAgents.get(ORGANIZATION_ID, ON_PREM_AGENT_ID);
+        expect(result).toStrictEqual(onPremAgentGetMock.agent);
     });
 
     it('Should register an on-prem agent via /agent/register', async () => {
@@ -41,59 +41,59 @@ describe('Endpoints: OnPremAgents', () => {
 
         mockFetch(
             `POST https://make.local/api/v2/agent/register?organizationId=${ORGANIZATION_ID}`,
-            agentCreateMock,
+            onPremAgentCreateMock,
             req => {
                 expect(req.body).toStrictEqual(body);
             },
         );
 
         const result = await make.onPremAgents.create(ORGANIZATION_ID, body);
-        expect(result).toStrictEqual(agentCreateMock.agent);
+        expect(result).toStrictEqual(onPremAgentCreateMock.agent);
     });
 
     it('Should update an on-prem agent', async () => {
         const body = { name: 'Renamed bridge' };
 
         mockFetch(
-            `PATCH https://make.local/api/v2/agents/${AGENT_ID}?organizationId=${ORGANIZATION_ID}`,
-            agentUpdateMock,
+            `PATCH https://make.local/api/v2/agents/${ON_PREM_AGENT_ID}?organizationId=${ORGANIZATION_ID}`,
+            onPremAgentUpdateMock,
             req => {
                 expect(req.body).toStrictEqual(body);
             },
         );
 
-        const result = await make.onPremAgents.update(ORGANIZATION_ID, AGENT_ID, body);
-        expect(result).toStrictEqual(agentUpdateMock.agent);
+        const result = await make.onPremAgents.update(ORGANIZATION_ID, ON_PREM_AGENT_ID, body);
+        expect(result).toStrictEqual(onPremAgentUpdateMock.agent);
     });
 
     it('Should delete an on-prem agent', async () => {
         mockFetch(
-            `DELETE https://make.local/api/v2/agents/${AGENT_ID}?organizationId=${ORGANIZATION_ID}`,
-            agentDeleteMock,
+            `DELETE https://make.local/api/v2/agents/${ON_PREM_AGENT_ID}?organizationId=${ORGANIZATION_ID}`,
+            onPremAgentDeleteMock,
         );
 
-        const result = await make.onPremAgents.delete(ORGANIZATION_ID, AGENT_ID);
-        expect(result).toStrictEqual(agentDeleteMock.agent);
+        const result = await make.onPremAgents.delete(ORGANIZATION_ID, ON_PREM_AGENT_ID);
+        expect(result).toStrictEqual(onPremAgentDeleteMock.agent);
     });
 
     it('Should get app config for connected-system inputs', async () => {
         mockFetch(
-            `GET https://make.local/api/v2/agents/${AGENT_ID}/apps/${APP_NAME}/config?organizationId=${ORGANIZATION_ID}`,
-            agentAppConfigMock,
+            `GET https://make.local/api/v2/agents/${ON_PREM_AGENT_ID}/apps/${APP_NAME}/config?organizationId=${ORGANIZATION_ID}`,
+            onPremAgentAppConfigMock,
         );
 
-        const result = await make.onPremAgents.getAppConfig(ORGANIZATION_ID, AGENT_ID, APP_NAME);
-        expect(result).toStrictEqual(agentAppConfigMock.inputs);
+        const result = await make.onPremAgents.getAppConfig(ORGANIZATION_ID, ON_PREM_AGENT_ID, APP_NAME);
+        expect(result).toStrictEqual(onPremAgentAppConfigMock.inputs);
     });
 
     it('Should throw MakeError when the agent is not found', async () => {
         mockFetch(
-            `GET https://make.local/api/v2/agents/${AGENT_ID}?organizationId=${ORGANIZATION_ID}`,
+            `GET https://make.local/api/v2/agents/${ON_PREM_AGENT_ID}?organizationId=${ORGANIZATION_ID}`,
             { message: 'Not found' },
             404,
         );
 
-        await expect(make.onPremAgents.get(ORGANIZATION_ID, AGENT_ID)).rejects.toMatchObject({
+        await expect(make.onPremAgents.get(ORGANIZATION_ID, ON_PREM_AGENT_ID)).rejects.toMatchObject({
             name: 'MakeError',
             statusCode: 404,
             message: 'Not found',

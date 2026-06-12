@@ -12,7 +12,7 @@ import * as connectedSystemDeleteMock from './mocks/connected-systems/delete.jso
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
 const ORGANIZATION_ID = 5;
-const AGENT_ID = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
+const ON_PREM_AGENT_ID = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
 const CONNECTED_SYSTEM_ID = 'b2c3d4e5-f6a7-8901-bcde-f12345678901';
 
 describe('Endpoints: Connected systems (on-prem)', () => {
@@ -20,11 +20,11 @@ describe('Endpoints: Connected systems (on-prem)', () => {
 
     it('Should list connected systems for an agent', async () => {
         mockFetch(
-            `GET https://make.local/api/v2/connected-systems?organizationId=${ORGANIZATION_ID}&agentId=${AGENT_ID}`,
+            `GET https://make.local/api/v2/connected-systems?organizationId=${ORGANIZATION_ID}&agentId=${ON_PREM_AGENT_ID}`,
             connectedSystemsListMock,
         );
 
-        const result = await make.connectedSystems.list(ORGANIZATION_ID, AGENT_ID);
+        const result = await make.connectedSystems.list(ORGANIZATION_ID, ON_PREM_AGENT_ID);
         expect(result).toStrictEqual(connectedSystemsListMock.connectedSystems);
     });
 
@@ -41,7 +41,7 @@ describe('Endpoints: Connected systems (on-prem)', () => {
     it('Should create a connected system with keyed inputs object', async () => {
         const body = {
             name: 'SAP production',
-            agentId: AGENT_ID,
+            agentId: ON_PREM_AGENT_ID,
             appName: 'sap-agent',
             inputs: { ashost: '00', sysnr: '00', client: '00' },
         };
@@ -100,7 +100,7 @@ describe('Endpoints: Connected systems (on-prem)', () => {
     it('Should throw MakeError when agency rejects create', async () => {
         const body = {
             name: 'SAP production',
-            agentId: AGENT_ID,
+            agentId: ON_PREM_AGENT_ID,
             appName: 'sap-agent',
             inputs: { language: 'EN' },
         };
