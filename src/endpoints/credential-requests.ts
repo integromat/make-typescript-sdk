@@ -336,7 +336,7 @@ export class CredentialRequests {
     async create(body: CreateCredentialRequestBody): Promise<CredentialRequest> {
         const response = await this.#fetch<{ request: CredentialRequest }>('/credential-requests/requests', {
             method: 'POST',
-            body: body as unknown as Record<string, JSONValue>,
+            body,
         });
         return response.request;
     }
@@ -359,7 +359,7 @@ export class CredentialRequests {
             '/credential-requests/requests/v2',
             {
                 method: 'POST',
-                body: body as unknown as Record<string, JSONValue>,
+                body,
             },
         );
     }
