@@ -249,6 +249,146 @@ export const tools: MakeTool[] = [
         },
     },
     {
+        name: 'credential-requests_create-by-modules',
+        title: 'Create credential request by app/module selections',
+        description:
+            'Create a credential request bound to a specific provider (an existing Make user or a newly invited user) using app/module selections. ' +
+            'Required credentials (connections and keys) are derived automatically from the selected modules — no need to enumerate connection/key types. ' +
+            'Use this when you know the authorizing user up-front and want them to be added to the team. ' +
+            'Returns the created request together with the `publicUri` the provider must visit to authorize the requested credentials.',
+        category: 'credential-requests',
+        scope: 'credential-requests:write',
+        scopeId: 'teamId',
+        identifier: 'teamId',
+        annotations: {
+            idempotentHint: true,
+            destructiveHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                name: {
+                    type: 'string',
+                    description: 'Name of the Request which will be displayed to the End Users who open it.',
+                },
+                description: {
+                    type: 'string',
+                    description: 'Description of the Request which will be displayed to the End Users who open it.',
+                },
+                teamId: { type: 'number', description: 'ID of the Team the Credential Request should be bound to.' },
+                credentials: {
+                    type: 'array',
+                    description: 'Array of app/module selections to derive credentials from.',
+                    minItems: 1,
+                    maxItems: 64,
+                    items: {
+                        type: 'object',
+                        properties: {
+                            appName: {
+                                type: 'string',
+                                description: 'Name of the application to request credentials for.',
+                            },
+                            appModules: {
+                                type: 'array',
+                                description:
+                                    'Array of module IDs to request from the user, for example: ["WatchDirectMessages", "WatchFiles"]. ' +
+                                    'Use ["*"] to select all modules for the given application.',
+                                minItems: 1,
+                                items: { type: 'string' },
+                            },
+                            appVersion: {
+                                type: 'number',
+                                description:
+                                    'Version of the application. If not provided, it defaults to the latest available version.',
+                            },
+                            nameOverride: {
+                                type: 'string',
+                                description:
+                                    'An optional name to use for the credential when created in the platform, overriding the default generated name.',
+                            },
+                            description: {
+                                type: 'string',
+                                description: 'Description for this credential to be displayed in the Request view.',
+                            },
+                        },
+                        required: ['appName', 'appModules'],
+                    },
+                },
+                provider: {
+                    description:
+                        'Provider information — either references an existing Make user (`providerMakeUserId`) or invites a new one (`newUser`).',
+                    oneOf: [
+                        {
+                            type: 'object',
+                            properties: {
+                                providerMakeUserId: {
+                                    type: 'number',
+                                    description:
+                                        "ID of the Provider's Make User. The user will be added to the team if not already a member.",
+                                },
+                            },
+                            required: ['providerMakeUserId'],
+                        },
+                        {
+                            type: 'object',
+                            properties: {
+                                newUser: {
+                                    type: 'object',
+                                    description: 'New user to invite to the organization and add to the team.',
+                                    properties: {
+                                        name: {
+                                            type: 'string',
+                                            description: 'Name of the new user to invite.',
+                                        },
+                                        email: {
+                                            type: 'string',
+                                            description: 'Email address of the new user to invite.',
+                                        },
+                                    },
+                                    required: ['name', 'email'],
+                                },
+                            },
+                            required: ['newUser'],
+                        },
+                    ],
+                },
+            },
+            required: ['name', 'teamId', 'credentials', 'provider'],
+        },
+        examples: [
+            {
+                name: 'Google Workspace Access',
+                teamId: 5,
+                credentials: [{ appName: 'google', appModules: ['*'] }],
+                provider: { providerMakeUserId: 42 },
+            },
+            {
+                name: 'Slack Integration Setup',
+                teamId: 5,
+                credentials: [{ appName: 'slack', appModules: ['SendMessage', 'WatchMessages'], appVersion: 2 }],
+                provider: { newUser: { name: 'Jane Doe', email: 'jane@example.com' } },
+            },
+        ],
+        execute: async (
+            make: Make,
+            args: {
+                name: string;
+                description?: string;
+                teamId: number;
+                credentials: {
+                    appName: string;
+                    appModules: string[];
+                    appVersion?: number;
+                    nameOverride?: string;
+                    description?: string;
+                }[];
+                provider: { providerMakeUserId: number } | { newUser: { name: string; email: string } };
+            },
+        ) => {
+            return await make.credentialRequests.createByModules(args);
+        },
+    },
+    {
         name: 'credential-requests_create-by-credentials',
         title: 'Create credential request by connection/key types',
         description:

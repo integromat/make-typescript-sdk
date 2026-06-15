@@ -106,8 +106,8 @@ export type CreateCredentialRequestBody = {
     connections?: Record<string, JSONValue>[];
     /** Array of keys to include in the request */
     keys?: Record<string, JSONValue>[];
-    /** Provider information */
-    provider: Record<string, JSONValue>;
+    /** Provider information — either an existing Make user ID or a new user to invite */
+    provider: CredentialRequestProvider;
 };
 
 /**
@@ -194,6 +194,51 @@ export type CreateByCredentialsBody = {
     connections?: ConnectionSelection[];
     /** Array of API keys to request */
     keys?: KeySelection[];
+};
+
+/**
+ * Provider referencing an existing Make user.
+ * The user will be added to the team that owns the credential request if not already a member.
+ */
+export type ExistingMakeUserProvider = {
+    /** ID of the Provider's Make User */
+    providerMakeUserId: number;
+};
+
+/**
+ * Provider that invites a new user to the organization and adds them to the team.
+ */
+export type NewUserProvider = {
+    /** New user to invite */
+    newUser: {
+        /** Name of the new user to invite */
+        name: string;
+        /** Email address of the new user to invite */
+        email: string;
+    };
+};
+
+/**
+ * Provider information for a credential request.
+ * Either references an existing Make user or invites a new one.
+ */
+export type CredentialRequestProvider = ExistingMakeUserProvider | NewUserProvider;
+
+/**
+ * Body for creating a credential request from app/module selections (v2).
+ * Credentials are derived automatically from the selected modules.
+ */
+export type CreateCredentialRequestByModulesBody = {
+    /** Name of the Request which will be displayed to the End Users who open it */
+    name: string;
+    /** ID of the Team the Credential Request should be bound to */
+    teamId: number;
+    /** Description of the Request which will be displayed to the End Users who open it */
+    description?: string;
+    /** Array of app/module selections to derive credentials from */
+    credentials: CredentialSelection[];
+    /** Provider information — either an existing Make user ID or a new user to invite */
+    provider: CredentialRequestProvider;
 };
 
 /**
@@ -289,9 +334,32 @@ export class CredentialRequests {
     async create(body: CreateCredentialRequestBody): Promise<CredentialRequest> {
         const response = await this.#fetch<{ request: CredentialRequest }>('/credential-requests/requests', {
             method: 'POST',
-            body: body as Record<string, JSONValue>,
+            body: body as unknown as Record<string, JSONValue>,
         });
         return response.request;
+    }
+
+    /**
+     * Create a new credential request from app/module selections (v2 endpoint).
+     *
+     * Unlike {@link create}, this method derives the required credentials automatically
+     * from the selected modules — no explicit `connections`/`keys` arrays are needed.
+     * A `provider` (existing Make user or invite for a new user) is required so the
+     * request is bound to a specific authorizing user.
+     *
+     * Returns the created request together with the `publicUri` the provider must visit
+     * to authorize the requested credentials.
+     */
+    async createByModules(
+        body: CreateCredentialRequestByModulesBody,
+    ): Promise<{ request: CredentialRequest; publicUri: string }> {
+        return await this.#fetch<{ request: CredentialRequest; publicUri: string }>(
+            '/credential-requests/requests/v2',
+            {
+                method: 'POST',
+                body: body as unknown as Record<string, JSONValue>,
+            },
+        );
     }
 
     /**

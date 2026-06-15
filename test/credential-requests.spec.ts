@@ -9,6 +9,7 @@ import * as createMock from './mocks/credential-requests/create.json';
 import * as declineMock from './mocks/credential-requests/decline.json';
 import * as deleteRemoteMock from './mocks/credential-requests/delete-remote.json';
 import * as createActionMock from './mocks/credential-requests/create-action.json';
+import * as createByModulesMock from './mocks/credential-requests/create-by-modules.json';
 import * as createByCredentialsMock from './mocks/credential-requests/create-by-credentials.json';
 import * as extendConnectionMock from './mocks/credential-requests/extend-connection.json';
 import * as listAppModulesWithCredentialsMock from './mocks/credential-requests/list-app-modules-with-credentials.json';
@@ -82,7 +83,7 @@ describe('Endpoints: CredentialRequests', () => {
                 },
             ],
             provider: {
-                email: 'admin@example.com',
+                providerMakeUserId: 456,
             },
         };
 
@@ -173,6 +174,68 @@ describe('Endpoints: CredentialRequests', () => {
         const result = await make.credentialRequests.deleteCredential('cred-999');
 
         expect(result).toStrictEqual(deleteRemoteMock.credential);
+    });
+
+    it('Should create a credential request by modules (existing Make user provider)', async () => {
+        const body = {
+            name: 'Google Workspace Access',
+            teamId: 123,
+            description: 'Request access to Google Workspace APIs',
+            credentials: [
+                {
+                    appName: 'google',
+                    appModules: ['*'],
+                },
+            ],
+            provider: { providerMakeUserId: 456 },
+        };
+
+        mockFetch(
+            'POST https://make.local/api/v2/credential-requests/requests/v2',
+            createByModulesMock,
+            req => {
+                expect(req.body).toStrictEqual(body);
+                expect(req.headers.get('content-type')).toBe('application/json');
+            },
+        );
+
+        const result = await make.credentialRequests.createByModules(body);
+
+        expect(result).toStrictEqual({
+            request: createByModulesMock.request,
+            publicUri: createByModulesMock.publicUri,
+        });
+    });
+
+    it('Should create a credential request by modules (new user invite provider)', async () => {
+        const body = {
+            name: 'Slack Integration Setup',
+            teamId: 123,
+            credentials: [
+                {
+                    appName: 'slack',
+                    appModules: ['SendMessage', 'WatchMessages'],
+                    appVersion: 2,
+                },
+            ],
+            provider: { newUser: { name: 'Jane Doe', email: 'jane@example.com' } },
+        };
+
+        mockFetch(
+            'POST https://make.local/api/v2/credential-requests/requests/v2',
+            createByModulesMock,
+            req => {
+                expect(req.body).toStrictEqual(body);
+                expect(req.headers.get('content-type')).toBe('application/json');
+            },
+        );
+
+        const result = await make.credentialRequests.createByModules(body);
+
+        expect(result).toStrictEqual({
+            request: createByModulesMock.request,
+            publicUri: createByModulesMock.publicUri,
+        });
     });
 
     it('Should create a credential action', async () => {

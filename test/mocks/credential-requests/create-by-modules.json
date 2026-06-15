@@ -1,0 +1,20 @@
+{
+    "request": {
+        "id": "req-v2-001",
+        "organizationId": 1,
+        "teamId": 123,
+        "userId": 789,
+        "name": "Google Workspace Access",
+        "description": "Request access to Google Workspace APIs",
+        "externalProviderId": null,
+        "makeProviderId": "456",
+        "createdAt": "2026-06-15T10:00:00Z",
+        "updatedAt": "2026-06-15T10:00:00Z",
+        "expiresAt": "2026-07-15T10:00:00Z",
+        "status": "pending",
+        "shouldSendEmail": true,
+        "emailSentAt": null,
+        "appNames": ["google"]
+    },
+    "publicUri": "https://eu1.make.com/credence/123/req-v2-001"
+}

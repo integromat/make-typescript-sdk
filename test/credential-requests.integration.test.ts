@@ -17,6 +17,7 @@ describe('Integration: CredentialRequests', () => {
     let keyRequestId: string;
     let mixedRequestId: string;
     let nameOverrideRequestId: string;
+    let byModulesRequestId: string;
 
     it('Should create a credential request', async () => {
         const request = await make.credentialRequests.create({
@@ -88,6 +89,34 @@ describe('Integration: CredentialRequests', () => {
         // Check that request is deleted
         const requests = await make.credentialRequests.list(MAKE_TEAM);
         expect(requests.some(r => r.id === requestId)).toBe(false);
+    });
+
+    it('Should create a credential request by app/module selections (v2)', async () => {
+        const result = await make.credentialRequests.createByModules({
+            name: `Test By-Modules Request ${Date.now()}`,
+            teamId: MAKE_TEAM,
+            description: 'Integration test for createByModules',
+            credentials: [
+                {
+                    appName: 'http',
+                    appModules: ['ActionSendDataBasicAuth'],
+                    appVersion: 3,
+                },
+            ],
+            provider: { providerMakeUserId: Number(PROVIDER_MAKE_USER_ID) },
+        });
+
+        expect(result.request.id).toBeDefined();
+        expect(result.request.teamId).toBe(MAKE_TEAM);
+        expect(result.publicUri).toBeDefined();
+        byModulesRequestId = result.request.id;
+    });
+
+    it('Should delete the credential request created by modules', async () => {
+        await make.credentialRequests.delete(byModulesRequestId);
+
+        const requests = await make.credentialRequests.list(MAKE_TEAM);
+        expect(requests.some(r => r.id === byModulesRequestId)).toBe(false);
     });
 
     it('Should create a credential request using the create action', async () => {
