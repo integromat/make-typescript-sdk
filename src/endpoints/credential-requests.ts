@@ -203,12 +203,14 @@ export type CreateByCredentialsBody = {
 export type ExistingMakeUserProvider = {
     /** ID of the Provider's Make User */
     providerMakeUserId: number;
+    newUser?: never;
 };
 
 /**
  * Provider that invites a new user to the organization and adds them to the team.
  */
 export type NewUserProvider = {
+    providerMakeUserId?: never;
     /** New user to invite */
     newUser: {
         /** Name of the new user to invite */

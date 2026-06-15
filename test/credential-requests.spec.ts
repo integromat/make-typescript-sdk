@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
+import type { CredentialRequestProvider } from '../src/endpoints/credential-requests.js';
 import { mockFetch } from './test.utils.js';
 
 import * as listMock from './mocks/credential-requests/list.json';
@@ -225,6 +226,21 @@ describe('Endpoints: CredentialRequests', () => {
             request: createByModulesMock.request,
             publicUri: createByModulesMock.publicUri,
         });
+    });
+
+    it('CredentialRequestProvider rejects providing both providerMakeUserId and newUser at compile time', () => {
+        const existing: CredentialRequestProvider = { providerMakeUserId: 1 };
+        const invited: CredentialRequestProvider = { newUser: { name: 'Jane', email: 'jane@example.com' } };
+
+        // @ts-expect-error - providerMakeUserId and newUser are mutually exclusive
+        const both: CredentialRequestProvider = {
+            providerMakeUserId: 1,
+            newUser: { name: 'Jane', email: 'jane@example.com' },
+        };
+
+        expect(existing).toBeDefined();
+        expect(invited).toBeDefined();
+        expect(both).toBeDefined();
     });
 
     it('Should create a credential action', async () => {
