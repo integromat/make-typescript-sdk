@@ -1,10 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import type { OnPremAgentAppConfigInput } from '../src/endpoints/on-prem-agents.js';
-import {
-    assertInputsMatchAppConfig,
-    inputFieldNamesFromAppConfig,
-    parseInputs,
-} from './connected-systems.utils.js';
+import { assertInputsMatchAppConfig, inputFieldNamesFromAppConfig, parseInputs } from './connected-systems.utils.js';
 
 const SAP_APP_CONFIG: OnPremAgentAppConfigInput[] = [
     {

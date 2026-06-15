@@ -2,10 +2,7 @@ import 'dotenv/config';
 import { afterAll, beforeAll, describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
 import { MakeTools } from '../src/tools.js';
-import {
-    assertInputsMatchAppConfig,
-    parseInputs,
-} from './connected-systems.utils.js';
+import { assertInputsMatchAppConfig, parseInputs } from './connected-systems.utils.js';
 
 const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
@@ -89,9 +86,10 @@ function getTool(name: string) {
     });
 
     it('Should throw MakeError for a non-existent connected system', async () => {
-        await expect(
-            make.connectedSystems.get(MAKE_ORGANIZATION, NON_EXISTENT_RESOURCE_ID),
-        ).rejects.toMatchObject({ name: 'MakeError', statusCode: 400 });
+        await expect(make.connectedSystems.get(MAKE_ORGANIZATION, NON_EXISTENT_RESOURCE_ID)).rejects.toMatchObject({
+            name: 'MakeError',
+            statusCode: 400,
+        });
     });
 
     afterAll(async () => {
@@ -123,12 +121,7 @@ for (const appName of CONNECTED_SYSTEM_APPS) {
                 agentId = agent.id;
 
                 const config = await make.onPremAgents.getAppConfig(MAKE_ORGANIZATION, agentId, appName);
-                assertInputsMatchAppConfig(
-                    config,
-                    parseInputs(inputsRaw, inputsEnv),
-                    inputsEnv,
-                    appName,
-                );
+                assertInputsMatchAppConfig(config, parseInputs(inputsRaw, inputsEnv), inputsEnv, appName);
             });
 
             it(`Should create a ${appName} connected system`, async () => {
@@ -148,10 +141,7 @@ for (const appName of CONNECTED_SYSTEM_APPS) {
             });
 
             it(`Should get the ${appName} connected system`, async () => {
-                const connectedSystem = await make.connectedSystems.get(
-                    MAKE_ORGANIZATION,
-                    connectedSystemId,
-                );
+                const connectedSystem = await make.connectedSystems.get(MAKE_ORGANIZATION, connectedSystemId);
 
                 expect(connectedSystem.id).toBe(connectedSystemId);
                 expect(connectedSystem.appName).toBe(appName);
@@ -159,11 +149,9 @@ for (const appName of CONNECTED_SYSTEM_APPS) {
 
             it(`Should update the ${appName} connected system name`, async () => {
                 const updatedName = `${systemName} updated`;
-                const connectedSystem = await make.connectedSystems.update(
-                    MAKE_ORGANIZATION,
-                    connectedSystemId,
-                    { name: updatedName },
-                );
+                const connectedSystem = await make.connectedSystems.update(MAKE_ORGANIZATION, connectedSystemId, {
+                    name: updatedName,
+                });
 
                 expect(connectedSystem.name).toBe(updatedName);
             });

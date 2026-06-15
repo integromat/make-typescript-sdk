@@ -105,8 +105,6 @@ export class Enums {
      * @returns Promise with the list of connected-system apps
      */
     async connectedSystemApps(): Promise<ConnectedSystemApp[]> {
-        return (
-            await this.#fetch<ListConnectedSystemAppsResponse>('/enums/connected-system-apps')
-        ).connectedSystemApps;
+        return (await this.#fetch<ListConnectedSystemAppsResponse>('/enums/connected-system-apps')).connectedSystemApps;
     }
 }

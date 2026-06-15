@@ -162,10 +162,7 @@ export const tools: MakeTool[] = [
                 appName: 'http',
             },
         ],
-        execute: async (
-            make: Make,
-            args: { organizationId: number; agentId: string; appName: string },
-        ) => {
+        execute: async (make: Make, args: { organizationId: number; agentId: string; appName: string }) => {
             return await make.onPremAgents.getAppConfig(args.organizationId, args.agentId, args.appName);
         },
     },

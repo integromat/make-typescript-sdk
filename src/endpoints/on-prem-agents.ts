@@ -189,18 +189,11 @@ export class OnPremAgents {
      * @param agentId The agent UUID
      * @param appName Connected-system app slug (e.g. `http`, `sap-agent`)
      */
-    async getAppConfig(
-        organizationId: number,
-        agentId: string,
-        appName: string,
-    ): Promise<OnPremAgentAppConfigInput[]> {
+    async getAppConfig(organizationId: number, agentId: string, appName: string): Promise<OnPremAgentAppConfigInput[]> {
         return (
-            await this.#fetch<GetOnPremAgentAppConfigResponse>(
-                `/agents/${agentId}/apps/${appName}/config`,
-                {
-                    query: { organizationId },
-                },
-            )
+            await this.#fetch<GetOnPremAgentAppConfigResponse>(`/agents/${agentId}/apps/${appName}/config`, {
+                query: { organizationId },
+            })
         ).inputs;
     }
 }

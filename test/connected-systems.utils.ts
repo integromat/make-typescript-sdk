@@ -37,9 +37,7 @@ export function assertInputsMatchAppConfig(
     const unknown = provided.filter(name => !all.includes(name));
 
     if (missing.length > 0 || unknown.length > 0) {
-        const parts: string[] = [
-            `${envName} does not match getAppConfig for ${appName} on this agent.`,
-        ];
+        const parts: string[] = [`${envName} does not match getAppConfig for ${appName} on this agent.`];
         if (missing.length > 0) {
             parts.push(`Missing required keys: ${missing.join(', ')}.`);
         }

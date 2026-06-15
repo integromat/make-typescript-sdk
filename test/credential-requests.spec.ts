@@ -45,10 +45,7 @@ describe('Endpoints: CredentialRequests', () => {
     });
 
     it('Should list credential requests using deprecated options object signature', async () => {
-        mockFetch(
-            'GET https://make.local/api/v2/credential-requests/requests?status=pending&teamId=123',
-            listMock,
-        );
+        mockFetch('GET https://make.local/api/v2/credential-requests/requests?status=pending&teamId=123', listMock);
 
         // eslint-disable-next-line @typescript-eslint/no-deprecated
         const result = await make.credentialRequests.list({ teamId: 123, status: 'pending' });
@@ -190,14 +187,10 @@ describe('Endpoints: CredentialRequests', () => {
             provider: { providerMakeUserId: 456 },
         };
 
-        mockFetch(
-            'POST https://make.local/api/v2/credential-requests/requests/v2',
-            createByModulesMock,
-            req => {
-                expect(req.body).toStrictEqual(body);
-                expect(req.headers.get('content-type')).toBe('application/json');
-            },
-        );
+        mockFetch('POST https://make.local/api/v2/credential-requests/requests/v2', createByModulesMock, req => {
+            expect(req.body).toStrictEqual(body);
+            expect(req.headers.get('content-type')).toBe('application/json');
+        });
 
         const result = await make.credentialRequests.createByModules(body);
 
@@ -221,14 +214,10 @@ describe('Endpoints: CredentialRequests', () => {
             provider: { newUser: { name: 'Jane Doe', email: 'jane@example.com' } },
         };
 
-        mockFetch(
-            'POST https://make.local/api/v2/credential-requests/requests/v2',
-            createByModulesMock,
-            req => {
-                expect(req.body).toStrictEqual(body);
-                expect(req.headers.get('content-type')).toBe('application/json');
-            },
-        );
+        mockFetch('POST https://make.local/api/v2/credential-requests/requests/v2', createByModulesMock, req => {
+            expect(req.body).toStrictEqual(body);
+            expect(req.headers.get('content-type')).toBe('application/json');
+        });
 
         const result = await make.credentialRequests.createByModules(body);
 

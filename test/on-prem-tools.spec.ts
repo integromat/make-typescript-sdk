@@ -50,10 +50,7 @@ describe('MCP tools: on-prem agent and connected-system', () => {
     });
 
     it('Should execute connected-system_list-apps', async () => {
-        mockFetch(
-            'GET https://make.local/api/v2/enums/connected-system-apps',
-            connectedSystemAppsMock,
-        );
+        mockFetch('GET https://make.local/api/v2/enums/connected-system-apps', connectedSystemAppsMock);
 
         const tool = getTool('connected-system_list-apps');
         const result = await tool.execute(make, {});
