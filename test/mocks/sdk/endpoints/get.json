@@ -1,0 +1,17 @@
+{
+    "appEndpoint": {
+        "name": "getEntity",
+        "label": "Get Entity",
+        "description": "Retrieves the given entity.",
+        "context": null,
+        "annotations": { "readOnlyHint": true },
+        "attachedAccounts": [],
+        "public": false,
+        "approved": false,
+        "deprecated": false,
+        "archived": false,
+        "schemaVersion": 1,
+        "createdAt": "2026-06-26T00:00:00.000Z",
+        "updatedAt": "2026-06-26T00:00:00.000Z"
+    }
+}

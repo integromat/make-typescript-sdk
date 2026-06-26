@@ -1,0 +1,7 @@
+{
+    "url": "/entities/{{parameters.id}}",
+    "method": "GET",
+    "response": {
+        "output": "{{body}}"
+    }
+}

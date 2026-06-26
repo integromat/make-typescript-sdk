@@ -24,6 +24,7 @@ import { SDKConnections } from './endpoints/sdk/connections.js';
 import { SDKFunctions } from './endpoints/sdk/functions.js';
 import { SDKRPCs } from './endpoints/sdk/rpcs.js';
 import { SDKWebhooks } from './endpoints/sdk/webhooks.js';
+import { SDKEndpoints } from './endpoints/sdk/endpoints.js';
 import { buildUrl, createMakeError, isAPIKey, MakeError } from './utils.js';
 import type { FetchOptions, JSONValue, QueryValue, RetryOptions } from './types.js';
 import { VERSION } from './version.js';
@@ -218,6 +219,11 @@ export class Make {
          * Webhooks are used to listen for external events in apps
          */
         readonly webhooks: SDKWebhooks;
+        /**
+         * Access to Endpoint-related endpoints
+         * Endpoints expose app functionality to AI agents
+         */
+        readonly endpoints: SDKEndpoints;
     };
 
     /**
@@ -279,6 +285,7 @@ export class Make {
             functions: new SDKFunctions(this.fetch.bind(this)),
             rpcs: new SDKRPCs(this.fetch.bind(this)),
             webhooks: new SDKWebhooks(this.fetch.bind(this)),
+            endpoints: new SDKEndpoints(this.fetch.bind(this)),
         };
     }
 

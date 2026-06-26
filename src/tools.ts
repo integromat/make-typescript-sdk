@@ -7,6 +7,7 @@ import { tools as SDKFunctionsTools } from './endpoints/sdk/functions.tools.js';
 import { tools as SDKModulesTools } from './endpoints/sdk/modules.tools.js';
 import { tools as SDKRPCsTools } from './endpoints/sdk/rpcs.tools.js';
 import { tools as SDKWebhooksTools } from './endpoints/sdk/webhooks.tools.js';
+import { tools as SDKEndpointsTools } from './endpoints/sdk/endpoints.tools.js';
 
 import { tools as ScenariosTools } from './endpoints/scenarios.tools.js';
 import { tools as ConnectionsTools } from './endpoints/connections.tools.js';
@@ -198,6 +199,7 @@ export const MakeTools = [
     ...SDKModulesTools,
     ...SDKRPCsTools,
     ...SDKWebhooksTools,
+    ...SDKEndpointsTools,
 
     // Core Endpoint Tools
     ...ScenariosTools,

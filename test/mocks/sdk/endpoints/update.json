@@ -1,0 +1,17 @@
+{
+    "appEndpoint": {
+        "name": "getEntity",
+        "label": "Get Entity (Updated)",
+        "description": "Retrieves the given entity by its id.",
+        "context": "Use to fetch a single entity by its id.",
+        "annotations": { "readOnlyHint": true, "idempotentHint": true },
+        "attachedAccounts": ["my-connection"],
+        "public": false,
+        "approved": false,
+        "deprecated": false,
+        "archived": false,
+        "schemaVersion": 1,
+        "createdAt": "2026-06-26T00:00:00.000Z",
+        "updatedAt": "2026-06-26T01:00:00.000Z"
+    }
+}
