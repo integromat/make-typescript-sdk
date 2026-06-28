@@ -30,6 +30,8 @@ export type Execution = {
     authorId: number | null;
     /** Whether the execution was run instantly */
     instant: boolean;
+    /** ISO 8601 timestamp of when the execution occurred */
+    timestamp: string;
 };
 
 /**
