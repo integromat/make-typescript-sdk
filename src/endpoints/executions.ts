@@ -16,6 +16,8 @@ export type Execution = {
     duration: number;
     /** Number of operations consumed by the execution */
     operations: number;
+    /** Credits consumed by the execution, in centicredits (hundredths of a credit) */
+    centicredits: number;
     /** Amount of data transfer consumed by the execution */
     transfer: number;
     /** ID of the organization the execution belongs to */
