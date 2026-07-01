@@ -182,6 +182,15 @@ export type {
     CreateSDKWebhookBody,
     UpdateSDKWebhookBody,
 } from './endpoints/sdk/webhooks.js';
+export type {
+    SDKEndpoint,
+    SDKEndpoints,
+    SDKEndpointAnnotations,
+    SDKEndpointSection,
+    SDKEndpointSectionType,
+    CreateSDKEndpointBody,
+    UpdateSDKEndpointBody,
+} from './endpoints/sdk/endpoints.js';
 export type { Team, Teams, CreateTeamBody, ListTeamsOptions, GetTeamOptions } from './endpoints/teams.js';
 export type {
     PublicTemplate,

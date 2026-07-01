@@ -72,6 +72,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 
 - **SDK Apps** - Create and manage custom Make applications
 - **SDK Modules** - Building blocks for custom apps
+- **SDK Endpoints** - HTTP endpoints exposed by custom apps
 - **SDK Connections** - Authentication for custom apps
 - **SDK Functions** - Reusable code blocks within custom apps
 - **SDK RPCs** - Remote procedure calls for custom apps
@@ -212,12 +213,13 @@ All tools are organized into the following categories:
 - `teams`
 - `public-templates`
 - `users`
-- `sdk.apps`
-- `sdk.connections`
-- `sdk.functions`
-- `sdk.modules`
-- `sdk.rpcs`
-- `sdk.webhooks`
+- `sdk-apps`
+- `sdk-connections`
+- `sdk-endpoints`
+- `sdk-functions`
+- `sdk-modules`
+- `sdk-rpcs`
+- `sdk-webhooks`
 
 ### Tool Scopes
 
