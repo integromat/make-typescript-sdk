@@ -213,13 +213,13 @@ All tools are organized into the following categories:
 - `teams`
 - `public-templates`
 - `users`
-- `sdk.apps`
-- `sdk.connections`
-- `sdk.endpoints`
-- `sdk.functions`
-- `sdk.modules`
-- `sdk.rpcs`
-- `sdk.webhooks`
+- `sdk-apps`
+- `sdk-connections`
+- `sdk-endpoints`
+- `sdk-functions`
+- `sdk-modules`
+- `sdk-rpcs`
+- `sdk-webhooks`
 
 ### Tool Scopes
 
