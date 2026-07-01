@@ -6,7 +6,6 @@ import * as listMock from '../mocks/sdk/endpoints/list.json';
 import * as getMock from '../mocks/sdk/endpoints/get.json';
 import * as createMock from '../mocks/sdk/endpoints/create.json';
 import * as updateMock from '../mocks/sdk/endpoints/update.json';
-import * as getSectionMock from '../mocks/sdk/endpoints/get-section.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -94,13 +93,16 @@ describe('Endpoints: SDK > Endpoints', () => {
 
     it('Should get endpoint section', async () => {
         const section = 'api';
+        // The API returns sections as application/jsonc (comments allowed), so the SDK
+        // hands back the raw text unchanged rather than a parsed object.
+        const sectionBody = ['{', '    // Fetch a single entity', '    "url": "/entities/{{parameters.id}}",', '    "method": "GET"', '}'].join('\n');
         mockFetch(
             `GET https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/endpoints/${endpointName}/${section}`,
-            getSectionMock,
+            sectionBody,
         );
 
         const result = await make.sdk.endpoints.getSection(appName, appVersion, endpointName, section);
-        expect(result).toStrictEqual(getSectionMock);
+        expect(result).toBe(sectionBody);
     });
 
     it('Should set endpoint section', async () => {
