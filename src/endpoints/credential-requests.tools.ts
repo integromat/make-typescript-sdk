@@ -1,5 +1,6 @@
 import type { Make } from '../make.js';
 import type { MakeTool } from '../tools.js';
+import type { CredentialSelection } from './credential-requests.js';
 
 export const tools: MakeTool[] = [
     {
@@ -198,7 +199,7 @@ export const tools: MakeTool[] = [
                                 type: 'array',
                                 description:
                                     'Array of module IDs to request from the user, for example: ["WatchDirectMessages", "WatchFiles"]. ' +
-                                    'Use ["*"] to select all modules for the given application. Either appModules or appEndpoints must be specified.',
+                                    'Use ["*"] to select all modules for the given application. At least one of appModules or appEndpoints must be specified (both may be provided together).',
                                 minItems: 1,
                                 items: { type: 'string' },
                             },
@@ -206,7 +207,7 @@ export const tools: MakeTool[] = [
                                 type: 'array',
                                 description:
                                     'Array of Endpoint Names that the credential will be used to access, for example: ["GetUser", "ListFiles"]. ' +
-                                    'Use ["*"] to select all endpoints for the given application. Either appModules or appEndpoints must be specified.',
+                                    'Use ["*"] to select all endpoints for the given application. At least one of appModules or appEndpoints must be specified (both may be provided together).',
                                 minItems: 1,
                                 items: { type: 'string' },
                             },
@@ -244,14 +245,7 @@ export const tools: MakeTool[] = [
                 name?: string;
                 description?: string;
                 teamId: number;
-                credentials: {
-                    appName: string;
-                    appModules?: string[];
-                    appEndpoints?: string[];
-                    appVersion?: number;
-                    nameOverride?: string;
-                    description?: string;
-                }[];
+                credentials: CredentialSelection[];
             },
         ) => {
             return await make.credentialRequests.createAction(args);
