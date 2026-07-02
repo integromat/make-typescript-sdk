@@ -198,7 +198,15 @@ export const tools: MakeTool[] = [
                                 type: 'array',
                                 description:
                                     'Array of module IDs to request from the user, for example: ["WatchDirectMessages", "WatchFiles"]. ' +
-                                    'Use ["*"] to select all modules for the given application.',
+                                    'Use ["*"] to select all modules for the given application. Either appModules or appEndpoints must be specified.',
+                                minItems: 1,
+                                items: { type: 'string' },
+                            },
+                            appEndpoints: {
+                                type: 'array',
+                                description:
+                                    'Array of Endpoint Names that the credential will be used to access, for example: ["GetUser", "ListFiles"]. ' +
+                                    'Use ["*"] to select all endpoints for the given application. Either appModules or appEndpoints must be specified.',
                                 minItems: 1,
                                 items: { type: 'string' },
                             },
@@ -217,7 +225,7 @@ export const tools: MakeTool[] = [
                                 description: 'Description for this credential to be displayed in the Request view.',
                             },
                         },
-                        required: ['appName', 'appModules'],
+                        required: ['appName'],
                     },
                 },
             },
@@ -238,7 +246,8 @@ export const tools: MakeTool[] = [
                 teamId: number;
                 credentials: {
                     appName: string;
-                    appModules: string[];
+                    appModules?: string[];
+                    appEndpoints?: string[];
                     appVersion?: number;
                     nameOverride?: string;
                     description?: string;

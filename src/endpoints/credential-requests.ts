@@ -116,8 +116,10 @@ export type CreateCredentialRequestBody = {
 export type CredentialSelection = {
     /** Name of the application to request credentials for */
     appName: string;
-    /** Array of module IDs to include. Use ["*"] to select all modules with credentials. */
-    appModules: string[];
+    /** Array of module IDs to include. Use ["*"] to select all modules with credentials. Either Modules or Endpoints have to be specified */
+    appModules?: string[];
+    /** Array of Endpoint Names that the credential will be used to access. Use ["*"] to select all endpoints. Either Modules or Endpoints have to be specified */
+    appEndpoints?: string[];
     /** Version of the application. Defaults to the latest available version if not provided. */
     appVersion?: number;
     /** Optional name override for the credential when created in the platform */

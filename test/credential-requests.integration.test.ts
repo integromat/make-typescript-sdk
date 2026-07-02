@@ -120,6 +120,24 @@ describe('Integration: CredentialRequests', () => {
         expect(requests.some(r => r.id === actionRequestId)).toBe(false);
     });
 
+    it('Should create a credential action using appEndpoints', async () => {
+        const action = await make.credentialRequests.createAction({
+            teamId: MAKE_TEAM,
+            credentials: [
+                {
+                    appName: 'http',
+                    appEndpoints: ['*'],
+                    appVersion: 3,
+                },
+            ],
+        });
+        expect(action.request.id).toBeDefined();
+        expect(action.publicUri).toBeDefined();
+        expect(action.request.teamId).toBe(MAKE_TEAM);
+
+        await make.credentialRequests.delete(action.request.id);
+    });
+
     it('Should create a credential action with name and description', async () => {
         const action = await make.credentialRequests.createAction({
             teamId: MAKE_TEAM,
