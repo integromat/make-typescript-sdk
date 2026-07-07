@@ -110,14 +110,9 @@ export type CreateCredentialRequestBody = {
     provider: Record<string, JSONValue>;
 };
 
-/**
- * Represents an app/module selection to derive credentials from.
- */
-export type CredentialSelection = {
+type CredentialSelectionBase = {
     /** Name of the application to request credentials for */
     appName: string;
-    /** Array of module IDs to include. Use ["*"] to select all modules with credentials. */
-    appModules: string[];
     /** Version of the application. Defaults to the latest available version if not provided. */
     appVersion?: number;
     /** Optional name override for the credential when created in the platform */
@@ -125,6 +120,26 @@ export type CredentialSelection = {
     /** Description for this credential to be displayed in the Request view */
     description?: string;
 };
+
+/**
+ * Represents an app/module selection to derive credentials from.
+ * At least one of `appModules` or `appEndpoints` must be specified (both may be provided together).
+ */
+export type CredentialSelection = CredentialSelectionBase &
+    (
+        | {
+              /** Array of module IDs to include. Use ["*"] to select all modules with credentials. */
+              appModules: string[];
+              /** Array of Endpoint Names that the credential will be used to access. Use ["*"] to select all endpoints. */
+              appEndpoints?: string[];
+          }
+        | {
+              /** Array of module IDs to include. Use ["*"] to select all modules with credentials. */
+              appModules?: string[];
+              /** Array of Endpoint Names that the credential will be used to access. Use ["*"] to select all endpoints. */
+              appEndpoints: string[];
+          }
+    );
 
 /**
  * Body for creating a credential action

@@ -213,6 +213,40 @@ describe('Endpoints: CredentialRequests', () => {
         });
     });
 
+    it('Should create a credential action with appEndpoints', async () => {
+        const body = {
+            teamId: 123,
+            credentials: [
+                {
+                    appName: 'http',
+                    appEndpoints: ['GetUser', 'ListFiles'],
+                    appVersion: 3,
+                },
+            ],
+        };
+
+        mockFetch('POST https://make.local/api/v2/credential-requests/actions/create', createActionMock, req => {
+            expect(req.body).toStrictEqual(body);
+            expect(req.headers.get('content-type')).toBe('application/json');
+        });
+
+        const result = await make.credentialRequests.createAction({
+            teamId: 123,
+            credentials: [
+                {
+                    appName: 'http',
+                    appEndpoints: ['GetUser', 'ListFiles'],
+                    appVersion: 3,
+                },
+            ],
+        });
+
+        expect(result).toStrictEqual({
+            request: createActionMock.request,
+            publicUri: createActionMock.publicUri,
+        });
+    });
+
     it('Should create a credential request by connection/key types', async () => {
         const body = {
             teamId: 123,
