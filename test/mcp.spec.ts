@@ -68,6 +68,18 @@ describe('MCP Tools', () => {
         }
     });
 
+    it('Should not have tool names longer than the MCP host guaranteed length', () => {
+        // make-mcp-server-host's ToolNameCropMinThreshold (lib/validations/mcp-tools.schema.ts) is 48.
+        // Names longer than that are silently truncated on registration (only a console.warn),
+        // producing a mangled tool name exposed to MCP clients (e.g. cut off mid-word).
+        const TOOL_NAME_CROP_MIN_THRESHOLD = 48;
+        const tooLong = MakeTools.filter(tool => tool.name.length > TOOL_NAME_CROP_MIN_THRESHOLD).map(
+            tool => `${tool.name} (${tool.name.length} chars)`,
+        );
+
+        expect(tooLong).toEqual([]);
+    });
+
     it('Should have tools from SDK endpoints', () => {
         const sdkTools = MakeTools.filter(tool => tool.category.startsWith('sdk-'));
         expect(sdkTools.length).toBeGreaterThan(0);

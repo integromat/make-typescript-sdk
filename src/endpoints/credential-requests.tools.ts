@@ -461,7 +461,7 @@ export const tools: MakeTool[] = [
         },
     },
     {
-        name: 'credential-requests_list-app-modules-with-credentials',
+        name: 'credential-requests_list-app-modules-with-creds',
         title: 'List app modules with credentials',
         description:
             'List all modules of a given Make app (and version) that require credentials, along with the required credential type and OAuth scopes. ' +
