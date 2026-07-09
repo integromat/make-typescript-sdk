@@ -243,7 +243,7 @@ export const tools: MakeTool[] = [
         name: 'scenarios_run',
         title: 'Run scenario',
         description:
-            "Execute a scenario with optional input data. For a webhook-triggered scenario, treat both this call's input and output as unreliable: `data` is injected directly as the trigger's output bundle, bypassing the webhook's real request parsing, and the scenario's declared output may not be returned here at all even on success. To verify a webhook-triggered scenario, send a real request to its webhook URL instead of relying on this tool.",
+            "Execute a scenario with optional input data. For a webhook-triggered scenario, treat both this call's input and output as unavailable: `data` is injected directly as the trigger's output bundle, bypassing the webhook's real request parsing, and the scenario's declared output is not returned here, even on success. To verify a webhook-triggered scenario, send a real request to its webhook URL instead of relying on this tool.",
         category: 'scenarios',
         scope: 'scenarios:run',
         scopeId: 'scenarioId',
