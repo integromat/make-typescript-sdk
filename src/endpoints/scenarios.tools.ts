@@ -242,7 +242,8 @@ export const tools: MakeTool[] = [
     {
         name: 'scenarios_run',
         title: 'Run scenario',
-        description: 'Execute a scenario with optional input data.',
+        description:
+            'Execute a scenario with optional input data. For a webhook-triggered scenario, this runs it on demand and does not simulate an actual inbound HTTP request to the webhook URL — to verify what a real external caller receives, send a request to the webhook URL itself.',
         category: 'scenarios',
         scope: 'scenarios:run',
         scopeId: 'scenarioId',
