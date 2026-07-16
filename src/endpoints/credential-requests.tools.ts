@@ -14,6 +14,8 @@ export const tools: MakeTool[] = [
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -60,6 +62,8 @@ export const tools: MakeTool[] = [
         resourceId: 'requestId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -85,7 +89,9 @@ export const tools: MakeTool[] = [
         identifier: 'requestId',
         resourceId: 'requestId',
         annotations: {
+            readOnlyHint: false,
             destructiveHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -113,8 +119,10 @@ export const tools: MakeTool[] = [
         identifier: 'credentialId',
         resourceId: 'credentialId',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -142,8 +150,10 @@ export const tools: MakeTool[] = [
         identifier: 'credentialId',
         resourceId: 'credentialId',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -168,8 +178,10 @@ export const tools: MakeTool[] = [
         scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -264,8 +276,10 @@ export const tools: MakeTool[] = [
         scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -420,8 +434,10 @@ export const tools: MakeTool[] = [
         identifier: 'connectionId',
         resourceId: 'connectionId',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -474,6 +490,8 @@ export const tools: MakeTool[] = [
         resourceId: 'appName',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',

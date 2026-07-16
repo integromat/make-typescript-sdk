@@ -12,6 +12,8 @@ export const tools: MakeTool[] = [
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',

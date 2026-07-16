@@ -14,6 +14,8 @@ export const tools: MakeTool[] = [
         scopeId: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -37,6 +39,8 @@ export const tools: MakeTool[] = [
         scopeId: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -60,8 +64,10 @@ export const tools: MakeTool[] = [
         scope: 'sdk-apps:write',
         scopeId: undefined,
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -103,8 +109,10 @@ export const tools: MakeTool[] = [
         scope: 'sdk-apps:write',
         scopeId: undefined,
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -172,7 +180,9 @@ export const tools: MakeTool[] = [
         scope: 'sdk-apps:write',
         scopeId: undefined,
         annotations: {
+            readOnlyHint: false,
             destructiveHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -196,7 +206,12 @@ export const tools: MakeTool[] = [
         category: 'sdk-endpoints',
         scope: 'sdk-apps:write',
         scopeId: undefined,
-        annotations: { idempotentHint: true, destructiveHint: false },
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -219,7 +234,12 @@ export const tools: MakeTool[] = [
         category: 'sdk-endpoints',
         scope: 'sdk-apps:write',
         scopeId: undefined,
-        annotations: { idempotentHint: true, destructiveHint: false },
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
+        },
         inputSchema: {
             type: 'object',
             properties: {
@@ -244,6 +264,8 @@ export const tools: MakeTool[] = [
         scopeId: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -280,8 +302,10 @@ export const tools: MakeTool[] = [
         scope: 'sdk-apps:write',
         scopeId: undefined,
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',

@@ -12,6 +12,8 @@ export const tools: MakeTool[] = [
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -36,6 +38,8 @@ export const tools: MakeTool[] = [
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -60,8 +64,10 @@ export const tools: MakeTool[] = [
         scopeId: undefined,
         identifier: undefined,
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -87,7 +93,9 @@ export const tools: MakeTool[] = [
         scopeId: undefined,
         identifier: undefined,
         annotations: {
+            readOnlyHint: false,
             destructiveHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -114,6 +122,8 @@ export const tools: MakeTool[] = [
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -138,8 +148,10 @@ export const tools: MakeTool[] = [
         scopeId: undefined,
         identifier: undefined,
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -177,6 +189,8 @@ export const tools: MakeTool[] = [
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -201,8 +215,10 @@ export const tools: MakeTool[] = [
         scopeId: undefined,
         identifier: undefined,
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',

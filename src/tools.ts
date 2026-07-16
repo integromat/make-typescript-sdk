@@ -168,6 +168,13 @@ export type MakeTool = {
          * @default false
          */
         readOnlyHint?: boolean;
+
+        /**
+         * If true, the tool may interact with an "open world" of external
+         * entities. If false, the tool's domain of interaction is closed.
+         * @default true
+         */
+        openWorldHint?: boolean;
     };
 
     /** JSON Schema defining the input parameters */
