@@ -12,6 +12,8 @@ export const tools: MakeTool[] = [
         identifier: 'scenarioId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -40,6 +42,8 @@ export const tools: MakeTool[] = [
         resourceId: 'executionId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -65,6 +69,8 @@ export const tools: MakeTool[] = [
         resourceId: 'executionId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -89,6 +95,8 @@ export const tools: MakeTool[] = [
         identifier: 'incompleteExecutionId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -118,6 +126,8 @@ export const tools: MakeTool[] = [
         resourceId: 'executionId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',

@@ -12,6 +12,8 @@ export const tools: MakeTool[] = [
         identifier: 'organizationId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -36,6 +38,8 @@ export const tools: MakeTool[] = [
         resourceId: 'teamId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -58,8 +62,10 @@ export const tools: MakeTool[] = [
         scopeId: 'organizationId',
         identifier: 'organizationId',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -92,7 +98,9 @@ export const tools: MakeTool[] = [
         identifier: 'teamId',
         resourceId: 'teamId',
         annotations: {
+            readOnlyHint: false,
             destructiveHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',

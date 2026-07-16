@@ -13,6 +13,8 @@ export const tools: MakeTool[] = [
         identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -37,6 +39,8 @@ export const tools: MakeTool[] = [
         resourceId: 'dataStructureId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -59,8 +63,10 @@ export const tools: MakeTool[] = [
         scopeId: 'teamId',
         identifier: 'teamId',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -114,8 +120,10 @@ export const tools: MakeTool[] = [
         identifier: 'dataStructureId',
         resourceId: 'dataStructureId',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -161,7 +169,9 @@ export const tools: MakeTool[] = [
         identifier: 'dataStructureId',
         resourceId: 'dataStructureId',
         annotations: {
+            readOnlyHint: false,
             destructiveHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',

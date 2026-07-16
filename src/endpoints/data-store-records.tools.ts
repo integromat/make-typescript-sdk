@@ -13,6 +13,8 @@ export const tools: MakeTool[] = [
         identifier: 'dataStoreId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -36,8 +38,10 @@ export const tools: MakeTool[] = [
         scopeId: 'dataStoreId',
         identifier: 'dataStoreId',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -72,8 +76,10 @@ export const tools: MakeTool[] = [
         identifier: 'dataStoreId',
         resourceId: 'key',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -99,8 +105,10 @@ export const tools: MakeTool[] = [
         identifier: 'dataStoreId',
         resourceId: 'key',
         annotations: {
-            idempotentHint: true,
+            readOnlyHint: false,
             destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -131,7 +139,9 @@ export const tools: MakeTool[] = [
         scopeId: 'dataStoreId',
         identifier: 'dataStoreId',
         annotations: {
+            readOnlyHint: false,
             destructiveHint: true,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',

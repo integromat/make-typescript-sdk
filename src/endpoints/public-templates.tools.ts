@@ -12,6 +12,8 @@ export const tools = [
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -45,6 +47,8 @@ export const tools = [
         resourceId: 'templateUrl',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -74,6 +78,8 @@ export const tools = [
         resourceId: 'templateUrl',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',

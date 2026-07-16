@@ -12,6 +12,8 @@ export const tools: MakeTool[] = [
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -32,6 +34,8 @@ export const tools: MakeTool[] = [
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -52,6 +56,8 @@ export const tools: MakeTool[] = [
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -73,6 +79,8 @@ export const tools: MakeTool[] = [
         identifier: undefined,
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',

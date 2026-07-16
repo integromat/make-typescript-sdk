@@ -12,6 +12,8 @@ export const tools: MakeTool[] = [
         identifier: 'scenarioId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
@@ -36,6 +38,8 @@ export const tools: MakeTool[] = [
         resourceId: 'incompleteExecutionId',
         annotations: {
             readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
         },
         inputSchema: {
             type: 'object',
