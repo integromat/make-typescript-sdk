@@ -19,12 +19,17 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 organizationId: { type: 'number', description: 'The organization ID to list teams for' },
+                includePrivateSpaces: {
+                    type: 'boolean',
+                    description: 'Whether to include private spaces (personal teams) in the results',
+                },
             },
             required: ['organizationId'],
         },
-        examples: [{ organizationId: 5 }],
-        execute: async (make: Make, args: { organizationId: number }) => {
-            return await make.teams.list(args.organizationId);
+        examples: [{ organizationId: 5 }, { organizationId: 5, includePrivateSpaces: true }],
+        execute: async (make: Make, args: { organizationId: number; includePrivateSpaces?: boolean }) => {
+            const { organizationId, ...options } = args;
+            return await make.teams.list(organizationId, { ...options, cols: ['*'] });
         },
     },
     {
