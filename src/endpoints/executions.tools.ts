@@ -147,9 +147,8 @@ export const tools: MakeTool[] = [
                 incompleteExecutionId: { type: 'string', description: 'The incomplete execution ID' },
                 executionId: {
                     type: 'string',
-                    pattern: '^[0-9a-f]{32}$',
                     description:
-                        "The execution ID to retrieve — a 32-character lowercase hex string as returned by scenarios_run or executions_list (e.g. 'a07e16f2ad134bf49cf83a00aa95c0a5')",
+                        "The execution ID from the incomplete execution record (see executions_list-for-incomp-exec) — may be UUID-formatted with dashes (e.g. '55602700-e840-45bf-b18c-0aef214dd967'), unlike scenario execution IDs",
                 },
             },
             required: ['incompleteExecutionId', 'executionId'],

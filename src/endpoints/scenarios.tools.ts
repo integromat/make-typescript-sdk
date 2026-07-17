@@ -2,13 +2,13 @@ import type { Blueprint, DataStructureField } from '../index.js';
 import type { Make } from '../make.js';
 import type { JSONValue } from '../types.js';
 import type { Scheduling } from './scenarios.js';
-import type { MakeTool } from '../tools.js';
+import type { JSONSchema, MakeTool } from '../tools.js';
 
 /**
  * JSON Schema for the `scheduling` parameter of `scenarios_create` / `scenarios_update`.
  * Mirrors the {@link Scheduling} type; the API also accepts a JSON-encoded string of the same shape.
  */
-const schedulingInputSchema = {
+const schedulingInputSchema: JSONSchema = {
     type: 'object',
     description:
         "Scheduling configuration. Only the listed properties exist — there is no 'cron', 'hour' or similar property.",
@@ -60,7 +60,7 @@ const schedulingInputSchema = {
  * JSON Schema for the `blueprint` parameter of `scenarios_create` / `scenarios_update`.
  * Mirrors the {@link Blueprint} type; the API also accepts a JSON-encoded string of the same shape.
  */
-const blueprintInputSchema = {
+const blueprintInputSchema: JSONSchema = {
     type: 'object',
     description:
         "Blueprint containing the scenario configuration. Every `module` value must be an existing module identifier verified via app-modules_list — never invent module names.",
