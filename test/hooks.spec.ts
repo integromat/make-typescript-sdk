@@ -36,12 +36,31 @@ describe('Endpoints: Hooks', () => {
                 },
             };
 
-            mockFetch('POST https://make.local/api/v2/hooks', hookCreateMock, req => {
+            mockFetch('POST https://make.local/api/v2/hooks?useDefaults=requiredOnly', hookCreateMock, req => {
                 expect(req.body).toStrictEqual({
                     name: body.name,
                     teamId: body.teamId,
                     typeName: body.typeName,
                     formId: body.data.formId,
+                });
+            });
+
+            const result = await make.hooks.create(body);
+            expect(result).toStrictEqual(hookCreateMock.hook);
+        });
+
+        it('Should create a webhook without type-specific data by applying manifest defaults', async () => {
+            const body = {
+                name: 'My Webhook',
+                teamId: 4,
+                typeName: 'gateway-webhook',
+            };
+
+            mockFetch('POST https://make.local/api/v2/hooks?useDefaults=requiredOnly', hookCreateMock, req => {
+                expect(req.body).toStrictEqual({
+                    name: body.name,
+                    teamId: body.teamId,
+                    typeName: body.typeName,
                 });
             });
 

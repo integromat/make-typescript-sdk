@@ -177,6 +177,9 @@ export class Hooks {
 
     /**
      * Create a new hook.
+     * Required hook-type parameters that have a default value in the hook type's
+     * manifest (e.g. `method`, `headers`, `stringify` for `gateway-webhook`) are
+     * filled by the API when omitted from `data`; values provided in `data` take precedence.
      * @param body The hook configuration to create
      * @returns Promise with the created hook
      */
@@ -184,6 +187,9 @@ export class Hooks {
         return (
             await this.#fetch<CreateHookResponse>('/hooks', {
                 method: 'POST',
+                query: {
+                    useDefaults: 'requiredOnly',
+                },
                 body: Object.assign({}, body.data, {
                     name: body.name,
                     teamId: body.teamId,
