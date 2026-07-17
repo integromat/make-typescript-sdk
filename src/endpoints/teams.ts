@@ -30,6 +30,8 @@ export type Team = {
     consumedTransfer?: number;
     /** Whether the team is paused */
     isPaused?: boolean;
+    /** Type of the team, either a personal or a standard team. */
+    type?: 'personal' | 'standard';
 };
 
 /**
@@ -56,6 +58,8 @@ export type ListTeamsOptions<C extends keyof Team = never> = {
     cols?: C[] | ['*'];
     /** Pagination options */
     pg?: Partial<Pagination<Team>>;
+    /** Whether to include private spaces (personal teams) in the results */
+    includePrivateSpaces?: boolean;
 };
 
 /**
@@ -152,6 +156,7 @@ export class Teams {
                     organizationId,
                     cols: options?.cols,
                     pg: options?.pg,
+                    includePrivateSpaces: options?.includePrivateSpaces,
                 },
             })
         ).teams;

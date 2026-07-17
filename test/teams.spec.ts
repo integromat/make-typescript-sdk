@@ -28,6 +28,16 @@ describe('Endpoints: Teams', () => {
         expect(result).toStrictEqual(teamsListMock.teams);
     });
 
+    it('Should list teams including private spaces', async () => {
+        mockFetch('GET https://make.local/api/v2/teams?organizationId=5&includePrivateSpaces=true', teamsListMock);
+
+        const result = await make.teams.list(5, {
+            includePrivateSpaces: true,
+        });
+
+        expect(result).toStrictEqual(teamsListMock.teams);
+    });
+
     it('Should get a team', async () => {
         mockFetch('GET https://make.local/api/v2/teams/1', teamGetMock);
 
