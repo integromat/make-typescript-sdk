@@ -75,13 +75,26 @@ export const tools: MakeTool[] = [
                 name: { type: 'string', description: 'The name of the webhook' },
                 typeName: {
                     type: 'string',
-                    description: 'The hook type related to the app for which it will be created',
+                    description:
+                        "The hook type to create. Use 'gateway-webhook' for a generic custom webhook (receives HTTP requests) or 'gateway-mailhook' for a generic mailhook (receives emails). For app-specific hooks, use the hook type name of that app (find it via the app's modules).",
                 },
-                data: { type: 'object', description: 'Additional data specific to the hook type' },
+                data: {
+                    type: 'object',
+                    description:
+                        "Additional parameters specific to the hook type. Required parameters that have defaults in the hook type's manifest are filled automatically when omitted (e.g. for 'gateway-webhook' the booleans 'method', 'headers' and 'stringify' default to false). Parameters without defaults must be provided here (e.g. app-specific hooks often require their own fields).",
+                },
             },
             required: ['teamId', 'name', 'typeName'],
         },
-        examples: [{ teamId: 5, name: 'My Webhook', typeName: 'gateway-webhook' }],
+        examples: [
+            { teamId: 5, name: 'My Webhook', typeName: 'gateway-webhook' },
+            {
+                teamId: 5,
+                name: 'My Webhook with headers',
+                typeName: 'gateway-webhook',
+                data: { method: true, headers: true, stringify: false },
+            },
+        ],
         execute: async (
             make: Make,
             args: {
