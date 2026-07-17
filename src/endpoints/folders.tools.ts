@@ -5,7 +5,8 @@ export const tools: MakeTool[] = [
     {
         name: 'folders_list',
         title: 'List folders',
-        description: 'List folders for a team.',
+        description:
+            "List scenario folders for a team. If this fails with 'Access denied', the teamId is not accessible to your token — call users_me to learn your teamId instead of retrying with guessed IDs.",
         category: 'folders',
         scope: 'scenarios:read',
         scopeId: 'teamId',
