@@ -6,12 +6,16 @@ import type { JSONSchema, MakeTool } from '../tools.js';
 
 /**
  * JSON Schema for the `scheduling` parameter of `scenarios_create` / `scenarios_update`.
- * Mirrors the {@link Scheduling} type; the API also accepts a JSON-encoded string of the same shape.
+ * Mirrors the {@link Scheduling} type. The API itself also accepts a JSON-encoded string of the
+ * same shape, but validating consumers (the MCP host) enforce the object form declared here.
+ * Type-specific guidance is duplicated in the parent description because schema conversion on the
+ * MCP host may drop annotations from enum properties.
  */
 const schedulingInputSchema: JSONSchema = {
     type: 'object',
     description:
-        "Scheduling configuration. Only the listed properties exist — there is no 'cron', 'hour' or similar property.",
+        "Scheduling configuration. Only the listed properties exist — there is no 'cron', 'hour' or similar property. " +
+        "`type` must be one of: 'immediately', 'indefinitely' (runs on `interval` seconds), 'once', 'daily', 'weekly', 'monthly', 'yearly', or 'on-demand' (only runs when triggered manually or via scenarios_run).",
     properties: {
         type: {
             type: 'string',
@@ -58,7 +62,13 @@ const schedulingInputSchema: JSONSchema = {
 
 /**
  * JSON Schema for the `blueprint` parameter of `scenarios_create` / `scenarios_update`.
- * Mirrors the {@link Blueprint} type; the API also accepts a JSON-encoded string of the same shape.
+ * Mirrors the {@link Blueprint} type. The API itself also accepts a JSON-encoded string of the
+ * same shape, but validating consumers (the MCP host) enforce the object form declared here.
+ *
+ * `additionalProperties: true` (here and on `flow.items`) is load-bearing: blueprints carry more
+ * properties than this schema declares (e.g. a webhook node's `listener`), and the MCP host's
+ * validation pipeline strips undeclared properties from a `scenarios_get` → edit →
+ * `scenarios_update` round-trip unless the schema explicitly allows them.
  */
 const blueprintInputSchema: JSONSchema = {
     type: 'object',
@@ -99,6 +109,7 @@ const blueprintInputSchema: JSONSchema = {
                     },
                 },
                 required: ['id', 'module', 'version'],
+                additionalProperties: true,
             },
         },
         metadata: {
@@ -107,6 +118,7 @@ const blueprintInputSchema: JSONSchema = {
         },
     },
     required: ['name', 'flow', 'metadata'],
+    additionalProperties: true,
 };
 
 export const tools: MakeTool[] = [
