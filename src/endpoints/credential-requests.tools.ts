@@ -96,7 +96,11 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                requestId: { type: 'string', description: 'The credential request ID to delete' },
+                requestId: {
+                    type: 'string',
+                    description:
+                        'The credential request ID to delete — the string ID returned by credential-requests_create or credential-requests_list. NOT a numeric connectionId; to delete a connection use connections_delete.',
+                },
             },
             required: ['requestId'],
         },
@@ -427,7 +431,7 @@ export const tools: MakeTool[] = [
         description:
             'Add new OAuth scopes to an existing connection. Use this when a connection exists but lacks the permissions (scopes) needed for a specific operation. ' +
             'Creates a credential request that the end-user must authorize via the returned publicUri to grant the additional scopes. ' +
-            'Fails if all requested scopes are already present on the connection.',
+            'Fails if all requested scopes are already present on the connection — that error means the connection already satisfies the requirement: treat it as success and use the connection as-is; do not retry.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
         scopeId: 'connectionId',
@@ -450,7 +454,7 @@ export const tools: MakeTool[] = [
                 scopes: {
                     type: 'array',
                     description:
-                        'One or more new OAuth scope strings to add to the connection. At least one scope must be new (not already granted).',
+                        'One or more new OAuth scope strings to add to the connection. At least one scope must be new (not already granted). Get the exact scope strings a module needs from credential-requests_list-app-modules-with-creds — do not guess them.',
                     minItems: 1,
                     items: {
                         type: 'string',

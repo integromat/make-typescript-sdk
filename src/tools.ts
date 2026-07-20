@@ -76,6 +76,8 @@ export type JSONSchema = {
     maxItems?: number;
     /** Pattern for string validation */
     pattern?: string;
+    /** Whether properties not listed in `properties` are allowed on object types */
+    additionalProperties?: boolean;
 };
 
 /**

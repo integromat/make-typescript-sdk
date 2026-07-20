@@ -34,7 +34,8 @@ export const tools: MakeTool[] = [
     {
         name: 'executions_get-detail',
         title: 'Get execution detail',
-        description: 'Get detailed result of a specific execution.',
+        description:
+            'Get the full per-module detail of an execution: the inputs and outputs of each module, the failing module and its error. ALWAYS call this after a failed or suspicious run BEFORE retrying or editing the scenario. For lightweight status/duration metadata only, use executions_get instead.',
         category: 'executions',
         scope: 'scenarios:read',
         scopeId: 'scenarioId',
@@ -49,7 +50,12 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 scenarioId: { type: 'number', description: 'The scenario ID the execution belongs to' },
-                executionId: { type: 'string', description: 'The execution ID to retrieve' },
+                executionId: {
+                    type: 'string',
+                    pattern: '^[0-9a-f]{32}$',
+                    description:
+                        "The execution ID to retrieve — a 32-character lowercase hex string as returned by scenarios_run or executions_list (e.g. 'a07e16f2ad134bf49cf83a00aa95c0a5')",
+                },
             },
             required: ['scenarioId', 'executionId'],
         },
@@ -61,7 +67,8 @@ export const tools: MakeTool[] = [
     {
         name: 'executions_get',
         title: 'Get execution',
-        description: 'Get details of a specific execution.',
+        description:
+            'Get execution metadata only: status, duration, operations consumed and error class — NOT per-module inputs/outputs. To see what each module did or why a run failed, use executions_get-detail instead.',
         category: 'executions',
         scope: 'scenarios:read',
         scopeId: 'scenarioId',
@@ -76,7 +83,12 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 scenarioId: { type: 'number', description: 'The scenario ID the execution belongs to' },
-                executionId: { type: 'string', description: 'The execution ID to retrieve' },
+                executionId: {
+                    type: 'string',
+                    pattern: '^[0-9a-f]{32}$',
+                    description:
+                        "The execution ID to retrieve — a 32-character lowercase hex string as returned by scenarios_run or executions_list (e.g. 'a07e16f2ad134bf49cf83a00aa95c0a5')",
+                },
             },
             required: ['scenarioId', 'executionId'],
         },
@@ -133,7 +145,11 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 incompleteExecutionId: { type: 'string', description: 'The incomplete execution ID' },
-                executionId: { type: 'string', description: 'The execution ID to retrieve' },
+                executionId: {
+                    type: 'string',
+                    description:
+                        "The execution ID from the incomplete execution record (see executions_list-for-incomp-exec) — may be UUID-formatted with dashes (e.g. '55602700-e840-45bf-b18c-0aef214dd967'), unlike scenario execution IDs",
+                },
             },
             required: ['incompleteExecutionId', 'executionId'],
         },
