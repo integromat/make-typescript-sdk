@@ -8,14 +8,11 @@ import type { JSONSchema, MakeTool } from '../tools.js';
  * JSON Schema for the `scheduling` parameter of `scenarios_create` / `scenarios_update`.
  * Mirrors the {@link Scheduling} type. The API itself also accepts a JSON-encoded string of the
  * same shape, but validating consumers (the MCP host) enforce the object form declared here.
- * Type-specific guidance is duplicated in the parent description because schema conversion on the
- * MCP host may drop annotations from enum properties.
  */
 const schedulingInputSchema: JSONSchema = {
     type: 'object',
     description:
-        "Scheduling configuration. Only the listed properties exist — there is no 'cron', 'hour' or similar property. " +
-        "`type` must be one of: 'immediately', 'indefinitely' (runs on `interval` seconds), 'once', 'daily', 'weekly', 'monthly', 'yearly', or 'on-demand' (only runs when triggered manually or via scenarios_run).",
+        "Scheduling configuration. Only the listed properties exist — there is no 'cron', 'hour' or similar property.",
     properties: {
         type: {
             type: 'string',
