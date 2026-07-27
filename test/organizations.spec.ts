@@ -96,4 +96,18 @@ describe('Endpoints: Organizations', () => {
 
         await make.organizations.delete(organizationId);
     });
+
+    it('Should list organizations with the privateSpaces column', async () => {
+        const cols: (keyof Organization)[] = ['id', 'name', 'privateSpaces'];
+        mockFetch(
+            `GET https://make.local/api/v2/organizations?cols%5B%5D=${cols.join('&cols%5B%5D=')}`,
+            organizationsListMock,
+        );
+
+        const result = await make.organizations.list({
+            cols,
+        });
+
+        expect(result).toStrictEqual(organizationsListMock.organizations);
+    });
 });
