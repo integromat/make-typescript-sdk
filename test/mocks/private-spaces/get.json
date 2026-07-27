@@ -1,0 +1,21 @@
+{
+    "privateSpace": {
+        "id": 101,
+        "name": "Becca's space",
+        "organizationId": 5,
+        "globalAgentsEnabled": false,
+        "type": "personal",
+        "privateSpaceOwnerName": "Becca Smith",
+        "privateSpaceOwnerEmail": "becca.smith@example.com",
+        "privateSpaceOwnerId": 42,
+        "operationsLimit": 1000,
+        "transferLimit": "1073741824",
+        "consumedOperations": 250,
+        "consumedTransfer": "52428800",
+        "isPaused": false,
+        "consumedCenticredits": 12345,
+        "operations": "250",
+        "transfer": "52428800",
+        "centicredits": "12345"
+    }
+}

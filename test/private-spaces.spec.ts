@@ -4,6 +4,7 @@ import { mockFetch } from './test.utils.js';
 import type { PrivateSpace } from '../src/endpoints/private-spaces.js';
 
 import * as privateSpacesListMock from './mocks/private-spaces/list.json';
+import * as privateSpaceGetMock from './mocks/private-spaces/get.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -48,5 +49,27 @@ describe('Endpoints: PrivateSpaces', () => {
         });
 
         expect(result).toStrictEqual(privateSpacesListMock.privateSpaces);
+    });
+
+    it('Should get a private space', async () => {
+        mockFetch('GET https://make.local/api/v2/private-spaces/101', privateSpaceGetMock);
+
+        const result = await make.privateSpaces.get(101);
+
+        expect(result).toStrictEqual(privateSpaceGetMock.privateSpace);
+    });
+
+    it('Should get a private space with usage columns', async () => {
+        const cols: (keyof PrivateSpace)[] = ['id', 'operations', 'transfer', 'centicredits'];
+        mockFetch(
+            `GET https://make.local/api/v2/private-spaces/101?cols%5B%5D=${cols.join('&cols%5B%5D=')}`,
+            privateSpaceGetMock,
+        );
+
+        const result = await make.privateSpaces.get(101, {
+            cols,
+        });
+
+        expect(result).toStrictEqual(privateSpaceGetMock.privateSpace);
     });
 });

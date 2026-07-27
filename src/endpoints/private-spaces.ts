@@ -62,6 +62,20 @@ export type ListPrivateSpacesOptions<C extends keyof PrivateSpace = never> = {
 };
 
 /**
+ * Options for retrieving a private space.
+ * @template C Keys of the PrivateSpace type to include in the response
+ */
+export type GetPrivateSpaceOptions<C extends keyof PrivateSpace = never> = {
+    /**
+     * Specific columns/fields to include in the response. In addition to the list
+     * columns, `get()` supports the usage totals `operations`, `transfer` and
+     * `centicredits` (computed from analytics storage; the API responds with 503
+     * when that storage is unavailable).
+     */
+    cols?: C[] | ['*'];
+};
+
+/**
  * Response format for listing private spaces.
  */
 type ListPrivateSpacesResponse<C extends keyof PrivateSpace = never> = {
@@ -69,6 +83,14 @@ type ListPrivateSpacesResponse<C extends keyof PrivateSpace = never> = {
     privateSpaces: PickColumns<PrivateSpace, C>[];
     /** Pagination information */
     pg: Pagination<PrivateSpace>;
+};
+
+/**
+ * Response format for getting a private space.
+ */
+type GetPrivateSpaceResponse<C extends keyof PrivateSpace = never> = {
+    /** The requested private space */
+    privateSpace: PickColumns<PrivateSpace, C>;
 };
 
 /**
@@ -113,5 +135,31 @@ export class PrivateSpaces {
                 },
             })
         ).privateSpaces;
+    }
+
+    /**
+     * Get details of a specific private space.
+     * Requires the `personal team own view` organization permission; callers who are
+     * not members of the space receive a 404 even when the space exists.
+     * @param privateSpaceId The private space ID to get
+     * @param options Optional parameters for filtering returned fields
+     * @returns Promise with the private space information
+     *
+     * @example
+     * ```typescript
+     * const space = await make.privateSpaces.get(101);
+     * ```
+     */
+    async get<C extends keyof PrivateSpace = never>(
+        privateSpaceId: number,
+        options?: GetPrivateSpaceOptions<C>,
+    ): Promise<PickColumns<PrivateSpace, C>> {
+        return (
+            await this.#fetch<GetPrivateSpaceResponse<C>>(`/private-spaces/${privateSpaceId}`, {
+                query: {
+                    cols: options?.cols,
+                },
+            })
+        ).privateSpace;
     }
 }
