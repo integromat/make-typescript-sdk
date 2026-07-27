@@ -26,16 +26,19 @@ export type PrivateSpace = {
     privateSpaceOwnerId?: number;
     /** Maximum operations limit; null means unlimited */
     operationsLimit?: number | null;
-    /** Maximum data transfer limit in bytes; derived from the operations limit */
-    transferLimit?: string | null;
+    /**
+     * Maximum data transfer limit in bytes; derived from the operations limit.
+     * Serialized as a string by `list()`/`get()` but as a number by `update()`.
+     */
+    transferLimit?: string | number | null;
     /** Number of operations consumed in the current period */
     consumedOperations?: number | null;
     /** Amount of data transfer consumed in the current period, in bytes */
     consumedTransfer?: string | null;
     /** Whether the space is paused due to exceeded limits */
     isPaused?: boolean | null;
-    /** Number of centicredits consumed in the current period */
-    consumedCenticredits?: number | null;
+    /** Number of centicredits consumed in the current period, serialized as a string */
+    consumedCenticredits?: string | null;
     /** Total operations since the last reset; only selectable via `cols` on `get()` */
     operations?: string;
     /** Total data transfer since the last reset, in bytes; only selectable via `cols` on `get()` */

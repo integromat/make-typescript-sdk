@@ -79,11 +79,11 @@ Requires org permission `personal team manage`.
 | `privateSpaceOwnerEmail` | string          | default col                          |
 | `privateSpaceOwnerId`    | number          | default col                          |
 | `operationsLimit`        | number \| null  | cols; null = unlimited               |
-| `transferLimit`          | string \| null  | cols; bytes                          |
+| `transferLimit`          | string \| number \| null | cols; bytes (string on list/get, number on update) |
 | `consumedOperations`     | number \| null  | cols                                 |
 | `consumedTransfer`       | string \| null  | cols                                 |
 | `isPaused`               | boolean \| null | cols; paused due to exceeded limits  |
-| `consumedCenticredits`   | number \| null  | cols                                 |
+| `consumedCenticredits`   | string \| null  | cols; serialized as a string         |
 | `operations`             | string          | `get()` cols only (ES totals)        |
 | `transfer`               | string          | `get()` cols only (ES totals)        |
 | `centicredits`           | string          | `get()` cols only (ES totals)        |

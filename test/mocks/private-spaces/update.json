@@ -9,11 +9,11 @@
         "privateSpaceOwnerEmail": "becca.smith@example.com",
         "privateSpaceOwnerId": 42,
         "operationsLimit": 100,
-        "transferLimit": "107374182",
+        "transferLimit": 107374182,
         "consumedOperations": 250,
         "consumedTransfer": "52428800",
         "isPaused": true,
-        "consumedCenticredits": 12345,
+        "consumedCenticredits": "12345",
         "deleted": false,
         "externalId": null
     }

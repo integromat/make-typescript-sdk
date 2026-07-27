@@ -13,7 +13,7 @@
         "consumedOperations": 250,
         "consumedTransfer": "52428800",
         "isPaused": false,
-        "consumedCenticredits": 12345,
+        "consumedCenticredits": "12345",
         "operations": "250",
         "transfer": "52428800",
         "centicredits": "12345"
