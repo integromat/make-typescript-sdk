@@ -18,9 +18,9 @@ describe('Integration: PrivateSpaces', () => {
 
         expect(Array.isArray(spaces)).toBe(true);
 
-        // No public API can provision a private space, so downstream tests are
-        // skipped (early return) when the organization has none.
-        privateSpaceId = spaces[0]?.id;
+        // Prefer the caller's own space: get() returns 404 for non-admin non-members, and update() mutates live state.
+        const me = await make.users.me();
+        privateSpaceId = (spaces.find(space => space.privateSpaceOwnerEmail === me.email) ?? spaces[0])?.id;
     });
 
     it('Should get a private space', async () => {
@@ -42,20 +42,21 @@ describe('Integration: PrivateSpaces', () => {
         // Either value missing means get() never ran or failed — we can't safely reconstruct the original state.
         if (originalOperationsLimit === undefined || consumedOperations === undefined) return;
 
-        // Stay above current consumption so the update needs no confirmation
-        // and cannot pause the space.
+        // Stay above current consumption so the update needs no confirmation and cannot pause the space.
         const safeLimit = Math.max(consumedOperations ?? 0, originalOperationsLimit ?? 0) + 10000;
 
-        const updated = await make.privateSpaces.update(privateSpaceId, { operationsLimit: safeLimit });
-        expect(updated.operationsLimit).toBe(safeLimit);
-
-        // Confirmation is only needed (and only pauses) when the restored limit is below consumption.
-        const needsConfirm = (originalOperationsLimit ?? Infinity) < (consumedOperations ?? 0);
-        const restored = await make.privateSpaces.update(
-            privateSpaceId,
-            { operationsLimit: originalOperationsLimit ?? null },
-            needsConfirm ? { confirmed: true } : {},
-        );
-        expect(restored.operationsLimit).toBe(originalOperationsLimit ?? null);
+        try {
+            const updated = await make.privateSpaces.update(privateSpaceId, { operationsLimit: safeLimit });
+            expect(updated.operationsLimit).toBe(safeLimit);
+        } finally {
+            // Restore even when the assertion above fails — the limit is live, billing-relevant state.
+            const needsConfirm = (originalOperationsLimit ?? Infinity) < (consumedOperations ?? 0);
+            const restored = await make.privateSpaces.update(
+                privateSpaceId,
+                { operationsLimit: originalOperationsLimit ?? null },
+                needsConfirm ? { confirmed: true } : {},
+            );
+            expect(restored.operationsLimit).toBe(originalOperationsLimit ?? null);
+        }
     });
 });

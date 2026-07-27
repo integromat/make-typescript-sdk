@@ -62,4 +62,27 @@ describe('MCP tools: private-spaces', () => {
 
         expect(result).toStrictEqual(privateSpaceUpdateMock.privateSpace);
     });
+
+    it('Should execute private-spaces_list with externalId filter', async () => {
+        mockFetch(
+            `GET https://make.local/api/v2/private-spaces?organizationId=${ORGANIZATION_ID}&externalId=ext-1&cols%5B%5D=*`,
+            privateSpacesListMock,
+        );
+
+        const tool = getTool('private-spaces_list');
+        const result = await tool.execute(make, { organizationId: ORGANIZATION_ID, externalId: 'ext-1' });
+
+        expect(result).toStrictEqual(privateSpacesListMock.privateSpaces);
+    });
+
+    it('Should execute private-spaces_update without confirmation and null limit', async () => {
+        mockFetch(`PATCH https://make.local/api/v2/private-spaces/${PRIVATE_SPACE_ID}`, privateSpaceUpdateMock, req => {
+            expect(req.body).toStrictEqual({ operationsLimit: null });
+        });
+
+        const tool = getTool('private-spaces_update');
+        const result = await tool.execute(make, { privateSpaceId: PRIVATE_SPACE_ID, operationsLimit: null });
+
+        expect(result).toStrictEqual(privateSpaceUpdateMock.privateSpace);
+    });
 });

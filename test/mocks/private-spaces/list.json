@@ -8,7 +8,13 @@
             "type": "personal",
             "privateSpaceOwnerName": "Becca Smith",
             "privateSpaceOwnerEmail": "becca.smith@example.com",
-            "privateSpaceOwnerId": 42
+            "privateSpaceOwnerId": 42,
+            "operationsLimit": 1000,
+            "transferLimit": "536870912",
+            "consumedOperations": 250,
+            "consumedTransfer": "52428800",
+            "isPaused": false,
+            "consumedCenticredits": "12345"
         },
         {
             "id": 102,
@@ -18,7 +24,13 @@
             "type": "personal",
             "privateSpaceOwnerName": "Jan Novak",
             "privateSpaceOwnerEmail": "jan.novak@example.com",
-            "privateSpaceOwnerId": 43
+            "privateSpaceOwnerId": 43,
+            "operationsLimit": null,
+            "transferLimit": null,
+            "consumedOperations": 25,
+            "consumedTransfer": "1048576",
+            "isPaused": false,
+            "consumedCenticredits": "1200"
         }
     ],
     "pg": {

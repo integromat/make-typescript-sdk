@@ -92,7 +92,8 @@ export const tools: MakeTool[] = [
         },
         examples: [
             { privateSpaceId: 101, operationsLimit: 10000 },
-            { privateSpaceId: 101, operationsLimit: null, confirmed: true },
+            { privateSpaceId: 101, operationsLimit: 50, confirmed: true },
+            { privateSpaceId: 101, operationsLimit: null },
         ],
         execute: async (
             make: Make,
