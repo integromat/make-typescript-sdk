@@ -30,12 +30,14 @@
 ### Task 1: `PrivateSpace` type, `PrivateSpaces.list()`, client registration
 
 **Files:**
+
 - Create: `src/endpoints/private-spaces.ts`
 - Create: `test/mocks/private-spaces/list.json`
 - Create: `test/private-spaces.spec.ts`
 - Modify: `src/make.ts` (import ~line 20, property ~line 186, constructor ~line 281)
 
 **Interfaces:**
+
 - Consumes: `FetchFunction`, `Pagination`, `PickColumns` from `src/types.js` (existing).
 - Produces: `PrivateSpace` type; `ListPrivateSpacesOptions<C>`; class `PrivateSpaces` with `list<C extends keyof PrivateSpace = never>(organizationId: number, options?: ListPrivateSpacesOptions<C>): Promise<PickColumns<PrivateSpace, C>[]>`; `make.privateSpaces: PrivateSpaces` on the `Make` client. Tasks 2–7 rely on all of these names exactly.
 
@@ -149,7 +151,7 @@ Expected: FAIL — cannot find module `'../src/endpoints/private-spaces.js'` (th
 
 `src/endpoints/private-spaces.ts`:
 
-```typescript
+````typescript
 import type { FetchFunction, Pagination, PickColumns } from '../types.js';
 
 /**
@@ -267,7 +269,7 @@ export class PrivateSpaces {
         ).privateSpaces;
     }
 }
-```
+````
 
 - [ ] **Step 6: Register the endpoint on the `Make` client**
 
@@ -320,11 +322,13 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 ### Task 2: `PrivateSpaces.get()`
 
 **Files:**
+
 - Create: `test/mocks/private-spaces/get.json`
 - Modify: `src/endpoints/private-spaces.ts` (add `GetPrivateSpaceOptions`, `GetPrivateSpaceResponse`, `get()`)
 - Modify: `test/private-spaces.spec.ts` (extend the existing describe block)
 
 **Interfaces:**
+
 - Consumes: `PrivateSpace`, `PrivateSpaces` class from Task 1.
 - Produces: `GetPrivateSpaceOptions<C>`; `get<C extends keyof PrivateSpace = never>(privateSpaceId: number, options?: GetPrivateSpaceOptions<C>): Promise<PickColumns<PrivateSpace, C>>`. Tasks 6–7 call `make.privateSpaces.get(...)` with this exact signature.
 
@@ -365,27 +369,27 @@ import * as privateSpaceGetMock from './mocks/private-spaces/get.json';
 ```
 
 ```typescript
-    it('Should get a private space', async () => {
-        mockFetch('GET https://make.local/api/v2/private-spaces/101', privateSpaceGetMock);
+it('Should get a private space', async () => {
+    mockFetch('GET https://make.local/api/v2/private-spaces/101', privateSpaceGetMock);
 
-        const result = await make.privateSpaces.get(101);
+    const result = await make.privateSpaces.get(101);
 
-        expect(result).toStrictEqual(privateSpaceGetMock.privateSpace);
+    expect(result).toStrictEqual(privateSpaceGetMock.privateSpace);
+});
+
+it('Should get a private space with usage columns', async () => {
+    const cols: (keyof PrivateSpace)[] = ['id', 'operations', 'transfer', 'centicredits'];
+    mockFetch(
+        `GET https://make.local/api/v2/private-spaces/101?cols%5B%5D=${cols.join('&cols%5B%5D=')}`,
+        privateSpaceGetMock,
+    );
+
+    const result = await make.privateSpaces.get(101, {
+        cols,
     });
 
-    it('Should get a private space with usage columns', async () => {
-        const cols: (keyof PrivateSpace)[] = ['id', 'operations', 'transfer', 'centicredits'];
-        mockFetch(
-            `GET https://make.local/api/v2/private-spaces/101?cols%5B%5D=${cols.join('&cols%5B%5D=')}`,
-            privateSpaceGetMock,
-        );
-
-        const result = await make.privateSpaces.get(101, {
-            cols,
-        });
-
-        expect(result).toStrictEqual(privateSpaceGetMock.privateSpace);
-    });
+    expect(result).toStrictEqual(privateSpaceGetMock.privateSpace);
+});
 ```
 
 - [ ] **Step 3: Run the tests to verify they fail**
@@ -427,7 +431,7 @@ type GetPrivateSpaceResponse<C extends keyof PrivateSpace = never> = {
 
 Add to the `PrivateSpaces` class after `list()`:
 
-```typescript
+````typescript
     /**
      * Get details of a specific private space.
      * Requires the `personal team own view` organization permission; callers who are
@@ -453,7 +457,7 @@ Add to the `PrivateSpaces` class after `list()`:
             })
         ).privateSpace;
     }
-```
+````
 
 - [ ] **Step 5: Run the tests to verify they pass**
 
@@ -474,11 +478,13 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 ### Task 3: `PrivateSpaces.update()`
 
 **Files:**
+
 - Create: `test/mocks/private-spaces/update.json`
 - Modify: `src/endpoints/private-spaces.ts` (add `UpdatePrivateSpaceBody`, `UpdatePrivateSpaceOptions`, `UpdatePrivateSpaceResponse`, `update()`)
 - Modify: `test/private-spaces.spec.ts`
 
 **Interfaces:**
+
 - Consumes: `PrivateSpace`, `PrivateSpaces` class from Tasks 1–2.
 - Produces: `UpdatePrivateSpaceBody = { operationsLimit?: number | null }`; `UpdatePrivateSpaceOptions = { confirmed?: boolean }`; `update(privateSpaceId: number, body: UpdatePrivateSpaceBody, options?: UpdatePrivateSpaceOptions): Promise<PrivateSpace>`. Tasks 6–7 call `make.privateSpaces.update(...)` with this exact signature.
 
@@ -520,34 +526,34 @@ import * as privateSpaceUpdateMock from './mocks/private-spaces/update.json';
 Add to the describe block:
 
 ```typescript
-    it('Should update a private space', async () => {
-        const body = {
-            operationsLimit: 100,
-        };
+it('Should update a private space', async () => {
+    const body = {
+        operationsLimit: 100,
+    };
 
-        mockFetch('PATCH https://make.local/api/v2/private-spaces/101', privateSpaceUpdateMock, req => {
-            expect(req.body).toStrictEqual(body);
-            expect(req.headers.get('content-type')).toBe('application/json');
-        });
-
-        const result = await make.privateSpaces.update(101, body);
-
-        expect(result).toStrictEqual(privateSpaceUpdateMock.privateSpace);
+    mockFetch('PATCH https://make.local/api/v2/private-spaces/101', privateSpaceUpdateMock, req => {
+        expect(req.body).toStrictEqual(body);
+        expect(req.headers.get('content-type')).toBe('application/json');
     });
 
-    it('Should update a private space with confirmation and null limit', async () => {
-        const body = {
-            operationsLimit: null,
-        };
+    const result = await make.privateSpaces.update(101, body);
 
-        mockFetch('PATCH https://make.local/api/v2/private-spaces/101?confirmed=true', privateSpaceUpdateMock, req => {
-            expect(req.body).toStrictEqual(body);
-        });
+    expect(result).toStrictEqual(privateSpaceUpdateMock.privateSpace);
+});
 
-        const result = await make.privateSpaces.update(101, body, { confirmed: true });
+it('Should update a private space with confirmation and null limit', async () => {
+    const body = {
+        operationsLimit: null,
+    };
 
-        expect(result).toStrictEqual(privateSpaceUpdateMock.privateSpace);
+    mockFetch('PATCH https://make.local/api/v2/private-spaces/101?confirmed=true', privateSpaceUpdateMock, req => {
+        expect(req.body).toStrictEqual(body);
     });
+
+    const result = await make.privateSpaces.update(101, body, { confirmed: true });
+
+    expect(result).toStrictEqual(privateSpaceUpdateMock.privateSpace);
+});
 ```
 
 - [ ] **Step 3: Run the tests to verify they fail**
@@ -599,7 +605,7 @@ type UpdatePrivateSpaceResponse = {
 
 Add to the `PrivateSpaces` class after `get()`:
 
-```typescript
+````typescript
     /**
      * Update a private space.
      * Requires the `personal team manage` organization permission.
@@ -629,7 +635,7 @@ Add to the `PrivateSpaces` class after `get()`:
             })
         ).privateSpace;
     }
-```
+````
 
 - [ ] **Step 5: Run the tests to verify they pass**
 
@@ -650,11 +656,13 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 ### Task 4: `Organization.privateSpaces` field
 
 **Files:**
+
 - Modify: `src/endpoints/organizations.ts` (add field to the `Organization` type, after the `license` block ends, ~line 100+ — place it with the other optional top-level fields)
 - Modify: `test/organizations.spec.ts` (extend the existing describe block)
 - Modify: `test/mocks/organizations/get.json` (add `privateSpaces` to the organization object)
 
 **Interfaces:**
+
 - Consumes: existing `Organization` type and `organizations.list()` / `organizations.get()`.
 - Produces: `Organization.privateSpaces?: { id: number; name: string; isOwner: boolean; hasAdminVisibility: boolean }[]` — selectable via `cols` because option types use `keyof Organization`.
 
@@ -663,19 +671,19 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 Add to the describe block in `test/organizations.spec.ts`:
 
 ```typescript
-    it('Should list organizations with the privateSpaces column', async () => {
-        const cols: (keyof Organization)[] = ['id', 'name', 'privateSpaces'];
-        mockFetch(
-            `GET https://make.local/api/v2/organizations?cols%5B%5D=${cols.join('&cols%5B%5D=')}`,
-            organizationsListMock,
-        );
+it('Should list organizations with the privateSpaces column', async () => {
+    const cols: (keyof Organization)[] = ['id', 'name', 'privateSpaces'];
+    mockFetch(
+        `GET https://make.local/api/v2/organizations?cols%5B%5D=${cols.join('&cols%5B%5D=')}`,
+        organizationsListMock,
+    );
 
-        const result = await make.organizations.list({
-            cols,
-        });
-
-        expect(result).toStrictEqual(organizationsListMock.organizations);
+    const result = await make.organizations.list({
+        cols,
     });
+
+    expect(result).toStrictEqual(organizationsListMock.organizations);
+});
 ```
 
 - [ ] **Step 2: Run the test to verify it fails**
@@ -738,10 +746,12 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 ### Task 5: Public exports and README endpoint list
 
 **Files:**
+
 - Modify: `src/index.ts` (after the `public-templates.js` export block, ~line 202)
 - Modify: `README.md` (endpoint list, ~line 66)
 
 **Interfaces:**
+
 - Consumes: all types from Tasks 1–3.
 - Produces: package-level exports `PrivateSpace`, `PrivateSpaces`, `ListPrivateSpacesOptions`, `GetPrivateSpaceOptions`, `UpdatePrivateSpaceBody`, `UpdatePrivateSpaceOptions`.
 
@@ -787,12 +797,14 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 ### Task 6: Tool definitions
 
 **Files:**
+
 - Create: `src/endpoints/private-spaces.tools.ts`
 - Create: `test/private-spaces-tools.spec.ts` (mirrors `test/on-prem-tools.spec.ts`)
 - Modify: `src/tools.ts` (import after `PublicTemplatesTools` import ~line 31; spread after `...PublicTemplatesTools,` ~line 233)
 - Modify: `README.md` (tool categories list, ~line 214)
 
 **Interfaces:**
+
 - Consumes: `make.privateSpaces.list/get/update` exactly as produced by Tasks 1–3; `MakeTool` type and `MakeTools` array from `src/tools.js`.
 - Produces: tools `private-spaces_list`, `private-spaces_get`, `private-spaces_update` registered in `MakeTools`.
 
@@ -839,10 +851,7 @@ describe('MCP tools: private-spaces', () => {
     });
 
     it('Should execute private-spaces_get', async () => {
-        mockFetch(
-            `GET https://make.local/api/v2/private-spaces/${PRIVATE_SPACE_ID}?cols%5B%5D=*`,
-            privateSpaceGetMock,
-        );
+        mockFetch(`GET https://make.local/api/v2/private-spaces/${PRIVATE_SPACE_ID}?cols%5B%5D=*`, privateSpaceGetMock);
 
         const tool = getTool('private-spaces_get');
         const result = await tool.execute(make, { privateSpaceId: PRIVATE_SPACE_ID });
@@ -973,7 +982,10 @@ export const tools: MakeTool[] = [
             },
             required: ['privateSpaceId'],
         },
-        examples: [{ privateSpaceId: 101, operationsLimit: 10000 }, { privateSpaceId: 101, operationsLimit: null, confirmed: true }],
+        examples: [
+            { privateSpaceId: 101, operationsLimit: 10000 },
+            { privateSpaceId: 101, operationsLimit: null, confirmed: true },
+        ],
         execute: async (
             make: Make,
             args: { privateSpaceId: number; operationsLimit?: number | null; confirmed?: boolean },
@@ -1006,7 +1018,7 @@ Expected: PASS (3 tests).
 
 - [ ] **Step 6: Add the README tool category**
 
-In `README.md`, in the tool categories list, insert between `- \`organizations\`` and `- \`scenarios\``:
+In `README.md`, in the tool categories list, insert between `- \`organizations\``and`- \`scenarios\``:
 
 ```markdown
 - `private-spaces`
@@ -1031,9 +1043,11 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 ### Task 7: Integration test
 
 **Files:**
+
 - Create: `test/private-spaces.integration.test.ts`
 
 **Interfaces:**
+
 - Consumes: `make.privateSpaces.list/get/update` from Tasks 1–3; env vars `MAKE_API_KEY`, `MAKE_ZONE`, `MAKE_ORGANIZATION` from `.env`.
 - Produces: nothing consumed later.
 

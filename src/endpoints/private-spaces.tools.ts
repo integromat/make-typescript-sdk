@@ -90,7 +90,10 @@ export const tools: MakeTool[] = [
             },
             required: ['privateSpaceId'],
         },
-        examples: [{ privateSpaceId: 101, operationsLimit: 10000 }, { privateSpaceId: 101, operationsLimit: null, confirmed: true }],
+        examples: [
+            { privateSpaceId: 101, operationsLimit: 10000 },
+            { privateSpaceId: 101, operationsLimit: null, confirmed: true },
+        ],
         execute: async (
             make: Make,
             args: { privateSpaceId: number; operationsLimit?: number | null; confirmed?: boolean },

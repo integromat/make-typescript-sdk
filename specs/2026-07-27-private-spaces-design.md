@@ -68,27 +68,27 @@ Requires org permission `personal team manage`.
 
 ### PrivateSpace fields
 
-| Field | Type | Availability |
-|---|---|---|
-| `id` | number | default col |
-| `name` | string | default col |
-| `organizationId` | number | default col |
-| `globalAgentsEnabled` | boolean | default col |
-| `type` | `'personal'` | default col |
-| `privateSpaceOwnerName` | string | default col |
-| `privateSpaceOwnerEmail` | string | default col |
-| `privateSpaceOwnerId` | number | default col |
-| `operationsLimit` | number \| null | cols; null = unlimited |
-| `transferLimit` | string \| null | cols; bytes |
-| `consumedOperations` | number \| null | cols |
-| `consumedTransfer` | string \| null | cols |
-| `isPaused` | boolean \| null | cols; paused due to exceeded limits |
-| `consumedCenticredits` | number \| null | cols |
-| `operations` | string | `get()` cols only (ES totals) |
-| `transfer` | string | `get()` cols only (ES totals) |
-| `centicredits` | string | `get()` cols only (ES totals) |
-| `deleted` | boolean | admin col; present in PATCH response |
-| `externalId` | string \| null | admin col; present in PATCH response |
+| Field                    | Type            | Availability                         |
+| ------------------------ | --------------- | ------------------------------------ |
+| `id`                     | number          | default col                          |
+| `name`                   | string          | default col                          |
+| `organizationId`         | number          | default col                          |
+| `globalAgentsEnabled`    | boolean         | default col                          |
+| `type`                   | `'personal'`    | default col                          |
+| `privateSpaceOwnerName`  | string          | default col                          |
+| `privateSpaceOwnerEmail` | string          | default col                          |
+| `privateSpaceOwnerId`    | number          | default col                          |
+| `operationsLimit`        | number \| null  | cols; null = unlimited               |
+| `transferLimit`          | string \| null  | cols; bytes                          |
+| `consumedOperations`     | number \| null  | cols                                 |
+| `consumedTransfer`       | string \| null  | cols                                 |
+| `isPaused`               | boolean \| null | cols; paused due to exceeded limits  |
+| `consumedCenticredits`   | number \| null  | cols                                 |
+| `operations`             | string          | `get()` cols only (ES totals)        |
+| `transfer`               | string          | `get()` cols only (ES totals)        |
+| `centicredits`           | string          | `get()` cols only (ES totals)        |
+| `deleted`                | boolean         | admin col; present in PATCH response |
+| `externalId`             | string \| null  | admin col; present in PATCH response |
 
 ## Design
 
@@ -130,10 +130,10 @@ trap, the 404-for-non-members behavior, and null-vs-omitted `operationsLimit` se
 Category `private-spaces`. All tools set explicit `readOnlyHint` / `destructiveHint` /
 `openWorldHint` and document state traps in descriptions (repo convention since WM-4172).
 
-| Tool | Scope | scopeId / resourceId | Hints | Notes |
-|---|---|---|---|---|
-| `private-spaces_list` | `private-spaces:read` | `organizationId` / — | read-only | Params: `organizationId` (required), `externalId`. Description: requires the org's private-spaces feature and `personal team manage` permission. Executes with `cols: ['*']`. |
-| `private-spaces_get` | `private-spaces:read` | `privateSpaceId` / `privateSpaceId` | read-only | Description: non-members receive 404; usage totals (`operations`, `transfer`, `centicredits`) come from analytics storage. Executes with `cols: ['*']`. |
+| Tool                    | Scope                  | scopeId / resourceId                | Hints                                      | Notes                                                                                                                                                                                                                                |
+| ----------------------- | ---------------------- | ----------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `private-spaces_list`   | `private-spaces:read`  | `organizationId` / —                | read-only                                  | Params: `organizationId` (required), `externalId`. Description: requires the org's private-spaces feature and `personal team manage` permission. Executes with `cols: ['*']`.                                                        |
+| `private-spaces_get`    | `private-spaces:read`  | `privateSpaceId` / `privateSpaceId` | read-only                                  | Description: non-members receive 404; usage totals (`operations`, `transfer`, `centicredits`) come from analytics storage. Executes with `cols: ['*']`.                                                                              |
 | `private-spaces_update` | `private-spaces:write` | `privateSpaceId` / `privateSpaceId` | not read-only, not destructive, idempotent | Params: `privateSpaceId` (required), `operationsLimit` (`type: ['number', 'null']`, null = unlimited), `confirmed` (boolean; description: required when lowering the limit below current consumption — confirming pauses the space). |
 
 ### 3. `src/endpoints/organizations.ts`
@@ -164,11 +164,11 @@ TDD throughout (red → green per behavior).
 
 - `test/private-spaces.spec.ts` + `test/mocks/private-spaces/{list,get,update}.json`
   (realistic data matching the field table above):
-  - list: response unwrapping; query assertion for `organizationId` and `externalId`.
-  - list: column selection (`cols`) round-trip.
-  - get: response unwrapping; get-only usage cols present in mock.
-  - update: body assertion (`operationsLimit`, including `null`), `confirmed=true` in
-    query, `content-type: application/json`.
+    - list: response unwrapping; query assertion for `organizationId` and `externalId`.
+    - list: column selection (`cols`) round-trip.
+    - get: response unwrapping; get-only usage cols present in mock.
+    - update: body assertion (`operationsLimit`, including `null`), `confirmed=true` in
+      query, `content-type: application/json`.
 - `test/organizations.spec.ts` + mock: extend get mock with `privateSpaces` and assert
   it round-trips.
 - `test/private-spaces.integration.test.ts`: lists spaces for `MAKE_ORGANIZATION`;

@@ -36,10 +36,7 @@ describe('MCP tools: private-spaces', () => {
     });
 
     it('Should execute private-spaces_get', async () => {
-        mockFetch(
-            `GET https://make.local/api/v2/private-spaces/${PRIVATE_SPACE_ID}?cols%5B%5D=*`,
-            privateSpaceGetMock,
-        );
+        mockFetch(`GET https://make.local/api/v2/private-spaces/${PRIVATE_SPACE_ID}?cols%5B%5D=*`, privateSpaceGetMock);
 
         const tool = getTool('private-spaces_get');
         const result = await tool.execute(make, { privateSpaceId: PRIVATE_SPACE_ID });
