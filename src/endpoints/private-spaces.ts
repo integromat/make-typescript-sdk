@@ -76,6 +76,30 @@ export type GetPrivateSpaceOptions<C extends keyof PrivateSpace = never> = {
 };
 
 /**
+ * Body for updating a private space.
+ */
+export type UpdatePrivateSpaceBody = {
+    /**
+     * Maximum operations limit (minimum 0). Set to `null` to remove the limit
+     * (unlimited); omit to leave unchanged. The transfer limit is derived from
+     * this value by the API.
+     */
+    operationsLimit?: number | null;
+};
+
+/**
+ * Options for updating a private space.
+ */
+export type UpdatePrivateSpaceOptions = {
+    /**
+     * Confirmation of the update. Required (the API fails with IM004 otherwise)
+     * when the new operations limit is below the space's current consumption;
+     * confirming pauses the space.
+     */
+    confirmed?: boolean;
+};
+
+/**
  * Response format for listing private spaces.
  */
 type ListPrivateSpacesResponse<C extends keyof PrivateSpace = never> = {
@@ -91,6 +115,14 @@ type ListPrivateSpacesResponse<C extends keyof PrivateSpace = never> = {
 type GetPrivateSpaceResponse<C extends keyof PrivateSpace = never> = {
     /** The requested private space */
     privateSpace: PickColumns<PrivateSpace, C>;
+};
+
+/**
+ * Response format for updating a private space.
+ */
+type UpdatePrivateSpaceResponse = {
+    /** The updated private space */
+    privateSpace: PrivateSpace;
 };
 
 /**
@@ -159,6 +191,36 @@ export class PrivateSpaces {
                 query: {
                     cols: options?.cols,
                 },
+            })
+        ).privateSpace;
+    }
+
+    /**
+     * Update a private space.
+     * Requires the `personal team manage` organization permission.
+     * @param privateSpaceId The private space ID to update
+     * @param body The fields to update
+     * @param options Optional update options
+     * @returns Promise with the updated private space
+     *
+     * @example
+     * ```typescript
+     * // Remove the operations limit
+     * const space = await make.privateSpaces.update(101, { operationsLimit: null });
+     * ```
+     */
+    async update(
+        privateSpaceId: number,
+        body: UpdatePrivateSpaceBody,
+        options?: UpdatePrivateSpaceOptions,
+    ): Promise<PrivateSpace> {
+        return (
+            await this.#fetch<UpdatePrivateSpaceResponse>(`/private-spaces/${privateSpaceId}`, {
+                method: 'PATCH',
+                query: {
+                    confirmed: options?.confirmed,
+                },
+                body,
             })
         ).privateSpace;
     }

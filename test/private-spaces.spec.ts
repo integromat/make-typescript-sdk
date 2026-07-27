@@ -5,6 +5,7 @@ import type { PrivateSpace } from '../src/endpoints/private-spaces.js';
 
 import * as privateSpacesListMock from './mocks/private-spaces/list.json';
 import * as privateSpaceGetMock from './mocks/private-spaces/get.json';
+import * as privateSpaceUpdateMock from './mocks/private-spaces/update.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -71,5 +72,34 @@ describe('Endpoints: PrivateSpaces', () => {
         });
 
         expect(result).toStrictEqual(privateSpaceGetMock.privateSpace);
+    });
+
+    it('Should update a private space', async () => {
+        const body = {
+            operationsLimit: 100,
+        };
+
+        mockFetch('PATCH https://make.local/api/v2/private-spaces/101', privateSpaceUpdateMock, req => {
+            expect(req.body).toStrictEqual(body);
+            expect(req.headers.get('content-type')).toBe('application/json');
+        });
+
+        const result = await make.privateSpaces.update(101, body);
+
+        expect(result).toStrictEqual(privateSpaceUpdateMock.privateSpace);
+    });
+
+    it('Should update a private space with confirmation and null limit', async () => {
+        const body = {
+            operationsLimit: null,
+        };
+
+        mockFetch('PATCH https://make.local/api/v2/private-spaces/101?confirmed=true', privateSpaceUpdateMock, req => {
+            expect(req.body).toStrictEqual(body);
+        });
+
+        const result = await make.privateSpaces.update(101, body, { confirmed: true });
+
+        expect(result).toStrictEqual(privateSpaceUpdateMock.privateSpace);
     });
 });
