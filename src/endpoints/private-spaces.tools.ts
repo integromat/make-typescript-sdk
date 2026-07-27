@@ -69,7 +69,7 @@ export const tools: MakeTool[] = [
         resourceId: 'privateSpaceId',
         annotations: {
             readOnlyHint: false,
-            destructiveHint: false,
+            destructiveHint: true,
             idempotentHint: true,
             openWorldHint: false,
         },

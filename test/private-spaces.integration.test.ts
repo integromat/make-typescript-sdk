@@ -39,8 +39,8 @@ describe('Integration: PrivateSpaces', () => {
     it('Should update a private space and restore the original limit', async () => {
         if (privateSpaceId === undefined) return;
 
-        // get() never ran or failed — restoring would overwrite an unobserved limit.
-        if (originalOperationsLimit === undefined && consumedOperations === undefined) return;
+        // Either value missing means get() never ran or failed — we can't safely reconstruct the original state.
+        if (originalOperationsLimit === undefined || consumedOperations === undefined) return;
 
         // Stay above current consumption so the update needs no confirmation
         // and cannot pause the space.
@@ -49,10 +49,12 @@ describe('Integration: PrivateSpaces', () => {
         const updated = await make.privateSpaces.update(privateSpaceId, { operationsLimit: safeLimit });
         expect(updated.operationsLimit).toBe(safeLimit);
 
+        // Confirmation is only needed (and only pauses) when the restored limit is below consumption.
+        const needsConfirm = (originalOperationsLimit ?? Infinity) < (consumedOperations ?? 0);
         const restored = await make.privateSpaces.update(
             privateSpaceId,
             { operationsLimit: originalOperationsLimit ?? null },
-            { confirmed: true },
+            needsConfirm ? { confirmed: true } : {},
         );
         expect(restored.operationsLimit).toBe(originalOperationsLimit ?? null);
     });
