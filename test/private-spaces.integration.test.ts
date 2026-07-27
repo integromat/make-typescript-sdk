@@ -39,6 +39,9 @@ describe('Integration: PrivateSpaces', () => {
     it('Should update a private space and restore the original limit', async () => {
         if (privateSpaceId === undefined) return;
 
+        // get() never ran or failed — restoring would overwrite an unobserved limit.
+        if (originalOperationsLimit === undefined && consumedOperations === undefined) return;
+
         // Stay above current consumption so the update needs no confirmation
         // and cannot pause the space.
         const safeLimit = Math.max(consumedOperations ?? 0, originalOperationsLimit ?? 0) + 10000;
