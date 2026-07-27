@@ -210,6 +210,7 @@ All tools are organized into the following categories:
 - `keys`
 - `on-prem-agent`
 - `organizations`
+- `private-spaces`
 - `scenarios`
 - `teams`
 - `public-templates`
