@@ -18,6 +18,7 @@ import { Enums } from './endpoints/enums.js';
 import { OnPremAgents } from './endpoints/on-prem-agents.js';
 import { ConnectedSystems } from './endpoints/connected-systems.js';
 import { PublicTemplates } from './endpoints/public-templates.js';
+import { PrivateSpaces } from './endpoints/private-spaces.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
 import { SDKModules } from './endpoints/sdk/modules.js';
 import { SDKConnections } from './endpoints/sdk/connections.js';
@@ -186,6 +187,13 @@ export class Make {
     public readonly publicTemplates: PublicTemplates;
 
     /**
+     * Access to private space endpoints.
+     * Private spaces are per-user personal workspaces within an organization; they are
+     * provisioned automatically and cannot be created or deleted through the API.
+     */
+    public readonly privateSpaces: PrivateSpaces;
+
+    /**
      * Access to SDK-related endpoints
      */
     public readonly sdk: {
@@ -278,6 +286,7 @@ export class Make {
         this.connectedSystems = new ConnectedSystems(this.fetch.bind(this));
         this.credentialRequests = new CredentialRequests(this.fetch.bind(this));
         this.publicTemplates = new PublicTemplates(this.fetch.bind(this));
+        this.privateSpaces = new PrivateSpaces(this.fetch.bind(this));
         this.sdk = {
             apps: new SDKApps(this.fetch.bind(this)),
             modules: new SDKModules(this.fetch.bind(this)),

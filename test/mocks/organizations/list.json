@@ -3,7 +3,15 @@
         {
             "id": 5,
             "name": "New organization",
-            "timezoneId": 113
+            "timezoneId": 113,
+            "privateSpaces": [
+                {
+                    "id": 101,
+                    "name": "Becca's space",
+                    "isOwner": true,
+                    "hasAdminVisibility": false
+                }
+            ]
         },
         {
             "id": 6,

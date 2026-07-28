@@ -99,6 +99,20 @@ export type Organization = {
         /** Webhook log retention period in days */
         webhookLogRetentionDays?: number;
     };
+    /**
+     * Private spaces the requesting user is a member of within this organization.
+     * Only returned when requested via `cols`; available on public cloud only.
+     */
+    privateSpaces?: {
+        /** Unique identifier of the private space */
+        id: number;
+        /** Name of the private space */
+        name: string;
+        /** Whether the requesting user owns the space */
+        isOwner: boolean;
+        /** Whether org admins can see into the space (mirrors the organization's "add admins as observers" setting) */
+        hasAdminVisibility: boolean;
+    }[];
     /** The name of the subscription for the organization */
     serviceName: string;
     /** Teams in the organization */

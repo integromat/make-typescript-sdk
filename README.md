@@ -63,6 +63,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Keys** - API keys and secrets
 - **On-Prem Agents** - On-prem bridge agents running on customer infrastructure
 - **Organizations** - Top-level account and billing management
+- **Private Spaces** - Per-user private workspaces within an organization (list, get, update)
 - **Scenarios** - Scenario management
 - **Teams** - Team management and collaboration
 - **Public Templates** - Public template discovery and blueprint export (read-only)
@@ -209,6 +210,7 @@ All tools are organized into the following categories:
 - `keys`
 - `on-prem-agent`
 - `organizations`
+- `private-spaces`
 - `scenarios`
 - `teams`
 - `public-templates`

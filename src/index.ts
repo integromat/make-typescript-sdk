@@ -199,4 +199,12 @@ export type {
     ListPublicTemplatesOptions,
     GetPublicTemplateOptions,
 } from './endpoints/public-templates.js';
+export type {
+    PrivateSpace,
+    PrivateSpaces,
+    ListPrivateSpacesOptions,
+    GetPrivateSpaceOptions,
+    UpdatePrivateSpaceBody,
+    UpdatePrivateSpaceOptions,
+} from './endpoints/private-spaces.js';
 export type { User, Users } from './endpoints/users.js';

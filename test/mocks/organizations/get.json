@@ -33,6 +33,14 @@
                 "id": 16,
                 "name": "My Team"
             }
+        ],
+        "privateSpaces": [
+            {
+                "id": 101,
+                "name": "Becca's space",
+                "isOwner": true,
+                "hasAdminVisibility": false
+            }
         ]
     }
 }
