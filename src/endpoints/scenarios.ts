@@ -1,6 +1,7 @@
 import type { FetchFunction, JSONValue, Pagination, PickColumns } from '../types.js';
 import { Blueprint } from './blueprints.js';
 import type { DataStructureField } from './data-structures.js';
+import { ScenarioCustomProperties } from './scenario-custom-properties.js';
 
 /**
  * Represents a Make scenario.
@@ -327,12 +328,16 @@ type DeactivateScenarioResponse = {
 export class Scenarios {
     readonly #fetch: FetchFunction;
 
+    /** Access to scenario custom properties data operations */
+    public readonly customProperties: ScenarioCustomProperties;
+
     /**
      * Create a new Scenarios instance.
      * @param fetch Function for making API requests
      */
     constructor(fetch: FetchFunction) {
         this.#fetch = fetch;
+        this.customProperties = new ScenarioCustomProperties(fetch);
     }
 
     /**
