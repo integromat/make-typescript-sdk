@@ -213,4 +213,15 @@ export type {
     CustomPropertyStructures,
     CreateCustomPropertyStructureBody,
 } from './endpoints/custom-property-structures.js';
+export type {
+    CustomPropertyStructureItem,
+    CustomPropertyStructureItemWithStructureId,
+    CustomPropertyStructureItemOption,
+    CustomPropertyStructureItemType,
+    CustomPropertyStructureItems,
+    ListCustomPropertyStructureItemsOptions,
+    CreateCustomPropertyStructureItemBody,
+    UpdateCustomPropertyStructureItemBody,
+    DeleteCustomPropertyStructureItemOptions,
+} from './endpoints/custom-property-structure-items.js';
 export type { User, Users } from './endpoints/users.js';

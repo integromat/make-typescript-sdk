@@ -1,4 +1,5 @@
 import type { FetchFunction } from '../types.js';
+import { CustomPropertyStructureItems } from './custom-property-structure-items.js';
 
 /**
  * Describes one entity that owns a custom property structure and which entity
@@ -72,12 +73,16 @@ type CreateCustomPropertyStructureResponse = {
 export class CustomPropertyStructures {
     readonly #fetch: FetchFunction;
 
+    /** Access to custom property structure item operations */
+    public readonly items: CustomPropertyStructureItems;
+
     /**
      * Create a new CustomPropertyStructures instance.
      * @param fetch Function for making API requests
      */
     constructor(fetch: FetchFunction) {
         this.#fetch = fetch;
+        this.items = new CustomPropertyStructureItems(fetch);
     }
 
     /**
