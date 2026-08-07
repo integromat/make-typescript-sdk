@@ -60,7 +60,10 @@ describe('Endpoints: ScenarioCustomProperties', () => {
     });
 
     it('Should delete scenario custom properties data', async () => {
-        mockFetch(`DELETE https://make.local/api/v2/scenarios/${SCENARIO_ID}/custom-properties?confirmed=true`, deleteMock);
+        mockFetch(
+            `DELETE https://make.local/api/v2/scenarios/${SCENARIO_ID}/custom-properties?confirmed=true`,
+            deleteMock,
+        );
 
         await make.scenarios.customProperties.delete(SCENARIO_ID);
     });

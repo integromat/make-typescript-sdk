@@ -105,13 +105,20 @@ export const tools: MakeTool[] = [
                 },
                 required: {
                     type: 'boolean',
-                    description: 'Whether filling in this item is mandatory when setting scenario custom properties data',
+                    description:
+                        'Whether filling in this item is mandatory when setting scenario custom properties data',
                 },
             },
             required: ['customPropertyStructureId', 'name', 'label', 'type', 'required'],
         },
         examples: [
-            { customPropertyStructureId: 6, name: 'teamLocation', label: 'Team location', type: 'shortText', required: true },
+            {
+                customPropertyStructureId: 6,
+                name: 'teamLocation',
+                label: 'Team location',
+                type: 'shortText',
+                required: true,
+            },
             {
                 customPropertyStructureId: 6,
                 name: 'category',
@@ -219,7 +226,7 @@ export const tools: MakeTool[] = [
                 confirmed: {
                     type: 'boolean',
                     description:
-                        "Confirmation of the deletion. Required when scenarios already have data for this item; confirming discards that data.",
+                        'Confirmation of the deletion. Required when scenarios already have data for this item; confirming discards that data.',
                 },
             },
             required: ['customPropertyStructureItemId'],

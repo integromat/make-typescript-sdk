@@ -44,9 +44,8 @@ export class ScenarioCustomProperties {
      * ```
      */
     async get(scenarioId: number): Promise<ScenarioCustomPropertiesData> {
-        return (
-            await this.#fetch<ScenarioCustomPropertiesResponse>(`/scenarios/${scenarioId}/custom-properties`)
-        ).customProperties;
+        return (await this.#fetch<ScenarioCustomPropertiesResponse>(`/scenarios/${scenarioId}/custom-properties`))
+            .customProperties;
     }
 
     /**

@@ -5,7 +5,6 @@ import { Make } from '../src/make.js';
 const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
 const MAKE_TEAM = Number(process.env.MAKE_TEAM || 0);
-const MAKE_ORGANIZATION = Number(process.env.MAKE_ORGANIZATION || 0);
 
 describe('Integration: ScenarioCustomProperties', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);

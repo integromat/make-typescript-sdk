@@ -83,7 +83,8 @@ export const tools: MakeTool[] = [
                 scenarioId: { type: 'number', description: 'The scenario ID to replace custom properties data for' },
                 customProperties: {
                     type: 'object',
-                    description: 'Complete set of custom properties keyed by structure item name; replaces all existing data.',
+                    description:
+                        'Complete set of custom properties keyed by structure item name; replaces all existing data.',
                 },
             },
             required: ['scenarioId', 'customProperties'],
@@ -115,7 +116,8 @@ export const tools: MakeTool[] = [
                 scenarioId: { type: 'number', description: 'The scenario ID to update custom properties data for' },
                 customProperties: {
                     type: 'object',
-                    description: 'Custom properties to update, keyed by structure item name; unspecified items are left unchanged.',
+                    description:
+                        'Custom properties to update, keyed by structure item name; unspecified items are left unchanged.',
                 },
             },
             required: ['scenarioId', 'customProperties'],

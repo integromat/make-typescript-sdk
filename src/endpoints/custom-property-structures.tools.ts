@@ -52,7 +52,8 @@ export const tools: MakeTool[] = [
                 associatedType: {
                     type: 'string',
                     enum: ['scenario'],
-                    description: "The entity type the custom properties apply to. Only 'scenario' is currently supported.",
+                    description:
+                        "The entity type the custom properties apply to. Only 'scenario' is currently supported.",
                 },
                 belongerType: {
                     type: 'string',
