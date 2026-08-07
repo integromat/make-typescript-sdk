@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
+import { MakeError } from '../src/utils.js';
+import type { ScenarioCustomPropertiesData } from '../src/endpoints/scenario-custom-properties.js';
 
 const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
@@ -27,12 +29,19 @@ describe('Integration: ScenarioCustomProperties', () => {
 
         // Requires a custom property structure with no required items (or no structure at
         // all — an empty structure/object satisfies the API when nothing is required). If
-        // the organization's structure has required items, this call fails with IM005 and
-        // the remaining assertions are skipped, since we can't safely guess valid values.
-        let filledIn: Record<string, unknown> | undefined;
+        // the organization's structure has required items, or the custom-properties feature
+        // isn't licensed (IM027), this call fails with a client error and the remaining
+        // assertions are skipped, since we can't safely guess valid values.
+        let filledIn: ScenarioCustomPropertiesData | undefined;
         try {
             filledIn = await make.scenarios.customProperties.create(scenarioId, {});
-        } catch {
+        } catch (err: unknown) {
+            // The exact error code for "not fillable here" is unverified (no live org with a
+            // fillable structure was available), so any 4xx is treated as that expected
+            // precondition and skips the rest. Anything else — 5xx, network failure,
+            // non-MakeError — is a real bug and must fail the test.
+            const status = err instanceof MakeError ? err.statusCode : undefined;
+            if (status === undefined || status < 400 || status >= 500) throw err;
             return;
         }
         expect(filledIn).toBeDefined();

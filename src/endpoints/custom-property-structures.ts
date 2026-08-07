@@ -4,6 +4,11 @@ import { CustomPropertyStructureItems } from './custom-property-structure-items.
 /**
  * Describes one entity that owns a custom property structure and which entity
  * types the structure's items apply to.
+ * Field casing confirmed camelCase via `list()`/`get()` (`structures_get.sql` builds
+ * `belongers` directly in camelCase). `create()`'s response casing could not be verified
+ * live — creating a second structure is permanent (fails with IM005) — since
+ * `structure_add.sql` builds `out_belongers` with snake_case keys (`belonger_type`,
+ * `associated_types`); treat this shape as possibly snake_case from `create()` until verified.
  */
 export type CustomPropertyStructureBelonger = {
     /** ID of the entity that owns the structure; currently always an organization ID */
