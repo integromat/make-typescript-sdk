@@ -19,6 +19,7 @@ import { OnPremAgents } from './endpoints/on-prem-agents.js';
 import { ConnectedSystems } from './endpoints/connected-systems.js';
 import { PublicTemplates } from './endpoints/public-templates.js';
 import { PrivateSpaces } from './endpoints/private-spaces.js';
+import { CustomPropertyStructures } from './endpoints/custom-property-structures.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
 import { SDKModules } from './endpoints/sdk/modules.js';
 import { SDKConnections } from './endpoints/sdk/connections.js';
@@ -194,6 +195,12 @@ export class Make {
     public readonly privateSpaces: PrivateSpaces;
 
     /**
+     * Access to custom property structure endpoints.
+     * Custom property structures define which entity type can carry custom properties for an organization.
+     */
+    public readonly customPropertyStructures: CustomPropertyStructures;
+
+    /**
      * Access to SDK-related endpoints
      */
     public readonly sdk: {
@@ -287,6 +294,7 @@ export class Make {
         this.credentialRequests = new CredentialRequests(this.fetch.bind(this));
         this.publicTemplates = new PublicTemplates(this.fetch.bind(this));
         this.privateSpaces = new PrivateSpaces(this.fetch.bind(this));
+        this.customPropertyStructures = new CustomPropertyStructures(this.fetch.bind(this));
         this.sdk = {
             apps: new SDKApps(this.fetch.bind(this)),
             modules: new SDKModules(this.fetch.bind(this)),

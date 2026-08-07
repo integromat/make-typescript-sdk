@@ -1,0 +1,15 @@
+{
+    "customPropertyStructures": [
+        {
+            "id": 2,
+            "created": "2023-06-27T22:00:00.000Z",
+            "belongers": [
+                {
+                    "belongerId": 57,
+                    "belongerType": "organization",
+                    "associatedTypes": ["scenario"]
+                }
+            ]
+        }
+    ]
+}
