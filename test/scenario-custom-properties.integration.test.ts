@@ -38,7 +38,7 @@ describe('Integration: ScenarioCustomProperties', () => {
         } catch (err: unknown) {
             // 400 is this SDK's convention for a validation-style rejection (see e.g.
             // test/connected-systems.spec.ts's 400 "Bad Request" mock) and is the most
-            // plausible status for "structure has required items" (IM005) or "not licensed"
+            // plausible status for "the scenario already has data" (IM005) or "not licensed"
             // (IM027). `get()` two lines above already proved the API key and scenario ID are
             // valid, so 401/404/405 here would be a real SDK bug, not an environment
             // precondition — only an exact 400 skips the rest; everything else rethrows.
