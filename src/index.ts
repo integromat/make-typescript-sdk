@@ -207,4 +207,10 @@ export type {
     UpdatePrivateSpaceBody,
     UpdatePrivateSpaceOptions,
 } from './endpoints/private-spaces.js';
+export type {
+    CustomPropertyStructure,
+    CustomPropertyStructureBelonger,
+    CustomPropertyStructures,
+    CreateCustomPropertyStructureBody,
+} from './endpoints/custom-property-structures.js';
 export type { User, Users } from './endpoints/users.js';
