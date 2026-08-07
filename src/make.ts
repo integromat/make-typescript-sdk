@@ -196,7 +196,9 @@ export class Make {
 
     /**
      * Access to custom property structure endpoints.
-     * Custom property structures define which entity type can carry custom properties for an organization.
+     * Custom property structures define which entity type (currently only scenarios) can carry
+     * custom metadata for an organization; use `.items` to manage the individual field
+     * definitions within a structure. Structures cannot be deleted through the API.
      */
     public readonly customPropertyStructures: CustomPropertyStructures;
 
