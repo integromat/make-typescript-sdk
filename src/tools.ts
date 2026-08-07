@@ -31,6 +31,7 @@ import { tools as ConnectedSystemsTools } from './endpoints/connected-systems.to
 import { tools as PublicTemplatesTools } from './endpoints/public-templates.tools.js';
 import { tools as PrivateSpacesTools } from './endpoints/private-spaces.tools.js';
 import { tools as CustomPropertyStructuresTools } from './endpoints/custom-property-structures.tools.js';
+import { tools as CustomPropertyStructureItemsTools } from './endpoints/custom-property-structure-items.tools.js';
 
 /**
  * JSON Schema definition for input parameters.
@@ -235,4 +236,5 @@ export const MakeTools = [
     ...PublicTemplatesTools,
     ...PrivateSpacesTools,
     ...CustomPropertyStructuresTools,
+    ...CustomPropertyStructureItemsTools,
 ] as MakeTool[];
