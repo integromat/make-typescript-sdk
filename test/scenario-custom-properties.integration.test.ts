@@ -36,12 +36,14 @@ describe('Integration: ScenarioCustomProperties', () => {
         try {
             filledIn = await make.scenarios.customProperties.create(scenarioId, {});
         } catch (err: unknown) {
-            // The exact error code for "not fillable here" is unverified (no live org with a
-            // fillable structure was available), so any 4xx is treated as that expected
-            // precondition and skips the rest. Anything else — 5xx, network failure,
-            // non-MakeError — is a real bug and must fail the test.
+            // 400 is this SDK's convention for a validation-style rejection (see e.g.
+            // test/connected-systems.spec.ts's 400 "Bad Request" mock) and is the most
+            // plausible status for "structure has required items" (IM005) or "not licensed"
+            // (IM027). `get()` two lines above already proved the API key and scenario ID are
+            // valid, so 401/404/405 here would be a real SDK bug, not an environment
+            // precondition — only an exact 400 skips the rest; everything else rethrows.
             const status = err instanceof MakeError ? err.statusCode : undefined;
-            if (status === undefined || status < 400 || status >= 500) throw err;
+            if (status !== 400) throw err;
             return;
         }
         expect(filledIn).toBeDefined();
