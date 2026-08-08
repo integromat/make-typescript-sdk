@@ -30,12 +30,16 @@ describe('Integration: CustomPropertyStructures', () => {
             belongerId: MAKE_ORGANIZATION,
         });
         expect(created.id).toBeDefined();
-        // Resolves the casing doubt documented on CustomPropertyStructure.belongers: this only
-        // runs the one time a fresh organization has no structure yet, but when it does, it's
-        // the one live check that create()'s response is actually camelCase, not snake_case.
+        // This only runs the one time a fresh organization has no structure yet, but when it
+        // does, it's the one live check that create()'s response is actually camelCase, not
+        // snake_case — a shape that hasn't been directly verified otherwise (see the `created`
+        // field's JSDoc for the same open question on its timestamp format).
         expect(created.belongers).toStrictEqual([
             { belongerId: MAKE_ORGANIZATION, belongerType: 'organization', associatedTypes: ['scenario'] },
         ]);
+        // create()'s exact `created` format (full timestamp vs. date-only) is unverified — see
+        // the field's JSDoc — so only check it parses as a real date, not an exact shape.
+        expect(new Date(created.created).toString()).not.toBe('Invalid Date');
         structureId = created.id;
     });
 
@@ -52,14 +56,18 @@ describe('Integration: CustomPropertyStructures', () => {
         expect(item.structureId).toBe(structureId);
         itemId = item.id;
 
-        const updated = await make.customPropertyStructures.items.update(itemId, {
-            label: 'SDK Integration Test (updated)',
-        });
-        expect(updated.label).toBe('SDK Integration Test (updated)');
-
-        // Freshly created, no scenario ever referenced it — delete never needs confirmation.
-        await make.customPropertyStructures.items.delete(itemId);
-        itemId = undefined;
+        try {
+            const updated = await make.customPropertyStructures.items.update(itemId, {
+                label: 'SDK Integration Test (updated)',
+            });
+            expect(updated.label).toBe('SDK Integration Test (updated)');
+        } finally {
+            // Freshly created, no scenario ever referenced it — delete never needs confirmation.
+            // Runs even if update() or its assertion above threw, so the item never leaks in
+            // the shared org.
+            await make.customPropertyStructures.items.delete(itemId);
+            itemId = undefined;
+        }
     });
 
     it('Should list structure items', async () => {

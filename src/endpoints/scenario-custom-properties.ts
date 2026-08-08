@@ -3,9 +3,11 @@ import type { FetchFunction, JSONValue } from '../types.js';
 /**
  * Free-form custom properties data for a scenario, keyed by the custom property structure
  * item's `name`. The shape and required keys are determined by the organization's custom
- * property structure — the SDK does not validate it locally.
+ * property structure — the SDK does not validate it locally. Excludes `undefined` at the top
+ * level so the "pass `null`, not `undefined`, to clear a key" rule on `update()` is a compile
+ * error, not just a runtime surprise.
  */
-export type ScenarioCustomPropertiesData = Record<string, JSONValue>;
+export type ScenarioCustomPropertiesData = Record<string, Exclude<JSONValue, undefined>>;
 
 /**
  * Response format for reading or writing scenario custom properties data.

@@ -35,9 +35,9 @@ export type CustomPropertyStructureItem = {
     /** Data type of the item */
     type: CustomPropertyStructureItemType;
     /**
-     * Available choices for 'dropdown'/'multiselect' items. `create()`/`update()` always
-     * include this key (`null` for other types); `list()` omits the key entirely for other
-     * types instead of sending `null`.
+     * Available choices for 'dropdown'/'multiselect' items. Based on testing: `create()`/
+     * `update()` always include this key (`null` for other types); `list()` omits the key
+     * entirely for other types instead of sending `null`.
      */
     options?: CustomPropertyStructureItemOption[] | null;
     /** Whether filling in this item is mandatory when setting scenario custom properties data */
@@ -56,8 +56,14 @@ export type CustomPropertyStructureItemWithStructureId = CustomPropertyStructure
  * Options for listing custom property structure items.
  * @template C Keys of the CustomPropertyStructureItem type to include in the response
  */
-export type ListCustomPropertyStructureItemsOptions<C extends keyof CustomPropertyStructureItem = never> = {
-    /** Specific columns/fields to include in the response */
+export type ListCustomPropertyStructureItemsOptions<
+    C extends Exclude<keyof CustomPropertyStructureItem, 'options'> = never,
+> = {
+    /**
+     * Specific columns/fields to include in the response. `options` can't be selected here —
+     * `PickColumns` would incorrectly type it as always-present, when it's legitimately absent
+     * for non-dropdown/multiselect items; request `['*']` to get it.
+     */
     cols?: C[] | ['*'];
     /** Pagination options (the API does not support sorting by `options`) */
     pg?: Partial<Pagination<Omit<CustomPropertyStructureItem, 'options'>>>;
@@ -123,7 +129,8 @@ export type UpdateCustomPropertyStructureItemBody = {
     /**
      * Full replacement set of available choices for 'dropdown'/'multiselect' items. The new set
      * replaces the current one entirely; existing scenario data referencing removed options is
-     * not remapped.
+     * not remapped. Only meaningful for those two types — not enforced by this type since
+     * `type` isn't part of the update body, only by the live API.
      */
     options?: CustomPropertyStructureItemOption[];
     /** Whether filling in this item is mandatory */
@@ -144,12 +151,13 @@ export type DeleteCustomPropertyStructureItemOptions = {
 /**
  * Response format for listing custom property structure items.
  */
-type ListCustomPropertyStructureItemsResponse<C extends keyof CustomPropertyStructureItem = never> = {
-    /** List of structure items matching the query */
-    customPropertyStructureItems: PickColumns<CustomPropertyStructureItem, C>[];
-    /** Pagination information */
-    pg: Pagination<Omit<CustomPropertyStructureItem, 'options'>>;
-};
+type ListCustomPropertyStructureItemsResponse<C extends Exclude<keyof CustomPropertyStructureItem, 'options'> = never> =
+    {
+        /** List of structure items matching the query */
+        customPropertyStructureItems: PickColumns<CustomPropertyStructureItem, C>[];
+        /** Pagination information */
+        pg: Pagination<Omit<CustomPropertyStructureItem, 'options'>>;
+    };
 
 /**
  * Response format for creating a custom property structure item.
@@ -194,7 +202,7 @@ export class CustomPropertyStructureItems {
      * const items = await make.customPropertyStructures.items.list(6);
      * ```
      */
-    async list<C extends keyof CustomPropertyStructureItem = never>(
+    async list<C extends Exclude<keyof CustomPropertyStructureItem, 'options'> = never>(
         structureId: number,
         options?: ListCustomPropertyStructureItemsOptions<C>,
     ): Promise<PickColumns<CustomPropertyStructureItem, C>[]> {

@@ -24,7 +24,11 @@ export type CustomPropertyStructureBelonger = {
 export type CustomPropertyStructure = {
     /** Unique identifier of the structure */
     id: number;
-    /** Creation timestamp, e.g. `"2026-07-15T13:31:53.345339+00:00"` */
+    /**
+     * Creation timestamp, e.g. `"2026-07-15T13:31:53.345339+00:00"` when returned by `list()`.
+     * `create()`'s response format for this field hasn't been verified live and may differ
+     * (possibly date-only) — treat it as unconfirmed until checked against a real response.
+     */
     created: string;
     /** Entities that own this structure and the associated types it applies to */
     belongers: CustomPropertyStructureBelonger[];

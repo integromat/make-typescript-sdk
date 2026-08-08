@@ -27,35 +27,35 @@ describe('Integration: ScenarioCustomProperties', () => {
         const before = await make.scenarios.customProperties.get(scenarioId);
         expect(before).toBeDefined();
 
-        // Requires a custom property structure with no required items (or no structure at
-        // all — an empty structure/object satisfies the API when nothing is required). If
-        // the organization's structure has required items, or the custom-properties feature
-        // isn't licensed (IM027), this call fails with a client error and the remaining
+        // This call can fail for several environment-dependent reasons this SDK can't tell
+        // apart without a real response: the scenario already has data (IM005 — use update()/
+        // replace() instead), the organization's structure has required items this empty body
+        // doesn't supply, or the custom-properties feature isn't licensed (IM027). 400 is the
+        // most plausible status for any of these validation-style rejections, but that hasn't
+        // been confirmed against a real response either — if it's wrong, the remaining
         // assertions are skipped, since we can't safely guess valid values.
         let filledIn: ScenarioCustomPropertiesData | undefined;
         try {
             filledIn = await make.scenarios.customProperties.create(scenarioId, {});
         } catch (err: unknown) {
-            // The exact status for "the scenario already has data" (IM005) or "not licensed"
-            // (IM027) has not been verified live. 400 is the most plausible guess for a
-            // validation-style rejection, but this has not been confirmed against a real
-            // response. `get()` two lines above already proved the API key and scenario ID
-            // are valid, so 401/404 here would be surprising — but a 403 is not ruled out by
-            // that (the key could be read-only), and is rethrown like any other unexpected
-            // status rather than treated as this precondition. Log what we skipped so a
-            // wrong guess is visible in CI output instead of silently passing.
-            const status = err instanceof MakeError ? err.statusCode : undefined;
-            if (status !== 400) throw err;
-            console.warn(`Skipping remaining assertions: create() failed with 400 (${(err as MakeError).message})`);
+            // `get()` two lines above already proved the API key and scenario ID are valid,
+            // so 401/404 here would be surprising — but a 403 is not ruled out by that (the
+            // key could be read-only), and is rethrown like any other unexpected status rather
+            // than treated as this precondition. Log what we skipped so a wrong guess is
+            // visible in CI output instead of silently passing.
+            if (!(err instanceof MakeError) || err.statusCode !== 400) throw err;
+            console.warn(`Skipping remaining assertions: create() failed with 400 (${err.message})`);
             return;
         }
-        expect(filledIn).toBeDefined();
+        // An empty body only succeeds when the structure has no required items, so the result
+        // should be empty too.
+        expect(filledIn).toStrictEqual({});
 
         const updated = await make.scenarios.customProperties.update(scenarioId, {});
-        expect(updated).toBeDefined();
+        expect(updated).toStrictEqual({});
 
         const replaced = await make.scenarios.customProperties.replace(scenarioId, {});
-        expect(replaced).toBeDefined();
+        expect(replaced).toStrictEqual({});
 
         await make.scenarios.customProperties.delete(scenarioId);
         const after = await make.scenarios.customProperties.get(scenarioId);

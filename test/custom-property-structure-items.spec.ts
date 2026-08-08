@@ -118,6 +118,23 @@ describe('Endpoints: CustomPropertyStructureItems', () => {
         expect(result).toStrictEqual(updateMock.customPropertyStructureItem);
     });
 
+    it('Should replace the options of a dropdown/multiselect custom property structure item', async () => {
+        const body = { options: [{ value: 'Eshop' }, { value: 'Marketing' }] };
+        const response = { customPropertyStructureItem: { ...updateMock.customPropertyStructureItem, ...body } };
+
+        mockFetch(
+            'PATCH https://make.local/api/v2/custom-property-structures/custom-property-structure-items/2',
+            response,
+            req => {
+                expect(req.body).toStrictEqual(body);
+            },
+        );
+
+        const result = await make.customPropertyStructures.items.update(2, body);
+
+        expect(result).toStrictEqual(response.customPropertyStructureItem);
+    });
+
     it('Should delete a custom property structure item', async () => {
         mockFetch(
             'DELETE https://make.local/api/v2/custom-property-structures/custom-property-structure-items/2',

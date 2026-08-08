@@ -112,7 +112,37 @@ describe('MCP tools: custom-property-structure-items', () => {
         expect(result).toStrictEqual(updateMock.customPropertyStructureItem);
     });
 
+    it('Should execute custom-property-structure-items_update replacing options', async () => {
+        const body = { options: [{ value: 'Eshop' }, { value: 'Marketing' }] };
+        const response = { customPropertyStructureItem: { ...updateMock.customPropertyStructureItem, ...body } };
+
+        mockFetch(
+            'PATCH https://make.local/api/v2/custom-property-structures/custom-property-structure-items/2',
+            response,
+            req => {
+                expect(req.body).toStrictEqual(body);
+            },
+        );
+
+        const tool = getTool('custom-property-structure-items_update');
+        const result = await tool.execute(make, { customPropertyStructureItemId: 2, ...body });
+
+        expect(result).toStrictEqual(response.customPropertyStructureItem);
+    });
+
     it('Should execute custom-property-structure-items_delete', async () => {
+        mockFetch(
+            'DELETE https://make.local/api/v2/custom-property-structures/custom-property-structure-items/2',
+            deleteMock,
+        );
+
+        const tool = getTool('custom-property-structure-items_delete');
+        const result = await tool.execute(make, { customPropertyStructureItemId: 2 });
+
+        expect(result).toBe('Custom property structure item has been deleted.');
+    });
+
+    it('Should execute custom-property-structure-items_delete with confirmation', async () => {
         mockFetch(
             'DELETE https://make.local/api/v2/custom-property-structures/custom-property-structure-items/2?confirmed=true',
             deleteMock,
