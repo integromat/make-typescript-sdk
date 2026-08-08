@@ -36,14 +36,16 @@ describe('Integration: ScenarioCustomProperties', () => {
         try {
             filledIn = await make.scenarios.customProperties.create(scenarioId, {});
         } catch (err: unknown) {
-            // 400 is this SDK's convention for a validation-style rejection (see e.g.
-            // test/connected-systems.spec.ts's 400 "Bad Request" mock) and is the most
-            // plausible status for "the scenario already has data" (IM005) or "not licensed"
-            // (IM027). `get()` two lines above already proved the API key and scenario ID are
-            // valid, so 401/404/405 here would be a real SDK bug, not an environment
-            // precondition — only an exact 400 skips the rest; everything else rethrows.
+            // The exact status for "the scenario already has data" (IM005) or "not licensed"
+            // (IM027) has not been verified live. 400 is the most plausible guess for a
+            // validation-style rejection, but this has not been confirmed against a real
+            // response, unlike the 401/404/405 cases below, which `get()` two lines above
+            // already proved would indicate a real SDK bug rather than an environment
+            // precondition. Log what we skipped so a wrong guess is visible in CI output
+            // instead of silently passing.
             const status = err instanceof MakeError ? err.statusCode : undefined;
             if (status !== 400) throw err;
+            console.warn(`Skipping remaining assertions: create() failed with 400 (${(err as MakeError).message})`);
             return;
         }
         expect(filledIn).toBeDefined();

@@ -146,12 +146,16 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 scenarioId: { type: 'number', description: 'The scenario ID to delete custom properties data for' },
+                confirmed: {
+                    type: 'boolean',
+                    description: 'Confirmation of the deletion, in case the API starts requiring it for this call.',
+                },
             },
             required: ['scenarioId'],
         },
         examples: [{ scenarioId: 28 }],
-        execute: async (make: Make, args: { scenarioId: number }) => {
-            await make.scenarios.customProperties.delete(args.scenarioId);
+        execute: async (make: Make, args: { scenarioId: number; confirmed?: boolean }) => {
+            await make.scenarios.customProperties.delete(args.scenarioId, { confirmed: args.confirmed });
             return 'Scenario custom properties data has been deleted.';
         },
     },

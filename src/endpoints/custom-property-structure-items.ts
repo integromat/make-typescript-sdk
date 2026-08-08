@@ -35,9 +35,9 @@ export type CustomPropertyStructureItem = {
     /** Data type of the item */
     type: CustomPropertyStructureItemType;
     /**
-     * Available choices for 'dropdown'/'multiselect' items. Confirmed live: `create()`/
-     * `update()` always include this key (`null` for other types); `list()` omits the key
-     * entirely for other types instead of sending `null`.
+     * Available choices for 'dropdown'/'multiselect' items. `create()`/`update()` always
+     * include this key (`null` for other types); `list()` omits the key entirely for other
+     * types instead of sending `null`.
      */
     options?: CustomPropertyStructureItemOption[] | null;
     /** Whether filling in this item is mandatory when setting scenario custom properties data */
@@ -45,7 +45,7 @@ export type CustomPropertyStructureItem = {
 };
 
 /**
- * A structure item as returned by `create()`/`update()`, which also report the owning structure.
+ * A structure item as returned by `create()`/`update()`, which also reports the owning structure.
  */
 export type CustomPropertyStructureItemWithStructureId = CustomPropertyStructureItem & {
     /** ID of the structure this item belongs to */
@@ -76,9 +76,9 @@ export type ListCustomPropertyStructureItemsOptions<C extends keyof CustomProper
 };
 
 /**
- * Body for creating a custom property structure item.
+ * Fields for creating a custom property structure item shared by every data type.
  */
-export type CreateCustomPropertyStructureItemBody = {
+type BaseCreateCustomPropertyStructureItemBody = {
     /**
      * Unique name of the item within the structure, used as its key in scenario data.
      * Must match `^[a-zA-Z_$][0-9a-zA-Z_$]*$`, max 64 characters. Immutable after creation.
@@ -86,21 +86,31 @@ export type CreateCustomPropertyStructureItemBody = {
     name: string;
     /** Label shown to users in the scenario table header, max 64 characters */
     label: string;
-    /** Data type of the item. Immutable after creation. */
-    type: CustomPropertyStructureItemType;
     /** Description shown in the Scenario properties tab, max 1024 characters */
     description?: string;
-    /**
-     * Available choices. Required for 'dropdown'/'multiselect' items and not allowed for any
-     * other type; values must be unique and max 250 characters each.
-     */
-    options?: CustomPropertyStructureItemOption[];
     /**
      * Whether filling in this item is mandatory. The API requires this field to be
      * explicitly supplied on create, even though it defaults to `false` once set.
      */
     required: boolean;
 };
+
+/**
+ * Body for creating a custom property structure item. `options` is required for
+ * 'dropdown'/'multiselect' items and not allowed for any other type.
+ */
+export type CreateCustomPropertyStructureItemBody =
+    | (BaseCreateCustomPropertyStructureItemBody & {
+          /** Data type of the item. Immutable after creation. */
+          type: 'dropdown' | 'multiselect';
+          /** Available choices; values must be unique and max 250 characters each. */
+          options: CustomPropertyStructureItemOption[];
+      })
+    | (BaseCreateCustomPropertyStructureItemBody & {
+          /** Data type of the item. Immutable after creation. */
+          type: Exclude<CustomPropertyStructureItemType, 'dropdown' | 'multiselect'>;
+          options?: never;
+      });
 
 /**
  * Body for updating a custom property structure item. `name` and `type` cannot be changed.

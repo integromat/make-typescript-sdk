@@ -8,6 +8,14 @@ import type { FetchFunction, JSONValue } from '../types.js';
 export type ScenarioCustomPropertiesData = Record<string, JSONValue>;
 
 /**
+ * Options for deleting a scenario's custom properties data.
+ */
+export type DeleteScenarioCustomPropertiesOptions = {
+    /** Confirmation of the deletion, in case the API starts requiring it for this call. */
+    confirmed?: boolean;
+};
+
+/**
  * Response format for reading or writing scenario custom properties data.
  */
 type ScenarioCustomPropertiesResponse = {
@@ -96,6 +104,8 @@ export class ScenarioCustomProperties {
     /**
      * Merge-update custom properties data for a scenario; only the specified keys are changed.
      * The scenario must already have data — fails with IM013 otherwise; use `create()` first.
+     * Pass `null`, not `undefined`, to clear a key — `undefined` values vanish on JSON
+     * serialization and won't reach the API at all.
      * @param scenarioId The scenario ID to update custom properties data for
      * @param data The custom properties data to merge in, keyed by structure item name
      * @returns Promise with the scenario's custom properties data
@@ -117,19 +127,19 @@ export class ScenarioCustomProperties {
     /**
      * Delete all custom properties data for a scenario. This is irreversible.
      * The underlying API does not currently require confirmation for this call (unlike deleting
-     * a structure item), but this method always sends `confirmed: true` to match the documented
-     * contract in case that changes.
+     * a structure item), but `confirmed` can still be passed in case that changes.
      * @param scenarioId The scenario ID to delete custom properties data for
+     * @param options Deletion options
      *
      * @example
      * ```typescript
      * await make.scenarios.customProperties.delete(80);
      * ```
      */
-    async delete(scenarioId: number): Promise<void> {
+    async delete(scenarioId: number, options?: DeleteScenarioCustomPropertiesOptions): Promise<void> {
         await this.#fetch(`/scenarios/${scenarioId}/custom-properties`, {
             method: 'DELETE',
-            query: { confirmed: true },
+            query: { confirmed: options?.confirmed },
         });
     }
 }

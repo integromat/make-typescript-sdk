@@ -34,7 +34,10 @@ export type CustomPropertyStructure = {
  * Body for creating a custom property structure.
  */
 export type CreateCustomPropertyStructureBody = {
-    /** Entity type the custom properties apply to; only 'scenario' is supported today */
+    /**
+     * Entity type the custom properties apply to; only 'scenario' is supported today.
+     * Stored as a single-element array in the resulting structure's `associatedTypes`.
+     */
     associatedType: 'scenario';
     /** Type of the entity that owns the structure; only 'organization' is supported today */
     belongerType: 'organization';
@@ -62,6 +65,8 @@ type CreateCustomPropertyStructureResponse = {
  * Class providing methods for working with Make custom property structures.
  * Structures define which entity type can carry custom properties for an organization;
  * use the `items` property to manage the individual field definitions within a structure.
+ * There is no `get()` or `update()` — use `list()` to look up a structure, since none of
+ * its fields can be changed after creation.
  */
 export class CustomPropertyStructures {
     readonly #fetch: FetchFunction;

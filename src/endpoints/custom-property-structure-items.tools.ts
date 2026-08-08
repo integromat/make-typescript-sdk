@@ -1,6 +1,9 @@
 import type { Make } from '../make.js';
 import type { MakeTool } from '../tools.js';
-import type { CustomPropertyStructureItemType } from './custom-property-structure-items.js';
+import type {
+    CreateCustomPropertyStructureItemBody,
+    CustomPropertyStructureItemType,
+} from './custom-property-structure-items.js';
 
 export const tools: MakeTool[] = [
     {
@@ -141,7 +144,13 @@ export const tools: MakeTool[] = [
             },
         ) => {
             const { customPropertyStructureId, ...body } = args;
-            return await make.customPropertyStructures.items.create(customPropertyStructureId, body);
+            // MCP's flat inputSchema can't express the dropdown/multiselect+options coupling that
+            // CreateCustomPropertyStructureItemBody's discriminated union enforces; the live API
+            // validates it (IM error otherwise), so this just forwards the caller's input as given.
+            return await make.customPropertyStructures.items.create(
+                customPropertyStructureId,
+                body as CreateCustomPropertyStructureItemBody,
+            );
         },
     },
     {

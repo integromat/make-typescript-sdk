@@ -25,6 +25,29 @@ describe('Endpoints: CustomPropertyStructureItems', () => {
         expect(result).toStrictEqual(listMock.customPropertyStructureItems);
     });
 
+    it('Should list custom property structure items with column selection, pagination, and filters', async () => {
+        mockFetch(
+            `GET https://make.local/api/v2/custom-property-structures/${STRUCTURE_ID}/custom-property-structure-items` +
+                '?cols%5B%5D=id&cols%5B%5D=name&cols%5B%5D=label&cols%5B%5D=type&cols%5B%5D=required' +
+                '&pg%5BsortBy%5D=name&pg%5BsortDir%5D=asc&pg%5Boffset%5D=0&pg%5Blimit%5D=10' +
+                '&id=3&name=team&label=Team&description=desc&type=shortText&required=true',
+            listMock,
+        );
+
+        const result = await make.customPropertyStructures.items.list(STRUCTURE_ID, {
+            cols: ['id', 'name', 'label', 'type', 'required'],
+            pg: { sortBy: 'name', sortDir: 'asc', offset: 0, limit: 10 },
+            id: 3,
+            name: 'team',
+            label: 'Team',
+            description: 'desc',
+            type: 'shortText',
+            required: true,
+        });
+
+        expect(result).toStrictEqual(listMock.customPropertyStructureItems);
+    });
+
     it('Should create a custom property structure item', async () => {
         const body = {
             name: 'teamLocation',
