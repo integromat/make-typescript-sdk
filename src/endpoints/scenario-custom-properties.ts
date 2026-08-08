@@ -18,7 +18,7 @@ type ScenarioCustomPropertiesResponse = {
 };
 
 /**
- * Class providing methods for working with the custom properties data of a single scenario.
+ * Class providing methods for working with the custom properties data of scenarios.
  * The available keys and their types are defined by the organization's custom property
  * structure — see `make.customPropertyStructures.items`.
  */

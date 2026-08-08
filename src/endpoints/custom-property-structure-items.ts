@@ -96,9 +96,8 @@ export type CreateCustomPropertyStructureItemBody = {
      */
     options?: CustomPropertyStructureItemOption[];
     /**
-     * Whether filling in this item is mandatory. The live validator requires this field to be
-     * explicitly supplied on create even though the public API docs list it as optional
-     * (defaulting to `false`) — verify against Task 1's findings before relaxing this to optional.
+     * Whether filling in this item is mandatory. The API requires this field to be
+     * explicitly supplied on create, even though it defaults to `false` once set.
      */
     required: boolean;
 };

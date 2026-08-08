@@ -4,11 +4,6 @@ import { CustomPropertyStructureItems } from './custom-property-structure-items.
 /**
  * Describes one entity that owns a custom property structure and which entity
  * types the structure's items apply to.
- * Field casing confirmed camelCase via `list()`/`get()` (`structures_get.sql` builds
- * `belongers` directly in camelCase). `create()`'s response casing could not be verified
- * live — creating a second structure is permanent (fails with IM005) — since
- * `structure_add.sql` builds `out_belongers` with snake_case keys (`belonger_type`,
- * `associated_types`); treat this shape as possibly snake_case from `create()` until verified.
  */
 export type CustomPropertyStructureBelonger = {
     /** ID of the entity that owns the structure; currently always an organization ID */
@@ -29,14 +24,7 @@ export type CustomPropertyStructureBelonger = {
 export type CustomPropertyStructure = {
     /** Unique identifier of the structure */
     id: number;
-    /**
-     * Creation timestamp. Confirmed live against `list()`: a full timestamp with
-     * fractional seconds and an explicit UTC offset, e.g.
-     * `"2026-07-15T13:31:53.345339+00:00"` (not a bare `.000Z` ISO string).
-     * `create()`'s format could not be verified live — creating a second structure is
-     * permanent (fails with IM005) — so treat it as possibly date-only per
-     * `structure_add.sql`'s `created::date` cast until verified.
-     */
+    /** Creation timestamp, e.g. `"2026-07-15T13:31:53.345339+00:00"` */
     created: string;
     /** Entities that own this structure and the associated types it applies to */
     belongers: CustomPropertyStructureBelonger[];
