@@ -90,7 +90,7 @@ type BaseCreateCustomPropertyStructureItemBody = {
     description?: string;
     /**
      * Whether filling in this item is mandatory. The API requires this field to be
-     * explicitly supplied on create, even though it defaults to `false` once set.
+     * explicitly supplied on create, even though it would otherwise default to `false`.
      */
     required: boolean;
 };

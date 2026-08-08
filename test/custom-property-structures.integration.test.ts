@@ -30,6 +30,12 @@ describe('Integration: CustomPropertyStructures', () => {
             belongerId: MAKE_ORGANIZATION,
         });
         expect(created.id).toBeDefined();
+        // Resolves the casing doubt documented on CustomPropertyStructure.belongers: this only
+        // runs the one time a fresh organization has no structure yet, but when it does, it's
+        // the one live check that create()'s response is actually camelCase, not snake_case.
+        expect(created.belongers).toStrictEqual([
+            { belongerId: MAKE_ORGANIZATION, belongerType: 'organization', associatedTypes: ['scenario'] },
+        ]);
         structureId = created.id;
     });
 

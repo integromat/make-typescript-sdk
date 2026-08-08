@@ -79,15 +79,4 @@ describe('MCP tools: scenario-custom-properties', () => {
 
         expect(result).toBe('Scenario custom properties data has been deleted.');
     });
-
-    it('Should execute scenario-custom-properties_delete with confirmation', async () => {
-        mockFetch(`DELETE https://make.local/api/v2/scenarios/${SCENARIO_ID}/custom-properties?confirmed=true`, {
-            ok: 1,
-        });
-
-        const tool = getTool('scenario-custom-properties_delete');
-        const result = await tool.execute(make, { scenarioId: SCENARIO_ID, confirmed: true });
-
-        expect(result).toBe('Scenario custom properties data has been deleted.');
-    });
 });

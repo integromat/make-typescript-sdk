@@ -39,10 +39,11 @@ describe('Integration: ScenarioCustomProperties', () => {
             // The exact status for "the scenario already has data" (IM005) or "not licensed"
             // (IM027) has not been verified live. 400 is the most plausible guess for a
             // validation-style rejection, but this has not been confirmed against a real
-            // response, unlike the 401/404/405 cases below, which `get()` two lines above
-            // already proved would indicate a real SDK bug rather than an environment
-            // precondition. Log what we skipped so a wrong guess is visible in CI output
-            // instead of silently passing.
+            // response. `get()` two lines above already proved the API key and scenario ID
+            // are valid, so 401/404 here would be surprising — but a 403 is not ruled out by
+            // that (the key could be read-only), and is rethrown like any other unexpected
+            // status rather than treated as this precondition. Log what we skipped so a
+            // wrong guess is visible in CI output instead of silently passing.
             const status = err instanceof MakeError ? err.statusCode : undefined;
             if (status !== 400) throw err;
             console.warn(`Skipping remaining assertions: create() failed with 400 (${(err as MakeError).message})`);
@@ -52,6 +53,9 @@ describe('Integration: ScenarioCustomProperties', () => {
 
         const updated = await make.scenarios.customProperties.update(scenarioId, {});
         expect(updated).toBeDefined();
+
+        const replaced = await make.scenarios.customProperties.replace(scenarioId, {});
+        expect(replaced).toBeDefined();
 
         await make.scenarios.customProperties.delete(scenarioId);
         const after = await make.scenarios.customProperties.get(scenarioId);

@@ -35,6 +35,27 @@ describe('MCP tools: custom-property-structure-items', () => {
         expect(result).toStrictEqual(listMock.customPropertyStructureItems);
     });
 
+    it('Should execute custom-property-structure-items_list with filters', async () => {
+        mockFetch(
+            `GET https://make.local/api/v2/custom-property-structures/${STRUCTURE_ID}/custom-property-structure-items` +
+                '?cols%5B%5D=*&id=3&name=team&label=Team&description=desc&type=shortText&required=true',
+            listMock,
+        );
+
+        const tool = getTool('custom-property-structure-items_list');
+        const result = await tool.execute(make, {
+            customPropertyStructureId: STRUCTURE_ID,
+            id: 3,
+            name: 'team',
+            label: 'Team',
+            description: 'desc',
+            type: 'shortText',
+            required: true,
+        });
+
+        expect(result).toStrictEqual(listMock.customPropertyStructureItems);
+    });
+
     it('Should execute custom-property-structure-items_create', async () => {
         const body = { name: 'teamLocation', label: 'Team location', type: 'shortText', required: false };
 
@@ -50,6 +71,30 @@ describe('MCP tools: custom-property-structure-items', () => {
         const result = await tool.execute(make, { customPropertyStructureId: STRUCTURE_ID, ...body });
 
         expect(result).toStrictEqual(createMock.customPropertyStructureItem);
+    });
+
+    it('Should execute custom-property-structure-items_create with dropdown/multiselect options', async () => {
+        const body = {
+            name: 'category',
+            label: 'Category',
+            type: 'multiselect',
+            options: [{ value: 'Eshop' }, { value: 'Notifications' }],
+            required: false,
+        };
+        const response = { customPropertyStructureItem: { ...createMock.customPropertyStructureItem, ...body } };
+
+        mockFetch(
+            `POST https://make.local/api/v2/custom-property-structures/${STRUCTURE_ID}/custom-property-structure-items`,
+            response,
+            req => {
+                expect(req.body).toStrictEqual(body);
+            },
+        );
+
+        const tool = getTool('custom-property-structure-items_create');
+        const result = await tool.execute(make, { customPropertyStructureId: STRUCTURE_ID, ...body });
+
+        expect(result).toStrictEqual(response.customPropertyStructureItem);
     });
 
     it('Should execute custom-property-structure-items_update', async () => {

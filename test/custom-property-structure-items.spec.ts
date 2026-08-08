@@ -70,6 +70,38 @@ describe('Endpoints: CustomPropertyStructureItems', () => {
         expect(result).toStrictEqual(createMock.customPropertyStructureItem);
     });
 
+    it('Should create a dropdown/multiselect custom property structure item with options', async () => {
+        const body = {
+            name: 'category',
+            label: 'Category',
+            type: 'multiselect' as const,
+            options: [{ value: 'Eshop' }, { value: 'Notifications' }],
+            required: false,
+        };
+        const response = {
+            customPropertyStructureItem: {
+                ...createMock.customPropertyStructureItem,
+                name: body.name,
+                label: body.label,
+                type: body.type,
+                options: body.options,
+                required: body.required,
+            },
+        };
+
+        mockFetch(
+            `POST https://make.local/api/v2/custom-property-structures/${STRUCTURE_ID}/custom-property-structure-items`,
+            response,
+            req => {
+                expect(req.body).toStrictEqual(body);
+            },
+        );
+
+        const result = await make.customPropertyStructures.items.create(STRUCTURE_ID, body);
+
+        expect(result).toStrictEqual(response.customPropertyStructureItem);
+    });
+
     it('Should update a custom property structure item', async () => {
         const body = { label: 'Updated categories' };
 

@@ -27,8 +27,13 @@ export const tools: MakeTool[] = [
                     type: 'number',
                     description: 'The custom property structure ID to list items for',
                 },
+                id: { type: 'number', description: 'Filter items by exact ID' },
                 name: { type: 'string', description: 'Filter items by name (case-insensitive regular expression)' },
                 label: { type: 'string', description: 'Filter items by label (case-insensitive regular expression)' },
+                description: {
+                    type: 'string',
+                    description: 'Filter items by description (case-insensitive regular expression)',
+                },
                 type: {
                     type: 'string',
                     enum: ['boolean', 'number', 'shortText', 'longText', 'date', 'dropdown', 'multiselect'],
@@ -43,8 +48,10 @@ export const tools: MakeTool[] = [
             make: Make,
             args: {
                 customPropertyStructureId: number;
+                id?: number;
                 name?: string;
                 label?: string;
+                description?: string;
                 type?: CustomPropertyStructureItemType;
                 required?: boolean;
             },
@@ -144,9 +151,11 @@ export const tools: MakeTool[] = [
             },
         ) => {
             const { customPropertyStructureId, ...body } = args;
-            // MCP's flat inputSchema can't express the dropdown/multiselect+options coupling that
-            // CreateCustomPropertyStructureItemBody's discriminated union enforces; the live API
-            // validates it (IM error otherwise), so this just forwards the caller's input as given.
+            // This tool's inputSchema stays flat rather than using oneOf to mirror
+            // CreateCustomPropertyStructureItemBody's discriminated union, matching this repo's
+            // convention of simplifying generics/unions for MCP tools; the live API still
+            // validates the dropdown/multiselect+options coupling (IM error otherwise), so this
+            // just forwards the caller's input as given.
             return await make.customPropertyStructures.items.create(
                 customPropertyStructureId,
                 body as CreateCustomPropertyStructureItemBody,
@@ -165,7 +174,7 @@ export const tools: MakeTool[] = [
         resourceId: 'customPropertyStructureItemId',
         annotations: {
             readOnlyHint: false,
-            destructiveHint: false,
+            destructiveHint: true,
             idempotentHint: true,
             openWorldHint: false,
         },

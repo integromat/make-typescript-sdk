@@ -8,14 +8,6 @@ import type { FetchFunction, JSONValue } from '../types.js';
 export type ScenarioCustomPropertiesData = Record<string, JSONValue>;
 
 /**
- * Options for deleting a scenario's custom properties data.
- */
-export type DeleteScenarioCustomPropertiesOptions = {
-    /** Confirmation of the deletion, in case the API starts requiring it for this call. */
-    confirmed?: boolean;
-};
-
-/**
  * Response format for reading or writing scenario custom properties data.
  */
 type ScenarioCustomPropertiesResponse = {
@@ -126,20 +118,18 @@ export class ScenarioCustomProperties {
 
     /**
      * Delete all custom properties data for a scenario. This is irreversible.
-     * The underlying API does not currently require confirmation for this call (unlike deleting
-     * a structure item), but `confirmed` can still be passed in case that changes.
+     * Unlike deleting a structure item, the underlying API does not use a confirmation
+     * flag for this call.
      * @param scenarioId The scenario ID to delete custom properties data for
-     * @param options Deletion options
      *
      * @example
      * ```typescript
      * await make.scenarios.customProperties.delete(80);
      * ```
      */
-    async delete(scenarioId: number, options?: DeleteScenarioCustomPropertiesOptions): Promise<void> {
+    async delete(scenarioId: number): Promise<void> {
         await this.#fetch(`/scenarios/${scenarioId}/custom-properties`, {
             method: 'DELETE',
-            query: { confirmed: options?.confirmed },
         });
     }
 }

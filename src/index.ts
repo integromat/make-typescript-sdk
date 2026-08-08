@@ -224,9 +224,5 @@ export type {
     UpdateCustomPropertyStructureItemBody,
     DeleteCustomPropertyStructureItemOptions,
 } from './endpoints/custom-property-structure-items.js';
-export type {
-    ScenarioCustomProperties,
-    ScenarioCustomPropertiesData,
-    DeleteScenarioCustomPropertiesOptions,
-} from './endpoints/scenario-custom-properties.js';
+export type { ScenarioCustomProperties, ScenarioCustomPropertiesData } from './endpoints/scenario-custom-properties.js';
 export type { User, Users } from './endpoints/users.js';

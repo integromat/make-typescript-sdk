@@ -59,18 +59,19 @@ describe('Endpoints: ScenarioCustomProperties', () => {
         expect(result).toStrictEqual(updateMock.customProperties);
     });
 
+    it('Should send null (not omit) when clearing a key via update', async () => {
+        const data = { location: null };
+
+        mockFetch(`PATCH https://make.local/api/v2/scenarios/${SCENARIO_ID}/custom-properties`, updateMock, req => {
+            expect(req.body).toStrictEqual({ location: null });
+        });
+
+        await make.scenarios.customProperties.update(SCENARIO_ID, data);
+    });
+
     it('Should delete scenario custom properties data', async () => {
         mockFetch(`DELETE https://make.local/api/v2/scenarios/${SCENARIO_ID}/custom-properties`, deleteMock);
 
         await make.scenarios.customProperties.delete(SCENARIO_ID);
-    });
-
-    it('Should delete scenario custom properties data with confirmation', async () => {
-        mockFetch(
-            `DELETE https://make.local/api/v2/scenarios/${SCENARIO_ID}/custom-properties?confirmed=true`,
-            deleteMock,
-        );
-
-        await make.scenarios.customProperties.delete(SCENARIO_ID, { confirmed: true });
     });
 });

@@ -1,6 +1,6 @@
 import type { Make } from '../make.js';
 import type { MakeTool } from '../tools.js';
-import type { JSONValue } from '../types.js';
+import type { ScenarioCustomPropertiesData } from './scenario-custom-properties.js';
 
 export const tools: MakeTool[] = [
     {
@@ -57,7 +57,7 @@ export const tools: MakeTool[] = [
             required: ['scenarioId', 'customProperties'],
         },
         examples: [{ scenarioId: 80, customProperties: { companyTeam: 'marketing', highPriority: false } }],
-        execute: async (make: Make, args: { scenarioId: number; customProperties: Record<string, JSONValue> }) => {
+        execute: async (make: Make, args: { scenarioId: number; customProperties: ScenarioCustomPropertiesData }) => {
             return await make.scenarios.customProperties.create(args.scenarioId, args.customProperties);
         },
     },
@@ -90,7 +90,7 @@ export const tools: MakeTool[] = [
             required: ['scenarioId', 'customProperties'],
         },
         examples: [{ scenarioId: 80, customProperties: { companyTeam: 'engineering', highPriority: false } }],
-        execute: async (make: Make, args: { scenarioId: number; customProperties: Record<string, JSONValue> }) => {
+        execute: async (make: Make, args: { scenarioId: number; customProperties: ScenarioCustomPropertiesData }) => {
             return await make.scenarios.customProperties.replace(args.scenarioId, args.customProperties);
         },
     },
@@ -123,7 +123,7 @@ export const tools: MakeTool[] = [
             required: ['scenarioId', 'customProperties'],
         },
         examples: [{ scenarioId: 80, customProperties: { location: 'Wien, AUS' } }],
-        execute: async (make: Make, args: { scenarioId: number; customProperties: Record<string, JSONValue> }) => {
+        execute: async (make: Make, args: { scenarioId: number; customProperties: ScenarioCustomPropertiesData }) => {
             return await make.scenarios.customProperties.update(args.scenarioId, args.customProperties);
         },
     },
@@ -146,16 +146,12 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 scenarioId: { type: 'number', description: 'The scenario ID to delete custom properties data for' },
-                confirmed: {
-                    type: 'boolean',
-                    description: 'Confirmation of the deletion, in case the API starts requiring it for this call.',
-                },
             },
             required: ['scenarioId'],
         },
         examples: [{ scenarioId: 28 }],
-        execute: async (make: Make, args: { scenarioId: number; confirmed?: boolean }) => {
-            await make.scenarios.customProperties.delete(args.scenarioId, { confirmed: args.confirmed });
+        execute: async (make: Make, args: { scenarioId: number }) => {
+            await make.scenarios.customProperties.delete(args.scenarioId);
             return 'Scenario custom properties data has been deleted.';
         },
     },

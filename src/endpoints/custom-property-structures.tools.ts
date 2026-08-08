@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
         name: 'custom-property-structures_list',
         title: 'List custom property structures',
         description:
-            "List the custom property structures defined for an organization. Requires the organization's custom-properties feature to be enabled (error IM027 otherwise). Currently there is at most one structure per organization (for the 'scenario' entity type), and structures cannot be deleted through the API.",
+            "List the custom property structures defined for an organization. Requires the organization's custom-properties feature to be enabled (error IM027 otherwise). At most one structure can exist per combination of associated type, belonger type, and belonger ID — currently 'scenario'/'organization' is the only supported combination — and structures cannot be deleted through the API.",
         category: 'custom-property-structures',
         scope: 'custom-property-structures:read',
         scopeId: 'organizationId',
