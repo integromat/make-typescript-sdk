@@ -65,7 +65,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **On-Prem Agents** - On-prem bridge agents running on customer infrastructure
 - **Organizations** - Top-level account and billing management
 - **Private Spaces** - Per-user private workspaces within an organization (list, get, update)
-- **Roles** - Built-in and custom roles and their permissions (list, get)
+- **Roles** - Built-in and custom roles and their permissions (list, get, permissions)
 - **Custom Roles** - User-defined organization or team roles (create, update, delete)
 - **Scenarios** - Scenario management
 - **Teams** - Team management and collaboration
