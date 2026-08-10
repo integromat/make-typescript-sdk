@@ -207,4 +207,12 @@ export type {
     UpdatePrivateSpaceBody,
     UpdatePrivateSpaceOptions,
 } from './endpoints/private-spaces.js';
+export type { Role, Roles, ListRolesOptions, RolePermission, ListRolePermissionsOptions } from './endpoints/roles.js';
+export type {
+    CustomRole,
+    CustomRoles,
+    CreateCustomRoleBody,
+    UpdateCustomRoleBody,
+    DeleteCustomRoleBody,
+} from './endpoints/custom-roles.js';
 export type { User, Users } from './endpoints/users.js';

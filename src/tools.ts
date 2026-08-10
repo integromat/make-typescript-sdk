@@ -30,6 +30,8 @@ import { tools as OnPremAgentsTools } from './endpoints/on-prem-agents.tools.js'
 import { tools as ConnectedSystemsTools } from './endpoints/connected-systems.tools.js';
 import { tools as PublicTemplatesTools } from './endpoints/public-templates.tools.js';
 import { tools as PrivateSpacesTools } from './endpoints/private-spaces.tools.js';
+import { tools as RolesTools } from './endpoints/roles.tools.js';
+import { tools as CustomRolesTools } from './endpoints/custom-roles.tools.js';
 
 /**
  * JSON Schema definition for input parameters.
@@ -233,4 +235,6 @@ export const MakeTools = [
     ...EnumsTools,
     ...PublicTemplatesTools,
     ...PrivateSpacesTools,
+    ...RolesTools,
+    ...CustomRolesTools,
 ] as MakeTool[];
