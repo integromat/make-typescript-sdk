@@ -52,6 +52,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Connections** - External service connections and authentication
 - **Connected Systems** - On-prem connections linking agents to external apps (HTTP, SAP, etc.)
 - **Credential Requests** - Credential authorization requests and management
+- **Custom Properties** - Organization-level custom property structures/items and per-scenario custom properties data
 - **Data Stores** - Data storage within Make
 - **Data Store Records** - Individual records within data stores
 - **Data Structures** - Data schemas and formats
@@ -198,6 +199,8 @@ All tools are organized into the following categories:
 - `connections`
 - `connected-system`
 - `credential-requests`
+- `custom-property-structures`
+- `custom-property-structure-items`
 - `data-stores`
 - `data-store-records`
 - `data-structures`
@@ -211,6 +214,7 @@ All tools are organized into the following categories:
 - `on-prem-agent`
 - `organizations`
 - `private-spaces`
+- `scenario-custom-properties`
 - `scenarios`
 - `teams`
 - `public-templates`
