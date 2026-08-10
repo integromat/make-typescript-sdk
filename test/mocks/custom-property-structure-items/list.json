@@ -1,0 +1,27 @@
+{
+    "customPropertyStructureItems": [
+        {
+            "id": 54,
+            "name": "highPriority",
+            "label": "High Priority",
+            "description": "Specify whether the scenario is high priority or not.",
+            "type": "boolean",
+            "required": false
+        },
+        {
+            "id": 43,
+            "name": "companyTeam",
+            "label": "Company Team",
+            "description": "The team that manages the scenario",
+            "type": "dropdown",
+            "options": [{ "value": "Marketing" }, { "value": "Product" }, { "value": "Engineering" }],
+            "required": true
+        }
+    ],
+    "pg": {
+        "sortBy": "id",
+        "sortDir": "asc",
+        "offset": 0,
+        "limit": 10000
+    }
+}

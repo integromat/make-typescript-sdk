@@ -1,0 +1,12 @@
+{
+    "customProperties": {
+        "category": ["eshop", "products"],
+        "customId": 48,
+        "location": "Wien, AUS",
+        "companyTeam": "Product",
+        "description": "This scenario is handling notifications for the Product team in London.",
+        "highPriority": true,
+        "performanceCheck": "2023-08-31T14:19:00.000Z"
+    },
+    "scenarioId": 80
+}

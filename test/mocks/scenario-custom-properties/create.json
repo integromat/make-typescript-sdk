@@ -1,0 +1,12 @@
+{
+    "customProperties": {
+        "companyTeam": "marketing",
+        "customId": 60,
+        "performanceCheck": "2024-09-30T14:19:00.000Z",
+        "category": ["eshop"],
+        "highPriority": false,
+        "location": "Chicago, US",
+        "description": "Scenario for the Marketing team to share information with other stakeholders."
+    },
+    "scenarioId": 80
+}

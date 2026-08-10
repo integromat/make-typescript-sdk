@@ -207,6 +207,24 @@ export type {
     UpdatePrivateSpaceBody,
     UpdatePrivateSpaceOptions,
 } from './endpoints/private-spaces.js';
+export type {
+    CustomPropertyStructure,
+    CustomPropertyStructureBelonger,
+    CustomPropertyStructures,
+    CreateCustomPropertyStructureBody,
+} from './endpoints/custom-property-structures.js';
+export type {
+    CustomPropertyStructureItem,
+    CustomPropertyStructureItemWithStructureId,
+    CustomPropertyStructureItemOption,
+    CustomPropertyStructureItemType,
+    CustomPropertyStructureItems,
+    ListCustomPropertyStructureItemsOptions,
+    CreateCustomPropertyStructureItemBody,
+    UpdateCustomPropertyStructureItemBody,
+    DeleteCustomPropertyStructureItemOptions,
+} from './endpoints/custom-property-structure-items.js';
+export type { ScenarioCustomProperties, ScenarioCustomPropertiesData } from './endpoints/scenario-custom-properties.js';
 export type { Role, Roles, ListRolesOptions, RolePermission, ListRolePermissionsOptions } from './endpoints/roles.js';
 export type {
     CustomRole,

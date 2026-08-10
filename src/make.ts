@@ -19,6 +19,7 @@ import { OnPremAgents } from './endpoints/on-prem-agents.js';
 import { ConnectedSystems } from './endpoints/connected-systems.js';
 import { PublicTemplates } from './endpoints/public-templates.js';
 import { PrivateSpaces } from './endpoints/private-spaces.js';
+import { CustomPropertyStructures } from './endpoints/custom-property-structures.js';
 import { Roles } from './endpoints/roles.js';
 import { CustomRoles } from './endpoints/custom-roles.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
@@ -196,6 +197,14 @@ export class Make {
     public readonly privateSpaces: PrivateSpaces;
 
     /**
+     * Access to custom property structure endpoints.
+     * Custom property structures define which entity type (currently only scenarios) can carry
+     * custom metadata for an organization; use `.items` to manage the individual field
+     * definitions within a structure. Structures cannot be deleted through the API.
+     */
+    public readonly customPropertyStructures: CustomPropertyStructures;
+
+    /**
      * Access to role-related endpoints
      * Roles define a set of permissions and can be assigned to users at the organization or team
      * level; includes both built-in system roles and, when enabled, custom roles
@@ -302,6 +311,7 @@ export class Make {
         this.credentialRequests = new CredentialRequests(this.fetch.bind(this));
         this.publicTemplates = new PublicTemplates(this.fetch.bind(this));
         this.privateSpaces = new PrivateSpaces(this.fetch.bind(this));
+        this.customPropertyStructures = new CustomPropertyStructures(this.fetch.bind(this));
         this.roles = new Roles(this.fetch.bind(this));
         this.customRoles = new CustomRoles(this.fetch.bind(this));
         this.sdk = {

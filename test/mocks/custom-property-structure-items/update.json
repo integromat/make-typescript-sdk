@@ -1,0 +1,12 @@
+{
+    "customPropertyStructureItem": {
+        "id": 2,
+        "structureId": 11,
+        "name": "categories",
+        "label": "Updated categories",
+        "description": "Update label of the categories.",
+        "type": "multiselect",
+        "options": [{ "value": "Accounting" }, { "value": "Development" }],
+        "required": true
+    }
+}

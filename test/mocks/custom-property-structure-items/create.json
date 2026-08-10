@@ -1,0 +1,12 @@
+{
+    "customPropertyStructureItem": {
+        "id": 183,
+        "structureId": 6,
+        "name": "teamLocation",
+        "label": "Team location",
+        "description": "Location of the team managing the scenario.",
+        "type": "shortText",
+        "options": null,
+        "required": false
+    }
+}

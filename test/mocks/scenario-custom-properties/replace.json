@@ -1,0 +1,12 @@
+{
+    "customProperties": {
+        "category": ["notifications", "routing"],
+        "customId": 50,
+        "location": "London, UK",
+        "companyTeam": "engineering",
+        "description": "Scenario for the London engineering team",
+        "highPriority": false,
+        "performanceCheck": "2024-08-31T14:19:00.000Z"
+    },
+    "scenarioId": 80
+}
