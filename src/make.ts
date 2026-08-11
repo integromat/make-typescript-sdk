@@ -20,6 +20,8 @@ import { ConnectedSystems } from './endpoints/connected-systems.js';
 import { PublicTemplates } from './endpoints/public-templates.js';
 import { PrivateSpaces } from './endpoints/private-spaces.js';
 import { CustomPropertyStructures } from './endpoints/custom-property-structures.js';
+import { Roles } from './endpoints/roles.js';
+import { CustomRoles } from './endpoints/custom-roles.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
 import { SDKModules } from './endpoints/sdk/modules.js';
 import { SDKConnections } from './endpoints/sdk/connections.js';
@@ -203,6 +205,19 @@ export class Make {
     public readonly customPropertyStructures: CustomPropertyStructures;
 
     /**
+     * Access to role-related endpoints
+     * Roles define a set of permissions and can be assigned to users at the organization or team
+     * level; includes both built-in system roles and, when enabled, custom roles
+     */
+    public readonly roles: Roles;
+
+    /**
+     * Access to custom role-related endpoints
+     * Custom roles are user-defined organization or team roles managed through Roleman
+     */
+    public readonly customRoles: CustomRoles;
+
+    /**
      * Access to SDK-related endpoints
      */
     public readonly sdk: {
@@ -297,6 +312,8 @@ export class Make {
         this.publicTemplates = new PublicTemplates(this.fetch.bind(this));
         this.privateSpaces = new PrivateSpaces(this.fetch.bind(this));
         this.customPropertyStructures = new CustomPropertyStructures(this.fetch.bind(this));
+        this.roles = new Roles(this.fetch.bind(this));
+        this.customRoles = new CustomRoles(this.fetch.bind(this));
         this.sdk = {
             apps: new SDKApps(this.fetch.bind(this)),
             modules: new SDKModules(this.fetch.bind(this)),

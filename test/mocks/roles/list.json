@@ -1,0 +1,23 @@
+{
+    "usersRoles": [
+        {
+            "id": 1,
+            "name": "Admin",
+            "identifier": "admin",
+            "category": "organization",
+            "subsidiary": false,
+            "managementType": "system_locked",
+            "description": "Full administrative access to the organization.",
+            "permissions": ["organizations view", "organizations edit", "users view", "users edit"]
+        },
+        {
+            "id": 42,
+            "name": "Custom Viewer",
+            "category": "organization",
+            "subsidiary": true,
+            "managementType": "custom_managed",
+            "description": "Read-only access to organization resources.",
+            "permissions": ["scenarios view"]
+        }
+    ]
+}

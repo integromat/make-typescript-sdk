@@ -33,6 +33,8 @@ import { tools as PrivateSpacesTools } from './endpoints/private-spaces.tools.js
 import { tools as CustomPropertyStructuresTools } from './endpoints/custom-property-structures.tools.js';
 import { tools as CustomPropertyStructureItemsTools } from './endpoints/custom-property-structure-items.tools.js';
 import { tools as ScenarioCustomPropertiesTools } from './endpoints/scenario-custom-properties.tools.js';
+import { tools as RolesTools } from './endpoints/roles.tools.js';
+import { tools as CustomRolesTools } from './endpoints/custom-roles.tools.js';
 
 /**
  * JSON Schema definition for input parameters.
@@ -239,4 +241,6 @@ export const MakeTools = [
     ...CustomPropertyStructuresTools,
     ...CustomPropertyStructureItemsTools,
     ...ScenarioCustomPropertiesTools,
+    ...RolesTools,
+    ...CustomRolesTools,
 ] as MakeTool[];

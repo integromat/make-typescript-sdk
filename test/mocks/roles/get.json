@@ -1,0 +1,12 @@
+{
+    "usersRole": {
+        "id": 42,
+        "name": "Custom Viewer",
+        "category": "organization",
+        "subsidiary": true,
+        "managementType": "custom_managed",
+        "description": "Read-only access to organization resources.",
+        "organizationId": 5,
+        "permissions": ["scenarios view"]
+    }
+}

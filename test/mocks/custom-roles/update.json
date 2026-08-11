@@ -1,0 +1,10 @@
+{
+    "role": {
+        "id": 42,
+        "name": "Updated Viewer",
+        "category": "organization",
+        "managementType": "custom_managed",
+        "description": "Updated description.",
+        "permissions": [{ "id": 101, "name": "scenarios view" }]
+    }
+}
