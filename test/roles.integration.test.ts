@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
+import { MakeError } from '../src/utils.js';
 
 const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
@@ -29,7 +30,7 @@ describe('Integration: Roles', () => {
     });
 
     it('Should get a role', async () => {
-        // Roleman may not be enabled for this account yet — get() answers 404 in that case.
+        // Roleman may not be enabled for this account yet — get() answers 403 in that case.
         if (firstRoleId === undefined) return;
 
         try {
@@ -38,6 +39,7 @@ describe('Integration: Roles', () => {
             expect(role.id).toBe(firstRoleId);
             expect(Array.isArray(role.permissions)).toBe(true);
         } catch (error) {
+            if (!(error instanceof MakeError) || error.statusCode !== 403) throw error;
             console.warn('Skipping roles.get() assertions — Roleman may not be enabled:', error);
         }
     });

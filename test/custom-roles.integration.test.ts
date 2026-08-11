@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { describe, expect, it, afterAll } from '@jest/globals';
 import { Make } from '../src/make.js';
+import { MakeError } from '../src/utils.js';
 
 const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
@@ -34,6 +35,7 @@ describe('Integration: CustomRoles', () => {
 
             customRoleId = role.id;
         } catch (error) {
+            if (!(error instanceof MakeError) || error.statusCode !== 403) throw error;
             // The organization may not have the customRoles license feature or Roleman enabled —
             // the remaining tests skip themselves via the customRoleId guard below.
             console.warn('Skipping CustomRoles integration tests — create failed:', error);
