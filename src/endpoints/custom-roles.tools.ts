@@ -98,7 +98,8 @@ export const tools: MakeTool[] = [
                 permissions?: number[];
             },
         ) => {
-            return await make.customRoles.update(args);
+            const { id, ...body } = args;
+            return await make.customRoles.update(id, body);
         },
     },
     {
@@ -126,7 +127,8 @@ export const tools: MakeTool[] = [
         },
         examples: [{ id: 42, organizationId: 1 }],
         execute: async (make: Make, args: { id: number; organizationId: number }) => {
-            return await make.customRoles.delete(args);
+            const { id, ...body } = args;
+            return await make.customRoles.delete(id, body);
         },
     },
 ];

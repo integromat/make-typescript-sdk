@@ -16,7 +16,7 @@ describe('Integration: CustomRoles', () => {
     // the organization's customRoles license/Roleman gating is environment-dependent (see below).
     afterAll(async () => {
         if (customRoleId === undefined) return;
-        await make.customRoles.delete({ id: customRoleId, organizationId: MAKE_ORGANIZATION }).catch(() => {
+        await make.customRoles.delete(customRoleId, { organizationId: MAKE_ORGANIZATION }).catch(() => {
             // Already deleted by the 'Should delete the custom role' test below, or cleanup failed — best effort only.
         });
     });
@@ -45,8 +45,7 @@ describe('Integration: CustomRoles', () => {
     it('Should update the custom role', async () => {
         if (customRoleId === undefined) return;
 
-        const role = await make.customRoles.update({
-            id: customRoleId,
+        const role = await make.customRoles.update(customRoleId, {
             organizationId: MAKE_ORGANIZATION,
             name: `Updated Custom Role ${Date.now()}`,
             permissions: [],
@@ -66,7 +65,7 @@ describe('Integration: CustomRoles', () => {
     it('Should delete the custom role', async () => {
         if (customRoleId === undefined) return;
 
-        const deletedRoleId = await make.customRoles.delete({ id: customRoleId, organizationId: MAKE_ORGANIZATION });
+        const deletedRoleId = await make.customRoles.delete(customRoleId, { organizationId: MAKE_ORGANIZATION });
 
         expect(deletedRoleId).toBe(customRoleId);
     });

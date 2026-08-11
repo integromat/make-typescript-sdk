@@ -48,43 +48,42 @@ describe('Endpoints: CustomRoles', () => {
 
     it('Should update a custom role', async () => {
         const body = {
-            id: 42,
             organizationId: 1,
             name: 'Updated Viewer',
             description: 'Updated description.',
             permissions: [101],
         };
 
-        mockFetch('PATCH https://make.local/api/v2/users/custom-roles', customRoleUpdateMock, req => {
+        mockFetch('PATCH https://make.local/api/v2/users/custom-roles/42', customRoleUpdateMock, req => {
             expect(req.body).toStrictEqual(body);
         });
 
-        const result = await make.customRoles.update(body);
+        const result = await make.customRoles.update(42, body);
 
         expect(result).toStrictEqual(customRoleUpdateMock.role);
     });
 
     it('Should update a custom role clearing its description', async () => {
-        const body = { id: 42, organizationId: 1, description: null };
+        const body = { organizationId: 1, description: null };
 
-        mockFetch('PATCH https://make.local/api/v2/users/custom-roles', customRoleUpdateMock, req => {
+        mockFetch('PATCH https://make.local/api/v2/users/custom-roles/42', customRoleUpdateMock, req => {
             expect(req.body).toStrictEqual(body);
         });
 
-        const result = await make.customRoles.update(body);
+        const result = await make.customRoles.update(42, body);
 
         expect(result).toStrictEqual(customRoleUpdateMock.role);
     });
 
     it('Should delete a custom role', async () => {
-        const body = { id: 42, organizationId: 1 };
+        const body = { organizationId: 1 };
 
-        mockFetch('DELETE https://make.local/api/v2/users/custom-roles', customRoleDeleteMock, req => {
+        mockFetch('DELETE https://make.local/api/v2/users/custom-roles/42', customRoleDeleteMock, req => {
             expect(req.body).toStrictEqual(body);
             expect(req.headers.get('content-type')).toBe('application/json');
         });
 
-        const result = await make.customRoles.delete(body);
+        const result = await make.customRoles.delete(42, body);
 
         expect(result).toBe(customRoleDeleteMock.roleId);
     });

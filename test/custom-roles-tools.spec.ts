@@ -42,8 +42,8 @@ describe('MCP tools: custom-roles', () => {
     it('Should execute custom-roles_update', async () => {
         const args = { id: 42, organizationId: 1, name: 'Updated Viewer' };
 
-        mockFetch('PATCH https://make.local/api/v2/users/custom-roles', customRoleUpdateMock, req => {
-            expect(req.body).toStrictEqual(args);
+        mockFetch('PATCH https://make.local/api/v2/users/custom-roles/42', customRoleUpdateMock, req => {
+            expect(req.body).toStrictEqual({ organizationId: 1, name: 'Updated Viewer' });
         });
 
         const tool = getTool('custom-roles_update');
@@ -55,8 +55,8 @@ describe('MCP tools: custom-roles', () => {
     it('Should execute custom-roles_delete', async () => {
         const args = { id: 42, organizationId: 1 };
 
-        mockFetch('DELETE https://make.local/api/v2/users/custom-roles', customRoleDeleteMock, req => {
-            expect(req.body).toStrictEqual(args);
+        mockFetch('DELETE https://make.local/api/v2/users/custom-roles/42', customRoleDeleteMock, req => {
+            expect(req.body).toStrictEqual({ organizationId: 1 });
         });
 
         const tool = getTool('custom-roles_delete');
