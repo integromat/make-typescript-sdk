@@ -438,6 +438,39 @@ export const tools: MakeTool[] = [
         },
     },
     {
+        name: 'scenarios_replay',
+        title: 'Replay scenario execution',
+        description:
+            "Replay a past execution of a scenario, re-running it with the trigger data the original execution received. Get candidate execution IDs from executions_list. Only executions whose input data is still stored can be replayed — 'Execution is not replayable' means that execution's data has expired or was never stored, so try a MORE RECENT execution instead of retrying the same one. Only the first ID in executionIds is replayed. The scenario must be ACTIVE. A replay starts a real execution and consumes operations exactly like scenarios_run; it returns the executionId of the NEW execution, which you can inspect with executions_get-detail.",
+        category: 'scenarios',
+        scope: 'scenarios:run',
+        scopeId: 'scenarioId',
+        identifier: 'scenarioId',
+        resourceId: 'scenarioId',
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: true,
+            openWorldHint: true,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                scenarioId: { type: 'number', description: 'The ID of the scenario the execution belongs to' },
+                executionIds: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description:
+                        'Execution IDs to replay, as returned by executions_list. Currently only the first one is replayed.',
+                },
+            },
+            required: ['scenarioId', 'executionIds'],
+        },
+        examples: [{ scenarioId: 925, executionIds: ['509f0457d2804ba7b115faf1637beea6'] }],
+        execute: async (make: Make, args: { scenarioId: number; executionIds: string[] }) => {
+            return await make.scenarios.replay(args.scenarioId, args.executionIds);
+        },
+    },
+    {
         name: 'scenarios_interface',
         title: 'Get scenario interface',
         description: 'Get the interface for a scenario.',
