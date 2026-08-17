@@ -1,9 +1,9 @@
 {
     "scenarioFolder": {
-        "id": 1576,
-        "name": "ALPHA",
-        "path": "ALPHA",
-        "parentId": null,
+        "id": 1577,
+        "name": "cleanup",
+        "path": "ALPHA/cleanup",
+        "parentId": 1576,
         "position": null,
         "scenariosTotal": 0,
         "scenariosSubtreeTotal": 0,
