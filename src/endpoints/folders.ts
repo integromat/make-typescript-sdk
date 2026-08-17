@@ -1,10 +1,11 @@
 import type { FetchFunction, PickColumns } from '../types.js';
 
 /**
- * Represents a folder in Make.
- * Folders help organize scenarios within a team and can be nested to form a folder tree.
+ * Non-recursive folder fields, excluding `children`.
+ * Used as the base for `Folder`, which adds a `children` property typed recursively
+ * so that column selection (`cols`) applies to nested folders as well.
  */
-export type Folder = {
+type FolderFields = {
     /** Unique identifier of the folder */
     id: number;
     /** Name of the folder */
@@ -27,9 +28,26 @@ export type Folder = {
     scenariosDeletedSubtreeTotal?: number;
     /** Whether this folder has direct child folders. Use `parentId` to retrieve them */
     hasChildren: boolean;
-    /** Direct child folders of this folder. Contains all descendants when `childrenDepth` is set to `all` */
-    children?: Folder[];
 };
+
+/**
+ * Represents a folder in Make.
+ * Folders help organize scenarios within a team and can be nested to form a folder tree.
+ *
+ * `children` holds the direct child folders of this folder (or all descendants when
+ * `childrenDepth` is set to `all`). Its items are typed with the same column selection `C`
+ * as the parent folder, so `cols` applies recursively to nested folders too.
+ * @template C Keys of the folder (and, recursively, of its `children`) to include in the response
+ */
+export type Folder<C extends keyof FolderFields | 'children' = never> = PickColumns<
+    FolderFields,
+    Exclude<C, 'children'>
+> &
+    ([C] extends [never]
+        ? { children?: Folder<C>[] }
+        : 'children' extends C
+          ? { children: Folder<C>[] }
+          : object);
 
 /**
  * Options for listing folders.
@@ -49,7 +67,7 @@ export type ListFoldersOptions<C extends keyof Folder = never> = {
  */
 type ListFoldersResponse<C extends keyof Folder = never> = {
     /** List of folders matching the query */
-    scenariosFolders: PickColumns<Folder, C>[];
+    scenariosFolders: Folder<C>[];
 };
 
 /**
@@ -96,7 +114,7 @@ export type UpdateFolderBody = {
  */
 type UpdateFolderResponse<C extends keyof Folder = never> = {
     /** The updated folder */
-    scenarioFolder: PickColumns<Folder, C>;
+    scenarioFolder: Folder<C>;
 };
 
 /**
@@ -122,10 +140,7 @@ export class Folders {
      * @param options Optional parameters for filtering the returned fields, selecting a parent folder, or expanding descendants
      * @returns Promise with the list of scenario folders
      */
-    async list<C extends keyof Folder = never>(
-        teamId: number,
-        options?: ListFoldersOptions<C>,
-    ): Promise<PickColumns<Folder, C>[]> {
+    async list<C extends keyof Folder = never>(teamId: number, options?: ListFoldersOptions<C>): Promise<Folder<C>[]> {
         return (
             await this.#fetch<ListFoldersResponse<C>>('/scenarios-folders', {
                 query: {
@@ -169,7 +184,7 @@ export class Folders {
         folderId: number,
         folder: UpdateFolderBody,
         options?: UpdateFolderOptions<C>,
-    ): Promise<PickColumns<Folder, C>> {
+    ): Promise<Folder<C>> {
         return (
             await this.#fetch<UpdateFolderResponse<C>>(`/scenarios-folders/${folderId}`, {
                 method: 'PATCH',
