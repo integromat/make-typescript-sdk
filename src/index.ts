@@ -79,7 +79,13 @@ export type {
     CreateConnectedSystemBody,
     UpdateConnectedSystemBody,
 } from './endpoints/connected-systems.js';
-export type { Execution, ExecutionDetail, Executions, ListExecutionsOptions } from './endpoints/executions.js';
+export type {
+    Execution,
+    ExecutionDetail,
+    Executions,
+    ListExecutionsOptions,
+    GetExecutionDetailOptions,
+} from './endpoints/executions.js';
 export type {
     Folder,
     Folders,
