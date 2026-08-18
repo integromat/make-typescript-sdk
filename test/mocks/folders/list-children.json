@@ -1,0 +1,14 @@
+{
+    "scenariosFolders": [
+        {
+            "id": 1577,
+            "name": "cleanup",
+            "path": "ALPHA/cleanup",
+            "parentId": 1576,
+            "position": 0,
+            "scenariosTotal": 5,
+            "scenariosSubtreeTotal": 5,
+            "hasChildren": false
+        }
+    ]
+}
