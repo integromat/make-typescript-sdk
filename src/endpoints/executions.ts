@@ -112,6 +112,14 @@ type GetIncompleteExecutionExecutionResponse = {
 };
 
 /**
+ * Options for getting detailed execution result.
+ */
+export type GetExecutionDetailOptions = {
+    /** Reject the request with a 413 instead of returning outputs larger than this many bytes. */
+    maxBytes?: number;
+};
+
+/**
  * Response format for getting detailed execution result.
  */
 type GetExecutionDetailResponse = ExecutionDetail;
@@ -181,10 +189,17 @@ export class Executions {
      * Get detailed result of a specific execution.
      * @param scenarioId The scenario ID the execution belongs to
      * @param executionId The unique ID of the execution to retrieve
+     * @param options Optional parameters, e.g. a byte budget for the returned outputs
      * @returns Promise with the detailed execution result
      */
-    async getDetail(scenarioId: number, executionId: string): Promise<ExecutionDetail> {
-        return await this.#fetch<GetExecutionDetailResponse>(`/scenarios/${scenarioId}/executions/${executionId}`);
+    async getDetail(
+        scenarioId: number,
+        executionId: string,
+        options?: GetExecutionDetailOptions,
+    ): Promise<ExecutionDetail> {
+        return await this.#fetch<GetExecutionDetailResponse>(`/scenarios/${scenarioId}/executions/${executionId}`, {
+            query: { maxBytes: options?.maxBytes },
+        });
     }
 
     /**
