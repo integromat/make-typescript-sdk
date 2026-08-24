@@ -95,6 +95,12 @@ export type {
     UpdateFolderBody,
 } from './endpoints/folders.js';
 export type {
+    ScenarioLabel,
+    ScenarioLabelColour,
+    ScenarioLabels,
+    ScenarioLabelWithCount,
+} from './endpoints/scenario-labels.js';
+export type {
     Function,
     Functions,
     FunctionHistory,

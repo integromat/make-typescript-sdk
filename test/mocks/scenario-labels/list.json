@@ -1,0 +1,28 @@
+{
+    "labels": [
+        {
+            "id": 1,
+            "name": "critical",
+            "colour": "danger",
+            "scope": "team",
+            "teamId": 5,
+            "description": "Scenarios that must not fail silently",
+            "createdBy": 986,
+            "created": "2026-08-01T09:30:00.000Z",
+            "updated": null,
+            "scenariosCount": 4
+        },
+        {
+            "id": 2,
+            "name": "billing",
+            "colour": "info",
+            "scope": "team",
+            "teamId": 5,
+            "description": null,
+            "createdBy": 986,
+            "created": "2026-08-02T10:00:00.000Z",
+            "updated": "2026-08-10T12:00:00.000Z",
+            "scenariosCount": 0
+        }
+    ]
+}

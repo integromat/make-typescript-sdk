@@ -23,6 +23,7 @@ import { tools as HooksTools } from './endpoints/hooks.tools.js';
 import { tools as DevicesTools } from './endpoints/devices.tools.js';
 import { tools as KeysTools } from './endpoints/keys.tools.js';
 import { tools as FoldersTools } from './endpoints/folders.tools.js';
+import { tools as ScenarioLabelsTools } from './endpoints/scenario-labels.tools.js';
 import { tools as IncompleteExecutionsTools } from './endpoints/incomplete-executions.tools.js';
 import { tools as DataStructuresTools } from './endpoints/data-structures.tools.js';
 import { tools as EnumsTools } from './endpoints/enums.tools.js';
@@ -221,6 +222,7 @@ export const MakeTools = [
     ...ExecutionsTools,
     ...IncompleteExecutionsTools,
     ...FoldersTools,
+    ...ScenarioLabelsTools,
     ...FunctionsTools,
     ...HooksTools,
     ...DevicesTools,

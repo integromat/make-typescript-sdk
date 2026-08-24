@@ -58,6 +58,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Data Structures** - Data schemas and formats
 - **Executions** - Scenario execution history
 - **Folders** - Scenario categorization
+- **Scenario Labels** - Team-scoped tags assignable to scenarios
 - **Functions** - Custom JavaScript functions for scenarios
 - **Hooks** - Webhooks and mailhooks for external integrations
 - **Incomplete Executions** - Failed or incomplete scenario runs
@@ -213,6 +214,7 @@ All tools are organized into the following categories:
 - `hooks`
 - `incomplete-executions`
 - `keys`
+- `labels`
 - `on-prem-agent`
 - `organizations`
 - `private-spaces`
