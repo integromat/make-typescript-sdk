@@ -144,4 +144,28 @@ export class ScenarioLabels {
             method: 'DELETE',
         });
     }
+
+    /**
+     * Assign a scenario label to a scenario. Assigning an already-assigned label succeeds
+     * without changes (idempotent).
+     * @param labelId The label ID to assign
+     * @param scenarioId The scenario ID to assign the label to
+     */
+    async assign(labelId: number, scenarioId: number): Promise<void> {
+        await this.#fetch(`/scenario-labels/${labelId}/scenarios/${scenarioId}`, {
+            method: 'POST',
+        });
+    }
+
+    /**
+     * Remove a scenario label from a scenario. Removing an already-absent assignment succeeds
+     * without changes (idempotent).
+     * @param labelId The label ID to remove
+     * @param scenarioId The scenario ID to remove the label from
+     */
+    async unassign(labelId: number, scenarioId: number): Promise<void> {
+        await this.#fetch(`/scenario-labels/${labelId}/scenarios/${scenarioId}`, {
+            method: 'DELETE',
+        });
+    }
 }

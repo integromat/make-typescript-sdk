@@ -149,4 +149,64 @@ export const tools: MakeTool[] = [
             return `Label has been deleted.`;
         },
     },
+    {
+        name: 'labels_assign',
+        title: 'Assign scenario label',
+        description:
+            'Assign a scenario label to a scenario. The label and the scenario must belong to the same team. Assigning an already-assigned label succeeds without changes. To label many scenarios, call this tool once per scenario.',
+        category: 'labels',
+        scope: 'scenarios:write',
+        scopeId: 'labelId',
+        identifier: 'labelId',
+        resourceId: 'scenarioId',
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: false,
+            idempotentHint: true,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                labelId: { type: 'number', description: 'The label ID to assign' },
+                scenarioId: { type: 'number', description: 'The scenario ID to assign the label to' },
+            },
+            required: ['labelId', 'scenarioId'],
+        },
+        examples: [{ labelId: 42, scenarioId: 1024 }],
+        execute: async (make: Make, args: { labelId: number; scenarioId: number }) => {
+            await make.scenarioLabels.assign(args.labelId, args.scenarioId);
+            return `Label has been assigned to the scenario.`;
+        },
+    },
+    {
+        name: 'labels_unassign',
+        title: 'Unassign scenario label',
+        description:
+            'Remove a scenario label from a scenario. Removing an already-absent assignment succeeds without changes. The label itself stays in the team catalog.',
+        category: 'labels',
+        scope: 'scenarios:write',
+        scopeId: 'labelId',
+        identifier: 'labelId',
+        resourceId: 'scenarioId',
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                labelId: { type: 'number', description: 'The label ID to remove' },
+                scenarioId: { type: 'number', description: 'The scenario ID to remove the label from' },
+            },
+            required: ['labelId', 'scenarioId'],
+        },
+        examples: [{ labelId: 42, scenarioId: 1024 }],
+        execute: async (make: Make, args: { labelId: number; scenarioId: number }) => {
+            await make.scenarioLabels.unassign(args.labelId, args.scenarioId);
+            return `Label has been removed from the scenario.`;
+        },
+    },
 ];

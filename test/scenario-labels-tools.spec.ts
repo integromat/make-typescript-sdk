@@ -7,11 +7,13 @@ import * as listMock from './mocks/scenario-labels/list.json';
 import * as createMock from './mocks/scenario-labels/create.json';
 import * as updateMock from './mocks/scenario-labels/update.json';
 import * as deleteMock from './mocks/scenario-labels/delete.json';
+import * as assignMock from './mocks/scenario-labels/assign.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
 const TEAM_ID = 5;
 const LABEL_ID = 3;
+const SCENARIO_ID = 1024;
 
 function getTool(name: string) {
     const tool = MakeTools.find(entry => entry.name === name);
@@ -62,6 +64,41 @@ describe('MCP tools: labels', () => {
         const result = await tool.execute(make, { labelId: LABEL_ID });
 
         expect(result).toBe('Label has been deleted.');
+    });
+
+    it('Should execute labels_assign', async () => {
+        mockFetch(
+            `POST https://make.local/api/v2/scenario-labels/${LABEL_ID}/scenarios/${SCENARIO_ID}`,
+            assignMock,
+        );
+
+        const tool = getTool('labels_assign');
+        const result = await tool.execute(make, { labelId: LABEL_ID, scenarioId: SCENARIO_ID });
+
+        expect(result).toBe('Label has been assigned to the scenario.');
+    });
+
+    it('Should execute labels_unassign', async () => {
+        mockFetch(
+            `DELETE https://make.local/api/v2/scenario-labels/${LABEL_ID}/scenarios/${SCENARIO_ID}`,
+            assignMock,
+        );
+
+        const tool = getTool('labels_unassign');
+        const result = await tool.execute(make, { labelId: LABEL_ID, scenarioId: SCENARIO_ID });
+
+        expect(result).toBe('Label has been removed from the scenario.');
+    });
+
+    it('Should declare the assignment tools as idempotent scenarios:write tools targeting the scenario', () => {
+        for (const name of ['labels_assign', 'labels_unassign']) {
+            const tool = getTool(name);
+            expect(tool.scope).toBe('scenarios:write');
+            expect(tool.scopeId).toBe('labelId');
+            expect(tool.resourceId).toBe('scenarioId');
+            expect(tool.annotations?.idempotentHint).toBe(true);
+            expect(tool.inputSchema.required).toStrictEqual(['labelId', 'scenarioId']);
+        }
     });
 
     it('Should declare labels_list as a read-only scenarios:read tool scoped by teamId', () => {

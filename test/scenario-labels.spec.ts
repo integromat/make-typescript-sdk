@@ -6,11 +6,13 @@ import * as listMock from './mocks/scenario-labels/list.json';
 import * as createMock from './mocks/scenario-labels/create.json';
 import * as updateMock from './mocks/scenario-labels/update.json';
 import * as deleteMock from './mocks/scenario-labels/delete.json';
+import * as assignMock from './mocks/scenario-labels/assign.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
 const TEAM_ID = 5;
 const LABEL_ID = 3;
+const SCENARIO_ID = 1024;
 
 describe('Endpoints: ScenarioLabels', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
@@ -56,5 +58,23 @@ describe('Endpoints: ScenarioLabels', () => {
         mockFetch(`DELETE https://make.local/api/v2/scenario-labels/${LABEL_ID}`, deleteMock);
 
         await make.scenarioLabels.delete(LABEL_ID);
+    });
+
+    it('Should assign a scenario label to a scenario', async () => {
+        mockFetch(
+            `POST https://make.local/api/v2/scenario-labels/${LABEL_ID}/scenarios/${SCENARIO_ID}`,
+            assignMock,
+        );
+
+        await make.scenarioLabels.assign(LABEL_ID, SCENARIO_ID);
+    });
+
+    it('Should unassign a scenario label from a scenario', async () => {
+        mockFetch(
+            `DELETE https://make.local/api/v2/scenario-labels/${LABEL_ID}/scenarios/${SCENARIO_ID}`,
+            assignMock,
+        );
+
+        await make.scenarioLabels.unassign(LABEL_ID, SCENARIO_ID);
     });
 });
