@@ -52,9 +52,6 @@ type ListScenarioLabelsResponse = {
 
 /**
  * Class providing methods for working with scenario labels.
- *
- * Scenario labels require the scenario-labels feature to be enabled on the environment;
- * requests fail with an explanatory error where it is not.
  */
 export class ScenarioLabels {
     readonly #fetch: FetchFunction;

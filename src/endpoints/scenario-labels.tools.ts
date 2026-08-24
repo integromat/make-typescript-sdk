@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
         name: 'labels_list',
         title: 'List scenario labels',
         description:
-            "List a team's scenario label catalog, including how many scenarios carry each label. Scenario labels are team-scoped tags that can be assigned to scenarios, independent of folders. If you do not know the teamId, call users_me to learn it. Requires the scenario-labels feature to be enabled on the environment (fails with an explanatory error otherwise).",
+            "List a team's scenario label catalog, including how many scenarios carry each label. Scenario labels are team-scoped tags that can be assigned to scenarios, independent of folders. If you do not know the teamId, call users_me to learn it.",
         category: 'labels',
         scope: 'scenarios:read',
         scopeId: 'teamId',
