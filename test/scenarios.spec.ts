@@ -41,6 +41,30 @@ describe('Endpoints: Scenarios', () => {
             expect(result).toStrictEqual(scenariosMock.scenarios);
         });
 
+        it('Should list scenarios filtered by folder, subfolders and labels', async () => {
+            mockFetch(
+                'GET https://make.local/api/v2/scenarios?teamId=18&folderId=123&includeSubfolders=true&labelIds%5B%5D=7&labelIds%5B%5D=9',
+                scenariosMock,
+            );
+
+            const result = await make.scenarios.list(18, {
+                folderId: 123,
+                includeSubfolders: true,
+                labelIds: [7, 9],
+            });
+            expect(result).toStrictEqual(scenariosMock.scenarios);
+        });
+
+        it('Should list scenarios in organization filtered by labels', async () => {
+            mockFetch(
+                'GET https://make.local/api/v2/scenarios?organizationId=18&labelIds%5B%5D=7',
+                scenariosMock,
+            );
+
+            const result = await make.scenarios.listInOrganization(18, { labelIds: [7] });
+            expect(result).toStrictEqual(scenariosMock.scenarios);
+        });
+
         it('Should get scenario interface', async () => {
             mockFetch('GET https://make.local/api/v2/scenarios/18/interface', scenarioInterfaceMock);
 

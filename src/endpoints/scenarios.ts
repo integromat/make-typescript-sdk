@@ -1,6 +1,7 @@
 import type { FetchFunction, JSONValue, Pagination, PickColumns } from '../types.js';
 import { Blueprint } from './blueprints.js';
 import type { DataStructureField } from './data-structures.js';
+import type { ScenarioLabel } from './scenario-labels.js';
 import { ScenarioCustomProperties } from './scenario-custom-properties.js';
 
 /**
@@ -20,6 +21,10 @@ export type Scenario = {
     teamId: number;
     /** ID of the folder containing the scenario */
     folderId: number;
+    /** Slash-separated path of the containing folder (e.g. `CRM/cleanup`), or `null` when the scenario is not in a folder. Returned when requested via `cols` (included by `*`) */
+    folderPath?: string | null;
+    /** Scenario labels assigned to the scenario, sorted by name (empty array when unassigned). Returned when requested via `cols` (included by `*`) */
+    labels?: ScenarioLabel[];
     /** List of packages/apps used in the scenario */
     usedPackages: string[];
     /** Scheduling configuration for the scenario */
@@ -108,6 +113,12 @@ export type ListScenariosOptions<C extends keyof Scenario = never> = {
     cols?: C[] | ['*'];
     /** Pagination options */
     pg?: Partial<Pagination<Scenario>>;
+    /** Only return scenarios placed in this folder */
+    folderId?: number;
+    /** When filtering by `folderId`, also include scenarios placed in its subfolders */
+    includeSubfolders?: boolean;
+    /** Only return scenarios carrying at least one of the given scenario label IDs */
+    labelIds?: number[];
 };
 
 /**
@@ -391,6 +402,9 @@ export class Scenarios {
             await this.#fetch<ListScenariosResponse<C>>('/scenarios', {
                 query: {
                     teamId,
+                    folderId: options?.folderId,
+                    includeSubfolders: options?.includeSubfolders,
+                    labelIds: options?.labelIds,
                     cols: options?.cols,
                     pg: options?.pg,
                 },
@@ -412,6 +426,9 @@ export class Scenarios {
             await this.#fetch<ListScenariosResponse<C>>('/scenarios', {
                 query: {
                     organizationId,
+                    folderId: options?.folderId,
+                    includeSubfolders: options?.includeSubfolders,
+                    labelIds: options?.labelIds,
                     cols: options?.cols,
                     pg: options?.pg,
                 },
