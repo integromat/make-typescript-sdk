@@ -99,6 +99,8 @@ export type {
     ScenarioLabelColour,
     ScenarioLabels,
     ScenarioLabelWithCount,
+    CreateScenarioLabelBody,
+    UpdateScenarioLabelBody,
 } from './endpoints/scenario-labels.js';
 export type {
     Function,
