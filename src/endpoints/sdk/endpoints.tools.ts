@@ -144,6 +144,11 @@ export const tools: MakeTool[] = [
                             description:
                                 'If true, the Endpoint may interact with an "open world" of external entities.',
                         },
+                        arbitraryCallHint: {
+                            type: 'boolean',
+                            description:
+                                "If true, the Endpoint is not scoped to a single route and accepts an arbitrary call (method, path, query, headers, body) against the App's API.",
+                        },
                     },
                 },
                 attachedAccounts: {
