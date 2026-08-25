@@ -5,7 +5,8 @@ export const tools: MakeTool[] = [
     {
         name: 'folders_list',
         title: 'List folders',
-        description: 'List scenario folders for a team. If you do not know the teamId, call users_me to learn it.',
+        description:
+            'List scenario folders for a team. If you do not know the teamId, find it via organizations_list (each organization lists its teams) or teams_list, or ask the user — never guess IDs.',
         category: 'folders',
         scope: 'scenarios:read',
         scopeId: 'teamId',
