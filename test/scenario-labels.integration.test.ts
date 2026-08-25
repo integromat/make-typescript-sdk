@@ -6,6 +6,17 @@ const MAKE_API_KEY = String(process.env.MAKE_API_KEY || '');
 const MAKE_ZONE = String(process.env.MAKE_ZONE || '');
 const MAKE_TEAM = Number(process.env.MAKE_TEAM || 0);
 
+/**
+ * Narrows a cross-step entity ID, failing dependent steps loudly (and without sending a
+ * request to a `/undefined` URL) when the step that should have created the entity failed.
+ */
+function requireId(id: number | undefined, entity: string): number {
+    if (id === undefined) {
+        throw new Error(`Precondition failed: ${entity} was not created in an earlier step`);
+    }
+    return id;
+}
+
 describe('Integration: ScenarioLabels', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
@@ -44,15 +55,19 @@ describe('Integration: ScenarioLabels', () => {
         const labels = await make.scenarioLabels.list(MAKE_TEAM);
 
         const created = labels.find(label => label.id === labelId);
-        expect(created).toBeDefined();
-        expect(created?.scenariosCount).toBe(0);
+        if (!created) {
+            throw new Error('Created label not found in the team catalog');
+        }
+        expect(created.scenariosCount).toBe(0);
     });
 
     it('Should update the label and clear its description with null', async () => {
-        const renamed = await make.scenarioLabels.update(labelId!, { colour: 'warning' });
+        const id = requireId(labelId, 'label');
+
+        const renamed = await make.scenarioLabels.update(id, { colour: 'warning' });
         expect(renamed.colour).toBe('warning');
 
-        const cleared = await make.scenarioLabels.update(labelId!, { description: null });
+        const cleared = await make.scenarioLabels.update(id, { description: null });
         expect(cleared.description).toBeNull();
     });
 
@@ -65,33 +80,49 @@ describe('Integration: ScenarioLabels', () => {
         expect(scenario.id).toBeDefined();
         scenarioId = scenario.id;
 
-        await make.scenarioLabels.assign(labelId!, scenarioId!);
+        await make.scenarioLabels.assign(requireId(labelId, 'label'), requireId(scenarioId, 'scenario'));
     });
 
     it('Should find the scenario via the labelIds filter, with the labels column populated', async () => {
-        const scenarios = await make.scenarios.list(MAKE_TEAM, { labelIds: [labelId!], cols: ['*'] });
+        const scenarios = await make.scenarios.list(MAKE_TEAM, {
+            labelIds: [requireId(labelId, 'label')],
+            cols: ['*'],
+        });
 
         const row = scenarios.find(scenario => scenario.id === scenarioId);
-        expect(row).toBeDefined();
-        expect(row?.labels?.some(label => label.id === labelId)).toBe(true);
+        if (!row) {
+            throw new Error('Assigned scenario was not returned by the labelIds filter');
+        }
+        if (!row.labels) {
+            throw new Error('The labels column is missing on the filtered scenario row');
+        }
+        expect(row.labels.some(label => label.id === labelId)).toBe(true);
     });
 
     it('Should reflect the assignment in the catalog count', async () => {
         const labels = await make.scenarioLabels.list(MAKE_TEAM);
-        expect(labels.find(label => label.id === labelId)?.scenariosCount).toBe(1);
+
+        const assigned = labels.find(label => label.id === labelId);
+        if (!assigned) {
+            throw new Error('Created label not found in the team catalog');
+        }
+        expect(assigned.scenariosCount).toBe(1);
     });
 
     it('Should unassign idempotently and drop the scenario from the filtered list', async () => {
-        await make.scenarioLabels.unassign(labelId!, scenarioId!);
-        // Repeat unassign must succeed without changes (verified idempotency contract).
-        await make.scenarioLabels.unassign(labelId!, scenarioId!);
+        const id = requireId(labelId, 'label');
+        const targetScenarioId = requireId(scenarioId, 'scenario');
 
-        const scenarios = await make.scenarios.list(MAKE_TEAM, { labelIds: [labelId!] });
-        expect(scenarios.some(scenario => scenario.id === scenarioId)).toBe(false);
+        await make.scenarioLabels.unassign(id, targetScenarioId);
+        // Repeat unassign must succeed without changes (verified idempotency contract).
+        await make.scenarioLabels.unassign(id, targetScenarioId);
+
+        const scenarios = await make.scenarios.list(MAKE_TEAM, { labelIds: [id] });
+        expect(scenarios.some(scenario => scenario.id === targetScenarioId)).toBe(false);
     });
 
     it('Should delete the label and remove it from the catalog', async () => {
-        await make.scenarioLabels.delete(labelId!);
+        await make.scenarioLabels.delete(requireId(labelId, 'label'));
 
         const labels = await make.scenarioLabels.list(MAKE_TEAM);
         expect(labels.some(label => label.id === labelId)).toBe(false);
