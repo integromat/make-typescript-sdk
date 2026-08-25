@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
         name: 'teams_list',
         title: 'List teams',
         description:
-            "List the teams of an organization. Requires an organizationId — get it from organizations_list, whose response also includes each organization's teams (id and name). Results include only teams you can view. 'Access denied' usually means the token lacks the teams:read scope — ask the user to re-authorize with it.",
+            "List the teams of an organization. Requires an organizationId — get it from organizations_list, whose response also includes each organization's teams (id and name). Results include only teams you can view. 'Access denied' usually means the token lacks the teams:read scope — ask the user to re-authorize and grant teams:read.",
         category: 'teams',
         scope: 'teams:read',
         scopeId: 'organizationId',
