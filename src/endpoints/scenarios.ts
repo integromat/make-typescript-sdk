@@ -19,8 +19,8 @@ export type Scenario = {
     description: string;
     /** ID of the team that owns the scenario */
     teamId: number;
-    /** ID of the folder containing the scenario */
-    folderId: number;
+    /** ID of the folder containing the scenario, or `null` when the scenario is not in a folder */
+    folderId: number | null;
     /** Slash-separated path of the containing folder (e.g. `CRM/cleanup`), or `null` when the scenario is not in a folder. Returned when requested via `cols` (included by `*`) */
     folderPath?: string | null;
     /** Scenario labels assigned to the scenario, sorted by name (empty array when unassigned). Returned when requested via `cols` (included by `*`) */
@@ -245,8 +245,8 @@ export type UpdateScenarioBody = {
     name?: string;
     /** New description for the scenario */
     description?: string;
-    /** New folder ID for the scenario */
-    folderId?: number;
+    /** New folder ID for the scenario. Use `null` to move the scenario out of its folder (Uncategorized); omit to leave unchanged */
+    folderId?: number | null;
     /** Updated scheduling configuration */
     scheduling?: Scheduling | string;
     /** Updated blueprint configuration */
