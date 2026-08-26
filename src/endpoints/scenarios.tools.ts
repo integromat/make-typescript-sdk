@@ -295,7 +295,11 @@ export const tools: MakeTool[] = [
                     maxLength: 240,
                     description: 'New description for the scenario (maximum 240 characters)',
                 },
-                folderId: { type: 'number', description: 'New folder ID for the scenario' },
+                folderId: {
+                    oneOf: [{ type: 'number' }, { type: 'null' }],
+                    description:
+                        'New folder ID for the scenario. Use null to move the scenario out of its folder (Uncategorized); omit to leave unchanged.',
+                },
                 scheduling: schedulingInputSchema,
                 blueprint: blueprintInputSchema,
                 confirmed: {
@@ -318,7 +322,7 @@ export const tools: MakeTool[] = [
                 scenarioId: number;
                 name?: string;
                 description?: string;
-                folderId?: number;
+                folderId?: number | null;
                 scheduling?: Scheduling;
                 blueprint?: Blueprint;
                 confirmed?: boolean;

@@ -195,6 +195,21 @@ describe('Endpoints: Scenarios', () => {
             expect(result).toStrictEqual(scenarioUpdateMock.scenario);
         });
 
+        it('Should move a scenario out of its folder with folderId null', async () => {
+            mockFetch('PATCH https://make.local/api/v2/scenarios/123456', scenarioUpdateMock, req => {
+                expect(req.body).toStrictEqual({
+                    folderId: null,
+                    metadata: {
+                        input_spec: [],
+                        output_spec: [],
+                    },
+                });
+            });
+
+            const result = await make.scenarios.update(123456, { folderId: null });
+            expect(result).toStrictEqual(scenarioUpdateMock.scenario);
+        });
+
         it('Should delete a scenario', async () => {
             mockFetch('DELETE https://make.local/api/v2/scenarios/1399', null);
 
