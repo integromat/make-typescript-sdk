@@ -146,7 +146,7 @@ export const tools: MakeTool[] = [
                     type: 'array',
                     items: { type: 'number' },
                     description:
-                        'Only return scenarios carrying at least one of these scenario label IDs. Use labels_list to discover label IDs.',
+                        'Only return scenarios carrying at least one of these scenario label IDs. Use scenario-labels_list to discover label IDs.',
                 },
             },
             required: ['teamId'],
