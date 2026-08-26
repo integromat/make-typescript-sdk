@@ -23,75 +23,75 @@ function getTool(name: string) {
     return tool;
 }
 
-describe('MCP tools: labels', () => {
+describe('MCP tools: scenario-labels', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
-    it('Should execute labels_list', async () => {
+    it('Should execute scenario-labels_list', async () => {
         mockFetch(`GET https://make.local/api/v2/scenario-labels?teamId=${TEAM_ID}`, listMock);
 
-        const tool = getTool('labels_list');
+        const tool = getTool('scenario-labels_list');
         const result = await tool.execute(make, { teamId: TEAM_ID });
 
         expect(result).toStrictEqual(listMock.labels);
     });
 
-    it('Should execute labels_create', async () => {
+    it('Should execute scenario-labels_create', async () => {
         mockFetch('POST https://make.local/api/v2/scenario-labels', createMock, req => {
             expect(req.body).toStrictEqual({ teamId: TEAM_ID, name: 'critical', colour: 'danger' });
         });
 
-        const tool = getTool('labels_create');
+        const tool = getTool('scenario-labels_create');
         const result = await tool.execute(make, { teamId: TEAM_ID, name: 'critical', colour: 'danger' });
 
         expect(result).toStrictEqual(createMock.label);
     });
 
-    it('Should execute labels_update and separate labelId from the body', async () => {
+    it('Should execute scenario-labels_update and separate labelId from the body', async () => {
         mockFetch(`PATCH https://make.local/api/v2/scenario-labels/${LABEL_ID}`, updateMock, req => {
             expect(req.body).toStrictEqual({ name: 'high-priority', colour: 'warning' });
         });
 
-        const tool = getTool('labels_update');
+        const tool = getTool('scenario-labels_update');
         const result = await tool.execute(make, { labelId: LABEL_ID, name: 'high-priority', colour: 'warning' });
 
         expect(result).toStrictEqual(updateMock.label);
     });
 
-    it('Should execute labels_delete', async () => {
+    it('Should execute scenario-labels_delete', async () => {
         mockFetch(`DELETE https://make.local/api/v2/scenario-labels/${LABEL_ID}`, deleteMock);
 
-        const tool = getTool('labels_delete');
+        const tool = getTool('scenario-labels_delete');
         const result = await tool.execute(make, { labelId: LABEL_ID });
 
         expect(result).toBe('Label has been deleted.');
     });
 
-    it('Should execute labels_assign', async () => {
+    it('Should execute scenario-labels_assign', async () => {
         mockFetch(
             `POST https://make.local/api/v2/scenario-labels/${LABEL_ID}/scenarios/${SCENARIO_ID}`,
             assignMock,
         );
 
-        const tool = getTool('labels_assign');
+        const tool = getTool('scenario-labels_assign');
         const result = await tool.execute(make, { labelId: LABEL_ID, scenarioId: SCENARIO_ID });
 
         expect(result).toBe('Label has been assigned to the scenario.');
     });
 
-    it('Should execute labels_unassign', async () => {
+    it('Should execute scenario-labels_unassign', async () => {
         mockFetch(
             `DELETE https://make.local/api/v2/scenario-labels/${LABEL_ID}/scenarios/${SCENARIO_ID}`,
             assignMock,
         );
 
-        const tool = getTool('labels_unassign');
+        const tool = getTool('scenario-labels_unassign');
         const result = await tool.execute(make, { labelId: LABEL_ID, scenarioId: SCENARIO_ID });
 
         expect(result).toBe('Label has been removed from the scenario.');
     });
 
     it('Should declare the assignment tools as idempotent scenarios:write tools targeting the scenario', () => {
-        for (const name of ['labels_assign', 'labels_unassign']) {
+        for (const name of ['scenario-labels_assign', 'scenario-labels_unassign']) {
             const tool = getTool(name);
             expect(tool.scope).toBe('scenarios:write');
             expect(tool.scopeId).toBe('labelId');
@@ -101,10 +101,10 @@ describe('MCP tools: labels', () => {
         }
     });
 
-    it('Should declare labels_list as a read-only scenarios:read tool scoped by teamId', () => {
-        const tool = getTool('labels_list');
+    it('Should declare scenario-labels_list as a read-only scenarios:read tool scoped by teamId', () => {
+        const tool = getTool('scenario-labels_list');
 
-        expect(tool.category).toBe('labels');
+        expect(tool.category).toBe('scenario-labels');
         expect(tool.scope).toBe('scenarios:read');
         expect(tool.scopeId).toBe('teamId');
         expect(tool.inputSchema.required).toStrictEqual(['teamId']);
@@ -112,18 +112,18 @@ describe('MCP tools: labels', () => {
     });
 
     it('Should declare the label mutation tools as scenarios:write with correct scoping', () => {
-        const create = getTool('labels_create');
+        const create = getTool('scenario-labels_create');
         expect(create.scope).toBe('scenarios:write');
         expect(create.scopeId).toBe('teamId');
         expect(create.inputSchema.required).toStrictEqual(['teamId', 'name', 'colour']);
 
-        const update = getTool('labels_update');
+        const update = getTool('scenario-labels_update');
         expect(update.scope).toBe('scenarios:write');
         expect(update.scopeId).toBe('labelId');
         expect(update.resourceId).toBe('labelId');
         expect(update.inputSchema.required).toStrictEqual(['labelId']);
 
-        const del = getTool('labels_delete');
+        const del = getTool('scenario-labels_delete');
         expect(del.scope).toBe('scenarios:write');
         expect(del.scopeId).toBe('labelId');
         expect(del.resourceId).toBe('labelId');

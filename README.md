@@ -214,7 +214,7 @@ All tools are organized into the following categories:
 - `hooks`
 - `incomplete-executions`
 - `keys`
-- `labels`
+- `scenario-labels`
 - `on-prem-agent`
 - `organizations`
 - `private-spaces`
