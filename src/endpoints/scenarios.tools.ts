@@ -122,7 +122,8 @@ export const tools: MakeTool[] = [
     {
         name: 'scenarios_list',
         title: 'List scenarios',
-        description: 'List all scenarios for a team.',
+        description:
+            'List all scenarios for a team. Results can be narrowed to one folder (optionally including its subfolders) and/or to scenarios carrying at least one of the given scenario labels. Returned scenarios include their assigned labels.',
         category: 'scenarios',
         scope: 'scenarios:read',
         scopeId: 'teamId',
@@ -136,12 +137,31 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 teamId: { type: 'number', description: 'The team ID to filter scenarios by' },
+                folderId: { type: 'number', description: 'Only return scenarios placed in this folder' },
+                includeSubfolders: {
+                    type: 'boolean',
+                    description: 'When filtering by folderId, also include scenarios placed in its subfolders',
+                },
+                labelIds: {
+                    type: 'array',
+                    items: { type: 'number' },
+                    description:
+                        'Only return scenarios carrying at least one of these scenario label IDs. Use scenario-labels_list to discover label IDs.',
+                },
             },
             required: ['teamId'],
         },
-        examples: [{ teamId: 5 }],
-        execute: async (make: Make, args: { teamId: number }) => {
-            return await make.scenarios.list(args.teamId, { cols: ['*'] });
+        examples: [
+            { teamId: 5 },
+            { teamId: 5, folderId: 1576, includeSubfolders: true },
+            { teamId: 5, labelIds: [42, 43] },
+        ],
+        execute: async (
+            make: Make,
+            args: { teamId: number; folderId?: number; includeSubfolders?: boolean; labelIds?: number[] },
+        ) => {
+            const { teamId, ...filters } = args;
+            return await make.scenarios.list(teamId, { ...filters, cols: ['*'] });
         },
     },
     {
@@ -275,7 +295,11 @@ export const tools: MakeTool[] = [
                     maxLength: 240,
                     description: 'New description for the scenario (maximum 240 characters)',
                 },
-                folderId: { type: 'number', description: 'New folder ID for the scenario' },
+                folderId: {
+                    oneOf: [{ type: 'number' }, { type: 'null' }],
+                    description:
+                        'New folder ID for the scenario. Use null to move the scenario out of its folder (Uncategorized); omit to leave unchanged.',
+                },
                 scheduling: schedulingInputSchema,
                 blueprint: blueprintInputSchema,
                 confirmed: {
@@ -298,7 +322,7 @@ export const tools: MakeTool[] = [
                 scenarioId: number;
                 name?: string;
                 description?: string;
-                folderId?: number;
+                folderId?: number | null;
                 scheduling?: Scheduling;
                 blueprint?: Blueprint;
                 confirmed?: boolean;

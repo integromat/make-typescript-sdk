@@ -1,0 +1,13 @@
+{
+    "label": {
+        "id": 3,
+        "name": "critical",
+        "colour": "danger",
+        "scope": "team",
+        "teamId": 5,
+        "description": null,
+        "createdBy": 986,
+        "created": "2026-08-24T10:00:00.000Z",
+        "updated": null
+    }
+}

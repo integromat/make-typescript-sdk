@@ -79,7 +79,13 @@ export type {
     CreateConnectedSystemBody,
     UpdateConnectedSystemBody,
 } from './endpoints/connected-systems.js';
-export type { Execution, ExecutionDetail, Executions, ListExecutionsOptions } from './endpoints/executions.js';
+export type {
+    Execution,
+    ExecutionDetail,
+    Executions,
+    ListExecutionsOptions,
+    GetExecutionDetailOptions,
+} from './endpoints/executions.js';
 export type {
     Folder,
     Folders,
@@ -88,6 +94,14 @@ export type {
     UpdateFolderOptions,
     UpdateFolderBody,
 } from './endpoints/folders.js';
+export type {
+    ScenarioLabel,
+    ScenarioLabelColour,
+    ScenarioLabels,
+    ScenarioLabelWithCount,
+    CreateScenarioLabelBody,
+    UpdateScenarioLabelBody,
+} from './endpoints/scenario-labels.js';
 export type {
     Function,
     Functions,

@@ -1,17 +1,53 @@
 import type { FetchFunction, PickColumns } from '../types.js';
 
 /**
- * Represents a folder in Make.
- * Folders help organize scenarios within a team.
+ * Non-recursive folder fields, excluding `children`.
+ * Used as the base for `Folder`, which adds a `children` property typed recursively
+ * so that column selection (`cols`) applies to nested folders as well.
  */
-export type Folder = {
+type FolderFields = {
     /** Unique identifier of the folder */
     id: number;
     /** Name of the folder */
     name: string;
-    /** Total number of scenarios in the folder */
+    /** Slash-separated folder path including this folder, for example `CRM/cleanup` */
+    path: string;
+    /** ID of the team that owns the folder. Returned when listing folders by organization */
+    teamId?: number;
+    /** ID of the parent folder, or `null` for top-level folders */
+    parentId: number | null;
+    /** Manual sort position among sibling folders, or `null` if unset */
+    position: number | null;
+    /** Number of scenarios directly assigned to this folder */
     scenariosTotal: number;
+    /** Number of scenarios assigned to this folder or any descendant folder */
+    scenariosSubtreeTotal: number;
+    /** Number of deleted scenarios directly assigned to this folder. Available to admin callers */
+    scenariosDeleted?: number;
+    /** Number of deleted scenarios assigned to this folder or any descendant folder. Available to admin callers */
+    scenariosDeletedSubtreeTotal?: number;
+    /** Whether this folder has direct child folders. Use `parentId` to retrieve them */
+    hasChildren: boolean;
 };
+
+/**
+ * Represents a folder in Make.
+ * Folders help organize scenarios within a team and can be nested to form a folder tree.
+ *
+ * `children` holds the direct child folders of this folder (or all descendants when
+ * `childrenDepth` is set to `all`). Its items are typed with the same column selection `C`
+ * as the parent folder, so `cols` applies recursively to nested folders too.
+ * @template C Keys of the folder (and, recursively, of its `children`) to include in the response
+ */
+export type Folder<C extends keyof FolderFields | 'children' = never> = PickColumns<
+    FolderFields,
+    Exclude<C, 'children'>
+> &
+    ([C] extends [never]
+        ? { children?: Folder<C>[] }
+        : 'children' extends C
+          ? { children: Folder<C>[] }
+          : object);
 
 /**
  * Options for listing folders.
@@ -20,6 +56,10 @@ export type Folder = {
 export type ListFoldersOptions<C extends keyof Folder = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
+    /** The parent folder whose direct children should be returned. Omit to return top-level folders */
+    parentId?: number;
+    /** Set to `all` to return all descendants under `children`. By default, `children` includes only one direct child level */
+    childrenDepth?: 'all';
 };
 
 /**
@@ -27,7 +67,7 @@ export type ListFoldersOptions<C extends keyof Folder = never> = {
  */
 type ListFoldersResponse<C extends keyof Folder = never> = {
     /** List of folders matching the query */
-    scenariosFolders: PickColumns<Folder, C>[];
+    scenariosFolders: Folder<C>[];
 };
 
 /**
@@ -38,6 +78,8 @@ export type CreateFolderBody = {
     name: string;
     /** ID of the team where the folder will be created */
     teamId: number;
+    /** ID of the parent folder. Omit or pass `null` to create a top-level folder */
+    parentId?: number | null;
 };
 
 /**
@@ -63,6 +105,8 @@ export type UpdateFolderOptions<C extends keyof Folder = never> = {
 export type UpdateFolderBody = {
     /** New name for the folder */
     name?: string;
+    /** ID of the new parent folder. Use `null` to move the folder to the top level */
+    parentId?: number | null;
 };
 
 /**
@@ -70,7 +114,7 @@ export type UpdateFolderBody = {
  */
 type UpdateFolderResponse<C extends keyof Folder = never> = {
     /** The updated folder */
-    scenarioFolder: PickColumns<Folder, C>;
+    scenarioFolder: Folder<C>;
 };
 
 /**
@@ -90,20 +134,20 @@ export class Folders {
     }
 
     /**
-     * List all scenario folders for a team.
+     * List direct scenario folder children for a team.
+     * Omit `parentId` in `options` to return top-level folders.
      * @param teamId The team ID to list folders for
-     * @param options Optional parameters for filtering the returned fields
+     * @param options Optional parameters for filtering the returned fields, selecting a parent folder, or expanding descendants
      * @returns Promise with the list of scenario folders
      */
-    async list<C extends keyof Folder = never>(
-        teamId: number,
-        options?: ListFoldersOptions<C>,
-    ): Promise<PickColumns<Folder, C>[]> {
+    async list<C extends keyof Folder = never>(teamId: number, options?: ListFoldersOptions<C>): Promise<Folder<C>[]> {
         return (
             await this.#fetch<ListFoldersResponse<C>>('/scenarios-folders', {
                 query: {
                     cols: options?.cols,
                     teamId,
+                    parentId: options?.parentId,
+                    childrenDepth: options?.childrenDepth,
                 },
             })
         ).scenariosFolders;
@@ -111,6 +155,7 @@ export class Folders {
 
     /**
      * Create a new scenario folder.
+     * Omit `parentId` or pass `null` to create a top-level folder.
      * @param folder Parameters for the folder to create
      * @returns Promise with the created scenario folder
      */
@@ -121,6 +166,7 @@ export class Folders {
                 body: {
                     name: folder.name,
                     teamId: folder.teamId,
+                    parentId: folder.parentId,
                 },
             })
         ).scenarioFolder;
@@ -128,6 +174,7 @@ export class Folders {
 
     /**
      * Update a scenario folder.
+     * Use `parentId: null` to move the folder to the top level. Any property that is not provided is left unchanged.
      * @param folderId The folder ID to update
      * @param folder The folder properties to update
      * @param options Optional parameters for filtering the returned fields
@@ -137,7 +184,7 @@ export class Folders {
         folderId: number,
         folder: UpdateFolderBody,
         options?: UpdateFolderOptions<C>,
-    ): Promise<PickColumns<Folder, C>> {
+    ): Promise<Folder<C>> {
         return (
             await this.#fetch<UpdateFolderResponse<C>>(`/scenarios-folders/${folderId}`, {
                 method: 'PATCH',
@@ -146,6 +193,7 @@ export class Folders {
                 },
                 body: {
                     name: folder.name,
+                    parentId: folder.parentId,
                 },
             })
         ).scenarioFolder;

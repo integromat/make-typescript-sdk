@@ -2,8 +2,8 @@
     "scenarioFolder": {
         "id": 1576,
         "name": "BETA",
-        "path": "BETA",
-        "parentId": null,
+        "path": "GAMMA/BETA",
+        "parentId": 2001,
         "position": null,
         "scenariosTotal": 10,
         "scenariosSubtreeTotal": 10,

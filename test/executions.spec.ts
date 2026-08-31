@@ -42,6 +42,18 @@ describe('Endpoints: Executions', () => {
             expect(result).toStrictEqual(executionsGetDetailMock);
         });
 
+        it('Should get execution detail with maxBytes', async () => {
+            mockFetch(
+                'GET https://make.local/api/v2/scenarios/123456/executions/cc1c49323b344687a324888762206003?maxBytes=512000',
+                executionsGetDetailMock,
+            );
+
+            const result = await make.executions.getDetail(123456, 'cc1c49323b344687a324888762206003', {
+                maxBytes: 512000,
+            });
+            expect(result).toStrictEqual(executionsGetDetailMock);
+        });
+
         it('Should list executions for incomplete execution', async () => {
             mockFetch('GET https://make.local/api/v2/dlqs/123456/logs', executionsDlqListMock);
 

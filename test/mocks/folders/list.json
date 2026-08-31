@@ -3,7 +3,24 @@
         {
             "id": 1576,
             "name": "ALPHA",
-            "scenariosTotal": 10
+            "path": "ALPHA",
+            "parentId": null,
+            "position": 0,
+            "scenariosTotal": 10,
+            "scenariosSubtreeTotal": 15,
+            "hasChildren": true,
+            "children": [
+                {
+                    "id": 1577,
+                    "name": "cleanup",
+                    "path": "ALPHA/cleanup",
+                    "parentId": 1576,
+                    "position": 0,
+                    "scenariosTotal": 5,
+                    "scenariosSubtreeTotal": 5,
+                    "hasChildren": false
+                }
+            ]
         }
     ]
 }
