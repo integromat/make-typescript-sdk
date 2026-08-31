@@ -195,13 +195,7 @@ describe('Endpoints: Scenarios', () => {
             };
 
             mockFetch('PATCH https://make.local/api/v2/scenarios/123456', scenarioUpdateMock, req => {
-                expect(req.body).toStrictEqual({
-                    ...body,
-                    metadata: {
-                        input_spec: [],
-                        output_spec: [],
-                    },
-                });
+                expect(req.body).toStrictEqual({ ...body });
             });
 
             const result = await make.scenarios.update(123456, body);
@@ -210,8 +204,57 @@ describe('Endpoints: Scenarios', () => {
 
         it('Should move a scenario out of its folder with folderId null', async () => {
             mockFetch('PATCH https://make.local/api/v2/scenarios/123456', scenarioUpdateMock, req => {
+                expect(req.body).toStrictEqual({ folderId: null });
+            });
+
+            const result = await make.scenarios.update(123456, { folderId: null });
+            expect(result).toStrictEqual(scenarioUpdateMock.scenario);
+        });
+
+        it('Should not send metadata when updating without an interface', async () => {
+            mockFetch('PATCH https://make.local/api/v2/scenarios/123456', scenarioUpdateMock, req => {
+                expect(req.body).not.toHaveProperty('metadata');
+            });
+
+            const result = await make.scenarios.update(123456, { name: 'Updated Test Scenario' });
+            expect(result).toStrictEqual(scenarioUpdateMock.scenario);
+        });
+
+        it('Should not send metadata when updating a blueprint that carries no interface', async () => {
+            mockFetch('PATCH https://make.local/api/v2/scenarios/123456', scenarioUpdateMock, req => {
                 expect(req.body).toStrictEqual({
-                    folderId: null,
+                    blueprint: '{"flow":[],"metadata":{},"name":"Test Scenario"}',
+                });
+            });
+
+            const result = await make.scenarios.update(123456, {
+                blueprint: '{"flow":[],"metadata":{},"name":"Test Scenario"}',
+            });
+            expect(result).toStrictEqual(scenarioUpdateMock.scenario);
+        });
+
+        it('Should send the interface hoisted out of the blueprint when updating', async () => {
+            mockFetch('PATCH https://make.local/api/v2/scenarios/123456', scenarioUpdateMock, req => {
+                expect(req.body).toStrictEqual({
+                    blueprint: '{"flow":[],"name":"Test Scenario"}',
+                    metadata: {
+                        input_spec: [{ name: 'param', type: 'text' }],
+                        output_spec: [],
+                    },
+                });
+            });
+
+            const result = await make.scenarios.update(123456, {
+                blueprint:
+                    '{"flow":[],"interface":{"input":[{"name":"param","type":"text"}],"output":[]},"name":"Test Scenario"}',
+            });
+            expect(result).toStrictEqual(scenarioUpdateMock.scenario);
+        });
+
+        it('Should clear the interface when an explicitly empty one is supplied', async () => {
+            mockFetch('PATCH https://make.local/api/v2/scenarios/123456', scenarioUpdateMock, req => {
+                expect(req.body).toStrictEqual({
+                    blueprint: '{"flow":[],"name":"Test Scenario"}',
                     metadata: {
                         input_spec: [],
                         output_spec: [],
@@ -219,7 +262,9 @@ describe('Endpoints: Scenarios', () => {
                 });
             });
 
-            const result = await make.scenarios.update(123456, { folderId: null });
+            const result = await make.scenarios.update(123456, {
+                blueprint: '{"flow":[],"interface":{"input":[],"output":[]},"name":"Test Scenario"}',
+            });
             expect(result).toStrictEqual(scenarioUpdateMock.scenario);
         });
 
