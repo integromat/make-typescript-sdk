@@ -6,6 +6,7 @@ import * as scenariosMock from './mocks/scenarios/list.json';
 import * as scenarioInterfaceMock from './mocks/scenarios/interface.json';
 import * as scenarioUpdateInterfaceMock from './mocks/scenarios/update-interface.json';
 import * as scenarioRunMock from './mocks/scenarios/run.json';
+import * as scenarioReplayMock from './mocks/scenarios/replay.json';
 import * as scenarioActivateMock from './mocks/scenarios/activate.json';
 import * as scenarioCreateMock from './mocks/scenarios/create.json';
 import * as scenarioGetMock from './mocks/scenarios/get.json';
@@ -133,6 +134,18 @@ describe('Endpoints: Scenarios', () => {
 
             const result = await make.scenarios.run(18, data, { responsive: false, callbackUrl });
             expect(result).toStrictEqual(scenarioRunMock);
+        });
+
+        it('Should replay scenario execution', async () => {
+            const executionIds = ['509f0457d2804ba7b115faf1637beea6'];
+
+            mockFetch('POST https://make.local/api/v2/scenarios/18/replay', scenarioReplayMock, req => {
+                expect(req.body).toStrictEqual({ executionIds });
+                expect(req.headers.get('content-type')).toBe('application/json');
+            });
+
+            const result = await make.scenarios.replay(18, executionIds);
+            expect(result).toStrictEqual(scenarioReplayMock);
         });
 
         it('Should activate scenario', async () => {

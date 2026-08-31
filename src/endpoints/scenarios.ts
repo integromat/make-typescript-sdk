@@ -194,6 +194,14 @@ export type RunScenarioOptions = {
 };
 
 /**
+ * Response format for replaying a scenario execution.
+ */
+export type ReplayScenarioResponse = {
+    /** ID of the new execution created by the replay (not the ID of the execution being replayed) */
+    executionId: string;
+};
+
+/**
  * Response format for activating a scenario.
  */
 type ActivateScenarioResponse = {
@@ -518,6 +526,24 @@ export class Scenarios {
                 data: body,
                 responsive: options?.responsive ?? true,
                 callbackUrl: options?.callbackUrl,
+            },
+        });
+    }
+
+    /**
+     * Replay a past execution of a scenario, re-running it with the original trigger data.
+     *
+     * Only executions whose input artifacts are still stored can be replayed; the API answers
+     * `422 Execution is not replayable` for the rest, and `404` for an unknown execution ID.
+     * @param scenarioId The scenario ID the execution belongs to
+     * @param executionIds Execution IDs to replay. Currently only the first one is replayed.
+     * @returns Promise with the ID of the new execution created by the replay
+     */
+    async replay(scenarioId: number, executionIds: string[]): Promise<ReplayScenarioResponse> {
+        return await this.#fetch<ReplayScenarioResponse>(`/scenarios/${scenarioId}/replay`, {
+            method: 'POST',
+            body: {
+                executionIds,
             },
         });
     }
