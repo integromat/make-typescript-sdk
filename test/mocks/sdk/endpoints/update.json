@@ -4,7 +4,7 @@
         "label": "Get Entity (Updated)",
         "description": "Retrieves the given entity by its id.",
         "context": "Use to fetch a single entity by its id.",
-        "annotations": { "readOnlyHint": true, "idempotentHint": true },
+        "annotations": { "readOnlyHint": true, "idempotentHint": true, "arbitraryCallHint": true },
         "attachedAccounts": ["my-connection"],
         "public": false,
         "approved": false,

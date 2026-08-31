@@ -5,7 +5,7 @@
             "label": "Get Entity",
             "description": "Retrieves the given entity.",
             "context": null,
-            "annotations": { "readOnlyHint": true },
+            "annotations": { "readOnlyHint": true, "arbitraryCallHint": false },
             "attachedAccounts": [],
             "public": false,
             "approved": false,

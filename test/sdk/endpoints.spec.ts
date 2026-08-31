@@ -51,7 +51,7 @@ describe('Endpoints: SDK > Endpoints', () => {
             label: 'Get Entity (Updated)',
             description: 'Retrieves the given entity by its id.',
             context: 'Use to fetch a single entity by its id.',
-            annotations: { readOnlyHint: true, idempotentHint: true },
+            annotations: { readOnlyHint: true, idempotentHint: true, arbitraryCallHint: true },
             attachedAccounts: ['my-connection'],
         };
         mockFetch(
@@ -65,6 +65,20 @@ describe('Endpoints: SDK > Endpoints', () => {
 
         const result = await make.sdk.endpoints.update(appName, appVersion, endpointName, body);
         expect(result).toStrictEqual(updateMock.appEndpoint);
+    });
+
+    it('Should update SDK app endpoint with the arbitraryCallHint annotation alone', async () => {
+        const body = { annotations: { arbitraryCallHint: true } };
+        mockFetch(
+            `PATCH https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/endpoints/${endpointName}`,
+            updateMock,
+            req => {
+                expect(req.body).toStrictEqual(body);
+            },
+        );
+
+        const result = await make.sdk.endpoints.update(appName, appVersion, endpointName, body);
+        expect(result.annotations.arbitraryCallHint).toBe(true);
     });
 
     it('Should delete SDK app endpoint', async () => {
@@ -95,7 +109,13 @@ describe('Endpoints: SDK > Endpoints', () => {
         const section = 'api';
         // The API returns sections as application/jsonc (comments allowed), so the SDK
         // hands back the raw text unchanged rather than a parsed object.
-        const sectionBody = ['{', '    // Fetch a single entity', '    "url": "/entities/{{parameters.id}}",', '    "method": "GET"', '}'].join('\n');
+        const sectionBody = [
+            '{',
+            '    // Fetch a single entity',
+            '    "url": "/entities/{{parameters.id}}",',
+            '    "method": "GET"',
+            '}',
+        ].join('\n');
         mockFetch(
             `GET https://make.local/api/v2/sdk/apps/${appName}/${appVersion}/endpoints/${endpointName}/${section}`,
             sectionBody,
