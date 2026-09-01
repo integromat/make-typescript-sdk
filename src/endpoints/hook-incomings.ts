@@ -1,4 +1,4 @@
-import type { FetchFunction, JSONValue, Pagination } from '../types.js';
+import type { FetchFunction, Pagination } from '../types.js';
 
 /**
  * A single item in a webhook's processing queue.
