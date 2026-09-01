@@ -20,6 +20,7 @@ import { tools as UsersTools } from './endpoints/users.tools.js';
 import { tools as FunctionsTools } from './endpoints/functions.tools.js';
 import { tools as ExecutionsTools } from './endpoints/executions.tools.js';
 import { tools as HooksTools } from './endpoints/hooks.tools.js';
+import { tools as HookIncomingsTools } from './endpoints/hook-incomings.tools.js';
 import { tools as DevicesTools } from './endpoints/devices.tools.js';
 import { tools as KeysTools } from './endpoints/keys.tools.js';
 import { tools as FoldersTools } from './endpoints/folders.tools.js';
@@ -225,6 +226,7 @@ export const MakeTools = [
     ...ScenarioLabelsTools,
     ...FunctionsTools,
     ...HooksTools,
+    ...HookIncomingsTools,
     ...DevicesTools,
     ...DataStructuresTools,
     ...ConnectionsTools,
