@@ -40,6 +40,15 @@ describe('Endpoints: HookIncomings', () => {
         expect(result).toStrictEqual(listMock.incomings);
     });
 
+    it.each([
+        { field: 'from', options: { from: 1000.5 } },
+        { field: 'to', options: { to: 2000.5 } },
+    ])('Should reject a fractional $field list timestamp', async ({ field, options }) => {
+        await expect(make.hooks.incomings.list(HOOK_ID, options)).rejects.toThrow(
+            `\`${field}\` must be an integer Unix timestamp in milliseconds when specified`,
+        );
+    });
+
     it('Should reject an unsupported list sort field', async () => {
         const options = { pg: { sortBy: 'id' } } as unknown as ListHookIncomingsOptions;
 

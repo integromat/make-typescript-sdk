@@ -56,6 +56,13 @@ describe('MCP tools: hook-incomings', () => {
         expect(result).toStrictEqual(listMock.incomings);
     });
 
+    it('Should constrain hook-incomings_list timestamps to integers', () => {
+        const tool = getTool('hook-incomings_list');
+
+        expect(tool.inputSchema.properties?.from).toEqual(expect.objectContaining({ type: 'integer' }));
+        expect(tool.inputSchema.properties?.to).toEqual(expect.objectContaining({ type: 'integer' }));
+    });
+
     it('Should execute hook-incomings_stats', async () => {
         mockFetch(`GET https://make.local/api/v2/hooks/${HOOK_ID}/incomings/stats`, statsMock);
 

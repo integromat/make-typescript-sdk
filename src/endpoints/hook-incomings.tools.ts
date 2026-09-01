@@ -22,11 +22,11 @@ export const tools: MakeTool[] = [
             properties: {
                 hookId: { type: 'number', description: 'The hook ID to list queued items for' },
                 from: {
-                    type: 'number',
+                    type: 'integer',
                     description: 'Only include items queued at or after this Unix timestamp (ms)',
                 },
                 to: {
-                    type: 'number',
+                    type: 'integer',
                     description: 'Only include items queued at or before this Unix timestamp (ms)',
                 },
                 pg: {

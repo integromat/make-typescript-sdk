@@ -168,9 +168,15 @@ export class HookIncomings {
      * @param hookId The hook ID to list queued items for
      * @param options Optional filtering and pagination parameters
      * @returns Promise with the list of queued items
-     * @throws {TypeError} If any pagination option is unsupported
+     * @throws {TypeError} If a timestamp is not an integer or any pagination option is unsupported
      */
     async list(hookId: number, options?: ListHookIncomingsOptions): Promise<HookIncoming[]> {
+        if (options?.from !== undefined && !Number.isInteger(options.from)) {
+            throw new TypeError('`from` must be an integer Unix timestamp in milliseconds when specified');
+        }
+        if (options?.to !== undefined && !Number.isInteger(options.to)) {
+            throw new TypeError('`to` must be an integer Unix timestamp in milliseconds when specified');
+        }
         if (options?.pg?.sortBy !== undefined && options.pg.sortBy !== 'created') {
             throw new TypeError('`pg.sortBy` must be `created` when specified');
         }
