@@ -263,6 +263,17 @@ export type UpdateScenarioBody = {
 
 /**
  * Normalizes the payload for creating or updating a scenario.
+ *
+ * The scenario's on-demand input/output specification lives outside the blueprint, in `metadata`, so a
+ * blueprint-nested `interface` (or the legacy `io`) is hoisted out of the blueprint and into that key.
+ *
+ * The `metadata` key is only emitted when the caller actually supplied one of those sources. Sending
+ * `{input_spec: [], output_spec: []}` unconditionally would WIPE a scenario's configured interface on every
+ * unrelated PATCH (a rename, a folder move, a scheduling tweak): the backend's `COALESCE(new_value,
+ * existing_value)` only falls back to the existing value on SQL NULL, and an empty array is not NULL, so it
+ * counts as an intentional "clear". Clearing an interface on purpose therefore stays possible — pass an
+ * explicit `interface: { input: [], output: [] }`, whose empty arrays are emitted as before.
+ *
  * @param payload The payload to normalize
  * @returns The normalized payload
  */
@@ -271,26 +282,29 @@ function normalizePayload(payload: UpdateScenarioBody | CreateScenarioBody) {
         typeof payload.blueprint === 'string' ? JSON.parse(payload.blueprint) : payload.blueprint;
     let scheduling: Scheduling | undefined =
         typeof payload.scheduling === 'string' ? JSON.parse(payload.scheduling) : payload.scheduling;
-    const metadata: {
-        input_spec: DataStructureField[];
-        output_spec: DataStructureField[];
-    } = {
-        input_spec: [],
-        output_spec: [],
-    };
+    let metadata:
+        | {
+              input_spec: DataStructureField[];
+              output_spec: DataStructureField[];
+          }
+        | undefined;
 
     if (blueprint?.scheduling) {
         scheduling = blueprint.scheduling;
         blueprint = { ...blueprint, scheduling: undefined };
     }
     if (blueprint?.interface) {
-        metadata.input_spec = blueprint.interface.input ?? [];
-        metadata.output_spec = blueprint.interface.output ?? [];
+        metadata = {
+            input_spec: blueprint.interface.input ?? [],
+            output_spec: blueprint.interface.output ?? [],
+        };
         blueprint = { ...blueprint, interface: undefined };
     }
     if (blueprint?.io) {
-        metadata.input_spec = blueprint.io.input_spec ?? [];
-        metadata.output_spec = blueprint.io.output_spec ?? [];
+        metadata = {
+            input_spec: blueprint.io.input_spec ?? [],
+            output_spec: blueprint.io.output_spec ?? [],
+        };
         blueprint = { ...blueprint, io: undefined };
     }
 
