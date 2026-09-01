@@ -1,4 +1,4 @@
-import type { FetchFunction, Pagination } from '../types.js';
+import type { FetchFunction, JSONValue, Pagination } from '../types.js';
 
 /**
  * A single item in a webhook's processing queue.
@@ -59,6 +59,24 @@ type GetHookIncomingStatsResponse = {
 };
 
 /**
+ * Detail of a single webhook queue item, including its payload.
+ */
+export type HookIncomingDetail = HookIncoming & {
+    /** The queued payload. Omitted when the hook is confidential. */
+    data?: JSONValue;
+    /** Whether the hook is confidential, in which case the payload is withheld */
+    isHookConfidential?: boolean;
+};
+
+/**
+ * Response format for getting a webhook queue item's detail.
+ */
+type GetHookIncomingResponse = {
+    /** The requested queue item, including its payload */
+    incoming: HookIncomingDetail;
+};
+
+/**
  * Class providing methods for working with a Make webhook's processing queue.
  * Items accumulate here when a webhook receives data it can't immediately
  * hand off to a running scenario.
@@ -99,5 +117,15 @@ export class HookIncomings {
      */
     async stats(hookId: number): Promise<HookIncomingStats> {
         return (await this.#fetch<GetHookIncomingStatsResponse>(`/hooks/${hookId}/incomings/stats`)).incomingStat;
+    }
+
+    /**
+     * Get detail of a single queued item, including its payload.
+     * @param hookId The hook ID the queue item belongs to
+     * @param incomingId The ID of the queue item to retrieve
+     * @returns Promise with the queue item detail
+     */
+    async get(hookId: number, incomingId: string): Promise<HookIncomingDetail> {
+        return (await this.#fetch<GetHookIncomingResponse>(`/hooks/${hookId}/incomings/${incomingId}`)).incoming;
     }
 }
