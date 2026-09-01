@@ -1,4 +1,5 @@
 import type { FetchFunction, JSONValue, Pagination } from '../types.js';
+import { HookIncomings } from './hook-incomings.js';
 
 /**
  * Represents a Make webhook or mailhook.
@@ -148,11 +149,17 @@ export class Hooks {
     readonly #fetch: FetchFunction;
 
     /**
+     * Access to a webhook's processing queue (list, stats, detail, delete).
+     */
+    public readonly incomings: HookIncomings;
+
+    /**
      * Create a new Hooks instance.
      * @param fetch Function for making API requests
      */
     constructor(fetch: FetchFunction) {
         this.#fetch = fetch;
+        this.incomings = new HookIncomings(fetch);
     }
 
     /**
