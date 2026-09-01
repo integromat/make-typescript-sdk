@@ -3,6 +3,7 @@ import { Make } from '../src/make.js';
 import { mockFetch } from './test.utils.js';
 
 import * as listMock from './mocks/hook-incomings/list.json';
+import * as statsMock from './mocks/hook-incomings/stats.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -32,5 +33,13 @@ describe('Endpoints: HookIncomings', () => {
         });
 
         expect(result).toStrictEqual(listMock.incomings);
+    });
+
+    it('Should get queue stats for a hook', async () => {
+        mockFetch(`GET https://make.local/api/v2/hooks/${HOOK_ID}/incomings/stats`, statsMock);
+
+        const result = await make.hooks.incomings.stats(HOOK_ID);
+
+        expect(result).toStrictEqual(statsMock.incomingStat);
     });
 });

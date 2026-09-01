@@ -39,6 +39,26 @@ type ListHookIncomingsResponse = {
 };
 
 /**
+ * Queue size and limit for a webhook.
+ */
+export type HookIncomingStats = {
+    /** Number of items currently in the queue */
+    queue: number;
+    /** Maximum number of items the queue can hold */
+    limit: number;
+    /** Whether the queue is enabled */
+    enabled: boolean;
+};
+
+/**
+ * Response format for getting a webhook's queue stats.
+ */
+type GetHookIncomingStatsResponse = {
+    /** The queue stats */
+    incomingStat: HookIncomingStats;
+};
+
+/**
  * Class providing methods for working with a Make webhook's processing queue.
  * Items accumulate here when a webhook receives data it can't immediately
  * hand off to a running scenario.
@@ -70,5 +90,14 @@ export class HookIncomings {
                 },
             })
         ).incomings;
+    }
+
+    /**
+     * Get queue size and limit for a webhook.
+     * @param hookId The hook ID to get queue stats for
+     * @returns Promise with the queue stats
+     */
+    async stats(hookId: number): Promise<HookIncomingStats> {
+        return (await this.#fetch<GetHookIncomingStatsResponse>(`/hooks/${hookId}/incomings/stats`)).incomingStat;
     }
 }

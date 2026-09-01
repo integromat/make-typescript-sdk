@@ -1,0 +1,7 @@
+{
+    "incomingStat": {
+        "queue": 2,
+        "limit": 10000,
+        "enabled": true
+    }
+}
