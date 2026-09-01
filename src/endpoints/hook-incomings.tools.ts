@@ -1,6 +1,6 @@
 import type { Make } from '../make.js';
 import type { MakeTool } from '../tools.js';
-import type { DeleteHookIncomingsOptions } from './hook-incomings.js';
+import type { DeleteHookIncomingsOptions, ListHookIncomingsOptions } from './hook-incomings.js';
 
 export const tools: MakeTool[] = [
     {
@@ -29,12 +29,38 @@ export const tools: MakeTool[] = [
                     type: 'number',
                     description: 'Only include items queued at or before this Unix timestamp (ms)',
                 },
+                pg: {
+                    type: 'object',
+                    description: 'Pagination and sorting options',
+                    properties: {
+                        sortBy: {
+                            type: 'string',
+                            enum: ['id', 'scope', 'size', 'created'],
+                            description: 'Queue item field to sort by',
+                        },
+                        sortDir: {
+                            type: 'string',
+                            enum: ['asc', 'desc'],
+                            description: 'Sort direction',
+                        },
+                        offset: { type: 'number', minimum: 0, description: 'Number of items to skip' },
+                        limit: { type: 'number', minimum: 1, description: 'Maximum number of items to return' },
+                    },
+                    additionalProperties: false,
+                },
             },
             required: ['hookId'],
         },
         examples: [{ hookId: 11 }],
-        execute: async (make: Make, args: { hookId: number; from?: number; to?: number }) => {
-            return await make.hooks.incomings.list(args.hookId, { from: args.from, to: args.to });
+        execute: async (
+            make: Make,
+            args: { hookId: number; from?: number; to?: number; pg?: ListHookIncomingsOptions['pg'] },
+        ) => {
+            return await make.hooks.incomings.list(args.hookId, {
+                from: args.from,
+                to: args.to,
+                pg: args.pg,
+            });
         },
     },
     {

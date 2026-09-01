@@ -32,6 +32,30 @@ describe('MCP tools: hook-incomings', () => {
         expect(result).toStrictEqual(listMock.incomings);
     });
 
+    it('Should expose and forward hook-incomings_list pagination', async () => {
+        const pg = { limit: 10, offset: 20, sortBy: 'created', sortDir: 'desc' } as const;
+        mockFetch(
+            `GET https://make.local/api/v2/hooks/${HOOK_ID}/incomings?pg%5Blimit%5D=10&pg%5Boffset%5D=20&pg%5BsortBy%5D=created&pg%5BsortDir%5D=desc`,
+            listMock,
+        );
+
+        const tool = getTool('hook-incomings_list');
+        const result = await tool.execute(make, { hookId: HOOK_ID, pg });
+
+        expect(tool.inputSchema.properties?.pg).toEqual(
+            expect.objectContaining({
+                type: 'object',
+                properties: expect.objectContaining({
+                    limit: expect.objectContaining({ type: 'number' }),
+                    offset: expect.objectContaining({ type: 'number' }),
+                    sortBy: expect.objectContaining({ type: 'string' }),
+                    sortDir: expect.objectContaining({ type: 'string' }),
+                }),
+            }),
+        );
+        expect(result).toStrictEqual(listMock.incomings);
+    });
+
     it('Should execute hook-incomings_stats', async () => {
         mockFetch(`GET https://make.local/api/v2/hooks/${HOOK_ID}/incomings/stats`, statsMock);
 
