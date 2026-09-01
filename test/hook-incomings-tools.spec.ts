@@ -46,10 +46,10 @@ describe('MCP tools: hook-incomings', () => {
             expect.objectContaining({
                 type: 'object',
                 properties: expect.objectContaining({
-                    limit: expect.objectContaining({ type: 'number' }),
-                    offset: expect.objectContaining({ type: 'number' }),
-                    sortBy: expect.objectContaining({ type: 'string' }),
-                    sortDir: expect.objectContaining({ type: 'string' }),
+                    limit: expect.objectContaining({ type: 'integer', minimum: 1, maximum: 10_000 }),
+                    offset: expect.objectContaining({ type: 'integer', minimum: 0 }),
+                    sortBy: expect.objectContaining({ type: 'string', enum: ['created'] }),
+                    sortDir: expect.objectContaining({ type: 'string', enum: ['asc', 'desc'] }),
                 }),
             }),
         );

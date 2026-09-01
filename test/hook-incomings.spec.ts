@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
-import type { DeleteHookIncomingsOptions } from '../src/endpoints/hook-incomings.js';
+import type { DeleteHookIncomingsOptions, ListHookIncomingsOptions } from '../src/endpoints/hook-incomings.js';
 import { mockFetch } from './test.utils.js';
 
 import * as listMock from './mocks/hook-incomings/list.json';
@@ -38,6 +38,34 @@ describe('Endpoints: HookIncomings', () => {
         });
 
         expect(result).toStrictEqual(listMock.incomings);
+    });
+
+    it('Should reject an unsupported list sort field', async () => {
+        const options = { pg: { sortBy: 'id' } } as unknown as ListHookIncomingsOptions;
+
+        await expect(make.hooks.incomings.list(HOOK_ID, options)).rejects.toThrow(
+            '`pg.sortBy` must be `created` when specified',
+        );
+    });
+
+    it('Should reject an unsupported list sort direction', async () => {
+        const options = { pg: { sortDir: 'sideways' } } as unknown as ListHookIncomingsOptions;
+
+        await expect(make.hooks.incomings.list(HOOK_ID, options)).rejects.toThrow(
+            '`pg.sortDir` must be `asc` or `desc` when specified',
+        );
+    });
+
+    it.each([0, 1.5, 10_001])('Should reject an unsupported list limit: %s', async limit => {
+        await expect(make.hooks.incomings.list(HOOK_ID, { pg: { limit } })).rejects.toThrow(
+            '`pg.limit` must be an integer between 1 and 10000 when specified',
+        );
+    });
+
+    it.each([-1, 1.5])('Should reject an unsupported list offset: %s', async offset => {
+        await expect(make.hooks.incomings.list(HOOK_ID, { pg: { offset } })).rejects.toThrow(
+            '`pg.offset` must be a non-negative integer when specified',
+        );
     });
 
     it('Should get queue stats for a hook', async () => {

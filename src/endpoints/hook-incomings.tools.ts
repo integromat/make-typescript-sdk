@@ -35,16 +35,21 @@ export const tools: MakeTool[] = [
                     properties: {
                         sortBy: {
                             type: 'string',
-                            enum: ['id', 'scope', 'size', 'created'],
-                            description: 'Queue item field to sort by',
+                            enum: ['created'],
+                            description: 'Sort queue items by their creation time',
                         },
                         sortDir: {
                             type: 'string',
                             enum: ['asc', 'desc'],
                             description: 'Sort direction',
                         },
-                        offset: { type: 'number', minimum: 0, description: 'Number of items to skip' },
-                        limit: { type: 'number', minimum: 1, description: 'Maximum number of items to return' },
+                        offset: { type: 'integer', minimum: 0, description: 'Number of items to skip' },
+                        limit: {
+                            type: 'integer',
+                            minimum: 1,
+                            maximum: 10_000,
+                            description: 'Maximum number of items to return (up to 10,000)',
+                        },
                     },
                     additionalProperties: false,
                 },

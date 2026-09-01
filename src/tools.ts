@@ -43,11 +43,11 @@ import { tools as CustomRolesTools } from './endpoints/custom-roles.tools.js';
  */
 export type JSONSchema = {
     /**
-     * The type of the schema (object, string, number, boolean, array, etc.).
+     * The type of the schema (object, string, number, integer, boolean, array, etc.).
      * Optional when the schema is expressed purely through composition
      * (`oneOf`/`anyOf`/`allOf`) or a `const` value.
      */
-    type?: 'object' | 'string' | 'number' | 'boolean' | 'array' | 'null';
+    type?: 'object' | 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'null';
     /** Properties definition for object types */
     properties?: Record<string, JSONSchema>;
     /** Schemas for properties whose names match a regex pattern (object types) */

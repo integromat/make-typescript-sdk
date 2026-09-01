@@ -1,6 +1,7 @@
-import type { FetchFunction, JSONValue, Pagination } from '../types.js';
+import type { FetchFunction, JSONValue } from '../types.js';
 
 const HOOK_INCOMING_ID_PATTERN = /^[0-9a-f]{32}$/;
+const MAX_HOOK_INCOMINGS_LIMIT = 10_000;
 
 /**
  * A single item in a webhook's processing queue.
@@ -19,6 +20,20 @@ export type HookIncoming = {
 };
 
 /**
+ * Pagination supported by the webhook processing queue endpoint.
+ */
+type HookIncomingsPagination = {
+    /** Queue items can only be sorted by their creation time */
+    sortBy: 'created';
+    /** Sort direction (ascending or descending) */
+    sortDir: 'asc' | 'desc';
+    /** Number of queue items to skip */
+    offset: number;
+    /** Maximum number of queue items to return, up to 10,000 */
+    limit: number;
+};
+
+/**
  * Options for listing a webhook's queued incoming items.
  */
 export type ListHookIncomingsOptions = {
@@ -26,8 +41,8 @@ export type ListHookIncomingsOptions = {
     from?: number;
     /** Only include items queued at or before this Unix timestamp (ms) */
     to?: number;
-    /** Pagination options */
-    pg?: Partial<Pagination<HookIncoming>>;
+    /** Pagination options supported by the webhook queue */
+    pg?: Partial<HookIncomingsPagination>;
 };
 
 /**
@@ -37,7 +52,7 @@ type ListHookIncomingsResponse = {
     /** Queue items matching the query */
     incomings: HookIncoming[];
     /** Pagination information */
-    pg: Partial<Pagination<HookIncoming>>;
+    pg: Partial<HookIncomingsPagination>;
 };
 
 /**
@@ -153,8 +168,25 @@ export class HookIncomings {
      * @param hookId The hook ID to list queued items for
      * @param options Optional filtering and pagination parameters
      * @returns Promise with the list of queued items
+     * @throws {TypeError} If any pagination option is unsupported
      */
     async list(hookId: number, options?: ListHookIncomingsOptions): Promise<HookIncoming[]> {
+        if (options?.pg?.sortBy !== undefined && options.pg.sortBy !== 'created') {
+            throw new TypeError('`pg.sortBy` must be `created` when specified');
+        }
+        if (options?.pg?.sortDir !== undefined && options.pg.sortDir !== 'asc' && options.pg.sortDir !== 'desc') {
+            throw new TypeError('`pg.sortDir` must be `asc` or `desc` when specified');
+        }
+        if (
+            options?.pg?.limit !== undefined &&
+            (!Number.isInteger(options.pg.limit) || options.pg.limit < 1 || options.pg.limit > MAX_HOOK_INCOMINGS_LIMIT)
+        ) {
+            throw new TypeError('`pg.limit` must be an integer between 1 and 10000 when specified');
+        }
+        if (options?.pg?.offset !== undefined && (!Number.isInteger(options.pg.offset) || options.pg.offset < 0)) {
+            throw new TypeError('`pg.offset` must be a non-negative integer when specified');
+        }
+
         return (
             await this.#fetch<ListHookIncomingsResponse>(`/hooks/${hookId}/incomings`, {
                 query: {

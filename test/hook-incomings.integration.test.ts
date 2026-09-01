@@ -150,17 +150,22 @@ function payloadMarker(data: HookIncomingDetail['data']): string | undefined {
         expect([...baselineIds].every(baselineId => remainingIds.has(baselineId))).toBe(true);
     });
 
-    it('Should bulk-delete the other fixture delivery with confirmation while preserving the baseline', async () => {
+    it('Should bulk-delete only the other fixture delivery with confirmation', async () => {
         const id = requireTestId(TEST_MARKERS[1]);
+        const currentBeforeDelete = await listAll();
+        const idsToPreserve = currentBeforeDelete.map(incoming => incoming.id).filter(currentId => currentId !== id);
+
+        expect(currentBeforeDelete.some(incoming => incoming.id === id)).toBe(true);
+
         const result = await make.hooks.incomings.delete(MAKE_HOOK_INCOMINGS_HOOK_ID, {
             all: true,
             confirmed: true,
-            exceptIds: [...baselineIds],
+            exceptIds: idsToPreserve,
         });
         const remainingIds = new Set((await listAll()).map(incoming => incoming.id));
 
-        expect(result.deletedIds).toContain(id);
+        expect(result.deletedIds).toStrictEqual([id]);
         expect(remainingIds.has(id)).toBe(false);
-        expect([...baselineIds].every(baselineId => remainingIds.has(baselineId))).toBe(true);
+        expect(idsToPreserve.every(preservedId => remainingIds.has(preservedId))).toBe(true);
     });
 });
