@@ -113,6 +113,15 @@ export type {
 } from './endpoints/functions.js';
 export type { Hook, Hooks, CreateHookBody, UpdateHookBody, ListHooksOptions, HookPing } from './endpoints/hooks.js';
 export type {
+    HookIncoming,
+    HookIncomingDetail,
+    HookIncomingStats,
+    HookIncomings,
+    ListHookIncomingsOptions,
+    DeleteHookIncomingsOptions,
+    DeleteHookIncomingsResult,
+} from './endpoints/hook-incomings.js';
+export type {
     IncompleteExecution,
     IncompleteExecutions,
     IncompleteExecutionBundles,
