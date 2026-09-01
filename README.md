@@ -61,6 +61,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Scenario Labels** - Team-scoped tags assignable to scenarios
 - **Functions** - Custom JavaScript functions for scenarios
 - **Hooks** - Webhooks and mailhooks for external integrations
+- **Hook Incoming Queue** - Inspect and clear items queued for a webhook awaiting processing
 - **Incomplete Executions** - Failed or incomplete scenario runs
 - **Keys** - API keys and secrets
 - **On-Prem Agents** - On-prem bridge agents running on customer infrastructure
@@ -212,6 +213,7 @@ All tools are organized into the following categories:
 - `folders`
 - `functions`
 - `hooks`
+- `hook-incomings`
 - `incomplete-executions`
 - `keys`
 - `scenario-labels`

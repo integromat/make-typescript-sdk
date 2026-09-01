@@ -48,10 +48,7 @@ describe('Endpoints: HookIncomings', () => {
     });
 
     it('Should get detail of a queued item', async () => {
-        mockFetch(
-            `GET https://make.local/api/v2/hooks/${HOOK_ID}/incomings/8d88f6f5b0484908890ef11fe7e5bf63`,
-            getMock,
-        );
+        mockFetch(`GET https://make.local/api/v2/hooks/${HOOK_ID}/incomings/8d88f6f5b0484908890ef11fe7e5bf63`, getMock);
 
         const result = await make.hooks.incomings.get(HOOK_ID, '8d88f6f5b0484908890ef11fe7e5bf63');
 
@@ -96,13 +93,9 @@ describe('Endpoints: HookIncomings', () => {
     });
 
     it('Should confirm deletion of the entire queue', async () => {
-        mockFetch(
-            `DELETE https://make.local/api/v2/hooks/${HOOK_ID}/incomings?confirmed=true`,
-            deleteMock,
-            req => {
-                expect(req.body).toStrictEqual({ all: true });
-            },
-        );
+        mockFetch(`DELETE https://make.local/api/v2/hooks/${HOOK_ID}/incomings?confirmed=true`, deleteMock, req => {
+            expect(req.body).toStrictEqual({ all: true });
+        });
 
         await make.hooks.incomings.delete(HOOK_ID, { all: true, confirmed: true });
     });

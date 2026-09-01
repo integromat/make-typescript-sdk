@@ -42,10 +42,7 @@ describe('MCP tools: hook-incomings', () => {
     });
 
     it('Should execute hook-incomings_get', async () => {
-        mockFetch(
-            `GET https://make.local/api/v2/hooks/${HOOK_ID}/incomings/8d88f6f5b0484908890ef11fe7e5bf63`,
-            getMock,
-        );
+        mockFetch(`GET https://make.local/api/v2/hooks/${HOOK_ID}/incomings/8d88f6f5b0484908890ef11fe7e5bf63`, getMock);
 
         const tool = getTool('hook-incomings_get');
         const result = await tool.execute(make, { hookId: HOOK_ID, incomingId: '8d88f6f5b0484908890ef11fe7e5bf63' });
