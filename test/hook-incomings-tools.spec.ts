@@ -56,6 +56,12 @@ describe('MCP tools: hook-incomings', () => {
         expect(tool.inputSchema.properties?.incomingId?.pattern).toBe('^[0-9a-f]{32}$');
     });
 
+    it('Should explain that confidential hooks omit queued payload data', () => {
+        const tool = getTool('hook-incomings_get');
+
+        expect(tool.description).toContain('Confidential hooks omit payload data');
+    });
+
     it('Should execute hook-incomings_delete', async () => {
         const ids = ['d1efa5318a034d36ad7cbeac543573cf', '29d9a7410dff494ab739036f6c332335'];
 

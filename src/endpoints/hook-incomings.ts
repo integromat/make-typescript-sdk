@@ -176,7 +176,7 @@ export class HookIncomings {
     }
 
     /**
-     * Get detail of a single queued item, including its payload.
+     * Get detail of a single queued item, including its payload when available. Confidential hooks omit payload data.
      * @param hookId The hook ID the queue item belongs to
      * @param incomingId The 32-character lowercase hexadecimal ID of the queue item to retrieve
      * @returns Promise with the queue item detail

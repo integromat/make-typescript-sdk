@@ -289,6 +289,17 @@ MAKE_TEAM="<team-id>"
 MAKE_ORGANIZATION="<organization-id>"
 ```
 
+Required only for Hook Incoming Queue integration tests:
+
+```
+MAKE_HOOK_INCOMINGS_HOOK_ID="<dedicated-hook-id>"
+MAKE_HOOK_INCOMINGS_WEBHOOK_URL="<dedicated-webhook-url>"
+```
+
+Use a dedicated non-confidential scheduled webhook whose scenario is inactive so deliveries remain queued. The API
+token needs `hooks:read` and `hooks:write`; the tests preserve pre-existing queue items and never create or delete the
+hook.
+
 Required for connected-system **create** integration (field names from `getAppConfig`):
 
 ```

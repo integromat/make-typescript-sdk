@@ -65,7 +65,8 @@ export const tools: MakeTool[] = [
     {
         name: 'hook-incomings_get',
         title: 'Get webhook queue item detail',
-        description: 'Get the full detail of a single queued item, including its payload.',
+        description:
+            'Get the full detail of a single queued item, including its payload when available. Confidential hooks omit payload data.',
         category: 'hook-incomings',
         scope: 'hooks:read',
         scopeId: 'hookId',
