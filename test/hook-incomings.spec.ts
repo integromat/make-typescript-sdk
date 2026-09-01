@@ -6,6 +6,8 @@ import * as listMock from './mocks/hook-incomings/list.json';
 import * as statsMock from './mocks/hook-incomings/stats.json';
 import * as getMock from './mocks/hook-incomings/get.json';
 import * as getConfidentialMock from './mocks/hook-incomings/get-confidential.json';
+import * as deleteMock from './mocks/hook-incomings/delete.json';
+import * as deletePartialErrorMock from './mocks/hook-incomings/delete-partial-error.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -66,5 +68,42 @@ describe('Endpoints: HookIncomings', () => {
 
         expect(result).toStrictEqual(getConfidentialMock.incoming);
         expect(result.data).toBeUndefined();
+    });
+
+    it('Should delete specific queue items', async () => {
+        const ids = ['d1efa5318a034d36ad7cbeac543573cf', '29d9a7410dff494ab739036f6c332335'];
+
+        mockFetch(`DELETE https://make.local/api/v2/hooks/${HOOK_ID}/incomings`, deleteMock, req => {
+            expect(req.body).toStrictEqual({ ids });
+        });
+
+        const result = await make.hooks.incomings.delete(HOOK_ID, { ids });
+
+        expect(result).toStrictEqual({ deletedIds: deleteMock.incomings, error: undefined });
+    });
+
+    it('Should surface a partial-failure error alongside whatever was deleted', async () => {
+        const ids = ['02731358e5ab4022aff040015a1f1a57', 'dcf18b685e5c4095b9ee24cea09146d3'];
+
+        mockFetch(`DELETE https://make.local/api/v2/hooks/${HOOK_ID}/incomings`, deletePartialErrorMock, req => {
+            expect(req.body).toStrictEqual({ ids });
+        });
+
+        const result = await make.hooks.incomings.delete(HOOK_ID, { ids });
+
+        expect(result.deletedIds).toStrictEqual(deletePartialErrorMock.incomings);
+        expect(result.error).toStrictEqual(deletePartialErrorMock.error);
+    });
+
+    it('Should confirm deletion of the entire queue', async () => {
+        mockFetch(
+            `DELETE https://make.local/api/v2/hooks/${HOOK_ID}/incomings?confirmed=true`,
+            deleteMock,
+            req => {
+                expect(req.body).toStrictEqual({ all: true });
+            },
+        );
+
+        await make.hooks.incomings.delete(HOOK_ID, { all: true, confirmed: true });
     });
 });

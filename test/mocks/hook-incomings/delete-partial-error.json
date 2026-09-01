@@ -1,0 +1,7 @@
+{
+    "incomings": ["02731358e5ab4022aff040015a1f1a57"],
+    "error": {
+        "name": "APIError",
+        "message": "Some of the incoming messages could not be deleted because they are being processed right now."
+    }
+}

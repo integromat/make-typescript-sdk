@@ -77,6 +77,49 @@ type GetHookIncomingResponse = {
 };
 
 /**
+ * Options for deleting items from a webhook's queue.
+ * Either `ids` or `all` must be specified.
+ */
+export type DeleteHookIncomingsOptions = {
+    /** IDs of the queue items to delete */
+    ids?: string[];
+    /** When used with `all`, IDs of queue items to keep instead of deleting */
+    exceptIds?: string[];
+    /** Delete every item in the queue */
+    all?: boolean;
+    /** Required (and must be `true`) when `all` is used, to confirm the bulk deletion */
+    confirmed?: boolean;
+};
+
+/**
+ * Result of deleting items from a webhook's queue.
+ */
+export type DeleteHookIncomingsResult = {
+    /** IDs of the queue items that were actually deleted */
+    deletedIds: string[];
+    /** Present when some items could not be deleted because they were being processed */
+    error?: {
+        /** Name of the error */
+        name: string;
+        /** Description of the error */
+        message: string;
+    };
+};
+
+/**
+ * Response format for deleting items from a webhook's queue.
+ */
+type DeleteHookIncomingsResponse = {
+    /** IDs of the queue items that were actually deleted */
+    incomings: string[];
+    /** Present when some items could not be deleted because they were being processed */
+    error?: {
+        name: string;
+        message: string;
+    };
+};
+
+/**
  * Class providing methods for working with a Make webhook's processing queue.
  * Items accumulate here when a webhook receives data it can't immediately
  * hand off to a running scenario.
@@ -127,5 +170,21 @@ export class HookIncomings {
      */
     async get(hookId: number, incomingId: string): Promise<HookIncomingDetail> {
         return (await this.#fetch<GetHookIncomingResponse>(`/hooks/${hookId}/incomings/${incomingId}`)).incoming;
+    }
+
+    /**
+     * Delete items from a webhook's queue.
+     * @param hookId The hook ID to delete queue items for
+     * @param options Which items to delete
+     * @returns Promise with the IDs that were deleted and an optional partial-failure error
+     */
+    async delete(hookId: number, options: DeleteHookIncomingsOptions): Promise<DeleteHookIncomingsResult> {
+        const { confirmed, ...body } = options;
+        const response = await this.#fetch<DeleteHookIncomingsResponse>(`/hooks/${hookId}/incomings`, {
+            method: 'DELETE',
+            query: { confirmed },
+            body,
+        });
+        return { deletedIds: response.incomings, error: response.error };
     }
 }
