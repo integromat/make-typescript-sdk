@@ -56,6 +56,12 @@ describe('Endpoints: HookIncomings', () => {
         expect(result).toStrictEqual(getMock.incoming);
     });
 
+    it.each(['stats', '../../../users/me'])('Should reject malformed queue item ID %s', async incomingId => {
+        await expect(make.hooks.incomings.get(HOOK_ID, incomingId)).rejects.toThrow(
+            '`incomingId` must be a 32-character lowercase hexadecimal string',
+        );
+    });
+
     it('Should omit the payload for a confidential hook', async () => {
         mockFetch(
             `GET https://make.local/api/v2/hooks/${HOOK_ID}/incomings/7a567f385d1a4f5ab7bff89162b7605e`,
@@ -104,6 +110,12 @@ describe('Endpoints: HookIncomings', () => {
     it('Should reject deletion without a selector', async () => {
         await expect(make.hooks.incomings.delete(HOOK_ID, {} as DeleteHookIncomingsOptions)).rejects.toThrow(
             'Exactly one of `ids` or `all: true` must be specified',
+        );
+    });
+
+    it('Should reject an empty list of deletion IDs', async () => {
+        await expect(make.hooks.incomings.delete(HOOK_ID, { ids: [] })).rejects.toThrow(
+            '`ids` must contain at least one queue item ID',
         );
     });
 

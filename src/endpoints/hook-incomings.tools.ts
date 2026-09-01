@@ -80,7 +80,11 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 hookId: { type: 'number', description: 'The hook ID the queue item belongs to' },
-                incomingId: { type: 'string', description: 'The ID of the queue item to retrieve' },
+                incomingId: {
+                    type: 'string',
+                    pattern: '^[0-9a-f]{32}$',
+                    description: 'The 32-character lowercase hexadecimal ID of the queue item to retrieve',
+                },
             },
             required: ['hookId', 'incomingId'],
         },
@@ -110,6 +114,7 @@ export const tools: MakeTool[] = [
                 ids: {
                     type: 'array',
                     items: { type: 'string' },
+                    minItems: 1,
                     description: 'IDs of the queue items to delete',
                 },
                 exceptIds: {
@@ -129,7 +134,7 @@ export const tools: MakeTool[] = [
                     type: 'object',
                     properties: {
                         hookId: { type: 'number' },
-                        ids: { type: 'array', items: { type: 'string' } },
+                        ids: { type: 'array', items: { type: 'string' }, minItems: 1 },
                     },
                     required: ['ids'],
                     additionalProperties: false,

@@ -50,6 +50,12 @@ describe('MCP tools: hook-incomings', () => {
         expect(result).toStrictEqual(getMock.incoming);
     });
 
+    it('Should constrain hook-incomings_get to queue item IDs', () => {
+        const tool = getTool('hook-incomings_get');
+
+        expect(tool.inputSchema.properties?.incomingId?.pattern).toBe('^[0-9a-f]{32}$');
+    });
+
     it('Should execute hook-incomings_delete', async () => {
         const ids = ['d1efa5318a034d36ad7cbeac543573cf', '29d9a7410dff494ab739036f6c332335'];
 
@@ -65,6 +71,7 @@ describe('MCP tools: hook-incomings', () => {
 
     it('Should describe the valid hook-incomings_delete input variants', () => {
         const tool = getTool('hook-incomings_delete');
+        const idsVariant = tool.inputSchema.oneOf?.find(schema => schema.required?.includes('ids'));
 
         expect(tool.inputSchema.oneOf).toEqual(
             expect.arrayContaining([
@@ -78,5 +85,7 @@ describe('MCP tools: hook-incomings', () => {
                 }),
             ]),
         );
+        expect(tool.inputSchema.properties?.ids?.minItems).toBe(1);
+        expect(idsVariant?.properties?.ids?.minItems).toBe(1);
     });
 });

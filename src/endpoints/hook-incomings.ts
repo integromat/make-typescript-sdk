@@ -1,5 +1,7 @@
 import type { FetchFunction, JSONValue, Pagination } from '../types.js';
 
+const HOOK_INCOMING_ID_PATTERN = /^[0-9a-f]{32}$/;
+
 /**
  * A single item in a webhook's processing queue.
  * Queue items accumulate when a webhook receives data it can't immediately
@@ -176,11 +178,17 @@ export class HookIncomings {
     /**
      * Get detail of a single queued item, including its payload.
      * @param hookId The hook ID the queue item belongs to
-     * @param incomingId The ID of the queue item to retrieve
+     * @param incomingId The 32-character lowercase hexadecimal ID of the queue item to retrieve
      * @returns Promise with the queue item detail
+     * @throws {TypeError} If `incomingId` is not a valid queue item ID
      */
     async get(hookId: number, incomingId: string): Promise<HookIncomingDetail> {
-        return (await this.#fetch<GetHookIncomingResponse>(`/hooks/${hookId}/incomings/${incomingId}`)).incoming;
+        if (!HOOK_INCOMING_ID_PATTERN.test(incomingId)) {
+            throw new TypeError('`incomingId` must be a 32-character lowercase hexadecimal string');
+        }
+
+        const encodedIncomingId = encodeURIComponent(incomingId);
+        return (await this.#fetch<GetHookIncomingResponse>(`/hooks/${hookId}/incomings/${encodedIncomingId}`)).incoming;
     }
 
     /**
@@ -188,6 +196,7 @@ export class HookIncomings {
      * @param hookId The hook ID to delete queue items for
      * @param options Which items to delete
      * @returns Promise with the IDs that were deleted and an optional partial-failure error
+     * @throws {TypeError} If the deletion selector is invalid or a bulk deletion is not confirmed
      */
     async delete(hookId: number, options: DeleteHookIncomingsOptions): Promise<DeleteHookIncomingsResult> {
         const deletesSpecificItems = options.ids !== undefined;
@@ -195,6 +204,9 @@ export class HookIncomings {
 
         if (deletesSpecificItems === deletesAllItems) {
             throw new TypeError('Exactly one of `ids` or `all: true` must be specified');
+        }
+        if (deletesSpecificItems && options.ids.length === 0) {
+            throw new TypeError('`ids` must contain at least one queue item ID');
         }
         if (deletesAllItems && options.confirmed !== true) {
             throw new TypeError('`confirmed` must be `true` when `all` is used');
