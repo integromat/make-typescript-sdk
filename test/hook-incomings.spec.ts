@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
+import type { DeleteHookIncomingsOptions } from '../src/endpoints/hook-incomings.js';
 import { mockFetch } from './test.utils.js';
 
 import * as listMock from './mocks/hook-incomings/list.json';
@@ -98,5 +99,17 @@ describe('Endpoints: HookIncomings', () => {
         });
 
         await make.hooks.incomings.delete(HOOK_ID, { all: true, confirmed: true });
+    });
+
+    it('Should reject deletion without a selector', async () => {
+        await expect(make.hooks.incomings.delete(HOOK_ID, {} as DeleteHookIncomingsOptions)).rejects.toThrow(
+            'Exactly one of `ids` or `all: true` must be specified',
+        );
+    });
+
+    it('Should require explicit confirmation when deleting the entire queue', async () => {
+        await expect(make.hooks.incomings.delete(HOOK_ID, { all: true } as DeleteHookIncomingsOptions)).rejects.toThrow(
+            '`confirmed` must be `true` when `all` is used',
+        );
     });
 });

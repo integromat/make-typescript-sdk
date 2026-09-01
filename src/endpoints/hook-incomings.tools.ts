@@ -1,5 +1,6 @@
 import type { Make } from '../make.js';
 import type { MakeTool } from '../tools.js';
+import type { DeleteHookIncomingsOptions } from './hook-incomings.js';
 
 export const tools: MakeTool[] = [
     {
@@ -123,15 +124,34 @@ export const tools: MakeTool[] = [
                 },
             },
             required: ['hookId'],
+            oneOf: [
+                {
+                    type: 'object',
+                    properties: {
+                        hookId: { type: 'number' },
+                        ids: { type: 'array', items: { type: 'string' } },
+                    },
+                    required: ['ids'],
+                    additionalProperties: false,
+                },
+                {
+                    type: 'object',
+                    properties: {
+                        hookId: { type: 'number' },
+                        exceptIds: { type: 'array', items: { type: 'string' } },
+                        all: { type: 'boolean', const: true },
+                        confirmed: { type: 'boolean', const: true },
+                    },
+                    required: ['all', 'confirmed'],
+                    additionalProperties: false,
+                },
+            ],
         },
         examples: [
             { hookId: 11, ids: ['d1efa5318a034d36ad7cbeac543573cf'] },
             { hookId: 11, all: true, confirmed: true },
         ],
-        execute: async (
-            make: Make,
-            args: { hookId: number; ids?: string[]; exceptIds?: string[]; all?: boolean; confirmed?: boolean },
-        ) => {
+        execute: async (make: Make, args: { hookId: number } & DeleteHookIncomingsOptions) => {
             const { hookId, ...options } = args;
             return await make.hooks.incomings.delete(hookId, options);
         },

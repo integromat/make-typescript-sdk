@@ -80,16 +80,27 @@ type GetHookIncomingResponse = {
  * Options for deleting items from a webhook's queue.
  * Either `ids` or `all` must be specified.
  */
-export type DeleteHookIncomingsOptions = {
-    /** IDs of the queue items to delete */
-    ids?: string[];
-    /** When used with `all`, IDs of queue items to keep instead of deleting */
-    exceptIds?: string[];
-    /** Delete every item in the queue */
-    all?: boolean;
-    /** Required (and must be `true`) when `all` is used, to confirm the bulk deletion */
-    confirmed?: boolean;
-};
+export type DeleteHookIncomingsOptions =
+    | {
+          /** IDs of the queue items to delete */
+          ids: string[];
+          /** Not available when deleting specific queue items */
+          exceptIds?: never;
+          /** Not available when deleting specific queue items */
+          all?: never;
+          /** Not available when deleting specific queue items */
+          confirmed?: never;
+      }
+    | {
+          /** Not available when deleting the entire queue */
+          ids?: never;
+          /** IDs of queue items to keep instead of deleting */
+          exceptIds?: string[];
+          /** Delete every item in the queue */
+          all: true;
+          /** Confirm the bulk deletion */
+          confirmed: true;
+      };
 
 /**
  * Result of deleting items from a webhook's queue.
@@ -179,6 +190,16 @@ export class HookIncomings {
      * @returns Promise with the IDs that were deleted and an optional partial-failure error
      */
     async delete(hookId: number, options: DeleteHookIncomingsOptions): Promise<DeleteHookIncomingsResult> {
+        const deletesSpecificItems = options.ids !== undefined;
+        const deletesAllItems = options.all === true;
+
+        if (deletesSpecificItems === deletesAllItems) {
+            throw new TypeError('Exactly one of `ids` or `all: true` must be specified');
+        }
+        if (deletesAllItems && options.confirmed !== true) {
+            throw new TypeError('`confirmed` must be `true` when `all` is used');
+        }
+
         const { confirmed, ...body } = options;
         const response = await this.#fetch<DeleteHookIncomingsResponse>(`/hooks/${hookId}/incomings`, {
             method: 'DELETE',

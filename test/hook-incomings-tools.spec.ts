@@ -62,4 +62,21 @@ describe('MCP tools: hook-incomings', () => {
 
         expect(result).toStrictEqual({ deletedIds: deleteMock.incomings, error: undefined });
     });
+
+    it('Should describe the valid hook-incomings_delete input variants', () => {
+        const tool = getTool('hook-incomings_delete');
+
+        expect(tool.inputSchema.oneOf).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ required: ['ids'] }),
+                expect.objectContaining({
+                    required: ['all', 'confirmed'],
+                    properties: expect.objectContaining({
+                        all: expect.objectContaining({ const: true }),
+                        confirmed: expect.objectContaining({ const: true }),
+                    }),
+                }),
+            ]),
+        );
+    });
 });
