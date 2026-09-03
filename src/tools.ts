@@ -20,6 +20,7 @@ import { tools as UsersTools } from './endpoints/users.tools.js';
 import { tools as FunctionsTools } from './endpoints/functions.tools.js';
 import { tools as ExecutionsTools } from './endpoints/executions.tools.js';
 import { tools as HooksTools } from './endpoints/hooks.tools.js';
+import { tools as HookIncomingsTools } from './endpoints/hook-incomings.tools.js';
 import { tools as DevicesTools } from './endpoints/devices.tools.js';
 import { tools as KeysTools } from './endpoints/keys.tools.js';
 import { tools as FoldersTools } from './endpoints/folders.tools.js';
@@ -42,11 +43,11 @@ import { tools as CustomRolesTools } from './endpoints/custom-roles.tools.js';
  */
 export type JSONSchema = {
     /**
-     * The type of the schema (object, string, number, boolean, array, etc.).
+     * The type of the schema (object, string, number, integer, boolean, array, etc.).
      * Optional when the schema is expressed purely through composition
      * (`oneOf`/`anyOf`/`allOf`) or a `const` value.
      */
-    type?: 'object' | 'string' | 'number' | 'boolean' | 'array' | 'null';
+    type?: 'object' | 'string' | 'number' | 'integer' | 'boolean' | 'array' | 'null';
     /** Properties definition for object types */
     properties?: Record<string, JSONSchema>;
     /** Schemas for properties whose names match a regex pattern (object types) */
@@ -225,6 +226,7 @@ export const MakeTools = [
     ...ScenarioLabelsTools,
     ...FunctionsTools,
     ...HooksTools,
+    ...HookIncomingsTools,
     ...DevicesTools,
     ...DataStructuresTools,
     ...ConnectionsTools,

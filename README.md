@@ -61,6 +61,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Scenario Labels** - Team-scoped tags assignable to scenarios
 - **Functions** - Custom JavaScript functions for scenarios
 - **Hooks** - Webhooks and mailhooks for external integrations
+- **Hook Incoming Queue** - Inspect and clear items queued for a webhook awaiting processing
 - **Incomplete Executions** - Failed or incomplete scenario runs
 - **Keys** - API keys and secrets
 - **On-Prem Agents** - On-prem bridge agents running on customer infrastructure
@@ -212,6 +213,7 @@ All tools are organized into the following categories:
 - `folders`
 - `functions`
 - `hooks`
+- `hook-incomings`
 - `incomplete-executions`
 - `keys`
 - `scenario-labels`
@@ -286,6 +288,17 @@ MAKE_ZONE="<zone>"
 MAKE_TEAM="<team-id>"
 MAKE_ORGANIZATION="<organization-id>"
 ```
+
+Required only for Hook Incoming Queue integration tests:
+
+```
+MAKE_HOOK_INCOMINGS_HOOK_ID="<dedicated-hook-id>"
+MAKE_HOOK_INCOMINGS_WEBHOOK_URL="<dedicated-webhook-url>"
+```
+
+Use a dedicated non-confidential scheduled webhook whose scenario is inactive so deliveries remain queued. The API
+token needs `hooks:read` and `hooks:write`; the tests preserve pre-existing queue items and never create or delete the
+hook.
 
 Required for connected-system **create** integration (field names from `getAppConfig`):
 
