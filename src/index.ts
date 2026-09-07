@@ -125,6 +125,7 @@ export type {
     IncompleteExecution,
     IncompleteExecutions,
     IncompleteExecutionBundles,
+    ListIncompleteExecutionsOptions,
     RetryMultipleIncompleteExecutionsBody,
     UpdateIncompleteExecutionBody,
 } from './endpoints/incomplete-executions.js';

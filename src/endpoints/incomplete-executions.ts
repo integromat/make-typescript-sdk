@@ -1,4 +1,4 @@
-import type { FetchFunction, JSONValue } from '../types.js';
+import type { FetchFunction, JSONValue, Pagination } from '../types.js';
 import { isObject } from '../utils.js';
 import { Blueprint } from './blueprints.js';
 
@@ -43,6 +43,14 @@ export type IncompleteExecution = {
  * Contains the contextual data at the time the execution failed.
  */
 export type IncompleteExecutionBundles = Record<string, JSONValue>;
+
+/**
+ * Options for listing incomplete executions.
+ */
+export type ListIncompleteExecutionsOptions = {
+    /** Pagination options */
+    pg?: Partial<Pagination<IncompleteExecution>>;
+};
 
 /**
  * Response format for listing incomplete executions.
@@ -132,13 +140,15 @@ export class IncompleteExecutions {
     /**
      * List all incomplete executions for a scenario.
      * @param scenarioId The scenario ID to list incomplete executions for
+     * @param options Optional parameters for pagination
      * @returns Promise with the list of incomplete executions
      */
-    async list(scenarioId: number): Promise<IncompleteExecution[]> {
+    async list(scenarioId: number, options?: ListIncompleteExecutionsOptions): Promise<IncompleteExecution[]> {
         return (
             await this.#fetch<ListIncompleteExecutionsResponse>('/dlqs', {
                 query: {
                     scenarioId,
+                    pg: options?.pg,
                 },
             })
         ).dlqs;

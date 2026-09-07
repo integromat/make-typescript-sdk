@@ -22,6 +22,21 @@ describe('Endpoints: Executions', () => {
             expect(result).toStrictEqual(executionsListMock.scenarioLogs);
         });
 
+        it('Should list executions with status and time range filters', async () => {
+            mockFetch(
+                'GET https://make.local/api/v2/scenarios/123456/logs?pg%5Blimit%5D=20&status=3&from=1704067200000&to=1704153600000',
+                executionsListMock,
+            );
+
+            const result = await make.executions.list(123456, {
+                pg: { limit: 20 },
+                status: 3,
+                from: 1704067200000,
+                to: 1704153600000,
+            });
+            expect(result).toStrictEqual(executionsListMock.scenarioLogs);
+        });
+
         it('Should get execution', async () => {
             mockFetch(
                 'GET https://make.local/api/v2/scenarios/123456/logs/cc1c49323b344687a324888762206003',
@@ -58,6 +73,21 @@ describe('Endpoints: Executions', () => {
             mockFetch('GET https://make.local/api/v2/dlqs/123456/logs', executionsDlqListMock);
 
             const result = await make.executions.listForIncompleteExecution('123456');
+            expect(result).toStrictEqual(executionsDlqListMock.dlqLogs);
+        });
+
+        it('Should list executions for incomplete execution with filters', async () => {
+            mockFetch(
+                'GET https://make.local/api/v2/dlqs/123456/logs?pg%5Blimit%5D=20&status=3&from=1704067200000&to=1704153600000',
+                executionsDlqListMock,
+            );
+
+            const result = await make.executions.listForIncompleteExecution('123456', {
+                pg: { limit: 20 },
+                status: 3,
+                from: 1704067200000,
+                to: 1704153600000,
+            });
             expect(result).toStrictEqual(executionsDlqListMock.dlqLogs);
         });
 

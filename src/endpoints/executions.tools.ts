@@ -19,9 +19,13 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 scenarioId: { type: 'number', description: 'The scenario ID to list executions for' },
-                status: { type: 'string', description: 'Filter by execution status' },
-                from: { type: 'number', description: 'Start timestamp for filtering' },
-                to: { type: 'number', description: 'End timestamp for filtering' },
+                status: {
+                    type: 'number',
+                    description:
+                        'Filter by execution status (0 = pending, 1 = successful, 2 = successful with warnings, 3 = failed)',
+                },
+                from: { type: 'number', description: 'Start timestamp for filtering, in epoch milliseconds' },
+                to: { type: 'number', description: 'End timestamp for filtering, in epoch milliseconds' },
             },
             required: ['scenarioId'],
         },
@@ -123,8 +127,10 @@ export const tools: MakeTool[] = [
         },
         examples: [{ incompleteExecutionId: 'a07e16f2ad134bf49cf83a00aa95c0a5' }],
         execute: async (make: Make, args: { incompleteExecutionId: string; limit?: number }) => {
-            const { incompleteExecutionId } = args;
-            return await make.executions.listForIncompleteExecution(incompleteExecutionId);
+            const { incompleteExecutionId, limit } = args;
+            return await make.executions.listForIncompleteExecution(incompleteExecutionId, {
+                pg: limit !== undefined ? { limit } : undefined,
+            });
         },
     },
     {

@@ -10,6 +10,10 @@ export type Execution = {
     id: string;
     /** Internal Make ID of the execution */
     imtId: string;
+    /** ID of the scenario the execution belongs to */
+    scenarioId?: number;
+    /** Name of the scenario the execution belongs to */
+    scenarioName?: string;
     /** Status of the execution (0 = pending, 1 = successful, 2 = successful with warnings, 3 = failed) */
     status: 0 | 1 | 2 | 3;
     /** Duration of the execution in milliseconds */
@@ -26,8 +30,16 @@ export type Execution = {
     teamId: number;
     /** Type of execution (e.g., 'scheduled', 'manual') */
     type: string;
+    /** Type of the event that triggered the execution */
+    eventType?: string;
     /** ID of the user who initiated the execution (if available) */
     authorId: number | null;
+    /** Name of the user who initiated the execution */
+    authorName?: string | null;
+    /** ID of the execution this run is a replay of, if any */
+    replayOfExecutionId?: string | null;
+    /** Whether the execution can be replayed */
+    isReplayable?: boolean;
     /** Whether the execution was run instantly */
     instant: boolean;
     /** ISO 8601 timestamp of when the execution occurred */
@@ -71,11 +83,11 @@ export type ExecutionDetail = {
 export type ListExecutionsOptions = {
     /** Pagination options */
     pg?: Partial<Pagination<Execution>>;
-    /** Filter by execution status */
+    /** Filter by execution status (0 = pending, 1 = successful, 2 = successful with warnings, 3 = failed) */
     status?: number;
-    /** Filter by start timestamp */
+    /** Filter out executions that started before this timestamp, in epoch milliseconds */
     from?: number;
-    /** Filter by end timestamp */
+    /** Filter out executions that started after this timestamp, in epoch milliseconds */
     to?: number;
 };
 
@@ -151,6 +163,9 @@ export class Executions {
             await this.#fetch<ListExecutionsResponse>(`/scenarios/${scenarioId}/logs`, {
                 query: {
                     pg: options?.pg,
+                    status: options?.status,
+                    from: options?.from,
+                    to: options?.to,
                 },
             })
         ).scenarioLogs;
@@ -170,6 +185,9 @@ export class Executions {
             await this.#fetch<ListIncompleteExecutionExecutionsResponse>(`/dlqs/${incompleteExecutionId}/logs`, {
                 query: {
                     pg: options?.pg,
+                    status: options?.status,
+                    from: options?.from,
+                    to: options?.to,
                 },
             })
         ).dlqLogs;
