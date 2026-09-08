@@ -21,6 +21,17 @@ describe('Endpoints: IncompleteExecutions', () => {
         expect(result).toStrictEqual(listMock.dlqs);
     });
 
+    it('Should list incomplete executions with pagination', async () => {
+        mockFetch(
+            'GET https://make.local/api/v2/dlqs?scenarioId=1&pg%5Boffset%5D=20&pg%5Blimit%5D=10&pg%5BsortDir%5D=desc',
+            listMock,
+        );
+
+        const result = await make.incompleteExecutions.list(1, { pg: { offset: 20, limit: 10, sortDir: 'desc' } });
+
+        expect(result).toStrictEqual(listMock.dlqs);
+    });
+
     it('Should get an incomplete execution', async () => {
         const id = 'a07e16f2ad134bf49cf83a00aa95c0a5';
         mockFetch(`GET https://make.local/api/v2/dlqs/${id}`, getMock);
