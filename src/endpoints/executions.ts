@@ -155,7 +155,7 @@ export class Executions {
     /**
      * List executions for a scenario.
      * @param scenarioId The scenario ID to list executions for
-     * @param options Optional parameters for pagination
+     * @param options Optional parameters for pagination and filtering by status or time range
      * @returns Promise with the list of scenario executions
      */
     async list(scenarioId: number, options?: ListExecutionsOptions): Promise<Execution[]> {
@@ -174,7 +174,7 @@ export class Executions {
     /**
      * List executions for an incomplete execution.
      * @param incompleteExecutionId The incomplete execution ID to list executions for
-     * @param options Optional parameters for pagination
+     * @param options Optional parameters for pagination and filtering by status or time range
      * @returns Promise with the list of executions related to the incomplete execution
      */
     async listForIncompleteExecution(
