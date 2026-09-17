@@ -6,6 +6,7 @@ import { Executions } from './endpoints/executions.js';
 import { DataStructures } from './endpoints/data-structures.js';
 import { Folders } from './endpoints/folders.js';
 import { ScenarioLabels } from './endpoints/scenario-labels.js';
+import { ScenarioNotes } from './endpoints/scenario-notes.js';
 import { Hooks } from './endpoints/hooks.js';
 import { Teams } from './endpoints/teams.js';
 import { IncompleteExecutions } from './endpoints/incomplete-executions.js';
@@ -117,6 +118,12 @@ export class Make {
      * Scenario labels are team-scoped tags with a many-to-many relationship to scenarios
      */
     public readonly scenarioLabels: ScenarioLabels;
+
+    /**
+     * Access to scenario note-related endpoints
+     * Scenario notes are scenario-scoped annotations, optionally anchored to specific modules
+     */
+    public readonly scenarioNotes: ScenarioNotes;
 
     /**
      * Access to webhook-related endpoints
@@ -305,6 +312,7 @@ export class Make {
         this.dataStructures = new DataStructures(this.fetch.bind(this));
         this.folders = new Folders(this.fetch.bind(this));
         this.scenarioLabels = new ScenarioLabels(this.fetch.bind(this));
+        this.scenarioNotes = new ScenarioNotes(this.fetch.bind(this));
         this.hooks = new Hooks(this.fetch.bind(this));
         this.teams = new Teams(this.fetch.bind(this));
         this.incompleteExecutions = new IncompleteExecutions(this.fetch.bind(this));

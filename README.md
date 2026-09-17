@@ -59,6 +59,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Executions** - Scenario execution history
 - **Folders** - Scenario categorization
 - **Scenario Labels** - Team-scoped tags assignable to scenarios
+- **Scenario Notes** - Annotations attached to a scenario, optionally anchored to modules
 - **Functions** - Custom JavaScript functions for scenarios
 - **Hooks** - Webhooks and mailhooks for external integrations
 - **Hook Incoming Queue** - Inspect and clear items queued for a webhook awaiting processing

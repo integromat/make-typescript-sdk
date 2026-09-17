@@ -103,6 +103,17 @@ export type {
     UpdateScenarioLabelBody,
 } from './endpoints/scenario-labels.js';
 export type {
+    ScenarioNote,
+    ScenarioNotes,
+    ScenarioNoteMetadata,
+    ScenarioNoteUser,
+    CreateScenarioNoteBody,
+    UpdateScenarioNoteBody,
+    BatchScenarioNotesBody,
+    BatchScenarioNotesUpdate,
+    BatchScenarioNotesResult,
+} from './endpoints/scenario-notes.js';
+export type {
     Function,
     Functions,
     FunctionHistory,
