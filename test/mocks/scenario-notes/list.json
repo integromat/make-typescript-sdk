@@ -1,0 +1,48 @@
+{
+    "notes": [
+        {
+            "id": 5,
+            "scenarioId": 19,
+            "moduleIds": [],
+            "metadata": {
+                "canvasPosition": {
+                    "x": 120,
+                    "y": -40
+                },
+                "color": "#9138FE"
+            },
+            "content": "<p>Remember to switch the connection before going live</p>",
+            "created": "2025-09-02T08:12:04.512Z",
+            "updated": "2025-09-02T09:01:11.004Z",
+            "isFilterNote": false,
+            "createdByUser": {
+                "id": 2,
+                "name": "John Doe",
+                "email": "j.doe@make.com"
+            },
+            "updatedByUser": {
+                "id": 2,
+                "name": "John Doe",
+                "email": "j.doe@make.com"
+            }
+        },
+        {
+            "id": 4,
+            "scenarioId": 19,
+            "moduleIds": [1],
+            "metadata": {
+                "color": "#9138FE"
+            },
+            "content": "<p>This is a test note</p>",
+            "created": "2025-09-01T12:58:42.994Z",
+            "updated": null,
+            "isFilterNote": false,
+            "createdByUser": {
+                "id": 2,
+                "name": "John Doe",
+                "email": "j.doe@make.com"
+            },
+            "updatedByUser": {}
+        }
+    ]
+}
