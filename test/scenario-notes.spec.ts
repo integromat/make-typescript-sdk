@@ -12,7 +12,7 @@ import * as batchMock from './mocks/scenario-notes/batch.json';
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
 const SCENARIO_ID = 19;
-const NOTE_ID = 4;
+const NOTE_ID = '4';
 
 describe('Endpoints: ScenarioNotes', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
@@ -50,6 +50,7 @@ describe('Endpoints: ScenarioNotes', () => {
     it('Should create an empty scenario note', async () => {
         mockFetch(`POST https://make.local/api/v2/scenarios/${SCENARIO_ID}/notes`, createMock, req => {
             expect(req.body).toStrictEqual({});
+            expect(req.headers.get('content-type')).toBe('application/json');
         });
 
         const result = await make.scenarioNotes.create(SCENARIO_ID);
@@ -82,12 +83,13 @@ describe('Endpoints: ScenarioNotes', () => {
     it('Should batch create, update and delete scenario notes', async () => {
         const body = {
             create: [{ content: '<p>Created in a batch</p>' }],
-            update: [{ id: NOTE_ID, content: '<p>Updated in a batch</p>' }],
-            delete: [5],
+            update: [{ id: NOTE_ID, content: '<p>Updated in a batch</p>', moduleIds: [1] }],
+            delete: ['5'],
             scenarioVersionId: 7,
         };
         mockFetch(`POST https://make.local/api/v2/scenarios/${SCENARIO_ID}/notes/batch`, batchMock, req => {
-            expect(req.body).toStrictEqual(body);
+            // The endpoint 500s on a create entry without `metadata`, so the SDK fills it in.
+            expect(req.body).toStrictEqual({ ...body, create: [{ ...body.create[0], metadata: {} }] });
             expect(req.headers.get('content-type')).toBe('application/json');
         });
 
@@ -97,5 +99,18 @@ describe('Endpoints: ScenarioNotes', () => {
             updated: batchMock.updated,
             deleted: batchMock.deleted,
         });
+    });
+
+    it('Should keep an explicit metadata object on a batched create', async () => {
+        const body = {
+            create: [{ content: '<p>Created in a batch</p>', metadata: { color: '#9138FE' } }],
+            update: [],
+            delete: [],
+        };
+        mockFetch(`POST https://make.local/api/v2/scenarios/${SCENARIO_ID}/notes/batch`, batchMock, req => {
+            expect(req.body).toStrictEqual(body);
+        });
+
+        await make.scenarioNotes.batch(SCENARIO_ID, body);
     });
 });

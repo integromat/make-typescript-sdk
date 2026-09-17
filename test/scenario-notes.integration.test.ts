@@ -10,7 +10,7 @@ const MAKE_TEAM = Number(process.env.MAKE_TEAM || 0);
  * Narrows a cross-step entity ID, failing dependent steps loudly (and without sending a
  * request to a `/undefined` URL) when the step that should have created the entity failed.
  */
-function requireId(id: number | undefined, entity: string): number {
+function requireId<T extends number | string>(id: T | undefined, entity: string): T {
     if (id === undefined) {
         throw new Error(`Precondition failed: ${entity} was not created in an earlier step`);
     }
@@ -21,7 +21,7 @@ describe('Integration: ScenarioNotes', () => {
     const make = new Make(MAKE_API_KEY, MAKE_ZONE);
 
     let scenarioId: number | undefined;
-    let noteId: number | undefined;
+    let noteId: string | undefined;
 
     // Self-cleaning even when an assertion fails mid-lifecycle: deleting the scenario
     // cascade-removes its notes, and the delete tolerates the scenario already being gone
@@ -80,12 +80,34 @@ describe('Integration: ScenarioNotes', () => {
         expect(updated.updated).not.toBeNull();
     });
 
+    it('Should batch create, update and delete notes', async () => {
+        const targetScenarioId = requireId(scenarioId, 'scenario');
+        const doomed = await make.scenarioNotes.create(targetScenarioId, { content: '<p>Deleted by batch</p>' });
+
+        // The create entry deliberately omits `metadata`: the endpoint rejects that with a 500,
+        // and the SDK fills in an empty object so callers do not have to.
+        const result = await make.scenarioNotes.batch(targetScenarioId, {
+            create: [{ content: '<p>Created by batch</p>' }],
+            update: [{ id: requireId(noteId, 'note'), content: '<p>Updated by batch</p>', moduleIds: [1] }],
+            delete: [doomed.id],
+        });
+
+        expect(result.created).toHaveLength(1);
+        expect(result.updated[0]?.content).toBe('<p>Updated by batch</p>');
+        // The batch route replaces instead of merging, which is why `moduleIds` is sent explicitly.
+        expect(result.updated[0]?.moduleIds).toStrictEqual([1]);
+        expect(result.deleted).toStrictEqual([doomed.id]);
+
+        // Clean up the note the batch created, leaving only the note the lifecycle tracks.
+        await make.scenarioNotes.delete(targetScenarioId, result.created[0]!.id);
+    });
+
     it('Should delete the note and drop it from the list', async () => {
         const id = requireId(noteId, 'note');
         const targetScenarioId = requireId(scenarioId, 'scenario');
 
         const deletedId = await make.scenarioNotes.delete(targetScenarioId, id);
-        expect(Number(deletedId)).toBe(id);
+        expect(deletedId).toBe(id);
 
         const notes = await make.scenarioNotes.list(targetScenarioId);
         expect(notes.some(note => note.id === id)).toBe(false);

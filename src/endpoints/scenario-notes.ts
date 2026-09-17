@@ -41,8 +41,8 @@ export type ScenarioNoteMetadata = {
  * parent scenario; there is no team- or organization-wide notes collection.
  */
 export type ScenarioNote = {
-    /** Unique identifier of the note */
-    id: number;
+    /** Unique identifier of the note. A numeric string, because the API serializes this 64-bit ID as text */
+    id: string;
     /** ID of the scenario the note belongs to */
     scenarioId: number;
     /** IDs of the scenario modules the note is anchored to. Empty when the note is not anchored */
@@ -94,10 +94,23 @@ export type UpdateScenarioNoteBody = {
 
 /**
  * A single note update within a batch request.
+ *
+ * Unlike {@link ScenarioNotes.update}, the batch route replaces rather than merges: an omitted
+ * `content` clears the content and omitted `moduleIds` unanchor the note, so both are required
+ * here to make that loss impossible by accident. `metadata` and `isFilterNote` are preserved when
+ * omitted and stay optional.
  */
-export type BatchScenarioNotesUpdate = UpdateScenarioNoteBody & {
+export type BatchScenarioNotesUpdate = {
     /** ID of the note to update */
-    id: number;
+    id: string;
+    /** Content of the note as HTML. Required: the batch route clears the content when it is absent */
+    content: string;
+    /** Module IDs the note is anchored to. Required: the batch route unanchors the note when absent */
+    moduleIds: number[];
+    /** New presentation metadata. Left unchanged when omitted */
+    metadata?: ScenarioNoteMetadata;
+    /** Whether the note documents a filter. Left unchanged when omitted */
+    isFilterNote?: boolean;
 };
 
 /**
@@ -110,7 +123,7 @@ export type BatchScenarioNotesBody = {
     /** Notes to update, each identified by its ID */
     update: BatchScenarioNotesUpdate[];
     /** IDs of the notes to delete */
-    delete: number[];
+    delete: string[];
     /** ID of the scenario version the batch applies to */
     scenarioVersionId?: number;
 };
@@ -124,7 +137,7 @@ export type BatchScenarioNotesResult = {
     /** The notes that were updated */
     updated: ScenarioNote[];
     /** IDs of the notes that were deleted */
-    deleted: number[];
+    deleted: string[];
 };
 
 /**
@@ -148,7 +161,7 @@ type ScenarioNoteResponse = {
  */
 type DeleteScenarioNoteResponse = {
     /** ID of the deleted note */
-    id: number;
+    id: string;
 };
 
 /**
@@ -181,7 +194,7 @@ export class ScenarioNotes {
      * @param noteId The note ID to get
      * @returns The requested note
      */
-    async get(scenarioId: number, noteId: number): Promise<ScenarioNote> {
+    async get(scenarioId: number, noteId: string): Promise<ScenarioNote> {
         const response = await this.#fetch<ScenarioNoteResponse>(`/scenarios/${scenarioId}/notes/${noteId}`);
         return response.note;
     }
@@ -207,7 +220,7 @@ export class ScenarioNotes {
      * @param body The properties to update
      * @returns The updated note
      */
-    async update(scenarioId: number, noteId: number, body: UpdateScenarioNoteBody): Promise<ScenarioNote> {
+    async update(scenarioId: number, noteId: string, body: UpdateScenarioNoteBody): Promise<ScenarioNote> {
         const response = await this.#fetch<ScenarioNoteResponse>(`/scenarios/${scenarioId}/notes/${noteId}`, {
             method: 'PATCH',
             body,
@@ -221,7 +234,7 @@ export class ScenarioNotes {
      * @param noteId The note ID to delete
      * @returns ID of the deleted note
      */
-    async delete(scenarioId: number, noteId: number): Promise<number> {
+    async delete(scenarioId: number, noteId: string): Promise<string> {
         const response = await this.#fetch<DeleteScenarioNoteResponse>(`/scenarios/${scenarioId}/notes/${noteId}`, {
             method: 'DELETE',
         });
@@ -230,6 +243,11 @@ export class ScenarioNotes {
 
     /**
      * Create, update and delete several notes of a scenario in one request.
+     *
+     * This route is not a batched equivalent of the single-note methods. Entries in `create` are
+     * sent with an empty `metadata` object when none is given, because the route stores the value
+     * verbatim and fails with a server error when it is absent. Entries in `update` replace rather
+     * than merge, which is why {@link BatchScenarioNotesUpdate} requires `content` and `moduleIds`.
      * @param scenarioId The scenario ID to apply the changes to
      * @param body The notes to create, update and delete
      * @returns The created and updated notes and the IDs of the deleted ones
@@ -237,7 +255,12 @@ export class ScenarioNotes {
     async batch(scenarioId: number, body: BatchScenarioNotesBody): Promise<BatchScenarioNotesResult> {
         const response = await this.#fetch<BatchScenarioNotesResult>(`/scenarios/${scenarioId}/notes/batch`, {
             method: 'POST',
-            body,
+            body: {
+                ...body,
+                // The batch route inserts `metadata` verbatim, so an entry without it fails with a
+                // 500 instead of defaulting to an empty object the way single-note creation does.
+                create: body.create.map(note => ({ ...note, metadata: note.metadata ?? {} })),
+            },
         });
         return {
             created: response.created,

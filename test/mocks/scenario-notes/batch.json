@@ -1,7 +1,7 @@
 {
     "created": [
         {
-            "id": 6,
+            "id": "6",
             "scenarioId": 19,
             "moduleIds": [],
             "metadata": {
@@ -21,7 +21,7 @@
     ],
     "updated": [
         {
-            "id": 4,
+            "id": "4",
             "scenarioId": 19,
             "moduleIds": [1],
             "metadata": {
@@ -43,5 +43,5 @@
             }
         }
     ],
-    "deleted": [5]
+    "deleted": ["5"]
 }
