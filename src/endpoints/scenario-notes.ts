@@ -49,7 +49,7 @@ export type ScenarioNote = {
     moduleIds: number[];
     /** Presentation metadata of the note */
     metadata: ScenarioNoteMetadata;
-    /** Content of the note as the HTML the API stores (sanitized server-side) */
+    /** Content of the note as HTML, sanitized server-side. See {@link ScenarioNotes} on the content format */
     content: string;
     /** Timestamp when the note was created */
     created: string;
@@ -68,7 +68,7 @@ export type ScenarioNote = {
  * creates an empty note.
  */
 export type CreateScenarioNoteBody = {
-    /** Content of the note as HTML. Stored as given (after server-side sanitization) */
+    /** Content of the note as HTML, for example `<p>text</p>`. Markdown is not rendered — see {@link ScenarioNotes} */
     content?: string;
     /** IDs of the scenario modules to anchor the note to */
     moduleIds?: number[];
@@ -82,7 +82,7 @@ export type CreateScenarioNoteBody = {
  * Parameters for updating a scenario note. Any property that is not provided is left unchanged.
  */
 export type UpdateScenarioNoteBody = {
-    /** New content of the note as HTML */
+    /** New content of the note as HTML. Markdown is not rendered — see {@link ScenarioNotes} */
     content?: string;
     /** New set of module IDs the note is anchored to. Replaces the existing set */
     moduleIds?: number[];
@@ -103,7 +103,10 @@ export type UpdateScenarioNoteBody = {
 export type BatchScenarioNotesUpdate = {
     /** ID of the note to update */
     id: string;
-    /** Content of the note as HTML. Required: the batch route clears the content when it is absent */
+    /**
+     * Content of the note as HTML. Required: the batch route clears the content when it is absent.
+     * Markdown is not rendered — see {@link ScenarioNotes}
+     */
     content: string;
     /** Module IDs the note is anchored to. Required: the batch route unanchors the note when absent */
     moduleIds: number[];
@@ -169,6 +172,28 @@ type DeleteScenarioNoteResponse = {
  *
  * Every method is scoped by the parent scenario ID. The `teamId` and `organizationId` query
  * parameters documented for these endpoints are never read by the API, so they are not offered.
+ *
+ * ## Note content must be HTML
+ *
+ * `content` is stored and rendered as HTML. The API keeps whatever string it is given, minus any
+ * tags the server-side sanitizer strips, and performs no Markdown conversion — Markdown syntax
+ * therefore survives the round trip untouched and shows up on the scenario canvas as the literal
+ * characters `###`, `**` and `` ` `` rather than as formatting. Send HTML:
+ *
+ * ```ts
+ * // Renders as a heading, bold text and a list
+ * await make.scenarioNotes.create(scenarioId, {
+ *     content: '<h3>Title</h3><p>Some <strong>bold</strong> text</p><ul><li>item</li></ul>',
+ * });
+ *
+ * // Renders as the raw characters, not as formatting
+ * await make.scenarioNotes.create(scenarioId, {
+ *     content: '### Title\n\nSome **bold** text\n\n- item',
+ * });
+ * ```
+ *
+ * Converting Markdown (or anything else) to HTML is the caller's job; this SDK passes `content`
+ * through unchanged in both directions.
  */
 export class ScenarioNotes {
     readonly #fetch: FetchFunction;
