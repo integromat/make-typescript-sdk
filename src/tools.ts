@@ -31,6 +31,7 @@ import { tools as EnumsTools } from './endpoints/enums.tools.js';
 import { tools as OnPremAgentsTools } from './endpoints/on-prem-agents.tools.js';
 import { tools as ConnectedSystemsTools } from './endpoints/connected-systems.tools.js';
 import { tools as PublicTemplatesTools } from './endpoints/public-templates.tools.js';
+import { tools as TemplatesTools } from './endpoints/templates.tools.js';
 import { tools as PrivateSpacesTools } from './endpoints/private-spaces.tools.js';
 import { tools as CustomPropertyStructuresTools } from './endpoints/custom-property-structures.tools.js';
 import { tools as CustomPropertyStructureItemsTools } from './endpoints/custom-property-structure-items.tools.js';
@@ -241,6 +242,7 @@ export const MakeTools = [
     ...ConnectedSystemsTools,
     ...EnumsTools,
     ...PublicTemplatesTools,
+    ...TemplatesTools,
     ...PrivateSpacesTools,
     ...CustomPropertyStructuresTools,
     ...CustomPropertyStructureItemsTools,

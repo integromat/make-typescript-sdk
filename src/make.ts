@@ -20,6 +20,7 @@ import { Enums } from './endpoints/enums.js';
 import { OnPremAgents } from './endpoints/on-prem-agents.js';
 import { ConnectedSystems } from './endpoints/connected-systems.js';
 import { PublicTemplates } from './endpoints/public-templates.js';
+import { Templates } from './endpoints/templates.js';
 import { PrivateSpaces } from './endpoints/private-spaces.js';
 import { CustomPropertyStructures } from './endpoints/custom-property-structures.js';
 import { Roles } from './endpoints/roles.js';
@@ -203,6 +204,8 @@ export class Make {
      */
     public readonly publicTemplates: PublicTemplates;
 
+    public readonly templates: Templates;
+
     /**
      * Access to private space endpoints.
      * Private spaces are per-user personal workspaces within an organization; they are
@@ -326,6 +329,7 @@ export class Make {
         this.connectedSystems = new ConnectedSystems(this.fetch.bind(this));
         this.credentialRequests = new CredentialRequests(this.fetch.bind(this));
         this.publicTemplates = new PublicTemplates(this.fetch.bind(this));
+        this.templates = new Templates(this.fetch.bind(this));
         this.privateSpaces = new PrivateSpaces(this.fetch.bind(this));
         this.customPropertyStructures = new CustomPropertyStructures(this.fetch.bind(this));
         this.roles = new Roles(this.fetch.bind(this));

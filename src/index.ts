@@ -236,6 +236,16 @@ export type {
     GetPublicTemplateOptions,
 } from './endpoints/public-templates.js';
 export type {
+    Template,
+    TemplateBlueprintEnvelope,
+    Templates,
+    ListTemplatesOptions,
+    GetTemplateOptions,
+    GetTemplateBlueprintOptions,
+    CreateTemplateBody,
+    UpdateTemplateBody,
+} from './endpoints/templates.js';
+export type {
     PrivateSpace,
     PrivateSpaces,
     ListPrivateSpacesOptions,

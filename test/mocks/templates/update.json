@@ -1,0 +1,20 @@
+{
+    "template": [
+        {
+            "id": 42,
+            "name": "Renamed Template",
+            "teamId": 5,
+            "description": "Adds a row for every new email",
+            "usedApps": ["gmail", "google-sheets"],
+            "public": false,
+            "published": null,
+            "approved": null,
+            "approvedId": null,
+            "requestedApproval": false,
+            "publishedId": null,
+            "publicUrl": null,
+            "approvedName": null,
+            "publishedName": null
+        }
+    ]
+}

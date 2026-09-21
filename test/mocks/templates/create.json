@@ -1,0 +1,18 @@
+{
+    "template": {
+        "id": 44,
+        "name": "New Template",
+        "teamId": 5,
+        "description": null,
+        "usedApps": ["http"],
+        "public": false,
+        "published": null,
+        "approved": null,
+        "approvedId": null,
+        "requestedApproval": false,
+        "publishedId": null,
+        "publicUrl": null,
+        "approvedName": null,
+        "publishedName": null
+    }
+}
