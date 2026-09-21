@@ -54,7 +54,7 @@ describe('Endpoints: Templates', () => {
         expect(result).toStrictEqual(blueprintMock);
     });
 
-    it('Should create a template', async () => {
+    it('Should create a template, JSON-encoding blueprint/scheduling/controller as strings', async () => {
         const body = {
             teamId: 5,
             language: 'en',
@@ -63,7 +63,13 @@ describe('Endpoints: Templates', () => {
             controller: { name: 'New Template', modules: {}, idSequence: 1 },
         };
         mockFetch('POST https://make.local/api/v2/templates', createMock, req => {
-            expect(req.body).toStrictEqual(body);
+            expect(req.body).toStrictEqual({
+                teamId: 5,
+                language: 'en',
+                blueprint: JSON.stringify(body.blueprint),
+                scheduling: JSON.stringify(body.scheduling),
+                controller: JSON.stringify(body.controller),
+            });
             expect(req.headers.get('content-type')).toBe('application/json');
         });
 
@@ -71,14 +77,31 @@ describe('Endpoints: Templates', () => {
         expect(result).toStrictEqual(createMock.template);
     });
 
-    it('Should update a template and unwrap the array-wrapped response', async () => {
+    it('Should update a template', async () => {
         const body = { name: 'Renamed Template' };
         mockFetch('PATCH https://make.local/api/v2/templates/42', updateMock, req => {
             expect(req.body).toStrictEqual(body);
         });
 
         const result = await make.templates.update(42, body);
-        expect(result).toStrictEqual(updateMock.template[0]);
+        expect(result).toStrictEqual(updateMock.template);
+    });
+
+    it('Should JSON-encode blueprint/scheduling/controller as strings when updating a template', async () => {
+        const blueprint = { name: 'Renamed Template', flow: [], metadata: { version: 1 } };
+        const scheduling = { type: 'on-demand' as const };
+        const controller = { name: 'Renamed Template', modules: {}, idSequence: 1 };
+
+        mockFetch('PATCH https://make.local/api/v2/templates/42', updateMock, req => {
+            expect(req.body).toStrictEqual({
+                blueprint: JSON.stringify(blueprint),
+                scheduling: JSON.stringify(scheduling),
+                controller: JSON.stringify(controller),
+            });
+        });
+
+        const result = await make.templates.update(42, { blueprint, scheduling, controller } as never);
+        expect(result).toStrictEqual(updateMock.template);
     });
 
     it('Should delete a template and return the bare numeric id', async () => {

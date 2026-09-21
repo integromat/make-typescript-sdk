@@ -24,13 +24,14 @@ describe('Integration: Templates', () => {
             },
             { confirmed: true },
         );
-        const blueprint = await make.blueprints.get(scenario.id);
+        const { scheduling, interface: scenarioInterface, ...blueprint } = await make.blueprints.get(scenario.id);
+        void scenarioInterface;
 
         const template = await make.templates.create({
             teamId: MAKE_TEAM,
             language: 'en',
             blueprint,
-            scheduling: blueprint.scheduling,
+            scheduling,
             controller: { name: `Test Template ${Date.now()}`, modules: {}, idSequence: 1 },
         });
 

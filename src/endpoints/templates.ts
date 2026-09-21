@@ -54,7 +54,7 @@ export type GetTemplateBlueprintOptions = {
 export type CreateTemplateBody = {
     teamId: number;
     language: string;
-    blueprint: Blueprint;
+    blueprint: Omit<Blueprint, 'scheduling' | 'interface'>;
     scheduling: Scheduling;
     controller: TemplateController;
     metadata?: {
@@ -65,7 +65,7 @@ export type CreateTemplateBody = {
 
 export type UpdateTemplateBody = {
     name?: string;
-    blueprint?: Blueprint;
+    blueprint?: Omit<Blueprint, 'scheduling' | 'interface'>;
     scheduling?: Scheduling;
     controller?: TemplateController;
     metadata?: {
@@ -88,12 +88,23 @@ type CreateTemplateResponse = {
 };
 
 type UpdateTemplateResponse = {
-    template: Template[];
+    template: Template;
 };
 
 type DeleteTemplateResponse = {
     template: number;
 };
+
+function serializeTemplateBody<T extends Partial<Pick<CreateTemplateBody, 'blueprint' | 'scheduling' | 'controller'>>>(
+    body: T,
+): T {
+    return {
+        ...body,
+        blueprint: body.blueprint !== undefined ? JSON.stringify(body.blueprint) : undefined,
+        scheduling: body.scheduling !== undefined ? JSON.stringify(body.scheduling) : undefined,
+        controller: body.controller !== undefined ? JSON.stringify(body.controller) : undefined,
+    } as T;
+}
 
 export class Templates {
     readonly #fetch: FetchFunction;
@@ -139,19 +150,18 @@ export class Templates {
         return (
             await this.#fetch<CreateTemplateResponse>('/templates', {
                 method: 'POST',
-                body,
+                body: serializeTemplateBody(body),
             })
         ).template;
     }
 
     async update(id: number, body: UpdateTemplateBody): Promise<Template> {
-        const template = (
+        return (
             await this.#fetch<UpdateTemplateResponse>(`/templates/${id}`, {
                 method: 'PATCH',
-                body,
+                body: serializeTemplateBody(body),
             })
-        ).template[0];
-        return template as Template;
+        ).template;
     }
 
     async delete(id: number): Promise<number> {
