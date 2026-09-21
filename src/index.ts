@@ -237,6 +237,7 @@ export type {
 } from './endpoints/public-templates.js';
 export type {
     Template,
+    TemplateController,
     TemplateBlueprintEnvelope,
     Templates,
     ListTemplatesOptions,
