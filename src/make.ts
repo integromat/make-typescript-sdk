@@ -204,6 +204,10 @@ export class Make {
      */
     public readonly publicTemplates: PublicTemplates;
 
+    /**
+     * Access to template endpoints.
+     * Templates are a team's own saved scenario configurations, usable as a reference or copied into new scenarios.
+     */
     public readonly templates: Templates;
 
     /**
