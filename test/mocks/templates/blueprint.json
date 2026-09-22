@@ -1,0 +1,31 @@
+{
+    "blueprint": {
+        "name": "Sync Gmail to Google Sheets",
+        "flow": [
+            {
+                "id": 1,
+                "module": "gmail:ActionSendData",
+                "version": 1,
+                "parameters": {},
+                "mapper": {},
+                "metadata": {
+                    "expect": []
+                }
+            }
+        ],
+        "metadata": {
+            "version": 1
+        }
+    },
+    "controller": {
+        "name": "Sync Gmail to Google Sheets",
+        "modules": {},
+        "idSequence": 2
+    },
+    "scheduling": {
+        "type": "indefinitely",
+        "interval": 900
+    },
+    "language": "en",
+    "metadata": null
+}

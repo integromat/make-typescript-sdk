@@ -73,6 +73,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Scenarios** - Scenario management
 - **Teams** - Team management and collaboration
 - **Public Templates** - Public template discovery and blueprint export (read-only)
+- **Templates** - A team's own saved templates (create, update, delete, blueprint export)
 - **Users** - Current user information and authentication
 
 ## Custom Apps Development Endpoints
@@ -227,6 +228,7 @@ All tools are organized into the following categories:
 - `scenarios`
 - `teams`
 - `public-templates`
+- `templates`
 - `users`
 - `sdk-apps`
 - `sdk-connections`

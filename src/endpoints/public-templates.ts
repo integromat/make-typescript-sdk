@@ -1,6 +1,7 @@
 import type { FetchFunction, Pagination, PickColumns } from '../types.js';
 import type { Blueprint } from './blueprints.js';
 import type { Scheduling } from './scenarios.js';
+import type { TemplateController } from './templates.js';
 
 /**
  * Represents a publicly available approved template in Make.
@@ -29,14 +30,7 @@ export type PublicTemplateBlueprint = {
     /** The scenario blueprint definition (modules, flow, metadata). Scheduling is exposed at the top level of this payload instead. */
     blueprint: Omit<Blueprint, 'scheduling' | 'interface'>;
     /** Controller configuration for the scenario */
-    controller: {
-        /** Controller name */
-        name: string;
-        /** Controller-tracked module state, keyed by module ID */
-        modules: Record<string, unknown>;
-        /** Next ID to assign when adding a module */
-        idSequence: number;
-    };
+    controller: TemplateController;
     /** Scheduling configuration for the scenario */
     scheduling: Scheduling;
     /** Language code for the public template (e.g. "en") */

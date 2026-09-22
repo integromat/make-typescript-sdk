@@ -1,0 +1,42 @@
+{
+    "templates": [
+        {
+            "id": 42,
+            "name": "Sync Gmail to Google Sheets",
+            "teamId": 5,
+            "description": "Adds a row for every new email",
+            "usedApps": ["gmail", "google-sheets"],
+            "public": false,
+            "published": null,
+            "approved": null,
+            "approvedId": null,
+            "requestedApproval": false,
+            "publishedId": null,
+            "publicUrl": null,
+            "approvedName": null,
+            "publishedName": null
+        },
+        {
+            "id": 43,
+            "name": "Webhook to Slack",
+            "teamId": 5,
+            "description": null,
+            "usedApps": ["gateway", "slack"],
+            "public": true,
+            "published": "2024-02-01T00:00:00.000Z",
+            "approved": "2024-02-02T00:00:00.000Z",
+            "approvedId": 1,
+            "requestedApproval": true,
+            "publishedId": 2,
+            "publicUrl": "43-webhook-to-slack",
+            "approvedName": "Jane Doe",
+            "publishedName": "Jane Doe"
+        }
+    ],
+    "pg": {
+        "sortBy": "id",
+        "sortDir": "desc",
+        "offset": 0,
+        "limit": 100
+    }
+}
