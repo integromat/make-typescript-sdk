@@ -77,6 +77,36 @@ describe('Endpoints: Templates', () => {
         expect(result).toStrictEqual(createMock.template);
     });
 
+    it('Should strip scheduling/interface from a blueprint carrying them at runtime', async () => {
+        const blueprintWithSchedulingAndInterface = {
+            name: 'New Template',
+            flow: [],
+            metadata: { version: 1 },
+            scheduling: { type: 'indefinitely', interval: 900 },
+            interface: { input: [], output: [] },
+        };
+        const scheduling = { type: 'on-demand' as const };
+        const controller = { name: 'New Template', modules: {}, idSequence: 1 };
+
+        mockFetch('POST https://make.local/api/v2/templates', createMock, req => {
+            expect(req.body).toStrictEqual({
+                teamId: 5,
+                language: 'en',
+                blueprint: JSON.stringify({ name: 'New Template', flow: [], metadata: { version: 1 } }),
+                scheduling: JSON.stringify(scheduling),
+                controller: JSON.stringify(controller),
+            });
+        });
+
+        await make.templates.create({
+            teamId: 5,
+            language: 'en',
+            blueprint: blueprintWithSchedulingAndInterface,
+            scheduling,
+            controller,
+        } as never);
+    });
+
     it('Should update a template', async () => {
         const body = { name: 'Renamed Template' };
         mockFetch('PATCH https://make.local/api/v2/templates/42', updateMock, req => {

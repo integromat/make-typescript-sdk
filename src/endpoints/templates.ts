@@ -15,7 +15,9 @@ export type Template = {
     /** Name of the owning team (admin-only column) */
     teamName?: string;
     /** ID of the owning organization (admin-only column) */
-    organizationId?: string;
+    organizationId?: number;
+    /** Whether the template has been soft-deleted (admin-only column) */
+    deleted?: boolean;
     /** Human-readable description of the template, or null if not set */
     description: string | null;
     /** List of app identifiers used in the template */
@@ -66,7 +68,7 @@ export type TemplateBlueprintEnvelope = {
     /** Language code for the template (e.g. "en") */
     language: string;
     /** Additional metadata for the template, or null if not set */
-    metadata: Record<string, unknown> | null;
+    metadata: Record<string, JSONValue> | null;
 };
 
 /**
@@ -187,15 +189,23 @@ type DeleteTemplateResponse = {
 
 /**
  * Serializes blueprint/scheduling/controller to JSON strings, as the API requires.
+ * `blueprint`'s `Omit` type only blocks fresh object literals from carrying
+ * `scheduling`/`interface` — a `Blueprint` value from elsewhere (e.g. `blueprints.get()`) still
+ * has them at runtime, so they're stripped here rather than relied on at the type level.
  * @param body The body to serialize
  * @returns The serialized body
  */
 function serializeTemplateBody<T extends Partial<Pick<CreateTemplateBody, 'blueprint' | 'scheduling' | 'controller'>>>(
     body: T,
 ): T {
+    const blueprint = body.blueprint !== undefined ? { ...(body.blueprint as Partial<Blueprint>) } : undefined;
+    if (blueprint !== undefined) {
+        blueprint.scheduling = undefined;
+        blueprint.interface = undefined;
+    }
     return {
         ...body,
-        blueprint: body.blueprint !== undefined ? JSON.stringify(body.blueprint) : undefined,
+        blueprint: blueprint !== undefined ? JSON.stringify(blueprint) : undefined,
         scheduling: body.scheduling !== undefined ? JSON.stringify(body.scheduling) : undefined,
         controller: body.controller !== undefined ? JSON.stringify(body.controller) : undefined,
     } as T;

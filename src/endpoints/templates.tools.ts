@@ -2,7 +2,7 @@ import type { Make } from '../make.js';
 import type { Blueprint } from './blueprints.js';
 import type { Scheduling } from './scenarios.js';
 import type { GetTemplateBlueprintOptions, TemplateController, UpdateTemplateBody } from './templates.js';
-import type { JSONSchema } from '../tools.js';
+import type { JSONSchema, MakeTool } from '../tools.js';
 import type { JSONValue } from '../types.js';
 
 const controllerInputSchema: JSONSchema = {
@@ -16,7 +16,7 @@ const controllerInputSchema: JSONSchema = {
     required: ['name', 'modules', 'idSequence'],
 };
 
-export const tools = [
+export const tools: MakeTool[] = [
     {
         name: 'templates_list',
         title: 'List templates',
@@ -57,8 +57,8 @@ export const tools = [
         description: 'Get details of a template by its ID. Use this for templates discovered via templates_list.',
         category: 'templates',
         scope: 'templates:read',
-        scopeId: undefined,
-        identifier: undefined,
+        scopeId: 'id',
+        identifier: 'id',
         resourceId: 'id',
         annotations: {
             readOnlyHint: true,
@@ -84,8 +84,8 @@ export const tools = [
             'Get the full blueprint of a template including scenario flow, controller configuration, scheduling, and metadata.',
         category: 'templates',
         scope: 'templates:read',
-        scopeId: undefined,
-        identifier: undefined,
+        scopeId: 'id',
+        identifier: 'id',
         resourceId: 'id',
         annotations: {
             readOnlyHint: true,
@@ -171,8 +171,8 @@ export const tools = [
         description: "Update a template's name, blueprint, scheduling, or controller configuration.",
         category: 'templates',
         scope: 'templates:write',
-        scopeId: undefined,
-        identifier: undefined,
+        scopeId: 'id',
+        identifier: 'id',
         resourceId: 'id',
         annotations: {
             readOnlyHint: false,
@@ -211,8 +211,8 @@ export const tools = [
         description: 'Delete a template.',
         category: 'templates',
         scope: 'templates:write',
-        scopeId: undefined,
-        identifier: undefined,
+        scopeId: 'id',
+        identifier: 'id',
         resourceId: 'id',
         annotations: {
             readOnlyHint: false,
