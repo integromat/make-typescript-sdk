@@ -25,6 +25,7 @@ import { PrivateSpaces } from './endpoints/private-spaces.js';
 import { CustomPropertyStructures } from './endpoints/custom-property-structures.js';
 import { Roles } from './endpoints/roles.js';
 import { CustomRoles } from './endpoints/custom-roles.js';
+import { AuditLogs } from './endpoints/audit-logs.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
 import { SDKModules } from './endpoints/sdk/modules.js';
 import { SDKConnections } from './endpoints/sdk/connections.js';
@@ -77,6 +78,12 @@ export class Make {
      * Provides methods to get current user information
      */
     public readonly users: Users;
+
+    /**
+     * Access to audit-log-related endpoints
+     * Audit logs record administrative and configuration events across an organization and its teams
+     */
+    public readonly auditLogs: AuditLogs;
 
     /**
      * Access to scenario-related endpoints
@@ -338,6 +345,7 @@ export class Make {
         this.customPropertyStructures = new CustomPropertyStructures(this.fetch.bind(this));
         this.roles = new Roles(this.fetch.bind(this));
         this.customRoles = new CustomRoles(this.fetch.bind(this));
+        this.auditLogs = new AuditLogs(this.fetch.bind(this));
         this.sdk = {
             apps: new SDKApps(this.fetch.bind(this)),
             modules: new SDKModules(this.fetch.bind(this)),

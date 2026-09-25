@@ -10,6 +10,26 @@ export type {
     RetryOptions,
 } from './types.js';
 
+export type {
+    AuditLog,
+    AuditLogs,
+    AuditLogListEntry,
+    AuditLogDetail,
+    AuditLogUser,
+    AuditLogTeam,
+    AuditLogOrganization,
+    AuditLogVersion,
+    AuditLogsSortBy,
+    AuditLogsPagination,
+    ListAuditLogsOptions,
+    ListOrganizationAuditLogsOptions,
+    AuditLogFilterItem,
+    AuditLogFilterCategory,
+    AuditLogUncategorizedFilterItems,
+    AuditLogFilterOptions,
+    OrganizationAuditLogFilters,
+    TeamAuditLogFilters,
+} from './endpoints/audit-logs.js';
 export type { Blueprint, Blueprints, BlueprintNode, BlueprintRoute, BlueprintVersion } from './endpoints/blueprints.js';
 export type {
     Connection,

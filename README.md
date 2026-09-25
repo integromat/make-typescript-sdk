@@ -48,6 +48,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 ## Platform Endpoints
 
 - **Enums** - Standardized lists (countries, regions, timezones)
+- **Audit Logs** - Organization and team audit trail, its filter options, and per-entry detail (read-only)
 - **Blueprit** - Blueprint management
 - **Connections** - External service connections and authentication
 - **Connected Systems** - On-prem connections linking agents to external apps (HTTP, SAP, etc.)
@@ -202,6 +203,7 @@ Each tool is described as demonstrated in the following example:
 
 All tools are organized into the following categories:
 
+- `audit-logs`
 - `connections`
 - `connected-system`
 - `credential-requests`

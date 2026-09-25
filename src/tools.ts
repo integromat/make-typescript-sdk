@@ -38,6 +38,7 @@ import { tools as CustomPropertyStructureItemsTools } from './endpoints/custom-p
 import { tools as ScenarioCustomPropertiesTools } from './endpoints/scenario-custom-properties.tools.js';
 import { tools as RolesTools } from './endpoints/roles.tools.js';
 import { tools as CustomRolesTools } from './endpoints/custom-roles.tools.js';
+import { tools as AuditLogsTools } from './endpoints/audit-logs.tools.js';
 
 /**
  * JSON Schema definition for input parameters.
@@ -249,4 +250,5 @@ export const MakeTools = [
     ...ScenarioCustomPropertiesTools,
     ...RolesTools,
     ...CustomRolesTools,
+    ...AuditLogsTools,
 ] as MakeTool[];
