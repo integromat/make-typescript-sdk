@@ -1,0 +1,30 @@
+{
+    "users": [
+        {
+            "id": 212,
+            "name": "John Doe",
+            "email": "john.doe@example.com"
+        }
+    ],
+    "teams": [
+        {
+            "id": 212,
+            "name": "Operations"
+        }
+    ],
+    "events": [
+        {
+            "header": "Webhooks",
+            "items": [
+                {
+                    "label": "Webhook created",
+                    "value": "webhook_created"
+                },
+                {
+                    "label": "Webhook updated",
+                    "value": "webhook_updated"
+                }
+            ]
+        }
+    ]
+}

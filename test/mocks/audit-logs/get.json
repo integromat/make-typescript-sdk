@@ -1,0 +1,29 @@
+{
+    "uuid": "c37c729235cd4dc4911321b23beaea7d",
+    "createdAt": "2024-05-24T14:22:16.879Z",
+    "triggeredAt": "2024-04-19T12:05:22.000Z",
+    "organizationId": 3,
+    "organization": {
+        "id": 3,
+        "name": "John's Organization"
+    },
+    "eventName": "webhook_created",
+    "team": {
+        "id": 212,
+        "name": "Operations"
+    },
+    "actor": {
+        "id": 212,
+        "name": "John Doe",
+        "email": "john.doe@example.com"
+    },
+    "targetId": "3000",
+    "version": {
+        "from": "1.0.0",
+        "to": "1.0.1"
+    },
+    "detail": {
+        "webhookName": "Orders webhook",
+        "webhookType": "http"
+    }
+}
