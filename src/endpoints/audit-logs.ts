@@ -84,10 +84,10 @@ export type AuditLog = {
  */
 export type AuditLogListEntry = AuditLog & {
     /**
-     * Cursor identifier of the entry. Pass the last entry's value as `pg.last` to
+     * Cursor identifier, present on every list entry. Pass the last entry's value as `pg.last` to
      * request the next page.
      */
-    imtId?: string;
+    imtId: string;
 };
 
 /**

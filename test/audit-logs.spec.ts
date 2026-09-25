@@ -17,7 +17,10 @@ describe('Endpoints: AuditLogs', () => {
         mockFetch('GET https://make.local/api/v2/audit-logs/v2/organization/3', auditLogsListMock);
 
         const result = await make.auditLogs.list(3);
+        // The explicit type makes optional cursors a compile-time regression.
+        const cursors: string[] = result.map(entry => entry.imtId);
         expect(result).toStrictEqual(auditLogsListMock.auditLogs);
+        expect(cursors).toStrictEqual(auditLogsListMock.auditLogs.map(entry => entry.imtId));
     });
 
     it('Should list organization audit logs with filters, sorting and pagination', async () => {
@@ -53,7 +56,9 @@ describe('Endpoints: AuditLogs', () => {
         mockFetch('GET https://make.local/api/v2/audit-logs/v2/team/212', auditLogsListMock);
 
         const result = await make.auditLogs.listForTeam(212);
+        const cursors: string[] = result.map(entry => entry.imtId);
         expect(result).toStrictEqual(auditLogsListMock.auditLogs);
+        expect(cursors).toStrictEqual(auditLogsListMock.auditLogs.map(entry => entry.imtId));
     });
 
     it('Should list team audit logs with filters', async () => {
