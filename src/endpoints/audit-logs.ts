@@ -6,10 +6,12 @@ import type { FetchFunction, JSONValue } from '../types.js';
 export type AuditLogUser = {
     /** Unique identifier of the user */
     id: number;
-    /** Display name of the user */
+    /** Display name of the user, absent when the user was anonymized */
     name?: string;
-    /** Email address of the user */
+    /** Email address of the user, absent when the user was anonymized */
     email?: string;
+    /** Present and `true` when the user's audit logs were anonymized, in which case only `id` is returned */
+    anonymized?: boolean;
 };
 
 /**

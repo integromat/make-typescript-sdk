@@ -4,6 +4,10 @@
             "id": 212,
             "name": "John Doe",
             "email": "john.doe@example.com"
+        },
+        {
+            "id": 213,
+            "anonymized": true
         }
     ],
     "teams": [
