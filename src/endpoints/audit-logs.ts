@@ -10,7 +10,7 @@ export type AuditLogUser = {
     name?: string;
     /** Email address of the user, absent when the user was anonymized */
     email?: string;
-    /** Present and `true` when the user's audit logs were anonymized, in which case only `id` is returned */
+    /** Present and `true` when the user was anonymized; `name` and `email` are omitted */
     anonymized?: boolean;
 };
 
