@@ -25,6 +25,27 @@
                 "from": "1.0.0",
                 "to": "1.0.1"
             }
+        },
+        {
+            "uuid": "5a1f0c2e8d3b4e6f9a7c1b2d3e4f5a6b",
+            "imtId": "1713528000000_5a1f0c2e8d3b4e6f9a7c1b2d3e4f5a6b",
+            "createdAt": "2024-05-24T14:22:16.879Z",
+            "triggeredAt": "2024-04-19T12:00:00.000Z",
+            "organizationId": 3,
+            "organization": {
+                "id": 3,
+                "name": "John's Organization"
+            },
+            "eventName": "webhook_deleted",
+            "team": {
+                "id": 212,
+                "name": "Operations"
+            },
+            "actor": {
+                "id": 213,
+                "anonymized": true
+            },
+            "targetId": "2999"
         }
     ],
     "pg": {
