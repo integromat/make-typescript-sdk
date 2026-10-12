@@ -106,9 +106,7 @@ export class Make {
 
     /**
      * Access to data table-related endpoints
-     * Data tables are the next generation of data storage within Make; their structure
-     * is managed through their own column endpoints (see `.columns`, `.records`, and
-     * `.usingScenarios` for nested resources)
+     * Data tables allow you to store data within Make and also to modify their structure
      */
     public readonly dataTables: DataTables;
 
