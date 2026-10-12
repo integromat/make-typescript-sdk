@@ -7,7 +7,6 @@ import * as getMock from './mocks/data-tables/get.json';
 import * as createMock from './mocks/data-tables/create.json';
 import * as updateMock from './mocks/data-tables/update.json';
 import * as deleteMock from './mocks/data-tables/delete.json';
-import * as importMock from './mocks/data-tables/import.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -70,19 +69,5 @@ describe('Endpoints: DataTables', () => {
         mockFetch('DELETE https://make.local/api/v2/data-tables/137', deleteMock);
 
         await make.dataTables.delete(137);
-    });
-
-    it('Should import records into a data table', async () => {
-        const body = {
-            fileType: 'csv' as const,
-            content: 'name,email\nJohn,john@example.com',
-            firstRowContainsHeaders: true,
-        };
-        mockFetch('POST https://make.local/api/v2/data-tables/137/import', importMock, req => {
-            expect(req.body).toStrictEqual(body);
-        });
-
-        const result = await make.dataTables.import(137, body);
-        expect(result).toBe(2);
     });
 });

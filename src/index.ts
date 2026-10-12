@@ -77,7 +77,6 @@ export type {
     ListDataTablesOptions,
     CreateDataTableBody,
     UpdateDataTableBody,
-    ImportDataTableRecordsBody,
 } from './endpoints/data-tables.js';
 export type {
     DataTableRecord,
@@ -100,7 +99,6 @@ export type {
     UpdateDataTableColumnBody,
     UpdateDataTableColumnOptions,
 } from './endpoints/data-table-columns.js';
-export type { DataTableUsingScenario, DataTableUsingScenarios } from './endpoints/data-table-using-scenarios.js';
 export type {
     DataStructure,
     DataStructures,

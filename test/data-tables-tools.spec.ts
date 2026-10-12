@@ -8,7 +8,6 @@ import * as getMock from './mocks/data-tables/get.json';
 import * as createMock from './mocks/data-tables/create.json';
 import * as updateMock from './mocks/data-tables/update.json';
 import * as deleteMock from './mocks/data-tables/delete.json';
-import * as importMock from './mocks/data-tables/import.json';
 import * as recordsListMock from './mocks/data-table-records/list.json';
 import * as recordsGetMock from './mocks/data-table-records/get.json';
 import * as recordsCreateMock from './mocks/data-table-records/create.json';
@@ -25,7 +24,6 @@ import * as columnsCreateMock from './mocks/data-table-columns/create.json';
 import * as columnsUpdateMock from './mocks/data-table-columns/update.json';
 import * as columnsDeleteMock from './mocks/data-table-columns/delete.json';
 import * as columnsReorderMock from './mocks/data-table-columns/reorder.json';
-import * as usingScenariosListMock from './mocks/data-table-using-scenarios/list.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -82,19 +80,6 @@ describe('Tools: data-tables', () => {
         mockFetch(`DELETE https://make.local/api/v2/data-tables/${DATA_TABLE_ID}`, deleteMock);
 
         await getTool('data-tables_delete').execute(make, { dataTableId: DATA_TABLE_ID });
-    });
-
-    it('Should execute data-tables_import', async () => {
-        mockFetch(`POST https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/import`, importMock, req => {
-            expect(req.body).toStrictEqual({ fileType: 'json', content: '[{"name":"John"}]' });
-        });
-
-        const result = await getTool('data-tables_import').execute(make, {
-            dataTableId: DATA_TABLE_ID,
-            fileType: 'json',
-            content: '[{"name":"John"}]',
-        });
-        expect(result).toBe(2);
     });
 });
 
@@ -346,53 +331,5 @@ describe('Tools: data-table-columns', () => {
             columnIds,
         });
         expect(result).toStrictEqual(columnsReorderMock.data);
-    });
-});
-
-describe('Tools: data-table-using-scenarios', () => {
-    const make = new Make(MAKE_API_KEY, MAKE_ZONE);
-
-    it('Should execute data-table-using-scenarios_list', async () => {
-        mockFetch(`GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/using-scenarios`, usingScenariosListMock);
-
-        const result = await getTool('data-table-using-scenarios_list').execute(make, {
-            dataTableId: DATA_TABLE_ID,
-        });
-        expect(result).toStrictEqual(usingScenariosListMock.scenarios);
-    });
-
-    it('Should execute data-table-using-scenarios_add', async () => {
-        mockFetch(`POST https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/add-using-scenario`, '', req => {
-            expect(req.body).toStrictEqual({ scenarioId: 25, columnIds: [10, 11] });
-        });
-
-        await getTool('data-table-using-scenarios_add').execute(make, {
-            dataTableId: DATA_TABLE_ID,
-            scenarioId: 25,
-            columnIds: [10, 11],
-        });
-    });
-
-    it('Should execute data-table-using-scenarios_update', async () => {
-        mockFetch(`PATCH https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/using-scenario`, '', req => {
-            expect(req.body).toStrictEqual({ scenarioId: 25, columnIds: [10] });
-        });
-
-        await getTool('data-table-using-scenarios_update').execute(make, {
-            dataTableId: DATA_TABLE_ID,
-            scenarioId: 25,
-            columnIds: [10],
-        });
-    });
-
-    it('Should execute data-table-using-scenarios_remove', async () => {
-        mockFetch(`DELETE https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/remove-using-scenario`, '', req => {
-            expect(req.body).toStrictEqual({ scenarioId: 25 });
-        });
-
-        await getTool('data-table-using-scenarios_remove').execute(make, {
-            dataTableId: DATA_TABLE_ID,
-            scenarioId: 25,
-        });
     });
 });

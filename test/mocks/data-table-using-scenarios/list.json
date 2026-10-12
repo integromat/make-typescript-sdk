@@ -1,6 +1,0 @@
-{
-    "scenarios": [
-        { "scenarioId": 25, "columnIds": [10, 11] },
-        { "scenarioId": 26, "columnIds": [10] }
-    ]
-}

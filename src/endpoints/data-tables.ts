@@ -1,7 +1,6 @@
 import type { FetchFunction } from '../types.js';
 import { DataTableRecords } from './data-table-records.js';
 import { DataTableColumns } from './data-table-columns.js';
-import { DataTableUsingScenarios } from './data-table-using-scenarios.js';
 
 /**
  * Represents a Make data table.
@@ -58,47 +57,11 @@ export type UpdateDataTableBody = {
 };
 
 /**
- * Body for importing records into a data table from a file.
- * The accepted options depend on the file type.
- */
-export type ImportDataTableRecordsBody =
-    | {
-          /** Type of the imported file */
-          fileType: 'csv';
-          /** File content to import */
-          content: string;
-          /** Whether the first row contains column headers */
-          firstRowContainsHeaders?: boolean;
-          /** Column delimiter used in the file */
-          delimiter?: ',' | ';' | '\t' | '|';
-      }
-    | {
-          /** Type of the imported file */
-          fileType: 'xls' | 'xlsx';
-          /** File content to import */
-          content: string;
-          /** Whether the first row contains column headers */
-          firstRowContainsHeaders?: boolean;
-          /** Name of the sheet to import */
-          sheet?: string;
-      }
-    | {
-          /** Type of the imported file */
-          fileType: 'json';
-          /** File content to import */
-          content: string;
-      };
-
-/**
  * Internal response types (not exported)
  */
 type ListDataTablesResponse = {
     total: number;
     data: DataTable[];
-};
-
-type ImportDataTableRecordsResponse = {
-    imported: number;
 };
 
 /**
@@ -118,11 +81,6 @@ export class DataTables {
     public readonly columns: DataTableColumns;
 
     /**
-     * Access to methods for tracking which scenarios use a data table
-     */
-    public readonly usingScenarios: DataTableUsingScenarios;
-
-    /**
      * Create a new DataTables instance.
      * @param fetch Function for making API requests
      */
@@ -130,7 +88,6 @@ export class DataTables {
         this.#fetch = fetch;
         this.records = new DataTableRecords(fetch);
         this.columns = new DataTableColumns(fetch);
-        this.usingScenarios = new DataTableUsingScenarios(fetch);
     }
 
     /**
@@ -196,20 +153,5 @@ export class DataTables {
         await this.#fetch(`/data-tables/${dataTableId}`, {
             method: 'DELETE',
         });
-    }
-
-    /**
-     * Import records into a data table from a file.
-     * @param dataTableId The data table ID to import records into
-     * @param body The file content and import options
-     * @returns Promise with the number of imported records
-     */
-    async import(dataTableId: number, body: ImportDataTableRecordsBody): Promise<number> {
-        return (
-            await this.#fetch<ImportDataTableRecordsResponse>(`/data-tables/${dataTableId}/import`, {
-                method: 'POST',
-                body,
-            })
-        ).imported;
     }
 }

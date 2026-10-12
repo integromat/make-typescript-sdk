@@ -17,7 +17,6 @@ import { tools as DataStoreRecordsTools } from './endpoints/data-store-records.t
 import { tools as DataTablesTools } from './endpoints/data-tables.tools.js';
 import { tools as DataTableRecordsTools } from './endpoints/data-table-records.tools.js';
 import { tools as DataTableColumnsTools } from './endpoints/data-table-columns.tools.js';
-import { tools as DataTableUsingScenariosTools } from './endpoints/data-table-using-scenarios.tools.js';
 import { tools as TeamsTools } from './endpoints/teams.tools.js';
 import { tools as OrganizationsTools } from './endpoints/organizations.tools.js';
 import { tools as UsersTools } from './endpoints/users.tools.js';
@@ -243,7 +242,6 @@ export const MakeTools = [
     ...DataTablesTools,
     ...DataTableRecordsTools,
     ...DataTableColumnsTools,
-    ...DataTableUsingScenariosTools,
     ...TeamsTools,
     ...OrganizationsTools,
     ...UsersTools,

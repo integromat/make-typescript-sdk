@@ -58,9 +58,8 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Data Store Records** - Individual records within data stores
 - **Data Structures** - Data schemas and formats
 - **Data Tables** - Next-generation data storage provided by a dedicated service, with structure managed through columns
-- **Data Table Records** - Records within data tables, including bulk operations, imports, and query validation
+- **Data Table Records** - Records within data tables, including bulk operations and query validation
 - **Data Table Columns** - Column definitions of data tables (create, update, delete, reorder)
-- **Data Table Using Scenarios** - Tracking which scenarios use a data table and its columns
 - **Executions** - Scenario execution history
 - **Folders** - Scenario categorization
 - **Scenario Labels** - Team-scoped tags assignable to scenarios
@@ -219,7 +218,6 @@ All tools are organized into the following categories:
 - `data-tables`
 - `data-table-records`
 - `data-table-columns`
-- `data-table-using-scenarios`
 - `enums`
 - `executions`
 - `folders`

@@ -1,6 +1,6 @@
 import type { Make } from '../make.js';
 import type { MakeTool } from '../tools.js';
-import type { CreateDataTableBody, ImportDataTableRecordsBody, UpdateDataTableBody } from './data-tables.js';
+import type { CreateDataTableBody, UpdateDataTableBody } from './data-tables.js';
 
 export const tools: MakeTool[] = [
     {
@@ -158,49 +158,6 @@ export const tools: MakeTool[] = [
         execute: async (make: Make, args: { dataTableId: number }) => {
             await make.dataTables.delete(args.dataTableId);
             return `Data table has been deleted.`;
-        },
-    },
-    {
-        name: 'data-tables_import',
-        title: 'Import records into data table',
-        description: 'Import records into a data table from a CSV, XLS(X), or JSON file content.',
-        category: 'data-tables',
-        scope: 'data-tables:write',
-        scopeId: 'dataTableId',
-        identifier: 'dataTableId',
-        resourceId: 'dataTableId',
-        annotations: {
-            readOnlyHint: false,
-            destructiveHint: false,
-            openWorldHint: false,
-        },
-        inputSchema: {
-            type: 'object',
-            properties: {
-                dataTableId: { type: 'number', description: 'The data table ID to import records into' },
-                fileType: {
-                    type: 'string',
-                    enum: ['csv', 'xls', 'xlsx', 'json'],
-                    description: 'The type of the imported file',
-                },
-                content: { type: 'string', description: 'The file content to import' },
-                firstRowContainsHeaders: {
-                    type: 'boolean',
-                    description: 'Whether the first row contains column headers (csv, xls, xlsx)',
-                },
-                delimiter: {
-                    type: 'string',
-                    enum: [',', ';', '\t', '|'],
-                    description: 'The column delimiter used in the file (csv only)',
-                },
-                sheet: { type: 'string', description: 'The name of the sheet to import (xls, xlsx only)' },
-            },
-            required: ['dataTableId', 'fileType', 'content'],
-        },
-        examples: [{ dataTableId: 137, fileType: 'csv', content: 'name,email\nJohn,john@example.com', delimiter: ',' }],
-        execute: async (make: Make, args: { dataTableId: number } & ImportDataTableRecordsBody) => {
-            const { dataTableId, ...body } = args;
-            return await make.dataTables.import(dataTableId, body as ImportDataTableRecordsBody);
         },
     },
 ];
