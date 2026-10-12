@@ -1,0 +1,16 @@
+{
+    "total": 2,
+    "data": [
+        {
+            "id": 11,
+            "name": "Status",
+            "type": "single_select",
+            "locked": false,
+            "required": false,
+            "order": 1,
+            "options": [],
+            "allowNewValues": false
+        },
+        { "id": 10, "name": "Name", "type": "text", "locked": false, "required": true, "order": 2 }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "total": 2,
+    "data": [
+        { "id": 10, "name": "Name", "type": "text", "locked": false, "required": true, "order": 1 },
+        {
+            "id": 11,
+            "name": "Status",
+            "type": "single_select",
+            "locked": false,
+            "required": false,
+            "order": 2,
+            "options": [
+                { "id": "active", "label": "Active" },
+                { "id": "inactive", "label": "Inactive" }
+            ],
+            "allowNewValues": false
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+{
+    "records": [
+        { "key": "customer-1", "data": { "status": "active" } },
+        { "key": "customer-2", "data": { "status": "inactive" } }
+    ]
+}

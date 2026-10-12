@@ -72,6 +72,36 @@ export type {
     UpdateDataStoreRecordBody,
 } from './endpoints/data-store-records.js';
 export type {
+    DataTable,
+    DataTables,
+    ListDataTablesOptions,
+    CreateDataTableBody,
+    UpdateDataTableBody,
+    ImportDataTableRecordsBody,
+} from './endpoints/data-tables.js';
+export type {
+    DataTableRecord,
+    DataTableRecords,
+    ListDataTableRecordsOptions,
+    CreateDataTableRecordBody,
+    CreateDataTableRecordsBody,
+    ValidateDataTableQueryBody,
+    DataTableQueryValidation,
+} from './endpoints/data-table-records.js';
+export type {
+    DataTableColumn,
+    DataTableColumns,
+    DataTableColumnType,
+    DataTableColumnOption,
+    DataTableColumnItems,
+    DataTableColumnField,
+    ListDataTableColumnsOptions,
+    CreateDataTableColumnBody,
+    UpdateDataTableColumnBody,
+    UpdateDataTableColumnOptions,
+} from './endpoints/data-table-columns.js';
+export type { DataTableUsingScenario, DataTableUsingScenarios } from './endpoints/data-table-using-scenarios.js';
+export type {
     DataStructure,
     DataStructures,
     DataStructureField,

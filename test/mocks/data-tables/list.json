@@ -1,0 +1,7 @@
+{
+    "total": 2,
+    "data": [
+        { "id": 137, "name": "Customers", "maxStorageSizeMb": 1 },
+        { "id": 138, "name": "Orders", "maxStorageSizeMb": 2 }
+    ]
+}
