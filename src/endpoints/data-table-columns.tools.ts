@@ -37,6 +37,65 @@ const columnOptionsSchema: JSONSchema = {
     description: 'Selectable options, for single_select and multiple_select columns',
 };
 
+/**
+ * One unrolled level of the recursive `DataTableColumnItems` type; the nested
+ * `items`/`fields` levels are described in prose because the schema shape has no `$ref`.
+ */
+const columnItemsSchema: JSONSchema = {
+    type: 'object',
+    properties: {
+        type: columnTypeSchema,
+        options: columnOptionsSchema,
+        allowNewValues: {
+            type: 'boolean',
+            description: 'Whether values outside of options are allowed, for select items',
+        },
+        fields: {
+            type: 'array',
+            items: { type: 'object' },
+            description: "Field definitions (same shape as a collection column's fields), for collection items",
+        },
+        items: {
+            type: 'object',
+            description: 'Nested item type specification (same shape as this object), for array items',
+        },
+    },
+    required: ['type'],
+    description: 'Item type specification, for array columns',
+};
+
+/**
+ * One unrolled level of the recursive `DataTableColumnField` type; the nested
+ * `items`/`fields` levels are described in prose because the schema shape has no `$ref`.
+ */
+const columnFieldsSchema: JSONSchema = {
+    type: 'array',
+    items: {
+        type: 'object',
+        properties: {
+            name: { type: 'string', description: 'Name of the field' },
+            type: columnTypeSchema,
+            required: { type: 'boolean', description: 'Whether a value is required in the field' },
+            options: columnOptionsSchema,
+            allowNewValues: {
+                type: 'boolean',
+                description: 'Whether values outside of options are allowed, for select fields',
+            },
+            items: {
+                type: 'object',
+                description: "Item type specification (same shape as an array column's items), for array fields",
+            },
+            fields: {
+                type: 'array',
+                items: { type: 'object' },
+                description: "Nested field definitions (same shape as this array's items), for collection fields",
+            },
+        },
+        required: ['name', 'type'],
+    },
+    description: 'Field definitions, for collection columns',
+};
+
 export const tools: MakeTool[] = [
     {
         name: 'data-table-columns_list',
@@ -55,8 +114,6 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 dataTableId: { type: 'number', description: 'The data table ID to list columns from' },
-                limit: { type: 'integer', description: 'Maximum number of columns to return' },
-                page: { type: 'integer', description: 'Page number to return (1-based)' },
                 sortBy: { type: 'string', enum: ['name', 'order'], description: 'Property to sort results by' },
                 sortDir: { type: 'string', enum: ['asc', 'desc'], description: 'Sort direction' },
             },
@@ -67,8 +124,6 @@ export const tools: MakeTool[] = [
             make: Make,
             args: {
                 dataTableId: number;
-                limit?: number;
-                page?: number;
                 sortBy?: 'name' | 'order';
                 sortDir?: 'asc' | 'desc';
             },
@@ -129,12 +184,8 @@ export const tools: MakeTool[] = [
                     type: 'boolean',
                     description: 'Whether values outside of options are allowed, for select columns',
                 },
-                items: { type: 'object', description: 'Item type specification, required for array columns' },
-                fields: {
-                    type: 'array',
-                    items: { type: 'object' },
-                    description: 'Field definitions, required for collection columns',
-                },
+                items: { ...columnItemsSchema, description: 'Item type specification, required for array columns' },
+                fields: { ...columnFieldsSchema, description: 'Field definitions, required for collection columns' },
             },
             required: ['dataTableId', 'name', 'type'],
         },
@@ -147,6 +198,17 @@ export const tools: MakeTool[] = [
                 options: [
                     { id: 'active', label: 'Active' },
                     { id: 'inactive', label: 'Inactive' },
+                ],
+            },
+            { dataTableId: 137, name: 'Tags', type: 'array', items: { type: 'text' } },
+            {
+                dataTableId: 137,
+                name: 'Address',
+                type: 'collection',
+                fields: [
+                    { name: 'street', type: 'text', required: true },
+                    { name: 'city', type: 'text', required: true },
+                    { name: 'zip', type: 'text' },
                 ],
             },
         ],
@@ -184,12 +246,8 @@ export const tools: MakeTool[] = [
                     type: 'boolean',
                     description: 'Whether values outside of options are allowed, for select columns',
                 },
-                items: { type: 'object', description: 'Item type specification, for array columns' },
-                fields: {
-                    type: 'array',
-                    items: { type: 'object' },
-                    description: 'Field definitions, for collection columns',
-                },
+                items: columnItemsSchema,
+                fields: columnFieldsSchema,
                 force: {
                     type: 'boolean',
                     description: 'Force the update even when it would cause a lossy conversion of existing values',

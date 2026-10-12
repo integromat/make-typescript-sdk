@@ -20,8 +20,6 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 teamId: { type: 'number', description: 'The team ID to filter data tables by' },
-                limit: { type: 'integer', description: 'Maximum number of data tables to return' },
-                page: { type: 'integer', description: 'Page number to return (1-based)' },
                 sortBy: {
                     type: 'string',
                     enum: ['name', 'maxStorageSizeMb'],
@@ -36,8 +34,6 @@ export const tools: MakeTool[] = [
             make: Make,
             args: {
                 teamId: number;
-                limit?: number;
-                page?: number;
                 sortBy?: 'name' | 'maxStorageSizeMb';
                 sortDir?: 'asc' | 'desc';
             },
