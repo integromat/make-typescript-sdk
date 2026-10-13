@@ -1,6 +1,7 @@
 import { Scenarios } from './endpoints/scenarios.js';
 import { Users } from './endpoints/users.js';
 import { DataStores } from './endpoints/data-stores.js';
+import { DataTables } from './endpoints/data-tables.js';
 import { Blueprints } from './endpoints/blueprints.js';
 import { Executions } from './endpoints/executions.js';
 import { DataStructures } from './endpoints/data-structures.js';
@@ -102,6 +103,12 @@ export class Make {
      * Data stores allow you to store and retrieve data within Make
      */
     public readonly dataStores: DataStores;
+
+    /**
+     * Access to data table-related endpoints
+     * Data tables allow you to store data within Make and also to modify their structure
+     */
+    public readonly dataTables: DataTables;
 
     /**
      * Access to execution-related endpoints
@@ -322,6 +329,7 @@ export class Make {
         this.scenarios = new Scenarios(this.fetch.bind(this));
         this.blueprints = new Blueprints(this.fetch.bind(this));
         this.dataStores = new DataStores(this.fetch.bind(this));
+        this.dataTables = new DataTables(this.fetch.bind(this));
         this.executions = new Executions(this.fetch.bind(this));
         this.dataStructures = new DataStructures(this.fetch.bind(this));
         this.folders = new Folders(this.fetch.bind(this));

@@ -14,6 +14,9 @@ import { tools as ConnectionsTools } from './endpoints/connections.tools.js';
 import { tools as CredentialRequestsTools } from './endpoints/credential-requests.tools.js';
 import { tools as DataStoresTools } from './endpoints/data-stores.tools.js';
 import { tools as DataStoreRecordsTools } from './endpoints/data-store-records.tools.js';
+import { tools as DataTablesTools } from './endpoints/data-tables.tools.js';
+import { tools as DataTableRecordsTools } from './endpoints/data-table-records.tools.js';
+import { tools as DataTableColumnsTools } from './endpoints/data-table-columns.tools.js';
 import { tools as TeamsTools } from './endpoints/teams.tools.js';
 import { tools as OrganizationsTools } from './endpoints/organizations.tools.js';
 import { tools as UsersTools } from './endpoints/users.tools.js';
@@ -236,6 +239,9 @@ export const MakeTools = [
     ...CredentialRequestsTools,
     ...DataStoresTools,
     ...DataStoreRecordsTools,
+    ...DataTablesTools,
+    ...DataTableRecordsTools,
+    ...DataTableColumnsTools,
     ...TeamsTools,
     ...OrganizationsTools,
     ...UsersTools,

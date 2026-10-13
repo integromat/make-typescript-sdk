@@ -1,0 +1,6 @@
+{
+    "records": [
+        { "key": "customer-1", "data": { "name": "John Doe" } },
+        { "key": "customer-2", "data": { "name": "Jane Doe" } }
+    ]
+}
