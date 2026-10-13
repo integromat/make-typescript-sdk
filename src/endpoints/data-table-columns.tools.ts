@@ -101,7 +101,7 @@ export const tools: MakeTool[] = [
         title: 'List data table columns',
         description: 'List the columns of a data table.',
         category: 'data-table-columns',
-        scope: 'data-tables:read',
+        scope: 'datastores:read',
         scopeId: 'dataTableId',
         identifier: 'dataTableId',
         annotations: {
@@ -136,7 +136,7 @@ export const tools: MakeTool[] = [
         title: 'Get data table column',
         description: 'Get a single column of a data table by ID.',
         category: 'data-table-columns',
-        scope: 'data-tables:read',
+        scope: 'datastores:read',
         scopeId: 'dataTableId',
         identifier: 'dataTableId',
         resourceId: 'columnId',
@@ -163,7 +163,7 @@ export const tools: MakeTool[] = [
         title: 'Create data table column',
         description: 'Create a new column in a data table.',
         category: 'data-table-columns',
-        scope: 'data-tables:write',
+        scope: 'datastores:write',
         scopeId: 'dataTableId',
         identifier: 'dataTableId',
         annotations: {
@@ -222,7 +222,7 @@ export const tools: MakeTool[] = [
         description:
             'Update an existing column of a data table. Set force to true to allow a lossy conversion of existing record values.',
         category: 'data-table-columns',
-        scope: 'data-tables:write',
+        scope: 'datastores:write',
         scopeId: 'dataTableId',
         identifier: 'dataTableId',
         resourceId: 'columnId',
@@ -268,7 +268,7 @@ export const tools: MakeTool[] = [
         title: 'Delete data table column',
         description: 'Delete a column from a data table.',
         category: 'data-table-columns',
-        scope: 'data-tables:write',
+        scope: 'datastores:write',
         scopeId: 'dataTableId',
         identifier: 'dataTableId',
         resourceId: 'columnId',
@@ -297,7 +297,7 @@ export const tools: MakeTool[] = [
         title: 'Reorder data table columns',
         description: 'Reorder the columns of a data table by providing the column IDs in the desired order.',
         category: 'data-table-columns',
-        scope: 'data-tables:write',
+        scope: 'datastores:write',
         scopeId: 'dataTableId',
         identifier: 'dataTableId',
         annotations: {
