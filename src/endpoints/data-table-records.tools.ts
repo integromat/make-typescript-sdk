@@ -1,12 +1,89 @@
 import type { Make } from '../make.js';
 import type { JSONValue } from '../types.js';
-import type { MakeTool } from '../tools.js';
+import type { JSONSchema, MakeTool } from '../tools.js';
 import type {
     CreateDataTableRecordBody,
     CreateDataTableRecordsBody,
+    DataTableFilter,
     DataTableRecord,
     ValidateDataTableQueryBody,
 } from './data-table-records.js';
+
+/**
+ * Filter-mode filter, mirroring the `DataTableFilter` type: an array of AND-groups
+ * joined by OR, each predicate naming a column, an operator, and a value.
+ */
+const filterSchema: JSONSchema = {
+    type: 'array',
+    items: {
+        type: 'array',
+        items: {
+            type: 'object',
+            properties: {
+                columnName: {
+                    type: 'string',
+                    description:
+                        "Column name to filter on; may be dotted to reach into a collection column's nested fields (e.g. customer.address.city)",
+                },
+                operator: {
+                    type: 'string',
+                    enum: [
+                        'exist',
+                        'notexist',
+                        'text:equal',
+                        'text:equal:ci',
+                        'text:notequal',
+                        'text:notequal:ci',
+                        'text:contain',
+                        'text:contain:ci',
+                        'text:notcontain',
+                        'text:notcontain:ci',
+                        'text:startwith',
+                        'text:pattern',
+                        'text:like',
+                        'text:notlike',
+                        'text:in',
+                        'text:notin',
+                        'number:equal',
+                        'number:notequal',
+                        'number:greater',
+                        'number:less',
+                        'number:greaterorequal',
+                        'number:lessorequal',
+                        'number:in',
+                        'number:notin',
+                        'number:between',
+                        'number:notbetween',
+                        'date:equal',
+                        'date:greater',
+                        'date:less',
+                        'date:greaterorequal',
+                        'date:lessorequal',
+                        'date:in',
+                        'date:notin',
+                        'date:between',
+                        'date:notbetween',
+                        'array:contain',
+                        'boolean:equal',
+                        'boolean:notequal',
+                        'boolean:istrue',
+                        'boolean:isfalse',
+                    ],
+                    description:
+                        "Comparison operator; the prefix names the column-type family ('date:' covers both date and date_time columns), ':ci' variants compare case-insensitively",
+                },
+                value: {
+                    description:
+                        "Value to compare against; omit for unary operators like 'exist' or 'boolean:istrue'",
+                },
+            },
+            required: ['columnName', 'operator'],
+        },
+        description: 'AND-group of predicates that must all match',
+    },
+    description:
+        'Filter-mode filter: an array of AND-groups joined by OR — [[a, b], [c]] matches records satisfying (a AND b) OR c',
+};
 
 export const tools: MakeTool[] = [
     {
@@ -28,7 +105,7 @@ export const tools: MakeTool[] = [
                 dataTableId: { type: 'number', description: 'The data table ID to list records from' },
                 limit: { type: 'integer', description: 'Maximum number of records to return' },
                 page: { type: 'integer', description: 'Page number to return (1-based)' },
-                filter: { type: 'string', description: 'Filter-mode filter to restrict the returned records' },
+                filter: filterSchema,
                 query: { type: 'string', description: 'Query-mode expression to search records' },
                 keys: {
                     type: 'array',
@@ -40,14 +117,17 @@ export const tools: MakeTool[] = [
             },
             required: ['dataTableId'],
         },
-        examples: [{ dataTableId: 137, limit: 10 }],
+        examples: [
+            { dataTableId: 137, limit: 10 },
+            { dataTableId: 137, filter: [[{ columnName: 'status', operator: 'text:equal', value: 'active' }]] },
+        ],
         execute: async (
             make: Make,
             args: {
                 dataTableId: number;
                 limit?: number;
                 page?: number;
-                filter?: string;
+                filter?: DataTableFilter;
                 query?: string;
                 keys?: string[];
                 sortBy?: string;
@@ -331,11 +411,23 @@ export const tools: MakeTool[] = [
             properties: {
                 dataTableId: { type: 'number', description: 'The data table ID to validate against' },
                 query: { type: 'string', description: 'Query-mode expression to validate' },
-                filter: { type: 'object', description: 'Filter-mode filter to validate' },
+                filter: filterSchema,
             },
             required: ['dataTableId'],
         },
-        examples: [{ dataTableId: 137, query: "status = 'active'" }],
+        examples: [
+            { dataTableId: 137, query: "status = 'active'" },
+            {
+                dataTableId: 137,
+                filter: [
+                    [
+                        { columnName: 'status', operator: 'text:equal', value: 'active' },
+                        { columnName: 'age', operator: 'number:greater', value: 30 },
+                    ],
+                    [{ columnName: 'vip', operator: 'boolean:istrue' }],
+                ],
+            },
+        ],
         execute: async (make: Make, args: { dataTableId: number } & ValidateDataTableQueryBody) => {
             const { dataTableId, ...body } = args;
             return await make.dataTables.records.validateQuery(dataTableId, body);

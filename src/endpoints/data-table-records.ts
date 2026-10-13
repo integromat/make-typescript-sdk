@@ -12,6 +12,76 @@ export type DataTableRecord = {
 };
 
 /**
+ * Operator of a Filter-mode predicate.
+ *
+ * Mirrors the operator vocabulary the data table service currently accepts; the
+ * prefix names the column-type family the operator applies to (`date:` covers both
+ * `date` and `date_time` columns), `:ci` variants compare case-insensitively.
+ */
+export type DataTableFilterOperator =
+    | 'exist'
+    | 'notexist'
+    | 'text:equal'
+    | 'text:equal:ci'
+    | 'text:notequal'
+    | 'text:notequal:ci'
+    | 'text:contain'
+    | 'text:contain:ci'
+    | 'text:notcontain'
+    | 'text:notcontain:ci'
+    | 'text:startwith'
+    | 'text:pattern'
+    | 'text:like'
+    | 'text:notlike'
+    | 'text:in'
+    | 'text:notin'
+    | 'number:equal'
+    | 'number:notequal'
+    | 'number:greater'
+    | 'number:less'
+    | 'number:greaterorequal'
+    | 'number:lessorequal'
+    | 'number:in'
+    | 'number:notin'
+    | 'number:between'
+    | 'number:notbetween'
+    | 'date:equal'
+    | 'date:greater'
+    | 'date:less'
+    | 'date:greaterorequal'
+    | 'date:lessorequal'
+    | 'date:in'
+    | 'date:notin'
+    | 'date:between'
+    | 'date:notbetween'
+    | 'array:contain'
+    | 'boolean:equal'
+    | 'boolean:notequal'
+    | 'boolean:istrue'
+    | 'boolean:isfalse';
+
+/**
+ * A single Filter-mode predicate comparing one column against a value.
+ */
+export type DataTableFilterPredicate = {
+    /**
+     * Column name to filter on; may be dotted to reach into a `collection`
+     * column's nested fields (e.g. `customer.address.city`)
+     */
+    columnName: string;
+    /** Comparison operator */
+    operator: DataTableFilterOperator;
+    /** Value to compare against; omitted for unary operators like `exist` or `boolean:istrue` */
+    value?: JSONValue;
+};
+
+/**
+ * Filter-mode filter: an array of AND-groups joined by OR —
+ * `[[a, b], [c]]` matches records satisfying `(a AND b) OR c`.
+ */
+export type DataTableFilter = DataTableFilterPredicate[][];
+
+/**
  * Options for listing or searching data table records.
  *
  * The data table service uses page-based pagination (`limit`/`page`) instead of the
@@ -22,8 +92,12 @@ export type ListDataTableRecordsOptions = {
     limit?: number;
     /** Page number to return (1-based) */
     page?: number;
-    /** Filter-mode filter to restrict the returned records */
-    filter?: string;
+    /**
+     * Filter-mode filter to restrict the returned records; a `DataTableFilter`
+     * is serialized into the JSON query parameter automatically, a string is
+     * passed through as-is
+     */
+    filter?: string | DataTableFilter;
     /** Query-mode expression to search records */
     query?: string;
     /** Restrict the result to specific record keys */
@@ -68,7 +142,7 @@ export type ValidateDataTableQueryBody = {
     /** Query-mode expression to validate */
     query?: string;
     /** Filter-mode filter to validate */
-    filter?: JSONValue;
+    filter?: DataTableFilter;
 };
 
 /**
@@ -129,7 +203,7 @@ export class DataTableRecords {
                 query: {
                     limit: options?.limit,
                     page: options?.page,
-                    filter: options?.filter,
+                    filter: Array.isArray(options?.filter) ? JSON.stringify(options.filter) : options?.filter,
                     query: options?.query,
                     keys: options?.keys,
                     sortBy: options?.sortBy,
@@ -146,7 +220,7 @@ export class DataTableRecords {
      * @returns Promise with the record
      */
     async get(dataTableId: number, key: string): Promise<DataTableRecord> {
-        return await this.#fetch<DataTableRecord>(`/data-tables/${dataTableId}/records/${key}`);
+        return await this.#fetch<DataTableRecord>(`/data-tables/${dataTableId}/records/${encodeURIComponent(key)}`);
     }
 
     /**
@@ -156,8 +230,11 @@ export class DataTableRecords {
      * @returns Promise with true when the record exists
      */
     async exists(dataTableId: number, key: string): Promise<boolean> {
-        return (await this.#fetch<ExistsDataTableRecordResponse>(`/data-tables/${dataTableId}/records/${key}/exists`))
-            .exists;
+        return (
+            await this.#fetch<ExistsDataTableRecordResponse>(
+                `/data-tables/${dataTableId}/records/${encodeURIComponent(key)}/exists`,
+            )
+        ).exists;
     }
 
     /**
@@ -197,7 +274,7 @@ export class DataTableRecords {
      * @returns Promise with the updated record
      */
     async update(dataTableId: number, key: string, data: Record<string, JSONValue>): Promise<DataTableRecord> {
-        return await this.#fetch<DataTableRecord>(`/data-tables/${dataTableId}/records/${key}`, {
+        return await this.#fetch<DataTableRecord>(`/data-tables/${dataTableId}/records/${encodeURIComponent(key)}`, {
             method: 'PATCH',
             body: {
                 data,
@@ -229,7 +306,7 @@ export class DataTableRecords {
      * @returns Promise that resolves when the record is deleted
      */
     async delete(dataTableId: number, key: string): Promise<void> {
-        await this.#fetch(`/data-tables/${dataTableId}/records/${key}`, {
+        await this.#fetch(`/data-tables/${dataTableId}/records/${encodeURIComponent(key)}`, {
             method: 'DELETE',
         });
     }

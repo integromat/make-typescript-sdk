@@ -81,6 +81,9 @@ export type {
 export type {
     DataTableRecord,
     DataTableRecords,
+    DataTableFilter,
+    DataTableFilterPredicate,
+    DataTableFilterOperator,
     ListDataTableRecordsOptions,
     CreateDataTableRecordBody,
     CreateDataTableRecordsBody,

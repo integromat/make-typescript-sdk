@@ -44,6 +44,28 @@ describe('Endpoints: DataTableRecords', () => {
         expect(result).toStrictEqual(listMock.data);
     });
 
+    it('Should serialize a structured filter when listing data table records', async () => {
+        const filter = [[{ columnName: 'status', operator: 'text:equal' as const, value: 'active' }]];
+        mockFetch(
+            `GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records?filter=${encodeURIComponent(JSON.stringify(filter))}`,
+            listMock,
+        );
+
+        const result = await make.dataTables.records.list(DATA_TABLE_ID, { filter });
+        expect(result).toStrictEqual(listMock.data);
+    });
+
+    it('Should pass a string filter through when listing data table records', async () => {
+        const filter = JSON.stringify([[{ columnName: 'status', operator: 'text:equal', value: 'active' }]]);
+        mockFetch(
+            `GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records?filter=${encodeURIComponent(filter)}`,
+            listMock,
+        );
+
+        const result = await make.dataTables.records.list(DATA_TABLE_ID, { filter });
+        expect(result).toStrictEqual(listMock.data);
+    });
+
     it('Should get a data table record by key', async () => {
         mockFetch(`GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records/customer-1`, getMock);
 
@@ -124,6 +146,27 @@ describe('Endpoints: DataTableRecords', () => {
         await make.dataTables.records.delete(DATA_TABLE_ID, 'customer-1');
     });
 
+    it('Should URL-encode record keys in paths', async () => {
+        // Keys may contain any non-blank characters, incl. `/`, `?` and `#` that break URL routing
+        const key = 'a/b?c#d';
+        const encodedKey = 'a%2Fb%3Fc%23d';
+
+        mockFetch(`GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records/${encodedKey}`, getMock);
+        await make.dataTables.records.get(DATA_TABLE_ID, key);
+
+        mockFetch(
+            `GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records/${encodedKey}/exists`,
+            existsMock,
+        );
+        await make.dataTables.records.exists(DATA_TABLE_ID, key);
+
+        mockFetch(`PATCH https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records/${encodedKey}`, updateMock);
+        await make.dataTables.records.update(DATA_TABLE_ID, key, { status: 'active' });
+
+        mockFetch(`DELETE https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records/${encodedKey}`, deleteMock);
+        await make.dataTables.records.delete(DATA_TABLE_ID, key);
+    });
+
     it('Should bulk delete data table records', async () => {
         const keys = ['customer-1', 'customer-2'];
         mockFetch(`DELETE https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records`, bulkDeleteMock, req => {
@@ -136,6 +179,28 @@ describe('Endpoints: DataTableRecords', () => {
 
     it('Should validate a data table query', async () => {
         const body = { query: "status = 'active'" };
+        mockFetch(
+            `POST https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records/query/validate`,
+            validateQueryMock,
+            req => {
+                expect(req.body).toStrictEqual(body);
+            },
+        );
+
+        const result = await make.dataTables.records.validateQuery(DATA_TABLE_ID, body);
+        expect(result).toStrictEqual({ valid: true });
+    });
+
+    it('Should validate a data table filter', async () => {
+        const body = {
+            filter: [
+                [
+                    { columnName: 'status', operator: 'text:equal' as const, value: 'active' },
+                    { columnName: 'age', operator: 'number:greater' as const, value: 30 },
+                ],
+                [{ columnName: 'vip', operator: 'boolean:istrue' as const }],
+            ],
+        };
         mockFetch(
             `POST https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records/query/validate`,
             validateQueryMock,
