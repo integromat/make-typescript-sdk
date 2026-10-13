@@ -109,13 +109,9 @@ export type ListDataTableRecordsOptions = {
 };
 
 /**
- * Body for creating a new data table record.
+ * Body for creating a new data table record; the `key` is auto-generated when omitted.
  */
-export type CreateDataTableRecordBody = {
-    /** Record key; auto-generated when omitted */
-    key?: string;
-    /** The record's data keyed by column */
-    data?: Record<string, JSONValue>;
+export type CreateDataTableRecordBody = Partial<DataTableRecord> & {
     /** Whether to overwrite an existing record with the same key */
     overwrite?: boolean;
 };
@@ -125,12 +121,7 @@ export type CreateDataTableRecordBody = {
  */
 export type CreateDataTableRecordsBody = {
     /** Records to create; keys are auto-generated when omitted */
-    records: Array<{
-        /** Record key; auto-generated when omitted */
-        key?: string;
-        /** The record's data keyed by column */
-        data?: Record<string, JSONValue>;
-    }>;
+    records: Omit<CreateDataTableRecordBody, 'overwrite'>[];
     /** Whether to overwrite existing records with the same keys */
     overwrite?: boolean;
 };

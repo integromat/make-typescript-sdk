@@ -39,22 +39,15 @@ export type ListDataTablesOptions = {
 /**
  * Body for creating a new data table.
  */
-export type CreateDataTableBody = {
+export type CreateDataTableBody = Pick<DataTable, 'name'> & {
     /** The team ID to create the data table in */
     teamId: number;
-    /** Name of the data table */
-    name: string;
 };
 
 /**
  * Body for updating an existing data table.
  */
-export type UpdateDataTableBody = {
-    /** New name of the data table */
-    name?: string;
-    /** New maximum storage size of the data table in megabytes */
-    maxStorageSizeMb?: number;
-};
+export type UpdateDataTableBody = Partial<Pick<DataTable, 'name' | 'maxStorageSizeMb'>>;
 
 /**
  * Internal response types (not exported)

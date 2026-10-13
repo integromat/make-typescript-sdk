@@ -27,62 +27,50 @@ export type DataTableColumnOption = {
     id: string;
     /** Display label of the option */
     label: string;
-    /** Optional display color of the option */
-    color?: string;
 };
 
 /**
- * Item type specification for `array` columns.
+ * Type-specific configuration shared by columns, `array` items, and `collection` fields.
  *
- * The service models this as a discriminated union per column type; the SDK flattens
- * it into one type with optional fields — `options`/`allowNewValues` apply to select
- * types, `fields` to `collection`, and `items` to nested `array`.
+ * The service models these as a discriminated union per column type; the SDK flattens
+ * them into one optional shape — `options`/`allowNewValues` apply to select types,
+ * `items` to `array`, and `fields` to `collection`.
  */
-export type DataTableColumnItems = {
+type DataTableColumnTypeConfig = {
+    /** Selectable options, for `single_select` and `multiple_select` types */
+    options?: DataTableColumnOption[];
+    /** Whether values outside of `options` are allowed, for select types */
+    allowNewValues?: boolean;
+    /** Item type specification, for `array` types */
+    items?: DataTableColumnItems;
+    /** Field definitions, for `collection` types */
+    fields?: DataTableColumnField[];
+};
+
+/**
+ * Item type specification for `array` columns — see {@link DataTableColumnTypeConfig}.
+ */
+export type DataTableColumnItems = DataTableColumnTypeConfig & {
     /** Type of the array items */
     type: DataTableColumnType;
-    /** Selectable options, for `single_select` and `multiple_select` items */
-    options?: DataTableColumnOption[];
-    /** Whether values outside of `options` are allowed, for select items */
-    allowNewValues?: boolean;
-    /** Field definitions, for `collection` items */
-    fields?: DataTableColumnField[];
-    /** Item type specification, for nested `array` items */
-    items?: DataTableColumnItems;
 };
 
 /**
- * Field definition of a `collection` column.
- *
- * The service models this as a discriminated union per field type; the SDK flattens
- * it into one type with optional fields — see {@link DataTableColumnItems}.
+ * Field definition of a `collection` column — see {@link DataTableColumnTypeConfig}.
  */
-export type DataTableColumnField = {
+export type DataTableColumnField = DataTableColumnTypeConfig & {
     /** Name of the field */
     name: string;
     /** Type of the field */
     type: DataTableColumnType;
     /** Whether the field is required */
     required?: boolean;
-    /** Selectable options, for `single_select` and `multiple_select` fields */
-    options?: DataTableColumnOption[];
-    /** Whether values outside of `options` are allowed, for select fields */
-    allowNewValues?: boolean;
-    /** Item type specification, for `array` fields */
-    items?: DataTableColumnItems;
-    /** Field definitions, for nested `collection` fields */
-    fields?: DataTableColumnField[];
 };
 
 /**
- * Represents a column of a Make data table.
- *
- * The service models columns as a discriminated union per column type; the SDK
- * flattens it into one type with optional fields — `options`/`allowNewValues` are
- * present for select columns, `items` for `array` columns, and `fields` for
- * `collection` columns.
+ * Represents a column of a Make data table — see {@link DataTableColumnTypeConfig}.
  */
-export type DataTableColumn = {
+export type DataTableColumn = DataTableColumnTypeConfig & {
     /** Unique identifier of the column */
     id: number;
     /** Name of the column */
@@ -95,14 +83,6 @@ export type DataTableColumn = {
     required: boolean;
     /** Position of the column within the table */
     order: number;
-    /** Selectable options, for `single_select` and `multiple_select` columns */
-    options?: DataTableColumnOption[];
-    /** Whether values outside of `options` are allowed, for select columns */
-    allowNewValues?: boolean;
-    /** Item type specification, for `array` columns */
-    items?: DataTableColumnItems;
-    /** Field definitions, for `collection` columns */
-    fields?: DataTableColumnField[];
 };
 
 /**
@@ -124,43 +104,23 @@ export type ListDataTableColumnsOptions = {
 
 /**
  * Body for creating a new data table column.
+ *
+ * `options` is required for select columns, `items` for `array` columns, and
+ * `fields` for `collection` columns.
  */
-export type CreateDataTableColumnBody = {
+export type CreateDataTableColumnBody = DataTableColumnTypeConfig & {
     /** Name of the column */
     name: string;
     /** Type of the column */
     type: DataTableColumnType;
     /** Whether a value is required in every record */
     required?: boolean;
-    /** Selectable options, required for `single_select` and `multiple_select` columns */
-    options?: DataTableColumnOption[];
-    /** Whether values outside of `options` are allowed, for select columns */
-    allowNewValues?: boolean;
-    /** Item type specification, required for `array` columns */
-    items?: DataTableColumnItems;
-    /** Field definitions, required for `collection` columns */
-    fields?: DataTableColumnField[];
 };
 
 /**
  * Body for updating an existing data table column.
  */
-export type UpdateDataTableColumnBody = {
-    /** New name of the column */
-    name?: string;
-    /** New type of the column */
-    type?: DataTableColumnType;
-    /** Whether a value is required in every record */
-    required?: boolean;
-    /** Selectable options, for `single_select` and `multiple_select` columns */
-    options?: DataTableColumnOption[];
-    /** Whether values outside of `options` are allowed, for select columns */
-    allowNewValues?: boolean;
-    /** Item type specification, for `array` columns */
-    items?: DataTableColumnItems;
-    /** Field definitions, for `collection` columns */
-    fields?: DataTableColumnField[];
-};
+export type UpdateDataTableColumnBody = Partial<CreateDataTableColumnBody>;
 
 /**
  * Options for updating a data table column.

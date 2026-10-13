@@ -30,7 +30,6 @@ const columnOptionsSchema: JSONSchema = {
         properties: {
             id: { type: 'string', description: 'Unique identifier of the option' },
             label: { type: 'string', description: 'Display label of the option' },
-            color: { type: 'string', description: 'Optional display color of the option' },
         },
         required: ['id', 'label'],
     },
