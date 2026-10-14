@@ -1,4 +1,4 @@
-import type { FetchFunction } from '../types.js';
+import type { FetchFunction, ProjectRef } from '../types.js';
 
 /**
  * Colour of a scenario label, one of the fixed palette values supported by the API.
@@ -7,9 +7,9 @@ export type ScenarioLabelColour = 'white' | 'neutral' | 'brand' | 'info' | 'succ
 
 /**
  * Represents a scenario label in Make.
- * Scenario labels are team-scoped tags with a many-to-many relationship to scenarios:
+ * Scenario labels are project-scoped tags with a many-to-many relationship to scenarios:
  * a scenario can carry any number of labels and a label can be assigned to any number
- * of the team's scenarios. Labels are independent of scenario folders.
+ * of the project's scenarios. Labels are independent of scenario folders.
  */
 export type ScenarioLabel = {
     /** Unique identifier of the label */
@@ -20,8 +20,10 @@ export type ScenarioLabel = {
     colour: ScenarioLabelColour;
     /** Scope of the label. Currently always `team` */
     scope: 'team';
-    /** ID of the team that owns the label */
+    /** ID of the project that owns the label */
     teamId: number | null;
+    /** ID of the project that owns the label. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number | null;
     /** Optional human-readable description of the label, or `null` when not set */
     description: string | null;
     /** ID of the user who created the label, or `null` when unavailable */
@@ -33,21 +35,19 @@ export type ScenarioLabel = {
 };
 
 /**
- * Catalog item shape returned when listing a team's scenario labels: the label plus the
+ * Catalog item shape returned when listing a project's scenario labels: the label plus the
  * aggregate number of non-trashed scenarios currently carrying it. The aggregate is
  * list-only — single-label responses return a plain {@link ScenarioLabel}.
  */
 export type ScenarioLabelWithCount = ScenarioLabel & {
-    /** Number of the team's non-trashed scenarios carrying this label */
+    /** Number of the project's non-trashed scenarios carrying this label */
     scenariosCount: number;
 };
 
 /**
  * Parameters for creating a new scenario label.
  */
-export type CreateScenarioLabelBody = {
-    /** ID of the team where the label will be created */
-    teamId: number;
+export type CreateScenarioLabelBody = ProjectRef & {
     /** Name of the label (1-30 characters) */
     name: string;
     /** Colour of the label */
@@ -72,7 +72,7 @@ export type UpdateScenarioLabelBody = {
  * Response format for listing scenario labels.
  */
 type ListScenarioLabelsResponse = {
-    /** The team's scenario label catalog */
+    /** The project's scenario label catalog */
     labels: ScenarioLabelWithCount[];
 };
 
@@ -96,9 +96,9 @@ export class ScenarioLabels {
     }
 
     /**
-     * List a team's scenario label catalog, including how many scenarios carry each label.
-     * @param teamId The team ID to list scenario labels for
-     * @returns The team's scenario labels with their scenario counts
+     * List a project's scenario label catalog, including how many scenarios carry each label.
+     * @param teamId The project ID to list scenario labels for
+     * @returns The project's scenario labels with their scenario counts
      */
     async list(teamId: number): Promise<ScenarioLabelWithCount[]> {
         const response = await this.#fetch<ListScenarioLabelsResponse>('/scenario-labels', {
@@ -108,7 +108,7 @@ export class ScenarioLabels {
     }
 
     /**
-     * Create a new scenario label in a team.
+     * Create a new scenario label in a project.
      * @param body The label to create
      * @returns The created label
      */

@@ -6,11 +6,11 @@ export const tools: MakeTool[] = [
     {
         name: 'data-structures_list',
         title: 'List data structures',
-        description: 'List data structures for a team.',
+        description: 'List data structures for a project.',
         category: 'data-structures',
         scope: 'udts:read',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -19,11 +19,16 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list data structures for' },
+                projectId: { type: 'number', description: 'The project ID to list data structures for' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
             },
-            required: ['teamId'],
+            required: ['projectId'],
         },
-        examples: [{ teamId: 5 }],
+        examples: [{ projectId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.dataStructures.list(args.teamId, { cols: ['*'] });
         },
@@ -60,8 +65,8 @@ export const tools: MakeTool[] = [
         description: 'Create a new data structure.',
         category: 'data-structures',
         scope: 'udts:write',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -71,9 +76,14 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
+                projectId: {
+                    type: 'number',
+                    description: 'The unique ID of the project in which the data structure will be created',
+                },
                 teamId: {
                     type: 'number',
-                    description: 'The unique ID of the team in which the data structure will be created',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
                 },
                 name: {
                     type: 'string',
@@ -89,11 +99,11 @@ export const tools: MakeTool[] = [
                     description: 'Sets the data structure specification. Each item follows the Make Parameters Syntax.',
                 },
             },
-            required: ['teamId', 'name', 'strict', 'spec'],
+            required: ['projectId', 'name', 'strict', 'spec'],
         },
         examples: [
             {
-                teamId: 5,
+                projectId: 5,
                 name: 'Customer Data',
                 strict: true,
                 spec: [

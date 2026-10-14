@@ -38,7 +38,7 @@ export type ScenarioNoteMetadata = {
  *
  * Notes are scenario-scoped annotations. A note can float freely on the canvas or be anchored to
  * one or more modules via {@link ScenarioNote.moduleIds}. Notes are always addressed through their
- * parent scenario; there is no team- or organization-wide notes collection.
+ * parent scenario; there is no project- or organization-wide notes collection.
  */
 export type ScenarioNote = {
     /** Unique identifier of the note. A numeric string, because the API serializes this 64-bit ID as text */

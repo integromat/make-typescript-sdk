@@ -1,4 +1,4 @@
-import type { FetchFunction, PickColumns, JSONValue, Pagination } from '../types.js';
+import type { FetchFunction, PickColumns, JSONValue, Pagination, ProjectRef } from '../types.js';
 
 /**
  * User entity for credential request details
@@ -20,8 +20,10 @@ export type CredentialRequest = {
     id: string;
     /** Organization ID */
     organizationId: number;
-    /** Team ID */
+    /** Project ID (legacy name) */
     teamId: number;
+    /** Project ID. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
     /** User ID */
     userId: number;
     /** Name of the request */
@@ -95,11 +97,9 @@ export type ListCredentialRequestsOptions<C extends keyof CredentialRequest = ne
 /**
  * Body for creating a new credential request
  */
-export type CreateCredentialRequestBody = {
+export type CreateCredentialRequestBody = ProjectRef & {
     /** Name of the request */
     name: string;
-    /** Team ID */
-    teamId: number;
     /** Description of the request */
     description?: string;
     /** Array of connections to include in the request */
@@ -144,13 +144,11 @@ export type CredentialSelection = CredentialSelectionBase &
 /**
  * Body for creating a credential action
  */
-export type CreateCredentialActionBody = {
+export type CreateCredentialActionBody = ProjectRef & {
     /** Name of the Request which will be displayed to the End Users who open it */
     name?: string;
     /** Description of the Request which will be displayed to the End Users who open it */
     description?: string;
-    /** ID of the Team to which the credentials will belong */
-    teamId: number;
     /** Array of app/module selections to derive credentials from */
     credentials: CredentialSelection[];
 };
@@ -203,8 +201,10 @@ export type CreateByCredentialsBody = {
     name?: string;
     /** Instructions or context for the end-user */
     description?: string;
-    /** The numeric ID of the Make team where the connections/keys will be created once authorized */
-    teamId: number;
+    /** The numeric ID of the Make project where the connections/keys will be created once authorized */
+    projectId?: number;
+    /** @deprecated Teams were renamed to Projects. Use `projectId`. */
+    teamId?: number;
     /** Array of OAuth or basic-auth connections to request */
     connections?: ConnectionSelection[];
     /** Array of API keys to request */
@@ -262,9 +262,9 @@ export class CredentialRequests {
     }
 
     /**
-     * List credential requests for a given team, with optional additional filtering and pagination.
+     * List credential requests for a given project, with optional additional filtering and pagination.
      *
-     * @param teamId - The team to list credential requests for.
+     * @param teamId - The project to list credential requests for.
      * @param options - Optional filters (user, provider, status, name) and pagination.
      */
     async list<C extends keyof CredentialRequest = never>(

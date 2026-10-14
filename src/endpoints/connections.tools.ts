@@ -6,11 +6,11 @@ export const tools: MakeTool[] = [
     {
         name: 'connections_list',
         title: 'List connections',
-        description: 'List connections for a team.',
+        description: 'List connections for a project.',
         category: 'connections',
         scope: 'connections:read',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -19,7 +19,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list connections for' },
+                projectId: { type: 'number', description: 'The project ID to list connections for' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
                 type: { type: 'array', items: { type: 'string' }, description: 'Filter by connection type' },
                 scopes: {
                     type: 'object',
@@ -34,11 +39,11 @@ export const tools: MakeTool[] = [
                     },
                 },
             },
-            required: ['teamId'],
+            required: ['projectId'],
         },
         examples: [
-            { teamId: 5 },
-            { teamId: 5, type: ['google'], scopes: { google: ['https://www.googleapis.com/auth/drive'] } },
+            { projectId: 5 },
+            { projectId: 5, type: ['google'], scopes: { google: ['https://www.googleapis.com/auth/drive'] } },
         ],
         execute: async (make: Make, args: { teamId: number; type?: string[]; scopes?: Record<string, string[]> }) => {
             return await make.connections.list(args.teamId, { type: args.type, scopes: args.scopes, cols: ['*'] });
@@ -76,8 +81,8 @@ export const tools: MakeTool[] = [
         description: 'Create a new connection.',
         category: 'connections',
         scope: 'connections:write',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -89,7 +94,12 @@ export const tools: MakeTool[] = [
             properties: {
                 name: { type: 'string', description: 'Human-readable name for the connection' },
                 accountName: { type: 'string', description: 'Connection type name (internal identifier)' },
-                teamId: { type: 'number', description: 'ID of the team to create the connection in' },
+                projectId: { type: 'number', description: 'ID of the project to create the connection in' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
                 data: { type: 'object', description: 'Connection configuration data' },
                 scope: {
                     type: 'array',
@@ -97,9 +107,9 @@ export const tools: MakeTool[] = [
                     description: 'OAuth scopes',
                 },
             },
-            required: ['name', 'accountName', 'teamId'],
+            required: ['name', 'accountName', 'projectId'],
         },
-        examples: [{ name: 'My Google Connection', accountName: 'google', teamId: 5 }],
+        examples: [{ name: 'My Google Connection', accountName: 'google', projectId: 5 }],
         execute: async (
             make: Make,
             args: {

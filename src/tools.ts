@@ -208,6 +208,37 @@ export type MakeTool = {
 };
 
 /**
+ * Text for an MCP server's `instructions` (initialize result) that explains the Teams to Projects rename.
+ */
+export const MakeToolsInstructions =
+    'Teams were renamed to Projects; `teamId` is now `projectId`. Tools still accept the legacy `teamId` argument.';
+
+/**
+ * Let a tool whose schema names the project `projectId` also take the legacy `teamId`.
+ * The tool's own `execute` reads `teamId`, so `projectId` is copied into it.
+ * @param tool The tool definition to wrap
+ * @returns The tool, with `execute` accepting `projectId` or `teamId`
+ */
+function withProjectIdArgument(tool: MakeTool): MakeTool {
+    if (!tool.inputSchema.properties?.projectId || !tool.inputSchema.properties?.teamId) {
+        return tool;
+    }
+    return {
+        ...tool,
+        execute: async (make: Make, args: Record<string, JSONValue>) => {
+            const { projectId, ...rest } = args ?? {};
+            if (projectId === undefined || projectId === null) {
+                return await tool.execute(make, rest);
+            }
+            if (rest.teamId !== undefined && rest.teamId !== null && rest.teamId !== projectId) {
+                throw new Error('projectId and teamId (its legacy name) were both given with different values.');
+            }
+            return await tool.execute(make, { ...rest, teamId: projectId });
+        },
+    };
+}
+
+/**
  * Aggregated list of every tool definition exposed by the Make SDK.
  *
  * Consumed by the MCP server (via `./mcp`), the Make CLI, and any other harness
@@ -257,4 +288,4 @@ export const MakeTools = [
     ...RolesTools,
     ...CustomRolesTools,
     ...AuditLogsTools,
-] as MakeTool[];
+].map(tool => withProjectIdArgument(tool as MakeTool));

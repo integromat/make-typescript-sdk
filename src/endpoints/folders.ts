@@ -1,4 +1,4 @@
-import type { FetchFunction, PickColumns } from '../types.js';
+import type { FetchFunction, PickColumns, ProjectRef } from '../types.js';
 
 /**
  * Non-recursive folder fields, excluding `children`.
@@ -12,8 +12,10 @@ type FolderFields = {
     name: string;
     /** Slash-separated folder path including this folder, for example `CRM/cleanup` */
     path: string;
-    /** ID of the team that owns the folder. Returned when listing folders by organization */
+    /** ID of the project that owns the folder. Returned when listing folders by organization */
     teamId?: number;
+    /** ID of the project that owns the folder. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
     /** ID of the parent folder, or `null` for top-level folders */
     parentId: number | null;
     /** Manual sort position among sibling folders, or `null` if unset */
@@ -32,7 +34,7 @@ type FolderFields = {
 
 /**
  * Represents a folder in Make.
- * Folders help organize scenarios within a team and can be nested to form a folder tree.
+ * Folders help organize scenarios within a project and can be nested to form a folder tree.
  *
  * `children` holds the direct child folders of this folder (or all descendants when
  * `childrenDepth` is set to `all`). Its items are typed with the same column selection `C`
@@ -73,11 +75,9 @@ type ListFoldersResponse<C extends keyof Folder = never> = {
 /**
  * Parameters for creating a new folder.
  */
-export type CreateFolderBody = {
+export type CreateFolderBody = ProjectRef & {
     /** Name of the folder */
     name: string;
-    /** ID of the team where the folder will be created */
-    teamId: number;
     /** ID of the parent folder. Omit or pass `null` to create a top-level folder */
     parentId?: number | null;
 };
@@ -119,7 +119,7 @@ type UpdateFolderResponse<C extends keyof Folder = never> = {
 
 /**
  * Class providing methods for working with Make folders.
- * Folders help organize scenarios within a team for better organization
+ * Folders help organize scenarios within a project for better organization
  * and management of automation workflows.
  */
 export class Folders {
@@ -134,9 +134,9 @@ export class Folders {
     }
 
     /**
-     * List direct scenario folder children for a team.
+     * List direct scenario folder children for a project.
      * Omit `parentId` in `options` to return top-level folders.
-     * @param teamId The team ID to list folders for
+     * @param teamId The project ID to list folders for
      * @param options Optional parameters for filtering the returned fields, selecting a parent folder, or expanding descendants
      * @returns Promise with the list of scenario folders
      */
@@ -166,6 +166,7 @@ export class Folders {
                 body: {
                     name: folder.name,
                     teamId: folder.teamId,
+                    projectId: folder.projectId,
                     parentId: folder.parentId,
                 },
             })

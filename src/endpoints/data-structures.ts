@@ -1,4 +1,4 @@
-import type { FetchFunction, Pagination, PickColumns } from '../types.js';
+import type { FetchFunction, Pagination, PickColumns, ProjectRef } from '../types.js';
 
 /**
  * Represents a field in a data structure.
@@ -42,8 +42,10 @@ export type DataStructure = {
     id: number;
     /** Name of the data structure */
     name: string;
-    /** ID of the team that owns the data structure */
+    /** ID of the project that owns the data structure */
     teamId: number;
+    /** ID of the project that owns the data structure. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
     /** Field specifications defining the structure */
     spec?: DataStructureField[];
     /** Whether to enforce strict validation of the structure */
@@ -75,11 +77,9 @@ type ListDataStructuresResponse<C extends keyof DataStructure = never> = {
 /**
  * Parameters for creating a new data structure.
  */
-export type CreateDataStructureBody = {
+export type CreateDataStructureBody = ProjectRef & {
     /** Name of the data structure */
     name: string;
-    /** ID of the team where the data structure will be created */
-    teamId: number;
     /** Field specifications defining the structure */
     spec?: DataStructureField[];
     /** Whether to enforce strict validation of the structure */
@@ -128,7 +128,7 @@ type UpdateDataStructureResponse = {
 export type CloneDataStructureBody = {
     /** Name for the cloned data structure */
     name: string;
-    /** ID of the team where the clone will be created */
+    /** ID of the project where the clone will be created */
     targetTeamId: number;
 };
 
@@ -157,8 +157,8 @@ export class DataStructures {
     }
 
     /**
-     * List all data structures for a team.
-     * @param teamId The team ID to filter data structures by
+     * List all data structures for a project.
+     * @param teamId The project ID to filter data structures by
      * @param options Optional parameters for filtering and pagination
      * @returns Promise with the list of data structures
      */
@@ -229,7 +229,7 @@ export class DataStructures {
     }
 
     /**
-     * Clone a data structure to another team.
+     * Clone a data structure to another project.
      * @param dataStructureId The data structure ID to clone
      * @param body Parameters for the cloning operation
      * @returns Promise with the newly created data structure clone

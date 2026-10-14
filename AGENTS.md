@@ -466,7 +466,7 @@ Integration tests require a `.env` file:
 ```
 MAKE_API_KEY="your-api-key"
 MAKE_ZONE="your-zone.make.com"
-MAKE_TEAM="your-team-id"
+MAKE_TEAM="your-project-id"
 MAKE_ORGANIZATION="your-org-id"
 ```
 
@@ -513,12 +513,25 @@ export type ListEntityNamesOptions<C extends keyof EntityName = never> = {
     pg?: Partial<Pagination<EntityName>>;
     /** Search entities by name */
     search?: string;
-    /** Filter by team ID */
+    /** Filter by project ID */
+    projectId?: number;
+    /** @deprecated Teams were renamed to Projects. Use `projectId`. */
     teamId?: number;
     /** Filter by creation date */
     createdAfter?: string;
 };
 ```
+
+## Projects (formerly Teams)
+
+Teams were renamed to Projects; `teamId` is now `projectId`. The API serves `/projects/...` next to `/teams/...`, accepts `projectId` as an alias of `teamId`, and returns both key names. Follow it without breaking existing callers:
+
+- Prose (JSDoc, tool titles and descriptions, README) says "project". Keep the pricing plan "Teams", "Private space", `teams:*` OAuth scopes, permission names such as `personal team manage`, and existing tool names (`teams_*`, `*-for-team`).
+- Entity types: keep `teamId`, add `projectId?: number` next to it (same value, returned by APIs that serve project naming). Lists keyed `teams` get an optional `projects` twin.
+- Request bodies that need a project use `ProjectRef & { ... }` from `types.ts`, so callers pass `projectId` or the legacy `teamId`.
+- `make.projects` (`/projects`) is the main namespace; `make.teams` (`/teams`) and other team-named methods stay as `@deprecated` aliases of the same implementation.
+- Role categories in requests use `RoleCategoryInput` and go through `toApiRoleCategory`, which sends `'project'` as `'team'`.
+- Tool schemas name the property `projectId` (required where `teamId` was) and keep a `teamId` property described as its deprecated legacy name. Set `scopeId`/`identifier`/`resourceId` to `'projectId'`. `execute` may keep reading `args.teamId`: `MakeTools` wraps every tool with both properties and copies `projectId` into `teamId`.
 
 ## Tool Definitions
 

@@ -10,6 +10,7 @@ import { ScenarioLabels } from './endpoints/scenario-labels.js';
 import { ScenarioNotes } from './endpoints/scenario-notes.js';
 import { Hooks } from './endpoints/hooks.js';
 import { Teams } from './endpoints/teams.js';
+import { Projects } from './endpoints/projects.js';
 import { IncompleteExecutions } from './endpoints/incomplete-executions.js';
 import { Keys } from './endpoints/keys.js';
 import { Connections } from './endpoints/connections.js';
@@ -82,7 +83,7 @@ export class Make {
 
     /**
      * Access to audit-log-related endpoints
-     * Audit logs record administrative and configuration events across an organization and its teams
+     * Audit logs record administrative and configuration events across an organization and its projects
      */
     public readonly auditLogs: AuditLogs;
 
@@ -130,7 +131,7 @@ export class Make {
 
     /**
      * Access to scenario label-related endpoints
-     * Scenario labels are team-scoped tags with a many-to-many relationship to scenarios
+     * Scenario labels are project-scoped tags with a many-to-many relationship to scenarios
      */
     public readonly scenarioLabels: ScenarioLabels;
 
@@ -147,8 +148,14 @@ export class Make {
     public readonly hooks: Hooks;
 
     /**
-     * Access to team-related endpoints
-     * Teams control access to Make scenarios, connections, data stores, and other resources
+     * Access to project-related endpoints (`/projects`)
+     * Projects (formerly teams) control access to Make scenarios, connections, data stores, and other resources
+     */
+    public readonly projects: Projects;
+
+    /**
+     * Access to project-related endpoints through the legacy `/teams` API paths
+     * @deprecated Teams were renamed to Projects. Use {@link Make.projects} instead.
      */
     public readonly teams: Teams;
 
@@ -172,7 +179,7 @@ export class Make {
 
     /**
      * Access to credential request-related endpoints
-     * Credential requests allow you to manage requests for credentials (connections/keys) for users and teams
+     * Credential requests allow you to manage requests for credentials (connections/keys) for users and projects
      */
     public readonly credentialRequests: CredentialRequests;
 
@@ -184,7 +191,7 @@ export class Make {
 
     /**
      * Access to organization-related endpoints
-     * Organizations are top-level entities that contain teams and manage overall account settings
+     * Organizations are top-level entities that contain projects and manage overall account settings
      */
     public readonly organizations: Organizations;
 
@@ -220,7 +227,7 @@ export class Make {
 
     /**
      * Access to template endpoints.
-     * Templates are a team's own saved scenario configurations, usable as a reference or copied into new scenarios.
+     * Templates are a project's own saved scenario configurations, usable as a reference or copied into new scenarios.
      */
     public readonly templates: Templates;
 
@@ -241,14 +248,14 @@ export class Make {
 
     /**
      * Access to role-related endpoints
-     * Roles define a set of permissions and can be assigned to users at the organization or team
+     * Roles define a set of permissions and can be assigned to users at the organization or project
      * level; includes both built-in system roles and, when enabled, custom roles
      */
     public readonly roles: Roles;
 
     /**
      * Access to custom role-related endpoints
-     * Custom roles are user-defined organization or team roles managed through Roleman
+     * Custom roles are user-defined organization or project roles managed through Roleman
      */
     public readonly customRoles: CustomRoles;
 
@@ -336,6 +343,7 @@ export class Make {
         this.scenarioLabels = new ScenarioLabels(this.fetch.bind(this));
         this.scenarioNotes = new ScenarioNotes(this.fetch.bind(this));
         this.hooks = new Hooks(this.fetch.bind(this));
+        this.projects = new Projects(this.fetch.bind(this));
         this.teams = new Teams(this.fetch.bind(this));
         this.incompleteExecutions = new IncompleteExecutions(this.fetch.bind(this));
         this.keys = new Keys(this.fetch.bind(this));

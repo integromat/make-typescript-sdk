@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
         name: 'roles_list',
         title: 'List roles',
         description:
-            "List roles available to the current user, at the organization or team level. Custom roles are included only when 'organizationId' or 'teamId' is provided and the organization has the customRoles license feature enabled.",
+            "List roles available to the current user, at the organization or project level. Custom roles are included only when 'organizationId' or 'projectId' is provided and the organization has the customRoles license feature enabled.",
         category: 'roles',
         scope: 'user:read',
         scopeId: undefined,
@@ -21,8 +21,9 @@ export const tools: MakeTool[] = [
             properties: {
                 category: {
                     type: 'string',
-                    enum: ['organization', 'team'],
-                    description: 'Restrict results to organization or team roles.',
+                    enum: ['organization', 'project', 'team'],
+                    description:
+                        "Restrict results to organization or project roles. 'team' is the legacy name of 'project'.",
                 },
                 excludeRole: {
                     type: 'array',
@@ -35,14 +36,19 @@ export const tools: MakeTool[] = [
                     description:
                         "Organization to resolve custom roles for. Required, together with the organization's customRoles license, for custom roles to be included.",
                 },
-                teamId: { type: 'number', description: 'Team to resolve custom roles for.' },
+                projectId: { type: 'number', description: 'Project to resolve custom roles for.' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
             },
         },
-        examples: [{}, { organizationId: 5 }, { teamId: 12, category: 'team' }],
+        examples: [{}, { organizationId: 5 }, { projectId: 12, category: 'project' }],
         execute: async (
             make: Make,
             args: {
-                category?: 'organization' | 'team';
+                category?: 'organization' | 'project' | 'team';
                 excludeRole?: number[];
                 roleId?: number;
                 organizationId?: number;
@@ -97,13 +103,14 @@ export const tools: MakeTool[] = [
             properties: {
                 roleCategory: {
                     type: 'string',
-                    enum: ['organization', 'team'],
-                    description: 'Restrict results to organization or team permissions.',
+                    enum: ['organization', 'project', 'team'],
+                    description:
+                        "Restrict results to organization or project permissions. 'team' is the legacy name of 'project'.",
                 },
             },
         },
         examples: [{}, { roleCategory: 'organization' }],
-        execute: async (make: Make, args: { roleCategory?: 'organization' | 'team' }) => {
+        execute: async (make: Make, args: { roleCategory?: 'organization' | 'project' | 'team' }) => {
             return await make.roles.permissions(args);
         },
     },

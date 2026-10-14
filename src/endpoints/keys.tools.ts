@@ -6,11 +6,11 @@ export const tools: MakeTool[] = [
     {
         name: 'keys_list',
         title: 'List keys',
-        description: 'List all keys for a team.',
+        description: 'List all keys for a project.',
         category: 'keys',
         scope: 'keys:read',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -19,11 +19,16 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list keys for' },
+                projectId: { type: 'number', description: 'The project ID to list keys for' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
             },
-            required: ['teamId'],
+            required: ['projectId'],
         },
-        examples: [{ teamId: 5 }],
+        examples: [{ projectId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.keys.list(args.teamId, { cols: ['*'] });
         },
@@ -60,8 +65,8 @@ export const tools: MakeTool[] = [
         description: 'Create a new key.',
         category: 'keys',
         scope: 'keys:write',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -71,16 +76,21 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID where the key will be created' },
+                projectId: { type: 'number', description: 'The project ID where the key will be created' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
                 name: { type: 'string', description: 'Name of the key' },
                 typeName: { type: 'string', description: 'Type of the key' },
                 parameters: { type: 'object', description: 'Key-specific configuration parameters' },
             },
-            required: ['teamId', 'name', 'typeName', 'parameters'],
+            required: ['projectId', 'name', 'typeName', 'parameters'],
         },
         examples: [
             {
-                teamId: 5,
+                projectId: 5,
                 name: 'My API Key',
                 typeName: 'basicauth',
                 parameters: { user: 'admin', pass: 'secret' },
