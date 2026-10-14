@@ -8,6 +8,8 @@ export type {
     QueryValue,
     PickColumns,
     RetryOptions,
+    ProjectRef,
+    RoleCategoryInput,
 } from './types.js';
 
 export type {
@@ -17,6 +19,7 @@ export type {
     AuditLogDetail,
     AuditLogUser,
     AuditLogTeam,
+    AuditLogProject,
     AuditLogOrganization,
     AuditLogVersion,
     AuditLogsSortBy,
@@ -29,6 +32,7 @@ export type {
     AuditLogFilterOptions,
     OrganizationAuditLogFilters,
     TeamAuditLogFilters,
+    ProjectAuditLogFilters,
 } from './endpoints/audit-logs.js';
 export type { Blueprint, Blueprints, BlueprintNode, BlueprintRoute, BlueprintVersion } from './endpoints/blueprints.js';
 export type {
@@ -279,6 +283,13 @@ export type {
     UpdateSDKEndpointBody,
 } from './endpoints/sdk/endpoints.js';
 export type { Team, Teams, CreateTeamBody, ListTeamsOptions, GetTeamOptions } from './endpoints/teams.js';
+export type {
+    Project,
+    Projects,
+    CreateProjectBody,
+    ListProjectsOptions,
+    GetProjectOptions,
+} from './endpoints/projects.js';
 export type {
     PublicTemplate,
     PublicTemplateBlueprint,

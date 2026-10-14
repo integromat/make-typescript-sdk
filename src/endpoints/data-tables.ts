@@ -1,4 +1,4 @@
-import type { FetchFunction } from '../types.js';
+import type { FetchFunction, ProjectRef } from '../types.js';
 import { DataTableRecords } from './data-table-records.js';
 import { DataTableColumns } from './data-table-columns.js';
 
@@ -39,10 +39,7 @@ export type ListDataTablesOptions = {
 /**
  * Body for creating a new data table.
  */
-export type CreateDataTableBody = Pick<DataTable, 'name'> & {
-    /** The team ID to create the data table in */
-    teamId: number;
-};
+export type CreateDataTableBody = Pick<DataTable, 'name'> & ProjectRef;
 
 /**
  * Body for updating an existing data table.
@@ -84,8 +81,8 @@ export class DataTables {
     }
 
     /**
-     * List data tables of a team.
-     * @param teamId The team ID to filter data tables by
+     * List data tables of a project.
+     * @param teamId The project ID to filter data tables by
      * @param options Optional parameters for pagination and sorting
      * @returns Promise with the list of data tables
      */

@@ -1,5 +1,7 @@
 import { MakeTools, type MakeTool } from './tools.js';
 
+export { MakeToolsInstructions } from './tools.js';
+
 export type { JSONSchema } from './tools.js';
 
 /**

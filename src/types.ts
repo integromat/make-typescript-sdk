@@ -91,3 +91,26 @@ export type PickColumns<T, K extends keyof T | never, D extends keyof T | never 
         ? T
         : Pick<T, D>
     : { [P in K]-?: NonNullable<T[P]> };
+
+/**
+ * The project (formerly team) a request targets. Pass `projectId`, or the legacy `teamId`.
+ * Both name the same ID; the API rejects a request that sends both with different values.
+ */
+export type ProjectRef =
+    | {
+          /** ID of the project */
+          projectId: number;
+          /** @deprecated Teams were renamed to Projects. Use `projectId`. */
+          teamId?: number;
+      }
+    | {
+          /** @deprecated Teams were renamed to Projects. Use `projectId`. */
+          teamId: number;
+          /** ID of the project */
+          projectId?: number;
+      };
+
+/**
+ * Role category accepted in requests. `'project'` is the new name of `'team'`; responses still return `'team'`.
+ */
+export type RoleCategoryInput = 'organization' | 'project' | 'team';

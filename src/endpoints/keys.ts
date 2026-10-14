@@ -1,4 +1,4 @@
-import type { FetchFunction, JSONValue, PickColumns } from '../types.js';
+import type { FetchFunction, JSONValue, PickColumns, ProjectRef } from '../types.js';
 import type { DataStructureField } from './data-structures.js';
 
 /**
@@ -13,8 +13,10 @@ export type Key = {
     name: string;
     /** Type of the key (e.g., 'api_key', 'oauth') */
     typeName?: string;
-    /** ID of the team that owns the key */
+    /** ID of the project that owns the key */
     teamId?: number;
+    /** ID of the project that owns the key. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
     /** The app this key belongs to, if any */
     packageName?: string | null;
     /** Theme color for the key in UI */
@@ -51,7 +53,7 @@ export type KeyType = {
 export type ListKeysOptions<C extends keyof Key = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
-    /** Team ID to filter keys by (can override the main parameter) */
+    /** Project ID to filter keys by (can override the main parameter) */
     teamId?: number;
     /** Filter keys by type */
     typeName?: string;
@@ -60,11 +62,9 @@ export type ListKeysOptions<C extends keyof Key = never> = {
 /**
  * Parameters for creating a new key.
  */
-export type CreateKeyBody = {
+export type CreateKeyBody = ProjectRef & {
     /** Name for the new key */
     name: string;
-    /** ID of the team where the key will be created */
-    teamId: number;
     /** Type of the key to create */
     typeName: string;
     /** Key-specific configuration parameters */
@@ -147,8 +147,8 @@ export class Keys {
     }
 
     /**
-     * List keys for a team.
-     * @param teamId The team ID to list keys for
+     * List keys for a project.
+     * @param teamId The project ID to list keys for
      * @param options Optional parameters for filtering
      * @returns Promise with the list of keys
      */

@@ -1,6 +1,6 @@
 # Make TypeScript SDK
 
-A TypeScript SDK for interacting with the Make API. This SDK provides a type-safe way to interact with [Make's API](https://developers.make.com/api-documentation) endpoints for managing scenarios, teams, data stores, and more.
+A TypeScript SDK for interacting with the Make API. This SDK provides a type-safe way to interact with [Make's API](https://developers.make.com/api-documentation) endpoints for managing scenarios, projects (formerly teams), data stores, and more.
 
 ## Installation
 
@@ -28,7 +28,7 @@ const make = new Make('your-api-key', 'eu2.make.com');
 const user = await make.users.me();
 
 // List scenarios
-const scenarios = await make.scenarios.list(/* Team ID */);
+const scenarios = await make.scenarios.list(/* Project ID */);
 
 // Work with data stores
 const dataStore = await make.dataStores.get(/* DataStore ID */);
@@ -48,7 +48,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 ## Platform Endpoints
 
 - **Enums** - Standardized lists (countries, regions, timezones)
-- **Audit Logs** - Organization and team audit trail, its filter options, and per-entry detail (read-only)
+- **Audit Logs** - Organization and project audit trail, its filter options, and per-entry detail (read-only)
 - **Blueprit** - Blueprint management
 - **Connections** - External service connections and authentication
 - **Connected Systems** - On-prem connections linking agents to external apps (HTTP, SAP, etc.)
@@ -62,7 +62,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Data Table Columns** - Column definitions of data tables (create, update, delete, reorder)
 - **Executions** - Scenario execution history
 - **Folders** - Scenario categorization
-- **Scenario Labels** - Team-scoped tags assignable to scenarios
+- **Scenario Labels** - Project-scoped tags assignable to scenarios
 - **Scenario Notes** - Annotations attached to a scenario, optionally anchored to modules
 - **Functions** - Custom JavaScript functions for scenarios
 - **Hooks** - Webhooks and mailhooks for external integrations
@@ -73,11 +73,12 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Organizations** - Top-level account and billing management
 - **Private Spaces** - Per-user private workspaces within an organization (list, get, update)
 - **Roles** - Built-in and custom roles and their permissions (list, get, permissions)
-- **Custom Roles** - User-defined organization or team roles (create, update, delete)
+- **Custom Roles** - User-defined organization or project roles (create, update, delete)
 - **Scenarios** - Scenario management
-- **Teams** - Team management and collaboration
+- **Projects** - Project (formerly Team) management and collaboration via `make.projects` (`/projects` API paths)
+- **Teams** - Deprecated alias of Projects via `make.teams` (legacy `/teams` API paths)
 - **Public Templates** - Public template discovery and blueprint export (read-only)
-- **Templates** - A team's own saved templates (create, update, delete, blueprint export)
+- **Templates** - A project's own saved templates (create, update, delete, blueprint export)
 - **Users** - Current user information and authentication
 
 ## Custom Apps Development Endpoints
@@ -170,13 +171,19 @@ const tools = MakeTools.map(tool => {
 const tool = MakeTools.find(tool => tool.name === 'scenarios_list');
 
 try {
-    await tool.execute(make, { teamId: 1 });
+    await tool.execute(make, { projectId: 1 });
 } catch (error) {
     // Handle error
 }
 ```
 
 See full example in the `scripts/run-mcp-server.mjs` file.
+
+### Teams renamed to Projects
+
+Teams were renamed to Projects; `teamId` is now `projectId`. Tool schemas name the project `projectId` and still accept the legacy `teamId` argument (sending both with different values is an error). Tool names and the `teams:*` scopes are unchanged. `MakeToolsInstructions` (from `@makehq/sdk/tools` and `@makehq/sdk/mcp`) holds this note for an MCP server's `instructions`.
+
+In the SDK, `make.projects` calls the `/projects` API paths and `make.teams` (deprecated) keeps calling `/teams`. Request bodies accept `projectId` or the legacy `teamId`, and response types include `projectId`/`projects` next to `teamId`/`teams` where the API returns both. Role categories accept `'project'` and send it to the API as `'team'`.
 
 ### Tool Structure
 
@@ -186,15 +193,16 @@ Each tool is described as demonstrated in the following example:
 {
     name: 'scenarios_list',
     title: 'List scenarios',
-    description: 'List all scenarios for a team',
+    description: 'List all scenarios for a project',
     category: 'scenarios',
     scope: 'scenarios:read',
     inputSchema: {
         type: 'object',
         properties: {
-            teamId: { type: 'number', description: 'The team ID to filter scenarios by' },
+            projectId: { type: 'number', description: 'The project ID to filter scenarios by' },
+            teamId: { type: 'number', description: 'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.' },
         },
-        required: ['teamId'],
+        required: ['projectId'],
     },
     execute: async (make: Make, args: { teamId: number }) => {
         return await make.scenarios.list(args.teamId);
@@ -234,7 +242,7 @@ All tools are organized into the following categories:
 - `roles`
 - `custom-roles`
 - `scenarios`
-- `teams`
+- `teams` (tools for projects; the category keeps its legacy name)
 - `public-templates`
 - `templates`
 - `users`
@@ -296,7 +304,7 @@ Create a `.env` file in the root directory with the following variables:
 ```
 MAKE_API_KEY="<your-api-key>"
 MAKE_ZONE="<zone>"
-MAKE_TEAM="<team-id>"
+MAKE_TEAM="<project-id>"
 MAKE_ORGANIZATION="<organization-id>"
 ```
 

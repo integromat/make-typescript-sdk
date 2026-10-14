@@ -1,4 +1,4 @@
-import type { QueryValue } from './types.js';
+import type { QueryValue, RoleCategoryInput } from './types.js';
 
 /** Regular expression to validate a UUIDv4 string format */
 const UUIDv4_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -115,4 +115,15 @@ export class MakeError extends Error {
  */
 export function JSONStringifyIfNotString(value: unknown): string {
     return typeof value === 'string' ? value : JSON.stringify(value);
+}
+
+/**
+ * Map a role category to the value the API filters on.
+ * @param category Role category, where `'project'` is the new name of `'team'`
+ * @returns The category understood by the API
+ */
+export function toApiRoleCategory(category: RoleCategoryInput): 'organization' | 'team';
+export function toApiRoleCategory(category: RoleCategoryInput | undefined): 'organization' | 'team' | undefined;
+export function toApiRoleCategory(category: RoleCategoryInput | undefined): 'organization' | 'team' | undefined {
+    return category === 'project' ? 'team' : category;
 }

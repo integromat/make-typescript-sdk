@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
         name: 'custom-roles_create',
         title: 'Create custom role',
         description:
-            "Create a new custom organization or team role. Requires the organization's customRoles license feature and the 'organization custom roles edit' permission.",
+            "Create a new custom organization or project role. Requires the organization's customRoles license feature and the 'organization custom roles edit' permission.",
         category: 'custom-roles',
         scope: 'user:write',
         scopeId: 'organizationId',
@@ -23,8 +23,9 @@ export const tools: MakeTool[] = [
                 name: { type: 'string', minLength: 1, maxLength: 50, description: 'Name of the custom role.' },
                 category: {
                     type: 'string',
-                    enum: ['organization', 'team'],
-                    description: 'Whether the role applies to the organization or a team.',
+                    enum: ['organization', 'project', 'team'],
+                    description:
+                        "Whether the role applies to the organization or a project. 'team' is the legacy name of 'project'.",
                 },
                 organizationId: { type: 'number', description: 'ID of the organization to create the custom role in.' },
                 description: {
@@ -44,7 +45,7 @@ export const tools: MakeTool[] = [
             make: Make,
             args: {
                 name: string;
-                category: 'organization' | 'team';
+                category: 'organization' | 'project' | 'team';
                 organizationId: number;
                 description?: string | null;
                 permissions?: number[];

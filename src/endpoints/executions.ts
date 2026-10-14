@@ -26,8 +26,10 @@ export type Execution = {
     transfer: number;
     /** ID of the organization the execution belongs to */
     organizationId: number;
-    /** ID of the team the execution belongs to */
+    /** ID of the project the execution belongs to */
     teamId: number;
+    /** ID of the project that the execution belongs to. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
     /** Type of execution (e.g., 'scheduled', 'manual') */
     type: string;
     /** Type of the event that triggered the execution */

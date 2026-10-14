@@ -5,11 +5,11 @@ export const tools: MakeTool[] = [
     {
         name: 'data-stores_list',
         title: 'List data stores',
-        description: 'List all data stores for a team.',
+        description: 'List all data stores for a project.',
         category: 'data-stores',
         scope: 'datastores:read',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -18,11 +18,16 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to filter data stores by' },
+                projectId: { type: 'number', description: 'The project ID to filter data stores by' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
             },
-            required: ['teamId'],
+            required: ['projectId'],
         },
-        examples: [{ teamId: 5 }],
+        examples: [{ projectId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.dataStores.list(args.teamId, { cols: ['*'] });
         },
@@ -59,8 +64,8 @@ export const tools: MakeTool[] = [
         description: 'Create a new data store.',
         category: 'data-stores',
         scope: 'datastores:write',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -71,16 +76,21 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 name: { type: 'string', description: 'Name of the data store' },
-                teamId: { type: 'number', description: 'ID of the team to create the data store in' },
+                projectId: { type: 'number', description: 'ID of the project to create the data store in' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
                 maxSizeMB: { type: 'number', description: 'Maximum size in MB for the data store' },
                 datastructureId: {
                     type: 'number',
                     description: 'ID of the data structure defining the record format',
                 },
             },
-            required: ['name', 'teamId', 'maxSizeMB'],
+            required: ['name', 'projectId', 'maxSizeMB'],
         },
-        examples: [{ name: 'Customers', teamId: 5, maxSizeMB: 1, datastructureId: 178 }],
+        examples: [{ name: 'Customers', projectId: 5, maxSizeMB: 1, datastructureId: 178 }],
         execute: async (
             make: Make,
             args: { name: string; teamId: number; maxSizeMB: number; datastructureId?: number },

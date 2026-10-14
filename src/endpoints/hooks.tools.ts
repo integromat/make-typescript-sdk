@@ -6,11 +6,11 @@ export const tools: MakeTool[] = [
     {
         name: 'hooks_list',
         title: 'List webhooks/mailhooks',
-        description: 'List webhooks/mailhooks for a specific team.',
+        description: 'List webhooks/mailhooks for a specific project.',
         category: 'hooks',
         scope: 'hooks:read',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -19,11 +19,16 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list hooks for' },
+                projectId: { type: 'number', description: 'The project ID to list hooks for' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
             },
-            required: ['teamId'],
+            required: ['projectId'],
         },
-        examples: [{ teamId: 5 }],
+        examples: [{ projectId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.hooks.list(args.teamId);
         },
@@ -60,8 +65,8 @@ export const tools: MakeTool[] = [
         description: 'Create a new webhook/mailhook.',
         category: 'hooks',
         scope: 'hooks:write',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -71,7 +76,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID where the hook will be created' },
+                projectId: { type: 'number', description: 'The project ID where the hook will be created' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
                 name: { type: 'string', description: 'The name of the webhook' },
                 typeName: {
                     type: 'string',
@@ -84,12 +94,12 @@ export const tools: MakeTool[] = [
                         "Additional parameters specific to the hook type. Required parameters that have defaults in the hook type's manifest are filled automatically when omitted (e.g. for 'gateway-webhook' the booleans 'method', 'headers' and 'stringify' default to false). Parameters without defaults must be provided here (e.g. app-specific hooks often require their own fields).",
                 },
             },
-            required: ['teamId', 'name', 'typeName'],
+            required: ['projectId', 'name', 'typeName'],
         },
         examples: [
-            { teamId: 5, name: 'My Webhook', typeName: 'gateway-webhook' },
+            { projectId: 5, name: 'My Webhook', typeName: 'gateway-webhook' },
             {
-                teamId: 5,
+                projectId: 5,
                 name: 'My Webhook with headers',
                 typeName: 'gateway-webhook',
                 data: { method: true, headers: true, stringify: false },

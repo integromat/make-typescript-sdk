@@ -149,8 +149,8 @@ export class Functions {
     }
 
     /**
-     * List all custom functions for a team.
-     * @param teamId The team ID to list functions for
+     * List all custom functions for a project.
+     * @param teamId The project ID to list functions for
      * @param options Optional parameters for filtering the returned fields
      * @returns Promise with the list of functions
      */
@@ -179,7 +179,7 @@ export class Functions {
 
     /**
      * Create a new custom function.
-     * @param teamId The team ID to create the function in
+     * @param teamId The project ID to create the function in
      * @param body Parameters for the function to create
      * @returns Promise with the created function
      */
@@ -223,7 +223,7 @@ export class Functions {
     /**
      * Check if a function's code is valid.
      * Validates the syntax and execution of the function.
-     * @param teamId The team ID context for checking the function
+     * @param teamId The project ID context for checking the function
      * @param code The function code to validate
      * @returns Promise with the validation result and any error messages
      */
@@ -241,7 +241,7 @@ export class Functions {
 
     /**
      * Get the version history of a function.
-     * @param teamId The team ID the function belongs to
+     * @param teamId The project ID the function belongs to
      * @param functionId The function ID to get history for
      * @returns Promise with the list of historical versions
      */

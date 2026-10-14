@@ -6,11 +6,11 @@ export const tools: MakeTool[] = [
         name: 'folders_list',
         title: 'List folders',
         description:
-            'List scenario folders for a team. If you do not know the teamId, find it via organizations_list (each organization lists its teams) or teams_list, or ask the user — never guess IDs.',
+            'List scenario folders for a project. If you do not know the projectId, find it via organizations_list (each organization lists its projects) or teams_list, or ask the user — never guess IDs.',
         category: 'folders',
         scope: 'scenarios:read',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -19,7 +19,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list folders for' },
+                projectId: { type: 'number', description: 'The project ID to list folders for' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
                 parentId: {
                     type: 'number',
                     description:
@@ -32,9 +37,9 @@ export const tools: MakeTool[] = [
                         "Set to 'all' to return all descendants under children. By default, children includes only one direct child level.",
                 },
             },
-            required: ['teamId'],
+            required: ['projectId'],
         },
-        examples: [{ teamId: 5 }, { teamId: 5, parentId: 1576 }, { teamId: 5, childrenDepth: 'all' }],
+        examples: [{ projectId: 5 }, { projectId: 5, parentId: 1576 }, { projectId: 5, childrenDepth: 'all' }],
         execute: async (make: Make, args: { teamId: number; parentId?: number; childrenDepth?: 'all' }) => {
             const { teamId, ...options } = args;
             return await make.folders.list(teamId, { ...options, cols: ['*'] });
@@ -46,8 +51,8 @@ export const tools: MakeTool[] = [
         description: 'Create a new folder.',
         category: 'folders',
         scope: 'scenarios:write',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -57,18 +62,23 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID where the folder will be created' },
+                projectId: { type: 'number', description: 'The project ID where the folder will be created' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
                 name: { type: 'string', description: 'Name of the folder' },
                 parentId: {
                     oneOf: [{ type: 'number' }, { type: 'null' }],
                     description: 'The unique ID of the parent folder. Omit or pass null to create a top-level folder.',
                 },
             },
-            required: ['teamId', 'name'],
+            required: ['projectId', 'name'],
         },
         examples: [
-            { teamId: 5, name: 'My Folder' },
-            { teamId: 5, name: 'My Subfolder', parentId: 1576 },
+            { projectId: 5, name: 'My Folder' },
+            { projectId: 5, name: 'My Subfolder', parentId: 1576 },
         ],
         execute: async (make: Make, args: { teamId: number; name: string; parentId?: number | null }) => {
             return await make.folders.create(args);

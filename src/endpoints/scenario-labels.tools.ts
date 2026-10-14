@@ -18,11 +18,11 @@ export const tools: MakeTool[] = [
         name: 'scenario-labels_list',
         title: 'List scenario labels',
         description:
-            "List a team's scenario label catalog, including how many scenarios carry each label. Scenario labels are team-scoped tags that can be assigned to scenarios, independent of folders. If you do not know the teamId, find it via organizations_list (each organization lists its teams) or teams_list, or ask the user — never guess IDs.",
+            "List a project's scenario label catalog, including how many scenarios carry each label. Scenario labels are project-scoped tags that can be assigned to scenarios, independent of folders. If you do not know the projectId, find it via organizations_list (each organization lists its projects) or teams_list, or ask the user — never guess IDs.",
         category: 'scenario-labels',
         scope: 'scenarios:read',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -31,11 +31,16 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list scenario labels for' },
+                projectId: { type: 'number', description: 'The project ID to list scenario labels for' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
             },
-            required: ['teamId'],
+            required: ['projectId'],
         },
-        examples: [{ teamId: 5 }],
+        examples: [{ projectId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.scenarioLabels.list(args.teamId);
         },
@@ -44,11 +49,11 @@ export const tools: MakeTool[] = [
         name: 'scenario-labels_create',
         title: 'Create scenario label',
         description:
-            'Create a new scenario label in a team. Labels are team-scoped tags that can be assigned to scenarios. If you do not know the teamId, call users_me to learn it.',
+            'Create a new scenario label in a project. Labels are project-scoped tags that can be assigned to scenarios. If you do not know the projectId, call users_me to learn it.',
         category: 'scenario-labels',
         scope: 'scenarios:write',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -58,7 +63,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID where the label will be created' },
+                projectId: { type: 'number', description: 'The project ID where the label will be created' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
                 name: { type: 'string', description: 'Name of the label (1-30 characters)' },
                 colour: {
                     type: 'string',
@@ -67,11 +77,11 @@ export const tools: MakeTool[] = [
                 },
                 description: { type: 'string', description: 'Optional description of the label (max 500 characters)' },
             },
-            required: ['teamId', 'name', 'colour'],
+            required: ['projectId', 'name', 'colour'],
         },
         examples: [
-            { teamId: 5, name: 'critical', colour: 'danger' },
-            { teamId: 5, name: 'billing', colour: 'info', description: 'Scenarios owned by the billing team' },
+            { projectId: 5, name: 'critical', colour: 'danger' },
+            { projectId: 5, name: 'billing', colour: 'info', description: 'Scenarios owned by the billing team' },
         ],
         execute: async (make: Make, args: CreateScenarioLabelBody) => {
             return await make.scenarioLabels.create(args);
@@ -125,7 +135,7 @@ export const tools: MakeTool[] = [
         name: 'scenario-labels_delete',
         title: 'Delete scenario label',
         description:
-            'Delete a scenario label. The label is removed from the team catalog and unassigned from every scenario carrying it. This cannot be undone.',
+            'Delete a scenario label. The label is removed from the project catalog and unassigned from every scenario carrying it. This cannot be undone.',
         category: 'scenario-labels',
         scope: 'scenarios:write',
         scopeId: 'labelId',
@@ -153,7 +163,7 @@ export const tools: MakeTool[] = [
         name: 'scenario-labels_assign',
         title: 'Assign scenario label',
         description:
-            'Assign a scenario label to a scenario. The label and the scenario must belong to the same team. Assigning an already-assigned label succeeds without changes. To label many scenarios, call this tool once per scenario.',
+            'Assign a scenario label to a scenario. The label and the scenario must belong to the same project. Assigning an already-assigned label succeeds without changes. To label many scenarios, call this tool once per scenario.',
         category: 'scenario-labels',
         scope: 'scenarios:write',
         scopeId: 'labelId',
@@ -183,7 +193,7 @@ export const tools: MakeTool[] = [
         name: 'scenario-labels_unassign',
         title: 'Unassign scenario label',
         description:
-            'Remove a scenario label from a scenario. Removing an already-absent assignment succeeds without changes. The label itself stays in the team catalog.',
+            'Remove a scenario label from a scenario. Removing an already-absent assignment succeeds without changes. The label itself stays in the project catalog.',
         category: 'scenario-labels',
         scope: 'scenarios:write',
         scopeId: 'labelId',

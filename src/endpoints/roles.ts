@@ -1,9 +1,10 @@
-import type { FetchFunction, PickColumns } from '../types.js';
+import type { FetchFunction, PickColumns, RoleCategoryInput } from '../types.js';
+import { toApiRoleCategory } from '../utils.js';
 
 /**
  * Represents a role in Make.
  * Roles define a set of permissions and can be assigned to users at the
- * organization or team level. In addition to built-in system roles, an
+ * organization or project level. In addition to built-in system roles, an
  * organization may have custom roles when the `customRoles` license feature
  * and Roleman are enabled.
  */
@@ -14,7 +15,7 @@ export type Role = {
     name: string;
     /** Machine-readable identifier of a built-in system role; absent for custom roles */
     identifier?: string;
-    /** Whether the role applies to an organization or a team */
+    /** Whether the role applies to an organization or a project */
     category: 'organization' | 'team';
     /** Whether the role is assignable by non-admin users */
     subsidiary?: boolean;
@@ -35,8 +36,8 @@ export type Role = {
 export type ListRolesOptions<C extends keyof Role = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
-    /** Restrict results to organization or team roles */
-    category?: 'organization' | 'team';
+    /** Restrict results to organization or project roles (`'team'` is the legacy name of `'project'`) */
+    category?: RoleCategoryInput;
     /** Role IDs to exclude from the response */
     excludeRole?: number[];
     /** Return only the role matching this ID */
@@ -46,7 +47,9 @@ export type ListRolesOptions<C extends keyof Role = never> = {
      * (or `teamId`) is provided and the organization has the `customRoles` license feature enabled.
      */
     organizationId?: number;
-    /** Team to resolve custom roles for; custom roles apply the same way as with `organizationId` */
+    /** Project to resolve custom roles for; custom roles apply the same way as with `organizationId` */
+    projectId?: number;
+    /** @deprecated Teams were renamed to Projects. Use `projectId`. */
     teamId?: number;
 };
 
@@ -78,7 +81,7 @@ export type RolePermission = {
     note: string;
     /** Group the permission belongs to */
     category: string;
-    /** Whether the permission applies to an organization or a team */
+    /** Whether the permission applies to an organization or a project */
     roleCategory: 'organization' | 'team';
     /** Human-readable label of the permission */
     label: string;
@@ -92,8 +95,8 @@ export type RolePermission = {
  * Options for listing role permissions.
  */
 export type ListRolePermissionsOptions = {
-    /** Restrict results to organization or team permissions */
-    roleCategory?: 'organization' | 'team';
+    /** Restrict results to organization or project permissions */
+    roleCategory?: RoleCategoryInput;
 };
 
 /**
@@ -134,11 +137,12 @@ export class Roles {
             await this.#fetch<ListRolesResponse<C>>('/users/roles', {
                 query: {
                     cols: options?.cols,
-                    category: options?.category,
+                    category: toApiRoleCategory(options?.category),
                     excludeRole: options?.excludeRole,
                     roleId: options?.roleId,
                     organizationId: options?.organizationId,
                     teamId: options?.teamId,
+                    projectId: options?.projectId,
                 },
             })
         ).usersRoles;
@@ -168,7 +172,7 @@ export class Roles {
         return (
             await this.#fetch<ListRolePermissionsResponse>('/users/roles/permissions', {
                 query: {
-                    roleCategory: options?.roleCategory,
+                    roleCategory: toApiRoleCategory(options?.roleCategory),
                 },
             })
         ).usersRolesPermissions;

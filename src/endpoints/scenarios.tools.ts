@@ -123,11 +123,11 @@ export const tools: MakeTool[] = [
         name: 'scenarios_list',
         title: 'List scenarios',
         description:
-            'List all scenarios for a team. Results can be narrowed to one folder (optionally including its subfolders) and/or to scenarios carrying at least one of the given scenario labels. Returned scenarios include their assigned labels.',
+            'List all scenarios for a project. Results can be narrowed to one folder (optionally including its subfolders) and/or to scenarios carrying at least one of the given scenario labels. Returned scenarios include their assigned labels.',
         category: 'scenarios',
         scope: 'scenarios:read',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -136,7 +136,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to filter scenarios by' },
+                projectId: { type: 'number', description: 'The project ID to filter scenarios by' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
                 folderId: { type: 'number', description: 'Only return scenarios placed in this folder' },
                 includeSubfolders: {
                     type: 'boolean',
@@ -149,12 +154,12 @@ export const tools: MakeTool[] = [
                         'Only return scenarios carrying at least one of these scenario label IDs. Use scenario-labels_list to discover label IDs.',
                 },
             },
-            required: ['teamId'],
+            required: ['projectId'],
         },
         examples: [
-            { teamId: 5 },
-            { teamId: 5, folderId: 1576, includeSubfolders: true },
-            { teamId: 5, labelIds: [42, 43] },
+            { projectId: 5 },
+            { projectId: 5, folderId: 1576, includeSubfolders: true },
+            { projectId: 5, labelIds: [42, 43] },
         ],
         execute: async (
             make: Make,
@@ -203,8 +208,8 @@ export const tools: MakeTool[] = [
             'Create a new scenario from a blueprint. Verify every module name in the blueprint via app-modules_list before creating — never invent module identifiers. The created scenario starts INACTIVE: call scenarios_activate before scenarios_run can execute it.',
         category: 'scenarios',
         scope: 'scenarios:write',
-        scopeId: 'teamId',
-        identifier: 'teamId',
+        scopeId: 'projectId',
+        identifier: 'projectId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -214,7 +219,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'ID of the team where the scenario will be created' },
+                projectId: { type: 'number', description: 'ID of the project where the scenario will be created' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                },
                 folderId: { type: 'number', description: 'ID of the folder where the scenario will be placed' },
                 scheduling: schedulingInputSchema,
                 blueprint: blueprintInputSchema,
@@ -224,11 +234,11 @@ export const tools: MakeTool[] = [
                     description: 'Confirmation in case the scenario uses apps that are not yet installed',
                 },
             },
-            required: ['teamId', 'scheduling', 'blueprint'],
+            required: ['projectId', 'scheduling', 'blueprint'],
         },
         examples: [
             {
-                teamId: 5,
+                projectId: 5,
                 scheduling: { type: 'indefinitely', interval: 60 },
                 blueprint: {
                     name: 'Gmail Attachments to Google Drive',

@@ -1,4 +1,4 @@
-import type { FetchFunction, JSONValue, Pagination } from '../types.js';
+import type { FetchFunction, JSONValue, Pagination, ProjectRef } from '../types.js';
 import { HookIncomings } from './hook-incomings.js';
 
 /**
@@ -11,8 +11,10 @@ export type Hook = {
     id: number;
     /** Name of the hook */
     name: string;
-    /** ID of the team that owns the hook */
+    /** ID of the project that owns the hook */
     teamId: number;
+    /** ID of the project that owns the hook. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
     /** Unique identifier used in webhook URLs */
     udid: string;
     /** Type of hook (web, web-shared, or mail) */
@@ -56,11 +58,9 @@ type ListHooksResponse = {
 /**
  * Parameters for creating a new hook.
  */
-export type CreateHookBody = {
+export type CreateHookBody = ProjectRef & {
     /** Name of the hook (max 128 characters) */
     name: string;
-    /** ID of the team where the hook will be created */
-    teamId: number;
     /** The hook type related to the app for which it will be created */
     typeName: string;
     /** Additional data specific to the hook type */
@@ -163,8 +163,8 @@ export class Hooks {
     }
 
     /**
-     * List all hooks for a team.
-     * @param teamId The team ID to filter hooks by
+     * List all hooks for a project.
+     * @param teamId The project ID to filter hooks by
      * @param options Optional parameters for filtering
      * @returns Promise with the list of hooks
      */
@@ -200,6 +200,7 @@ export class Hooks {
                 body: Object.assign({}, body.data, {
                     name: body.name,
                     teamId: body.teamId,
+                    projectId: body.projectId,
                     typeName: body.typeName,
                 }),
             })
