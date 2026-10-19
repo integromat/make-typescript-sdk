@@ -199,8 +199,7 @@ export class Hooks {
                 },
                 body: Object.assign({}, body.data, {
                     name: body.name,
-                    teamId: body.teamId,
-                    projectId: body.projectId,
+                    teamId: body.teamId ?? body.projectId,
                     typeName: body.typeName,
                 }),
             })

@@ -1,4 +1,5 @@
 import type { FetchFunction, Pagination, PickColumns, ProjectRef } from '../types.js';
+import { toWireProject } from '../utils.js';
 
 /**
  * Represents a field in a data structure.
@@ -186,7 +187,7 @@ export class DataStructures {
         return (
             await this.#fetch<CreateDataStructureResponse>('/data-structures', {
                 method: 'POST',
-                body,
+                body: toWireProject(body),
             })
         ).dataStructure;
     }

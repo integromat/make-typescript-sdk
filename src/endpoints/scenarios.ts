@@ -3,6 +3,7 @@ import { Blueprint } from './blueprints.js';
 import type { DataStructureField } from './data-structures.js';
 import type { ScenarioLabel } from './scenario-labels.js';
 import { ScenarioCustomProperties } from './scenario-custom-properties.js';
+import { toWireProject } from '../utils.js';
 
 /**
  * Represents a Make scenario.
@@ -390,7 +391,7 @@ export class Scenarios {
                     cols: options?.cols,
                     confirmed: options?.confirmed,
                 },
-                body: normalizePayload(scenario),
+                body: normalizePayload(toWireProject(scenario)),
             })
         ).scenario;
     }

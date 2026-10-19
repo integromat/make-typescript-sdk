@@ -249,8 +249,7 @@ export class Connections {
             await this.#fetch<CreateConnectionResponse>('/connections', {
                 method: 'POST',
                 query: {
-                    teamId: body.teamId,
-                    projectId: body.projectId,
+                    teamId: body.teamId ?? body.projectId,
                 },
                 body: Object.assign({}, body.data, {
                     /**
@@ -261,7 +260,6 @@ export class Connections {
                     accountName: body.name,
                     accountType: body.accountName,
                     teamId: undefined,
-                    projectId: undefined,
                 }),
             })
         ).connection;

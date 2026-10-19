@@ -75,8 +75,8 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Roles** - Built-in and custom roles and their permissions (list, get, permissions)
 - **Custom Roles** - User-defined organization or project roles (create, update, delete)
 - **Scenarios** - Scenario management
-- **Projects** - Project (formerly Team) management and collaboration via `make.projects` (`/projects` API paths)
-- **Teams** - Deprecated alias of Projects via `make.teams` (legacy `/teams` API paths)
+- **Projects** - Project (formerly Team) management and collaboration via `make.projects` (sent to the `/teams` API paths)
+- **Teams** - Deprecated alias of Projects via `make.teams` (same `/teams` API paths)
 - **Public Templates** - Public template discovery and blueprint export (read-only)
 - **Templates** - A project's own saved templates (create, update, delete, blueprint export)
 - **Users** - Current user information and authentication
@@ -171,7 +171,7 @@ const tools = MakeTools.map(tool => {
 const tool = MakeTools.find(tool => tool.name === 'scenarios_list');
 
 try {
-    await tool.execute(make, { projectId: 1 });
+    await tool.execute(make, { teamId: 1 });
 } catch (error) {
     // Handle error
 }
@@ -181,9 +181,9 @@ See full example in the `scripts/run-mcp-server.mjs` file.
 
 ### Teams renamed to Projects
 
-Teams were renamed to Projects; `teamId` is now `projectId`. Tool schemas name the project `projectId` and still accept the legacy `teamId` argument (sending both with different values is an error). Tool names and the `teams:*` scopes are unchanged. `MakeToolsInstructions` (from `@makehq/sdk/tools` and `@makehq/sdk/mcp`) holds this note for an MCP server's `instructions`.
+Teams are being renamed to Projects. Nothing is removed or renamed: `teamId` stays the primary, required argument, and `projectId` is accepted as an optional alias that is used when `teamId` is not given (sending both with different values is an error). Tool names and the `teams:*` scopes are unchanged. `MakeToolsInstructions` (from `@makehq/sdk/tools` and `@makehq/sdk/mcp`) holds this note for an MCP server's `instructions`.
 
-In the SDK, `make.projects` calls the `/projects` API paths and `make.teams` (deprecated) keeps calling `/teams`. Request bodies accept `projectId` or the legacy `teamId`, and response types include `projectId`/`projects` next to `teamId`/`teams` where the API returns both. Role categories accept `'project'` and send it to the API as `'team'`.
+In the SDK, `make.projects` and `make.teams` both call the `/teams` API paths and share one implementation; `make.teams` is deprecated in favour of `make.projects`. Request bodies keep `teamId` required and also accept an optional `projectId` alias, which is sent to the API as `teamId`. Response types include `projectId`/`projects` next to `teamId`/`teams` where the API returns both. Role categories accept `'project'` and send it to the API as `'team'`.
 
 ### Tool Structure
 
@@ -199,10 +199,10 @@ Each tool is described as demonstrated in the following example:
     inputSchema: {
         type: 'object',
         properties: {
-            projectId: { type: 'number', description: 'The project ID to filter scenarios by' },
-            teamId: { type: 'number', description: 'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.' },
+            teamId: { type: 'number', description: 'The project ID to filter scenarios by' },
+            projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
         },
-        required: ['projectId'],
+        required: ['teamId'],
     },
     execute: async (make: Make, args: { teamId: number }) => {
         return await make.scenarios.list(args.teamId);

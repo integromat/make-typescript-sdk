@@ -9,8 +9,8 @@ export const tools: MakeTool[] = [
         description: 'List all data tables for a project.',
         category: 'data-tables',
         scope: 'datastores:read',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -19,12 +19,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID to filter data tables by' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID to filter data tables by' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 sortBy: {
                     type: 'string',
                     enum: ['name', 'maxStorageSizeMb'],
@@ -32,9 +28,9 @@ export const tools: MakeTool[] = [
                 },
                 sortDir: { type: 'string', enum: ['asc', 'desc'], description: 'Sort direction' },
             },
-            required: ['projectId'],
+            required: ['teamId'],
         },
-        examples: [{ projectId: 5 }],
+        examples: [{ teamId: 5 }],
         execute: async (
             make: Make,
             args: {
@@ -80,8 +76,8 @@ export const tools: MakeTool[] = [
             'Create a new data table. The table starts without columns; define its structure with data-table-columns_create.',
         category: 'data-tables',
         scope: 'datastores:write',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -90,17 +86,13 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID to create the data table in' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID to create the data table in' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 name: { type: 'string', description: 'The name of the data table' },
             },
-            required: ['projectId', 'name'],
+            required: ['teamId', 'name'],
         },
-        examples: [{ projectId: 5, name: 'Customers' }],
+        examples: [{ teamId: 5, name: 'Customers' }],
         execute: async (make: Make, args: CreateDataTableBody) => {
             return await make.dataTables.create(args);
         },

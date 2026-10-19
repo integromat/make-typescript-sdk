@@ -8,8 +8,8 @@ export const tools: MakeTool[] = [
         description: 'List custom functions for a project.',
         category: 'functions',
         scope: 'functions:read',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -18,16 +18,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID to list functions for' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID to list functions for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
-            required: ['projectId'],
+            required: ['teamId'],
         },
-        examples: [{ projectId: 5 }],
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.functions.list(args.teamId, { cols: ['*'] });
         },
@@ -64,8 +60,8 @@ export const tools: MakeTool[] = [
         description: 'Create a new custom function.',
         category: 'functions',
         scope: 'functions:write',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -75,21 +71,17 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID where the function will be created' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID where the function will be created' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 name: { type: 'string', description: 'The name of the function' },
                 code: { type: 'string', description: 'The function code' },
                 description: { type: 'string', description: 'Description of the function' },
             },
-            required: ['projectId', 'name', 'code'],
+            required: ['teamId', 'name', 'code'],
         },
         examples: [
             {
-                projectId: 5,
+                teamId: 5,
                 name: 'checkType',
                 code: 'function checkType(param) { return typeof param; }',
                 description: 'Returns the data type of the argument.',
@@ -176,8 +168,8 @@ export const tools: MakeTool[] = [
         description: 'Check the syntax of a function without saving it.',
         category: 'functions',
         scope: 'functions:write',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -186,17 +178,13 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 code: { type: 'string', description: 'The function code to check' },
             },
-            required: ['projectId', 'code'],
+            required: ['teamId', 'code'],
         },
-        examples: [{ projectId: 5, code: 'function myFn(x) { return x * 2; }' }],
+        examples: [{ teamId: 5, code: 'function myFn(x) { return x * 2; }' }],
         execute: async (make: Make, args: { teamId: number; code: string }) => {
             const result = await make.functions.check(args.teamId, args.code);
             return result.success ? 'Function code is valid.' : `Function code is not valid: ${result.error}`;

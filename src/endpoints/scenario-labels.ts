@@ -1,4 +1,5 @@
 import type { FetchFunction, ProjectRef } from '../types.js';
+import { toWireProject } from '../utils.js';
 
 /**
  * Colour of a scenario label, one of the fixed palette values supported by the API.
@@ -115,7 +116,7 @@ export class ScenarioLabels {
     async create(body: CreateScenarioLabelBody): Promise<ScenarioLabel> {
         const response = await this.#fetch<ScenarioLabelResponse>('/scenario-labels', {
             method: 'POST',
-            body,
+            body: toWireProject(body),
         });
         return response.label;
     }

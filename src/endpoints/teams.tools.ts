@@ -40,9 +40,9 @@ export const tools: MakeTool[] = [
         description: 'Get details of a specific project.',
         category: 'teams',
         scope: 'teams:read',
-        scopeId: 'projectId',
-        identifier: 'projectId',
-        resourceId: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
+        resourceId: 'teamId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -51,16 +51,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID to retrieve' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID to retrieve' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
-            required: ['projectId'],
+            required: ['teamId'],
         },
-        examples: [{ projectId: 5 }],
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.teams.get(args.teamId);
         },
@@ -106,9 +102,9 @@ export const tools: MakeTool[] = [
         description: 'Delete a project.',
         category: 'teams',
         scope: 'teams:write',
-        scopeId: 'projectId',
-        identifier: 'projectId',
-        resourceId: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
+        resourceId: 'teamId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: true,
@@ -117,16 +113,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID to delete' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID to delete' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
-            required: ['projectId'],
+            required: ['teamId'],
         },
-        examples: [{ projectId: 5 }],
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             await make.teams.delete(args.teamId);
             return `Project has been deleted.`;

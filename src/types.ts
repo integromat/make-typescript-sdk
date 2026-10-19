@@ -93,22 +93,15 @@ export type PickColumns<T, K extends keyof T | never, D extends keyof T | never 
     : { [P in K]-?: NonNullable<T[P]> };
 
 /**
- * The project (formerly team) a request targets. Pass `projectId`, or the legacy `teamId`.
- * Both name the same ID; the API rejects a request that sends both with different values.
+ * The project (formerly team) a request targets. `teamId` stays the required, primary key;
+ * `projectId` is an optional alias for it. When `teamId` is not given, `projectId` is sent as `teamId`.
  */
-export type ProjectRef =
-    | {
-          /** ID of the project */
-          projectId: number;
-          /** @deprecated Teams were renamed to Projects. Use `projectId`. */
-          teamId?: number;
-      }
-    | {
-          /** @deprecated Teams were renamed to Projects. Use `projectId`. */
-          teamId: number;
-          /** ID of the project */
-          projectId?: number;
-      };
+export type ProjectRef = {
+    /** ID of the project (formerly team) */
+    teamId: number;
+    /** Alias of `teamId`; used as `teamId` when that is not given */
+    projectId?: number;
+};
 
 /**
  * Role category accepted in requests. `'project'` is the new name of `'team'`; responses still return `'team'`.

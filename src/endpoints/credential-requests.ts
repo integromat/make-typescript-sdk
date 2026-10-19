@@ -1,4 +1,5 @@
 import type { FetchFunction, PickColumns, JSONValue, Pagination, ProjectRef } from '../types.js';
+import { toWireProject } from '../utils.js';
 
 /**
  * User entity for credential request details
@@ -202,9 +203,9 @@ export type CreateByCredentialsBody = {
     /** Instructions or context for the end-user */
     description?: string;
     /** The numeric ID of the Make project where the connections/keys will be created once authorized */
+    teamId: number;
+    /** Alias of `teamId`; used as `teamId` when that is not given */
     projectId?: number;
-    /** @deprecated Teams were renamed to Projects. Use `projectId`. */
-    teamId?: number;
     /** Array of OAuth or basic-auth connections to request */
     connections?: ConnectionSelection[];
     /** Array of API keys to request */
@@ -304,7 +305,7 @@ export class CredentialRequests {
     async create(body: CreateCredentialRequestBody): Promise<CredentialRequest> {
         const response = await this.#fetch<{ request: CredentialRequest }>('/credential-requests/requests', {
             method: 'POST',
-            body: body as Record<string, JSONValue>,
+            body: toWireProject(body) as Record<string, JSONValue>,
         });
         return response.request;
     }
@@ -379,7 +380,7 @@ export class CredentialRequests {
             '/credential-requests/actions/create',
             {
                 method: 'POST',
-                body,
+                body: toWireProject(body),
             },
         );
     }
@@ -395,7 +396,7 @@ export class CredentialRequests {
             '/credential-requests/actions/create-by-credentials',
             {
                 method: 'POST',
-                body,
+                body: toWireProject(body),
             },
         );
     }

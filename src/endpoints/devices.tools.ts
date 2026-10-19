@@ -8,8 +8,8 @@ export const tools: MakeTool[] = [
         description: 'List devices registered in a project.',
         category: 'devices',
         scope: 'devices:read',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -18,16 +18,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID to list devices for' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID to list devices for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
-            required: ['projectId'],
+            required: ['teamId'],
         },
-        examples: [{ projectId: 5 }],
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.devices.list(args.teamId);
         },

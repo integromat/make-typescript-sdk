@@ -524,14 +524,14 @@ export type ListEntityNamesOptions<C extends keyof EntityName = never> = {
 
 ## Projects (formerly Teams)
 
-Teams were renamed to Projects; `teamId` is now `projectId`. The API serves `/projects/...` next to `/teams/...`, accepts `projectId` as an alias of `teamId`, and returns both key names. Follow it without breaking existing callers:
+Teams are being renamed to Projects. This is a published package, so the rename is additive only: add new names beside the old ones, never rename or remove. The API serves `/teams/...` unconditionally and `/projects/...` only behind a flag, so the SDK keeps sending `/teams` and `teamId` on the wire and accepts `projectId` as an alias:
 
 - Prose (JSDoc, tool titles and descriptions, README) says "project". Keep the pricing plan "Teams", "Private space", `teams:*` OAuth scopes, permission names such as `personal team manage`, and existing tool names (`teams_*`, `*-for-team`).
-- Entity types: keep `teamId`, add `projectId?: number` next to it (same value, returned by APIs that serve project naming). Lists keyed `teams` get an optional `projects` twin.
-- Request bodies that need a project use `ProjectRef & { ... }` from `types.ts`, so callers pass `projectId` or the legacy `teamId`.
-- `make.projects` (`/projects`) is the main namespace; `make.teams` (`/teams`) and other team-named methods stay as `@deprecated` aliases of the same implementation.
+- Entity types: keep `teamId`, add `projectId?: number` next to it (same value, returned by APIs that serve project naming). Lists keyed `teams` get an optional `projectId`/`projects` twin.
+- Request bodies that need a project use `ProjectRef & { ... }` from `types.ts`: `teamId` stays required and `projectId?` is an optional alias. Resolve it onto `teamId` before sending (`toWireProject` in `utils.ts`, or `teamId: body.teamId ?? body.projectId`). Never add a `projectId` key to a body that merges user `data`: it would overwrite the user's own `projectId` field.
+- `make.projects` and `make.teams` use the same implementation and both call `/teams`; `make.teams` is the `@deprecated` alias.
 - Role categories in requests use `RoleCategoryInput` and go through `toApiRoleCategory`, which sends `'project'` as `'team'`.
-- Tool schemas name the property `projectId` (required where `teamId` was) and keep a `teamId` property described as its deprecated legacy name. Set `scopeId`/`identifier`/`resourceId` to `'projectId'`. `execute` may keep reading `args.teamId`: `MakeTools` wraps every tool with both properties and copies `projectId` into `teamId`.
+- Tool schemas keep `teamId` as the primary property (and in `required`, `scopeId`, `identifier`, `resourceId`) and add `projectId` as an optional alias. `execute` keeps reading `args.teamId`: `MakeTools` wraps every tool with both properties and copies `projectId` into `teamId`.
 
 ## Tool Definitions
 

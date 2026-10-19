@@ -45,11 +45,7 @@ export type Folder<C extends keyof FolderFields | 'children' = never> = PickColu
     FolderFields,
     Exclude<C, 'children'>
 > &
-    ([C] extends [never]
-        ? { children?: Folder<C>[] }
-        : 'children' extends C
-          ? { children: Folder<C>[] }
-          : object);
+    ([C] extends [never] ? { children?: Folder<C>[] } : 'children' extends C ? { children: Folder<C>[] } : object);
 
 /**
  * Options for listing folders.
@@ -165,8 +161,7 @@ export class Folders {
                 method: 'POST',
                 body: {
                     name: folder.name,
-                    teamId: folder.teamId,
-                    projectId: folder.projectId,
+                    teamId: folder.teamId ?? folder.projectId,
                     parentId: folder.parentId,
                 },
             })

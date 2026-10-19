@@ -148,13 +148,13 @@ export class Make {
     public readonly hooks: Hooks;
 
     /**
-     * Access to project-related endpoints (`/projects`)
+     * Access to project-related endpoints (sent to the `/teams` API paths, which the API serves unconditionally)
      * Projects (formerly teams) control access to Make scenarios, connections, data stores, and other resources
      */
     public readonly projects: Projects;
 
     /**
-     * Access to project-related endpoints through the legacy `/teams` API paths
+     * Access to project-related endpoints through the legacy `teams` name; same implementation as {@link Make.projects}
      * @deprecated Teams were renamed to Projects. Use {@link Make.projects} instead.
      */
     public readonly teams: Teams;

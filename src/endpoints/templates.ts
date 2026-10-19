@@ -1,6 +1,7 @@
 import type { FetchFunction, JSONValue, Pagination, PickColumns, ProjectRef } from '../types.js';
 import type { Blueprint } from './blueprints.js';
 import type { Scheduling } from './scenarios.js';
+import { toWireProject } from '../utils.js';
 
 /**
  * Represents a template in Make — a project's own saved scenario configuration.
@@ -241,8 +242,7 @@ export class Templates {
         return (
             await this.#fetch<ListTemplatesResponse<C>>('/templates', {
                 query: {
-                    teamId: options.teamId,
-                    projectId: options.projectId,
+                    teamId: options.teamId ?? options.projectId,
                     usedApps: options.usedApps,
                     public: options.public,
                     cols: options.cols,
@@ -290,7 +290,7 @@ export class Templates {
         return (
             await this.#fetch<CreateTemplateResponse>('/templates', {
                 method: 'POST',
-                body: serializeTemplateBody(body),
+                body: serializeTemplateBody(toWireProject(body)),
             })
         ).template;
     }

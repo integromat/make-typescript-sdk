@@ -147,8 +147,8 @@ export const tools: MakeTool[] = [
             'List the audit log entries of a single project: who changed what and when within that project. Entries carry no event-specific payload — call audit-logs_get with the organizationId and uuid from the entry to see that. Use audit-logs_list instead to cover a whole organization.',
         category: 'audit-logs',
         scope: 'audit-logs:read',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -157,17 +157,13 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID to list audit log entries for' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID to list audit log entries for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 ...listProperties('audit-logs_get-filters-for-team'),
             },
-            required: ['projectId'],
+            required: ['teamId'],
         },
-        examples: [{ projectId: 212 }, { projectId: 212, dateFrom: '2026-09-01', sortDir: 'desc', limit: 20 }],
+        examples: [{ teamId: 212 }, { teamId: 212, dateFrom: '2026-09-01', sortDir: 'desc', limit: 20 }],
         execute: async (make: Make, args: { teamId: number } & ListArgs) => {
             const { teamId, ...rest } = args;
             return await make.auditLogs.listForTeam(teamId, toListOptions(rest));
@@ -245,8 +241,8 @@ export const tools: MakeTool[] = [
             'Get the values accepted by the filters of audit-logs_list-for-team: selectable users for author and events for event. Call this first when building a filtered project audit log query, so the filter values are real rather than guessed.',
         category: 'audit-logs',
         scope: 'audit-logs:read',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -255,16 +251,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID to get audit log filter options for' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID to get audit log filter options for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
-            required: ['projectId'],
+            required: ['teamId'],
         },
-        examples: [{ projectId: 212 }],
+        examples: [{ teamId: 212 }],
         execute: async (make: Make, args: { teamId: number }) => {
             return await make.auditLogs.getFiltersForTeam(args.teamId);
         },

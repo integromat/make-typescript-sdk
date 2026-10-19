@@ -1,5 +1,6 @@
 import type { FetchFunction, Pagination, PickColumns, ProjectRef } from '../types.js';
 import { DataStoreRecords } from './data-store-records.js';
+import { toWireProject } from '../utils.js';
 
 /**
  * Represents a data store in Make.
@@ -156,7 +157,7 @@ export class DataStores {
         return (
             await this.#fetch<CreateDataStoreResponse>('/data-stores', {
                 method: 'POST',
-                body,
+                body: toWireProject(body),
             })
         ).dataStore;
     }

@@ -127,3 +127,19 @@ export function toApiRoleCategory(category: RoleCategoryInput | undefined): 'org
 export function toApiRoleCategory(category: RoleCategoryInput | undefined): 'organization' | 'team' | undefined {
     return category === 'project' ? 'team' : category;
 }
+
+/**
+ * Put the project ID on the wire under the legacy `teamId` key, dropping the `projectId` alias.
+ * `teamId` wins when both are present. Other keys and their order are left untouched.
+ * @param body Request body or query carrying `teamId` and/or `projectId`
+ * @returns A copy without `projectId`, with `teamId` resolved
+ */
+export function toWireProject<T extends { teamId?: number | null; projectId?: number | null }>(
+    body: T,
+): Omit<T, 'projectId'> {
+    const { projectId, ...rest } = body;
+    if ((rest.teamId === undefined || rest.teamId === null) && projectId !== undefined && projectId !== null) {
+        rest.teamId = projectId;
+    }
+    return rest;
+}

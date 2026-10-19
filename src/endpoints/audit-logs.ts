@@ -283,8 +283,7 @@ export class AuditLogs {
                     dateTo: options?.dateTo,
                     event: options?.event,
                     author: options?.author,
-                    team: options?.team,
-                    project: options?.project,
+                    team: options?.team ?? options?.project,
                 },
             })
         ).auditLogs;
@@ -297,7 +296,7 @@ export class AuditLogs {
      * @returns Promise with the list of audit log entries
      */
     async listForProject(projectId: number, options?: ListAuditLogsOptions): Promise<AuditLogListEntry[]> {
-        return await this.#listForScope(`project/${projectId}`, options);
+        return await this.#listForScope(`team/${projectId}`, options);
     }
 
     /**
@@ -350,7 +349,7 @@ export class AuditLogs {
      * @returns Promise with the available users and events
      */
     async getFiltersForProject(projectId: number): Promise<ProjectAuditLogFilters> {
-        return await this.#fetch<ProjectAuditLogFilters>(`/audit-logs/v2/project/${projectId}/filters`);
+        return await this.#fetch<ProjectAuditLogFilters>(`/audit-logs/v2/team/${projectId}/filters`);
     }
 
     /**

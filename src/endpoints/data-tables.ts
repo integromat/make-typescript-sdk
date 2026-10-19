@@ -1,6 +1,7 @@
 import type { FetchFunction, ProjectRef } from '../types.js';
 import { DataTableRecords } from './data-table-records.js';
 import { DataTableColumns } from './data-table-columns.js';
+import { toWireProject } from '../utils.js';
 
 /**
  * Represents a Make data table.
@@ -117,7 +118,7 @@ export class DataTables {
     async create(body: CreateDataTableBody): Promise<DataTable> {
         return await this.#fetch<DataTable>('/data-tables', {
             method: 'POST',
-            body,
+            body: toWireProject(body),
         });
     }
 

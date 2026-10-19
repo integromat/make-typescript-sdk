@@ -122,7 +122,7 @@ export class Projects {
      * @param basePath API path prefix of the collection
      * @internal
      */
-    constructor(fetch: FetchFunction, basePath: '/projects' | '/teams' = '/projects') {
+    constructor(fetch: FetchFunction, basePath: '/projects' | '/teams' = '/teams') {
         this.#fetch = fetch;
         this.#basePath = basePath;
     }

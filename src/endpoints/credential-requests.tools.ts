@@ -10,8 +10,8 @@ export const tools: MakeTool[] = [
             'Retrieve a list of credential requests. Each request can contain multiple credentials (connections and API keys). Filter by project, user, provider, status, or name to find specific requests.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -20,12 +20,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'Filter by project ID' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'Filter by project ID' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 userId: { type: 'number', description: 'Filter by user ID' },
                 makeProviderId: {
                     oneOf: [{ type: 'string' }, { type: 'number' }],
@@ -34,9 +30,9 @@ export const tools: MakeTool[] = [
                 status: { type: 'string', description: 'Filter by status' },
                 name: { type: 'string', description: 'Filter by name' },
             },
-            required: ['projectId'],
+            required: ['teamId'],
         },
-        examples: [{ projectId: 5 }],
+        examples: [{ teamId: 5 }],
         execute: async (
             make: Make,
             args: {
@@ -184,8 +180,8 @@ export const tools: MakeTool[] = [
             'This will return a URL where the user can authorize the credentials, so that they can be used in scenarios.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -203,12 +199,8 @@ export const tools: MakeTool[] = [
                     type: 'string',
                     description: 'Description of the Request which will be displayed to the End Users who open it.',
                 },
-                projectId: { type: 'number', description: 'Project ID' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'Project ID' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 credentials: {
                     type: 'array',
                     description: 'Array of app/module selections to derive credentials from.',
@@ -256,12 +248,12 @@ export const tools: MakeTool[] = [
                     },
                 },
             },
-            required: ['projectId', 'credentials'],
+            required: ['teamId', 'credentials'],
         },
         examples: [
             {
                 name: 'Google Connection Request',
-                projectId: 5,
+                teamId: 5,
                 credentials: [{ appName: 'google', appModules: ['*'] }],
             },
         ],
@@ -287,8 +279,8 @@ export const tools: MakeTool[] = [
             'At least one connection or one key must be provided.',
         category: 'credential-requests',
         scope: 'credential-requests:write',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -307,15 +299,14 @@ export const tools: MakeTool[] = [
                     type: 'string',
                     description: 'Instructions or context for the end-user, displayed on the authorization page.',
                 },
-                projectId: {
+                teamId: {
                     type: 'number',
                     description:
                         'The numeric ID of the Make project where the connections/keys will be created once authorized.',
                 },
-                teamId: {
+                projectId: {
                     type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
+                    description: 'Optional alias of teamId; used when teamId is not given.',
                 },
                 connections: {
                     type: 'array',
@@ -400,12 +391,12 @@ export const tools: MakeTool[] = [
                     },
                 },
             },
-            required: ['projectId'],
+            required: ['teamId'],
         },
         examples: [
             {
                 name: 'My Credential Request',
-                projectId: 5,
+                teamId: 5,
                 connections: [{ type: 'google', scope: ['https://www.googleapis.com/auth/drive'] }],
                 keys: [{ type: 'apikeyauth' }],
             },

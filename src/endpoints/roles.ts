@@ -141,8 +141,7 @@ export class Roles {
                     excludeRole: options?.excludeRole,
                     roleId: options?.roleId,
                     organizationId: options?.organizationId,
-                    teamId: options?.teamId,
-                    projectId: options?.projectId,
+                    teamId: options?.teamId ?? options?.projectId,
                 },
             })
         ).usersRoles;

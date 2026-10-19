@@ -21,11 +21,11 @@ export const tools: MakeTool[] = [
         name: 'templates_list',
         title: 'List templates',
         description:
-            "List templates. Omit projectId to list every status the caller can see; provide projectId to scope the list to that project's own templates.",
+            "List templates. Omit teamId to list every status the caller can see; provide teamId to scope the list to that project's own templates.",
         category: 'templates',
         scope: 'templates:read',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -34,12 +34,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: "Filter templates by the owning project's ID" },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: "Filter templates by the owning project's ID" },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 usedApps: {
                     type: 'array',
                     items: { type: 'string' },
@@ -51,7 +47,7 @@ export const tools: MakeTool[] = [
                 },
             },
         },
-        examples: [{ projectId: 5 }],
+        examples: [{ teamId: 5 }],
         execute: async (make: Make, args?: { teamId?: number; usedApps?: string[]; public?: boolean }) => {
             return await make.templates.list({ ...(args ?? {}), cols: ['*'] });
         },
@@ -120,8 +116,8 @@ export const tools: MakeTool[] = [
         description: "Create a new template in a project's library from a blueprint.",
         category: 'templates',
         scope: 'scenarios:write',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -131,12 +127,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'ID of the project where the template will be created' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'ID of the project where the template will be created' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 language: { type: 'string', description: 'Language code for the template (e.g. "en")' },
                 blueprint: { type: 'object', description: 'Blueprint containing the scenario configuration' },
                 scheduling: { type: 'object', description: 'Scheduling configuration for the template' },
@@ -150,11 +142,11 @@ export const tools: MakeTool[] = [
                     },
                 },
             },
-            required: ['projectId', 'language', 'blueprint', 'scheduling', 'controller'],
+            required: ['teamId', 'language', 'blueprint', 'scheduling', 'controller'],
         },
         examples: [
             {
-                projectId: 5,
+                teamId: 5,
                 language: 'en',
                 blueprint: { name: 'Example', flow: [], metadata: { version: 1 } },
                 scheduling: { type: 'indefinitely', interval: 900 },

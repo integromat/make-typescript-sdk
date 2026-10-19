@@ -70,7 +70,7 @@ const schedulingInputSchema: JSONSchema = {
 const blueprintInputSchema: JSONSchema = {
     type: 'object',
     description:
-        "Blueprint containing the scenario configuration. Every `module` value must be an existing module identifier verified via app-modules_list — never invent module names.",
+        'Blueprint containing the scenario configuration. Every `module` value must be an existing module identifier verified via app-modules_list — never invent module names.',
     properties: {
         name: { type: 'string', description: 'Name of the scenario' },
         flow: {
@@ -126,8 +126,8 @@ export const tools: MakeTool[] = [
             'List all scenarios for a project. Results can be narrowed to one folder (optionally including its subfolders) and/or to scenarios carrying at least one of the given scenario labels. Returned scenarios include their assigned labels.',
         category: 'scenarios',
         scope: 'scenarios:read',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: true,
             destructiveHint: false,
@@ -136,12 +136,7 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'The project ID to filter scenarios by' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'The project ID to filter scenarios by' },
                 folderId: { type: 'number', description: 'Only return scenarios placed in this folder' },
                 includeSubfolders: {
                     type: 'boolean',
@@ -154,12 +149,12 @@ export const tools: MakeTool[] = [
                         'Only return scenarios carrying at least one of these scenario label IDs. Use scenario-labels_list to discover label IDs.',
                 },
             },
-            required: ['projectId'],
+            required: ['teamId'],
         },
         examples: [
-            { projectId: 5 },
-            { projectId: 5, folderId: 1576, includeSubfolders: true },
-            { projectId: 5, labelIds: [42, 43] },
+            { teamId: 5 },
+            { teamId: 5, folderId: 1576, includeSubfolders: true },
+            { teamId: 5, labelIds: [42, 43] },
         ],
         execute: async (
             make: Make,
@@ -208,8 +203,8 @@ export const tools: MakeTool[] = [
             'Create a new scenario from a blueprint. Verify every module name in the blueprint via app-modules_list before creating — never invent module identifiers. The created scenario starts INACTIVE: call scenarios_activate before scenarios_run can execute it.',
         category: 'scenarios',
         scope: 'scenarios:write',
-        scopeId: 'projectId',
-        identifier: 'projectId',
+        scopeId: 'teamId',
+        identifier: 'teamId',
         annotations: {
             readOnlyHint: false,
             destructiveHint: false,
@@ -219,12 +214,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                projectId: { type: 'number', description: 'ID of the project where the scenario will be created' },
-                teamId: {
-                    type: 'number',
-                    description:
-                        'Deprecated: legacy name of projectId (Teams were renamed to Projects). Use projectId.',
-                },
+                teamId: { type: 'number', description: 'ID of the project where the scenario will be created' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 folderId: { type: 'number', description: 'ID of the folder where the scenario will be placed' },
                 scheduling: schedulingInputSchema,
                 blueprint: blueprintInputSchema,
@@ -234,11 +225,11 @@ export const tools: MakeTool[] = [
                     description: 'Confirmation in case the scenario uses apps that are not yet installed',
                 },
             },
-            required: ['projectId', 'scheduling', 'blueprint'],
+            required: ['teamId', 'scheduling', 'blueprint'],
         },
         examples: [
             {
-                projectId: 5,
+                teamId: 5,
                 scheduling: { type: 'indefinitely', interval: 60 },
                 blueprint: {
                     name: 'Gmail Attachments to Google Drive',

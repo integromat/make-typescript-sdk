@@ -211,7 +211,7 @@ export type MakeTool = {
  * Text for an MCP server's `instructions` (initialize result) that explains the Teams to Projects rename.
  */
 export const MakeToolsInstructions =
-    'Teams were renamed to Projects; `teamId` is now `projectId`. Tools still accept the legacy `teamId` argument.';
+    'Teams are being renamed to Projects. `teamId` is the project ID argument; tools also accept `projectId` as an optional alias.';
 
 /**
  * Let a tool whose schema names the project `projectId` also take the legacy `teamId`.

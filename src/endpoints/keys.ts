@@ -1,5 +1,6 @@
 import type { FetchFunction, JSONValue, PickColumns, ProjectRef } from '../types.js';
 import type { DataStructureField } from './data-structures.js';
+import { toWireProject } from '../utils.js';
 
 /**
  * Represents a key in Make.
@@ -192,7 +193,7 @@ export class Keys {
         return (
             await this.#fetch<CreateKeyResponse>('/keys', {
                 method: 'POST',
-                body,
+                body: toWireProject(body),
             })
         ).key;
     }
