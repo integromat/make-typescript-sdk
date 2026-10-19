@@ -56,7 +56,7 @@ export const tools: MakeTool[] = [
         },
         examples: [{ teamId: 5 }],
         execute: async (make: Make, args: { teamId: number }) => {
-            return await make.teams.get(args.teamId);
+            return await make.teams.get(args.teamId, { cols: ['*'] });
         },
     },
     {
