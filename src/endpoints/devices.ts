@@ -26,8 +26,10 @@ export type Device = {
     id: number;
     /** User-defined name of the device */
     name: string;
-    /** ID of the team that owns the device */
+    /** ID of the project that owns the device */
     teamId: number;
+    /** ID of the project that owns the device. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
     /** Unique device identifier */
     udid: string;
     /** List of capabilities/triggers the device supports */
@@ -77,14 +79,14 @@ export class Devices {
     }
 
     /**
-     * List devices for a team.
-     * @param teamId The team ID to list devices for
+     * List devices for a project.
+     * @param teamId The project ID to list devices for
      * @param options Optional parameters for filtering and pagination
      * @returns Promise with the list of devices
      *
      * @example
      * ```typescript
-     * // List all devices in team 1
+     * // List all devices in project 1
      * const devices = await make.devices.list(1);
      * ```
      */

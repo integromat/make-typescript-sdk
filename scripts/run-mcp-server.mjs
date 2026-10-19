@@ -7,7 +7,7 @@ import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import { Make } from '../dist/index.js';
-import { MakeTools } from '../dist/tools.js';
+import { MakeTools, MakeToolsInstructions } from '../dist/tools.js';
 
 const server = new Server(
     {
@@ -18,6 +18,7 @@ const server = new Server(
         capabilities: {
             tools: {},
         },
+        instructions: MakeToolsInstructions,
     },
 );
 

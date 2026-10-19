@@ -14,9 +14,9 @@ export type IncompleteExecution = {
     scenarioId?: number;
     /** Name of the scenario this execution belongs to */
     scenarioName?: string;
-    /** ID of the team this execution belongs to */
+    /** ID of the project this execution belongs to */
     companyId?: number;
-    /** Name of the team this execution belongs to */
+    /** Name of the project this execution belongs to */
     companyName?: string;
     /** Reason for the incomplete execution */
     reason?: string;

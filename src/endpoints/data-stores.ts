@@ -1,5 +1,6 @@
-import type { FetchFunction, Pagination, PickColumns } from '../types.js';
+import type { FetchFunction, Pagination, PickColumns, ProjectRef } from '../types.js';
 import { DataStoreRecords } from './data-store-records.js';
+import { toWireProject } from '../utils.js';
 
 /**
  * Represents a data store in Make.
@@ -17,8 +18,10 @@ export type DataStore = {
     size: string;
     /** Maximum allowed size of the data store */
     maxSize: string;
-    /** ID of the team that owns the data store */
+    /** ID of the project that owns the data store */
     teamId: number;
+    /** ID of the project that owns the data store. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
     /** ID of the data structure defining the record format, or null if not specified */
     datastructureId: number | null;
 };
@@ -56,11 +59,9 @@ type ListDataStoresResponse<C extends keyof DataStore = never> = {
 /**
  * Parameters for creating a new data store.
  */
-export type CreateDataStoreBody = {
+export type CreateDataStoreBody = ProjectRef & {
     /** Name for the data store */
     name: string;
-    /** ID of the team where the data store will be created */
-    teamId: number;
     /** Optional ID of a data structure that defines the record format */
     datastructureId?: number;
     /** Maximum size limit for the data store in megabytes */
@@ -127,8 +128,8 @@ export class DataStores {
     }
 
     /**
-     * List all data stores for a team.
-     * @param teamId The team ID to filter data stores by
+     * List all data stores for a project.
+     * @param teamId The project ID to filter data stores by
      * @param options Optional parameters for filtering and pagination
      * @returns Promise with the list of data stores
      */
@@ -156,7 +157,7 @@ export class DataStores {
         return (
             await this.#fetch<CreateDataStoreResponse>('/data-stores', {
                 method: 'POST',
-                body,
+                body: toWireProject(body),
             })
         ).dataStore;
     }

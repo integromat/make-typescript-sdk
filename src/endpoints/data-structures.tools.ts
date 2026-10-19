@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
     {
         name: 'data-structures_list',
         title: 'List data structures',
-        description: 'List data structures for a team.',
+        description: 'List data structures for a project.',
         category: 'data-structures',
         scope: 'udts:read',
         scopeId: 'teamId',
@@ -19,7 +19,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list data structures for' },
+                teamId: { type: 'number', description: 'The project ID to list data structures for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
             required: ['teamId'],
         },
@@ -73,7 +74,11 @@ export const tools: MakeTool[] = [
             properties: {
                 teamId: {
                     type: 'number',
-                    description: 'The unique ID of the team in which the data structure will be created',
+                    description: 'The unique ID of the project in which the data structure will be created',
+                },
+                projectId: {
+                    type: 'number',
+                    description: 'Optional alias of teamId; used when teamId is not given.',
                 },
                 name: {
                     type: 'string',

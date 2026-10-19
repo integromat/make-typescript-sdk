@@ -16,7 +16,7 @@ export type PrivateSpace = {
     organizationId: number;
     /** Whether Make global AI agents are enabled for the space */
     globalAgentsEnabled?: boolean;
-    /** Type of the underlying team; always `personal` for private spaces */
+    /** Type of the underlying project; always `personal` for private spaces */
     type?: 'personal';
     /** Name of the space owner */
     privateSpaceOwnerName?: string;

@@ -1,4 +1,4 @@
-import type { FetchFunction, JSONValue, PickColumns } from '../types.js';
+import type { FetchFunction, JSONValue, PickColumns, ProjectRef } from '../types.js';
 
 /**
  * Represents a connection in Make.
@@ -20,8 +20,10 @@ export type Connection = {
     expire: string | null;
     /** Additional metadata about the connection */
     metadata: Record<string, JSONValue> | null;
-    /** ID of the team that owns the connection */
+    /** ID of the project that owns the connection */
     teamId: number;
+    /** ID of the project that owns the connection. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
     /** Theme color for the connection in UI */
     theme: string;
     /** Whether the connection can be upgraded to a newer version */
@@ -92,15 +94,13 @@ export type RenameConnectionOptions<C extends keyof Connection = never> = {
 /**
  * Parameters for creating a new connection.
  */
-export type CreateConnectionBody = {
+export type CreateConnectionBody = ProjectRef & {
     /** Name for the connection */
     name: string;
     /** Type of the connection */
     accountName: string;
     /** OAuth scopes to request, if applicable */
     scopes?: string[];
-    /** ID of the team where the connection will be created */
-    teamId: number;
     /** Connection-specific configuration data */
     data?: Record<string, JSONValue>;
 };
@@ -199,8 +199,8 @@ export class Connections {
     }
 
     /**
-     * List connections for a team.
-     * @param teamId The team ID to list connections for
+     * List connections for a project.
+     * @param teamId The project ID to list connections for
      * @param options Optional parameters for filtering and pagination
      * @returns Promise with the list of connections
      */
@@ -249,7 +249,7 @@ export class Connections {
             await this.#fetch<CreateConnectionResponse>('/connections', {
                 method: 'POST',
                 query: {
-                    teamId: body.teamId,
+                    teamId: body.teamId ?? body.projectId,
                 },
                 body: Object.assign({}, body.data, {
                     /**

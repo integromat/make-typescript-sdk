@@ -7,7 +7,7 @@ export const tools: MakeTool[] = [
         name: 'credential-requests_list',
         title: 'List credential requests',
         description:
-            'Retrieve a list of credential requests. Each request can contain multiple credentials (connections and API keys). Filter by team, user, provider, status, or name to find specific requests.',
+            'Retrieve a list of credential requests. Each request can contain multiple credentials (connections and API keys). Filter by project, user, provider, status, or name to find specific requests.',
         category: 'credential-requests',
         scope: 'credential-requests:read',
         scopeId: 'teamId',
@@ -20,7 +20,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'Filter by team ID' },
+                teamId: { type: 'number', description: 'Filter by project ID' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 userId: { type: 'number', description: 'Filter by user ID' },
                 makeProviderId: {
                     oneOf: [{ type: 'string' }, { type: 'number' }],
@@ -198,7 +199,8 @@ export const tools: MakeTool[] = [
                     type: 'string',
                     description: 'Description of the Request which will be displayed to the End Users who open it.',
                 },
-                teamId: { type: 'number', description: 'Team ID' },
+                teamId: { type: 'number', description: 'Project ID' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 credentials: {
                     type: 'array',
                     description: 'Array of app/module selections to derive credentials from.',
@@ -300,7 +302,11 @@ export const tools: MakeTool[] = [
                 teamId: {
                     type: 'number',
                     description:
-                        'The numeric ID of the Make team where the connections/keys will be created once authorized.',
+                        'The numeric ID of the Make project where the connections/keys will be created once authorized.',
+                },
+                projectId: {
+                    type: 'number',
+                    description: 'Optional alias of teamId; used when teamId is not given.',
                 },
                 connections: {
                     type: 'array',

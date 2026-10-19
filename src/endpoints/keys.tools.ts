@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
     {
         name: 'keys_list',
         title: 'List keys',
-        description: 'List all keys for a team.',
+        description: 'List all keys for a project.',
         category: 'keys',
         scope: 'keys:read',
         scopeId: 'teamId',
@@ -19,7 +19,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list keys for' },
+                teamId: { type: 'number', description: 'The project ID to list keys for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
             required: ['teamId'],
         },
@@ -71,7 +72,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID where the key will be created' },
+                teamId: { type: 'number', description: 'The project ID where the key will be created' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 name: { type: 'string', description: 'Name of the key' },
                 typeName: { type: 'string', description: 'Type of the key' },
                 parameters: { type: 'object', description: 'Key-specific configuration parameters' },

@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
         name: 'folders_list',
         title: 'List folders',
         description:
-            'List scenario folders for a team. If you do not know the teamId, find it via organizations_list (each organization lists its teams) or teams_list, or ask the user — never guess IDs.',
+            'List scenario folders for a project. If you do not know the teamId, find it via organizations_list (each organization lists its projects) or teams_list, or ask the user — never guess IDs.',
         category: 'folders',
         scope: 'scenarios:read',
         scopeId: 'teamId',
@@ -19,7 +19,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list folders for' },
+                teamId: { type: 'number', description: 'The project ID to list folders for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 parentId: {
                     type: 'number',
                     description:
@@ -57,7 +58,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID where the folder will be created' },
+                teamId: { type: 'number', description: 'The project ID where the folder will be created' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 name: { type: 'string', description: 'Name of the folder' },
                 parentId: {
                     oneOf: [{ type: 'number' }, { type: 'null' }],

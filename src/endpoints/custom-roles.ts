@@ -1,17 +1,18 @@
-import type { FetchFunction } from '../types.js';
+import type { FetchFunction, RoleCategoryInput } from '../types.js';
+import { toApiRoleCategory } from '../utils.js';
 
 /**
  * Represents a custom role in Make.
  * Custom roles are user-defined roles managed through Roleman; they require
  * the organization's `customRoles` license feature and only apply at the
- * organization or team level (never to admin roles).
+ * organization or project level (never to admin roles).
  */
 export type CustomRole = {
     /** Unique identifier of the custom role */
     id: number;
     /** Name of the custom role */
     name: string;
-    /** Whether the role applies to an organization or a team */
+    /** Whether the role applies to an organization or a project */
     category: 'organization' | 'team';
     /** Always `'custom_managed'` for a custom role */
     managementType: 'custom_managed';
@@ -27,8 +28,8 @@ export type CustomRole = {
 export type CreateCustomRoleBody = {
     /** Name of the custom role */
     name: string;
-    /** Whether the role applies to an organization or a team */
-    category: 'organization' | 'team';
+    /** Whether the role applies to an organization or a project (`'team'` is the legacy name of `'project'`) */
+    category: RoleCategoryInput;
     /** ID of the organization to create the custom role in */
     organizationId: number;
     /** Description of the custom role */
@@ -109,7 +110,7 @@ export class CustomRoles {
         return (
             await this.#fetch<CustomRoleResponse>('/users/custom-roles', {
                 method: 'POST',
-                body,
+                body: { ...body, category: toApiRoleCategory(body.category) },
             })
         ).role;
     }

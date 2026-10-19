@@ -98,7 +98,7 @@ export const tools: MakeTool[] = [
         name: 'audit-logs_list',
         title: 'List organization audit logs',
         description:
-            'List the audit log entries of an organization: who changed what and when, across the organization and all of its teams. Entries carry no event-specific payload — call audit-logs_get with the organizationId and uuid from the entry to see that. Requires the Admin or Owner role on the organization.',
+            'List the audit log entries of an organization: who changed what and when, across the organization and all of its projects. Entries carry no event-specific payload — call audit-logs_get with the organizationId and uuid from the entry to see that. Requires the Admin or Owner role on the organization.',
         category: 'audit-logs',
         scope: 'audit-logs:read',
         scopeId: 'organizationId',
@@ -112,11 +112,16 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 organizationId: { type: 'number', description: 'The organization ID to list audit log entries for' },
-                team: {
+                project: {
                     type: 'array',
                     items: { type: 'string' },
                     description:
-                        'Filter by one or more teams, each given as a team ID or a team name. Discover the valid values with audit-logs_get-filters.',
+                        'Filter by one or more projects, each given as a project ID or a project name. Discover the valid values with audit-logs_get-filters.',
+                },
+                team: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Deprecated: legacy name of project (Teams were renamed to Projects). Use project.',
                 },
                 ...listProperties('audit-logs_get-filters'),
             },
@@ -126,17 +131,20 @@ export const tools: MakeTool[] = [
             { organizationId: 3 },
             { organizationId: 3, event: ['webhook_created'], sortDir: 'desc', limit: 20 },
         ],
-        execute: async (make: Make, args: { organizationId: number; team?: string[] } & ListArgs) => {
-            const { organizationId, team, ...rest } = args;
-            const options: ListOrganizationAuditLogsOptions = { ...toListOptions(rest), team };
+        execute: async (
+            make: Make,
+            args: { organizationId: number; project?: string[]; team?: string[] } & ListArgs,
+        ) => {
+            const { organizationId, project, team, ...rest } = args;
+            const options: ListOrganizationAuditLogsOptions = { ...toListOptions(rest), team: project ?? team };
             return await make.auditLogs.list(organizationId, options);
         },
     },
     {
         name: 'audit-logs_list-for-team',
-        title: 'List team audit logs',
+        title: 'List project audit logs',
         description:
-            'List the audit log entries of a single team: who changed what and when within that team. Entries carry no event-specific payload — call audit-logs_get with the organizationId and uuid from the entry to see that. Use audit-logs_list instead to cover a whole organization.',
+            'List the audit log entries of a single project: who changed what and when within that project. Entries carry no event-specific payload — call audit-logs_get with the organizationId and uuid from the entry to see that. Use audit-logs_list instead to cover a whole organization.',
         category: 'audit-logs',
         scope: 'audit-logs:read',
         scopeId: 'teamId',
@@ -149,7 +157,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list audit log entries for' },
+                teamId: { type: 'number', description: 'The project ID to list audit log entries for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 ...listProperties('audit-logs_get-filters-for-team'),
             },
             required: ['teamId'],
@@ -200,7 +209,7 @@ export const tools: MakeTool[] = [
         name: 'audit-logs_get-filters',
         title: 'Get organization audit log filters',
         description:
-            'Get the values accepted by the filters of audit-logs_list for an organization: selectable users for author, teams for team, and events for event. Call this first when building a filtered audit log query, so the filter values are real rather than guessed.',
+            'Get the values accepted by the filters of audit-logs_list for an organization: selectable users for author, projects for project (returned under `teams`, and also `projects` where the API serves project naming), and events for event. Call this first when building a filtered audit log query, so the filter values are real rather than guessed.',
         category: 'audit-logs',
         scope: 'audit-logs:read',
         scopeId: 'organizationId',
@@ -227,9 +236,9 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'audit-logs_get-filters-for-team',
-        title: 'Get team audit log filters',
+        title: 'Get project audit log filters',
         description:
-            'Get the values accepted by the filters of audit-logs_list-for-team: selectable users for author and events for event. Call this first when building a filtered team audit log query, so the filter values are real rather than guessed.',
+            'Get the values accepted by the filters of audit-logs_list-for-team: selectable users for author and events for event. Call this first when building a filtered project audit log query, so the filter values are real rather than guessed.',
         category: 'audit-logs',
         scope: 'audit-logs:read',
         scopeId: 'teamId',
@@ -242,7 +251,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to get audit log filter options for' },
+                teamId: { type: 'number', description: 'The project ID to get audit log filter options for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
             required: ['teamId'],
         },

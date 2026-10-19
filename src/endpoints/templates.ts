@@ -1,19 +1,24 @@
-import type { FetchFunction, JSONValue, Pagination, PickColumns } from '../types.js';
+import type { FetchFunction, JSONValue, Pagination, PickColumns, ProjectRef } from '../types.js';
 import type { Blueprint } from './blueprints.js';
 import type { Scheduling } from './scenarios.js';
+import { toWireProject } from '../utils.js';
 
 /**
- * Represents a template in Make — a team's own saved scenario configuration.
+ * Represents a template in Make — a project's own saved scenario configuration.
  */
 export type Template = {
     /** Unique identifier of the template */
     id: number;
     /** Name of the template */
     name: string;
-    /** ID of the team that owns the template */
+    /** ID of the project that owns the template */
     teamId: number;
-    /** Name of the owning team (admin-only column) */
+    /** Name of the owning project (admin-only column) */
     teamName?: string;
+    /** ID of the project that owns the template. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
+    /** Name of the owning project. Same value as `teamName`; returned by APIs that serve project naming */
+    projectName?: string;
     /** ID of the owning organization (admin-only column) */
     organizationId?: number;
     /** Whether the template has been soft-deleted (admin-only column) */
@@ -80,7 +85,9 @@ export type ListTemplatesOptions<C extends keyof Template = never> = {
     cols?: C[] | ['*'];
     /** Pagination options */
     pg?: Partial<Pagination<Template>>;
-    /** Filter templates by the owning team's ID */
+    /** Filter templates by the owning project's ID */
+    projectId?: number;
+    /** @deprecated Teams were renamed to Projects. Use `projectId`. */
     teamId?: number;
     /** Filter templates by apps used */
     usedApps?: string[];
@@ -108,9 +115,7 @@ export type GetTemplateBlueprintOptions = {
 /**
  * Body for creating a template.
  */
-export type CreateTemplateBody = {
-    /** ID of the team where the template will be created */
-    teamId: number;
+export type CreateTemplateBody = ProjectRef & {
     /** Language code for the template (e.g. "en") */
     language: string;
     /** Blueprint containing the scenario configuration */
@@ -212,7 +217,7 @@ function serializeTemplateBody<T extends Partial<Pick<CreateTemplateBody, 'bluep
 }
 
 /**
- * Class providing methods for working with a team's own saved templates.
+ * Class providing methods for working with a project's own saved templates.
  * Templates are usable as a reference or copied into new scenarios.
  */
 export class Templates {
@@ -227,7 +232,7 @@ export class Templates {
     }
 
     /**
-     * List templates, optionally scoped to a team and filtered by apps used or public status.
+     * List templates, optionally scoped to a project and filtered by apps used or public status.
      * @param options Optional parameters for filtering and pagination
      * @returns Promise with the list of templates
      */
@@ -237,7 +242,7 @@ export class Templates {
         return (
             await this.#fetch<ListTemplatesResponse<C>>('/templates', {
                 query: {
-                    teamId: options.teamId,
+                    teamId: options.teamId ?? options.projectId,
                     usedApps: options.usedApps,
                     public: options.public,
                     cols: options.cols,
@@ -285,7 +290,7 @@ export class Templates {
         return (
             await this.#fetch<CreateTemplateResponse>('/templates', {
                 method: 'POST',
-                body: serializeTemplateBody(body),
+                body: serializeTemplateBody(toWireProject(body)),
             })
         ).template;
     }

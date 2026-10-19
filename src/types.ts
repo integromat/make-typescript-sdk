@@ -91,3 +91,19 @@ export type PickColumns<T, K extends keyof T | never, D extends keyof T | never 
         ? T
         : Pick<T, D>
     : { [P in K]-?: NonNullable<T[P]> };
+
+/**
+ * The project (formerly team) a request targets. `teamId` stays the required, primary key;
+ * `projectId` is an optional alias for it. When `teamId` is not given, `projectId` is sent as `teamId`.
+ */
+export type ProjectRef = {
+    /** ID of the project (formerly team) */
+    teamId: number;
+    /** Alias of `teamId`; used as `teamId` when that is not given */
+    projectId?: number;
+};
+
+/**
+ * Role category accepted in requests. `'project'` is the new name of `'team'`; responses still return `'team'`.
+ */
+export type RoleCategoryInput = 'organization' | 'project' | 'team';

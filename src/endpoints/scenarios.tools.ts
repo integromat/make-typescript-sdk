@@ -70,7 +70,7 @@ const schedulingInputSchema: JSONSchema = {
 const blueprintInputSchema: JSONSchema = {
     type: 'object',
     description:
-        "Blueprint containing the scenario configuration. Every `module` value must be an existing module identifier verified via app-modules_list — never invent module names.",
+        'Blueprint containing the scenario configuration. Every `module` value must be an existing module identifier verified via app-modules_list — never invent module names.',
     properties: {
         name: { type: 'string', description: 'Name of the scenario' },
         flow: {
@@ -123,7 +123,7 @@ export const tools: MakeTool[] = [
         name: 'scenarios_list',
         title: 'List scenarios',
         description:
-            'List all scenarios for a team. Results can be narrowed to one folder (optionally including its subfolders) and/or to scenarios carrying at least one of the given scenario labels. Returned scenarios include their assigned labels.',
+            'List all scenarios for a project. Results can be narrowed to one folder (optionally including its subfolders) and/or to scenarios carrying at least one of the given scenario labels. Returned scenarios include their assigned labels.',
         category: 'scenarios',
         scope: 'scenarios:read',
         scopeId: 'teamId',
@@ -136,7 +136,7 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to filter scenarios by' },
+                teamId: { type: 'number', description: 'The project ID to filter scenarios by' },
                 folderId: { type: 'number', description: 'Only return scenarios placed in this folder' },
                 includeSubfolders: {
                     type: 'boolean',
@@ -214,7 +214,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'ID of the team where the scenario will be created' },
+                teamId: { type: 'number', description: 'ID of the project where the scenario will be created' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 folderId: { type: 'number', description: 'ID of the folder where the scenario will be placed' },
                 scheduling: schedulingInputSchema,
                 blueprint: blueprintInputSchema,

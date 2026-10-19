@@ -5,7 +5,7 @@ export const tools: MakeTool[] = [
     {
         name: 'functions_list',
         title: 'List functions',
-        description: 'List custom functions for a team.',
+        description: 'List custom functions for a project.',
         category: 'functions',
         scope: 'functions:read',
         scopeId: 'teamId',
@@ -18,7 +18,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list functions for' },
+                teamId: { type: 'number', description: 'The project ID to list functions for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
             required: ['teamId'],
         },
@@ -70,7 +71,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID where the function will be created' },
+                teamId: { type: 'number', description: 'The project ID where the function will be created' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 name: { type: 'string', description: 'The name of the function' },
                 code: { type: 'string', description: 'The function code' },
                 description: { type: 'string', description: 'Description of the function' },
@@ -176,7 +178,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID' },
+                teamId: { type: 'number', description: 'The project ID' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 code: { type: 'string', description: 'The function code to check' },
             },
             required: ['teamId', 'code'],

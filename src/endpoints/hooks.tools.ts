@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
     {
         name: 'hooks_list',
         title: 'List webhooks/mailhooks',
-        description: 'List webhooks/mailhooks for a specific team.',
+        description: 'List webhooks/mailhooks for a specific project.',
         category: 'hooks',
         scope: 'hooks:read',
         scopeId: 'teamId',
@@ -19,7 +19,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list hooks for' },
+                teamId: { type: 'number', description: 'The project ID to list hooks for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
             required: ['teamId'],
         },
@@ -71,7 +72,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID where the hook will be created' },
+                teamId: { type: 'number', description: 'The project ID where the hook will be created' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 name: { type: 'string', description: 'The name of the webhook' },
                 typeName: {
                     type: 'string',

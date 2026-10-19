@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
     {
         name: 'data-tables_list',
         title: 'List data tables',
-        description: 'List all data tables for a team.',
+        description: 'List all data tables for a project.',
         category: 'data-tables',
         scope: 'datastores:read',
         scopeId: 'teamId',
@@ -19,7 +19,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to filter data tables by' },
+                teamId: { type: 'number', description: 'The project ID to filter data tables by' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 sortBy: {
                     type: 'string',
                     enum: ['name', 'maxStorageSizeMb'],
@@ -85,7 +86,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to create the data table in' },
+                teamId: { type: 'number', description: 'The project ID to create the data table in' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 name: { type: 'string', description: 'The name of the data table' },
             },
             required: ['teamId', 'name'],

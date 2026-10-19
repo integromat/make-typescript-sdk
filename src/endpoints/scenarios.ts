@@ -1,8 +1,9 @@
-import type { FetchFunction, JSONValue, Pagination, PickColumns } from '../types.js';
+import type { FetchFunction, JSONValue, Pagination, PickColumns, ProjectRef } from '../types.js';
 import { Blueprint } from './blueprints.js';
 import type { DataStructureField } from './data-structures.js';
 import type { ScenarioLabel } from './scenario-labels.js';
 import { ScenarioCustomProperties } from './scenario-custom-properties.js';
+import { toWireProject } from '../utils.js';
 
 /**
  * Represents a Make scenario.
@@ -17,8 +18,10 @@ export type Scenario = {
     name: string;
     /** Description of the scenario */
     description: string;
-    /** ID of the team that owns the scenario */
+    /** ID of the project that owns the scenario */
     teamId: number;
+    /** ID of the project that owns the scenario. Same value as `teamId`; returned by APIs that serve project naming */
+    projectId?: number;
     /** ID of the folder containing the scenario, or `null` when the scenario is not in a folder */
     folderId: number | null;
     /** Slash-separated path of the containing folder (e.g. `CRM/cleanup`), or `null` when the scenario is not in a folder. Returned when requested via `cols` (included by `*`) */
@@ -212,9 +215,7 @@ type ActivateScenarioResponse = {
 /**
  * Parameters for creating a new scenario.
  */
-export type CreateScenarioBody = {
-    /** ID of the team where the scenario will be created */
-    teamId: number;
+export type CreateScenarioBody = ProjectRef & {
     /** ID of the folder where the scenario will be placed */
     folderId?: number;
     /** Scheduling configuration for the scenario */
@@ -390,7 +391,7 @@ export class Scenarios {
                     cols: options?.cols,
                     confirmed: options?.confirmed,
                 },
-                body: normalizePayload(scenario),
+                body: normalizePayload(toWireProject(scenario)),
             })
         ).scenario;
     }
@@ -411,8 +412,8 @@ export class Scenarios {
     }
 
     /**
-     * List all scenarios for a team.
-     * @param teamId The team ID to filter scenarios by
+     * List all scenarios for a project.
+     * @param teamId The project ID to filter scenarios by
      * @param options Optional parameters for filtering and pagination
      * @returns Promise with the list of scenarios
      */

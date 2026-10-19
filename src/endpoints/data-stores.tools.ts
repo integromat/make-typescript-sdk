@@ -5,7 +5,7 @@ export const tools: MakeTool[] = [
     {
         name: 'data-stores_list',
         title: 'List data stores',
-        description: 'List all data stores for a team.',
+        description: 'List all data stores for a project.',
         category: 'data-stores',
         scope: 'datastores:read',
         scopeId: 'teamId',
@@ -18,7 +18,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to filter data stores by' },
+                teamId: { type: 'number', description: 'The project ID to filter data stores by' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
             required: ['teamId'],
         },
@@ -71,7 +72,8 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 name: { type: 'string', description: 'Name of the data store' },
-                teamId: { type: 'number', description: 'ID of the team to create the data store in' },
+                teamId: { type: 'number', description: 'ID of the project to create the data store in' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 maxSizeMB: { type: 'number', description: 'Maximum size in MB for the data store' },
                 datastructureId: {
                     type: 'number',

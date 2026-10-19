@@ -2,7 +2,7 @@ import type { FetchFunction, JSONValue, Pagination, PickColumns } from '../types
 
 /**
  * Represents an organization in Make.
- * Organizations are top-level entities that contain teams and manage overall
+ * Organizations are top-level entities that contain projects and manage overall
  * account settings, billing, and user permissions.
  */
 export type Organization = {
@@ -40,7 +40,7 @@ export type Organization = {
         transfer: number;
         /** Operations limit */
         operations: number;
-        /** Teams limit */
+        /** Projects limit */
         teams: number;
         /** Portal access enabled */
         portal?: boolean;
@@ -74,7 +74,7 @@ export type Organization = {
         analyticsAccess?: boolean;
         /** Custom IML functions enabled */
         customFunctions?: boolean;
-        /** Custom organization/team variables enabled */
+        /** Custom organization/project variables enabled */
         customVariables?: boolean;
         /** Number of custom properties allowed */
         customProperties?: number;
@@ -94,7 +94,7 @@ export type Organization = {
         dynamicDependencies?: boolean;
         /** Scenario relation tree enabled */
         scenarioRelationTree?: boolean;
-        /** Team operations limits enabled */
+        /** Project operations limits enabled */
         teamOperationsLimits?: boolean;
         /** Webhook log retention period in days */
         webhookLogRetentionDays?: number;
@@ -115,11 +115,18 @@ export type Organization = {
     }[];
     /** The name of the subscription for the organization */
     serviceName: string;
-    /** Teams in the organization */
+    /** Projects in the organization (legacy key name) */
     teams: Array<{
-        /** Team ID */
+        /** Project ID */
         id: number;
-        /** Team name */
+        /** Project name */
+        name: string;
+    }>;
+    /** Projects in the organization. Same value as `teams`; returned by APIs that serve project naming */
+    projects?: Array<{
+        /** Project ID */
+        id: number;
+        /** Project name */
         name: string;
     }>;
     /** Whether the organization is paused */
@@ -162,6 +169,7 @@ export type PartialOrganization = Pick<
     | 'name'
     | 'zone'
     | 'teams'
+    | 'projects'
     | 'timezoneId'
     | 'countryId'
     | 'externalId'
@@ -253,7 +261,7 @@ type UpdateOrganizationResponse = {
 
 /**
  * Class providing methods for working with Make organizations.
- * Organizations are top-level entities that contain teams and manage overall
+ * Organizations are top-level entities that contain projects and manage overall
  * account settings, billing, and user permissions.
  */
 export class Organizations {

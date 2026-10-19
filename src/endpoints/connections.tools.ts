@@ -6,7 +6,7 @@ export const tools: MakeTool[] = [
     {
         name: 'connections_list',
         title: 'List connections',
-        description: 'List connections for a team.',
+        description: 'List connections for a project.',
         category: 'connections',
         scope: 'connections:read',
         scopeId: 'teamId',
@@ -19,7 +19,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list connections for' },
+                teamId: { type: 'number', description: 'The project ID to list connections for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 type: { type: 'array', items: { type: 'string' }, description: 'Filter by connection type' },
                 scopes: {
                     type: 'object',
@@ -89,7 +90,8 @@ export const tools: MakeTool[] = [
             properties: {
                 name: { type: 'string', description: 'Human-readable name for the connection' },
                 accountName: { type: 'string', description: 'Connection type name (internal identifier)' },
-                teamId: { type: 'number', description: 'ID of the team to create the connection in' },
+                teamId: { type: 'number', description: 'ID of the project to create the connection in' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
                 data: { type: 'object', description: 'Connection configuration data' },
                 scope: {
                     type: 'array',

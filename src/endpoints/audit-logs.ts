@@ -15,14 +15,20 @@ export type AuditLogUser = {
 };
 
 /**
- * A team referenced by an audit log entry, either as its scope or as a filter option.
+ * A project referenced by an audit log entry, either as its scope or as a filter option.
  */
-export type AuditLogTeam = {
-    /** Unique identifier of the team */
+export type AuditLogProject = {
+    /** Unique identifier of the project */
     id: number;
-    /** Name of the team */
+    /** Name of the project */
     name?: string;
 };
+
+/**
+ * A project (formerly team) referenced by an audit log entry.
+ * @deprecated Teams were renamed to Projects. Use {@link AuditLogProject} instead.
+ */
+export type AuditLogTeam = AuditLogProject;
 
 /**
  * An organization referenced by an audit log entry.
@@ -48,7 +54,7 @@ export type AuditLogVersion = {
 /**
  * The fields every audit log entry carries, whichever endpoint returned it.
  * Audit logs record administrative and configuration events across an organization
- * and its teams.
+ * and its projects.
  *
  * The two endpoint families each add one field of their own — see
  * {@link AuditLogListEntry} and {@link AuditLogDetail}.
@@ -66,8 +72,10 @@ export type AuditLog = {
     organization?: AuditLogOrganization;
     /** Name of the audited event, for example `webhook_created` */
     eventName: string;
-    /** Team the entry belongs to, absent for organization-level events */
-    team?: AuditLogTeam;
+    /** Project the entry belongs to, absent for organization-level events (legacy key name) */
+    team?: AuditLogProject;
+    /** Project the entry belongs to. Same value as `team`; returned by APIs that serve project naming */
+    project?: AuditLogProject;
     /** User who triggered the event */
     actor: AuditLogUser;
     /** ID of the entity the event was performed on */
@@ -133,7 +141,7 @@ export type AuditLogsPagination = {
 };
 
 /**
- * Options shared by the organization and team audit log listings.
+ * Options shared by the organization and project audit log listings.
  */
 export type ListAuditLogsOptions = {
     /** Pagination and sorting options */
@@ -158,7 +166,9 @@ export type ListAuditLogsOptions = {
  * Options for listing the audit logs of an organization.
  */
 export type ListOrganizationAuditLogsOptions = ListAuditLogsOptions & {
-    /** Filter by one or more team IDs or team names */
+    /** Filter by one or more project IDs or project names */
+    project?: (string | number)[];
+    /** @deprecated Teams were renamed to Projects. Use `project`. */
     team?: (string | number)[];
 };
 
@@ -202,21 +212,29 @@ export type AuditLogFilterOptions = AuditLogFilterCategory[] | AuditLogUncategor
 export type OrganizationAuditLogFilters = {
     /** Users selectable as the `author` filter */
     users: AuditLogUser[];
-    /** Teams selectable as the `team` filter */
-    teams: AuditLogTeam[];
+    /** Projects selectable as the `project` (legacy `team`) filter (legacy key name) */
+    teams: AuditLogProject[];
+    /** Same value as `teams`; returned by APIs that serve project naming */
+    projects?: AuditLogProject[];
     /** Events selectable as the `event` filter */
     events: AuditLogFilterOptions;
 };
 
 /**
- * Filter options available for a team's audit logs.
+ * Filter options available for a project's audit logs.
  */
-export type TeamAuditLogFilters = {
+export type ProjectAuditLogFilters = {
     /** Users selectable as the `author` filter */
     users: AuditLogUser[];
     /** Events selectable as the `event` filter */
     events: AuditLogFilterOptions;
 };
+
+/**
+ * Filter options available for a project's (formerly team's) audit logs.
+ * @deprecated Teams were renamed to Projects. Use {@link ProjectAuditLogFilters} instead.
+ */
+export type TeamAuditLogFilters = ProjectAuditLogFilters;
 
 /**
  * Response format for listing audit logs.
@@ -232,8 +250,8 @@ type ListAuditLogsResponse = {
  * Class providing methods for working with Make audit logs.
  *
  * Audit logs record administrative and configuration events across an organization
- * and its teams. Reading them requires the `audit-logs:read` scope, the Admin or Owner
- * role on the organization (or the corresponding team role for team-scoped reads),
+ * and its projects. Reading them requires the `audit-logs:read` scope, the Admin or Owner
+ * role on the organization (or the corresponding project role for project-scoped reads),
  * and an organization license that includes the audit logs feature.
  *
  * The list methods return the entries alone. To page through a large result set, pass the
@@ -265,21 +283,36 @@ export class AuditLogs {
                     dateTo: options?.dateTo,
                     event: options?.event,
                     author: options?.author,
-                    team: options?.team,
+                    team: options?.team ?? options?.project,
                 },
             })
         ).auditLogs;
     }
 
     /**
-     * List the audit log entries of a team.
-     * @param teamId The team ID to list audit log entries for
+     * List the audit log entries of a project.
+     * @param projectId The project ID to list audit log entries for
      * @param options Optional filtering, sorting, and pagination parameters
      * @returns Promise with the list of audit log entries
      */
+    async listForProject(projectId: number, options?: ListAuditLogsOptions): Promise<AuditLogListEntry[]> {
+        return await this.#listForScope(`team/${projectId}`, options);
+    }
+
+    /**
+     * List the audit log entries of a project through the legacy `/team` API path.
+     * @param teamId The project ID to list audit log entries for
+     * @param options Optional filtering, sorting, and pagination parameters
+     * @returns Promise with the list of audit log entries
+     * @deprecated Teams were renamed to Projects. Use {@link AuditLogs.listForProject} instead.
+     */
     async listForTeam(teamId: number, options?: ListAuditLogsOptions): Promise<AuditLogListEntry[]> {
+        return await this.#listForScope(`team/${teamId}`, options);
+    }
+
+    async #listForScope(scope: string, options?: ListAuditLogsOptions): Promise<AuditLogListEntry[]> {
         return (
-            await this.#fetch<ListAuditLogsResponse>(`/audit-logs/v2/team/${teamId}`, {
+            await this.#fetch<ListAuditLogsResponse>(`/audit-logs/v2/${scope}`, {
                 query: {
                     pg: options?.pg,
                     dateFrom: options?.dateFrom,
@@ -304,18 +337,28 @@ export class AuditLogs {
     /**
      * Get the filter options available for an organization's audit logs.
      * @param organizationId The organization ID to get filter options for
-     * @returns Promise with the available users, teams, and events
+     * @returns Promise with the available users, projects, and events
      */
     async getFilters(organizationId: number): Promise<OrganizationAuditLogFilters> {
         return await this.#fetch<OrganizationAuditLogFilters>(`/audit-logs/v2/organization/${organizationId}/filters`);
     }
 
     /**
-     * Get the filter options available for a team's audit logs.
-     * @param teamId The team ID to get filter options for
+     * Get the filter options available for a project's audit logs.
+     * @param projectId The project ID to get filter options for
      * @returns Promise with the available users and events
      */
-    async getFiltersForTeam(teamId: number): Promise<TeamAuditLogFilters> {
-        return await this.#fetch<TeamAuditLogFilters>(`/audit-logs/v2/team/${teamId}/filters`);
+    async getFiltersForProject(projectId: number): Promise<ProjectAuditLogFilters> {
+        return await this.#fetch<ProjectAuditLogFilters>(`/audit-logs/v2/team/${projectId}/filters`);
+    }
+
+    /**
+     * Get the filter options available for a project's audit logs through the legacy `/team` API path.
+     * @param teamId The project ID to get filter options for
+     * @returns Promise with the available users and events
+     * @deprecated Teams were renamed to Projects. Use {@link AuditLogs.getFiltersForProject} instead.
+     */
+    async getFiltersForTeam(teamId: number): Promise<ProjectAuditLogFilters> {
+        return await this.#fetch<ProjectAuditLogFilters>(`/audit-logs/v2/team/${teamId}/filters`);
     }
 }

@@ -5,7 +5,7 @@ export const tools: MakeTool[] = [
     {
         name: 'devices_list',
         title: 'List devices',
-        description: 'List devices registered in a team.',
+        description: 'List devices registered in a project.',
         category: 'devices',
         scope: 'devices:read',
         scopeId: 'teamId',
@@ -18,7 +18,8 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                teamId: { type: 'number', description: 'The team ID to list devices for' },
+                teamId: { type: 'number', description: 'The project ID to list devices for' },
+                projectId: { type: 'number', description: 'Optional alias of teamId; used when teamId is not given.' },
             },
             required: ['teamId'],
         },
