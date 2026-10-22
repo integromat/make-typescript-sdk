@@ -27,6 +27,7 @@ import { CustomPropertyStructures } from './endpoints/custom-property-structures
 import { Roles } from './endpoints/roles.js';
 import { CustomRoles } from './endpoints/custom-roles.js';
 import { AuditLogs } from './endpoints/audit-logs.js';
+import { EventSubscriptions } from './endpoints/event-subscriptions.js';
 import { SDKApps } from './endpoints/sdk/apps.js';
 import { SDKModules } from './endpoints/sdk/modules.js';
 import { SDKConnections } from './endpoints/sdk/connections.js';
@@ -85,6 +86,12 @@ export class Make {
      * Audit logs record administrative and configuration events across an organization and its teams
      */
     public readonly auditLogs: AuditLogs;
+
+    /**
+     * Access to event-subscription-related endpoints
+     * Event subscriptions send selected Make events to an HTTPS endpoint; includes their deliveries
+     */
+    public readonly eventSubscriptions: EventSubscriptions;
 
     /**
      * Access to scenario-related endpoints
@@ -354,6 +361,7 @@ export class Make {
         this.roles = new Roles(this.fetch.bind(this));
         this.customRoles = new CustomRoles(this.fetch.bind(this));
         this.auditLogs = new AuditLogs(this.fetch.bind(this));
+        this.eventSubscriptions = new EventSubscriptions(this.fetch.bind(this));
         this.sdk = {
             apps: new SDKApps(this.fetch.bind(this)),
             modules: new SDKModules(this.fetch.bind(this)),

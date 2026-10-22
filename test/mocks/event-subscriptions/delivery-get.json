@@ -1,0 +1,55 @@
+{
+    "delivery": {
+        "id": "0b8e5d1c-2f4a-4e6b-8c9d-1a2b3c4d5e6f",
+        "subscriptionId": "7f2c1e9a-4b3d-4c1e-9a2b-6d5e4f3a2b1c",
+        "eventType": "scenario.created",
+        "payloadVersion": 1,
+        "teamId": 212,
+        "status": {
+            "state": "failed",
+            "reason": "endpoint_error",
+            "httpStatus": 500
+        },
+        "attemptCount": 2,
+        "succeededAt": null,
+        "createdAt": "2026-10-02T10:00:00.000Z",
+        "event": {
+            "type": "scenario.created",
+            "timestamp": "2026-10-02T09:59:59.000Z",
+            "version": 1,
+            "data": {
+                "scenarioId": 42,
+                "teamId": 212,
+                "name": "Sync CRM"
+            }
+        },
+        "attempts": [
+            {
+                "attemptNumber": 2,
+                "manual": false,
+                "attemptedAt": "2026-10-02T10:05:00.000Z",
+                "durationMs": 120,
+                "status": {
+                    "state": "failed",
+                    "reason": "endpoint_error",
+                    "httpStatus": 500
+                },
+                "responseBody": "{\"error\":\"Internal Server Error\"}",
+                "responseBodyTruncated": false
+            },
+            {
+                "attemptNumber": 1,
+                "manual": false,
+                "attemptedAt": "2026-10-02T10:00:01.000Z",
+                "durationMs": 95,
+                "status": {
+                    "state": "failed",
+                    "reason": "endpoint_error",
+                    "httpStatus": 500
+                },
+                "responseBody": "{\"error\":\"Internal Server Error\"}",
+                "responseBodyTruncated": false
+            }
+        ]
+    }
+}

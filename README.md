@@ -60,6 +60,8 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 - **Data Tables** - Next-generation data storage provided by a dedicated service, with structure managed through columns
 - **Data Table Records** - Records within data tables, including bulk operations and query validation
 - **Data Table Columns** - Column definitions of data tables (create, update, delete, reorder)
+- **Event Subscriptions** - Send selected Make events to an HTTPS endpoint, with the available event types
+- **Event Subscription Deliveries** - Delivery history of event subscriptions, attempt details, and resends
 - **Executions** - Scenario execution history
 - **Folders** - Scenario categorization
 - **Scenario Labels** - Team-scoped tags assignable to scenarios
@@ -219,6 +221,8 @@ All tools are organized into the following categories:
 - `data-table-records`
 - `data-table-columns`
 - `enums`
+- `event-subscriptions`
+- `event-subscription-deliveries`
 - `executions`
 - `folders`
 - `functions`

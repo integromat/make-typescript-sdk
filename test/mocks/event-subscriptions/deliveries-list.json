@@ -1,0 +1,38 @@
+{
+    "deliveries": [
+        {
+            "id": "0b8e5d1c-2f4a-4e6b-8c9d-1a2b3c4d5e6f",
+            "subscriptionId": "7f2c1e9a-4b3d-4c1e-9a2b-6d5e4f3a2b1c",
+            "eventType": "scenario.created",
+            "payloadVersion": 1,
+            "teamId": 212,
+            "status": {
+                "state": "failed",
+                "reason": "endpoint_error",
+                "httpStatus": 500
+            },
+            "attemptCount": 2,
+            "succeededAt": null,
+            "createdAt": "2026-10-02T10:00:00.000Z"
+        },
+        {
+            "id": "5c4b3a29-1807-4f6e-9d5c-4b3a29180716",
+            "subscriptionId": "7f2c1e9a-4b3d-4c1e-9a2b-6d5e4f3a2b1c",
+            "eventType": "scenario.deleted",
+            "payloadVersion": 1,
+            "teamId": 212,
+            "status": {
+                "state": "succeeded",
+                "reason": null,
+                "httpStatus": 200
+            },
+            "attemptCount": 1,
+            "succeededAt": "2026-10-02T09:00:01.000Z",
+            "createdAt": "2026-10-02T09:00:00.000Z"
+        }
+    ],
+    "pg": {
+        "limit": 20,
+        "sortDir": "desc"
+    }
+}

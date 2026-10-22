@@ -42,6 +42,8 @@ import { tools as ScenarioCustomPropertiesTools } from './endpoints/scenario-cus
 import { tools as RolesTools } from './endpoints/roles.tools.js';
 import { tools as CustomRolesTools } from './endpoints/custom-roles.tools.js';
 import { tools as AuditLogsTools } from './endpoints/audit-logs.tools.js';
+import { tools as EventSubscriptionsTools } from './endpoints/event-subscriptions.tools.js';
+import { tools as EventSubscriptionDeliveriesTools } from './endpoints/event-subscription-deliveries.tools.js';
 
 /**
  * JSON Schema definition for input parameters.
@@ -257,4 +259,6 @@ export const MakeTools = [
     ...RolesTools,
     ...CustomRolesTools,
     ...AuditLogsTools,
+    ...EventSubscriptionsTools,
+    ...EventSubscriptionDeliveriesTools,
 ] as MakeTool[];
