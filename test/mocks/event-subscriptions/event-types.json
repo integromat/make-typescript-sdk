@@ -1,0 +1,48 @@
+{
+    "eventTypes": [
+        {
+            "type": "scenario.created",
+            "supportsTeamSelection": true,
+            "defaultPayloadVersion": 1,
+            "payloads": [
+                {
+                    "version": 1,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "scenarioId": {
+                                "type": "integer"
+                            },
+                            "teamId": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["scenarioId", "teamId", "name"]
+                    }
+                }
+            ]
+        },
+        {
+            "type": "organization.updated",
+            "supportsTeamSelection": false,
+            "defaultPayloadVersion": 1,
+            "payloads": [
+                {
+                    "version": 1,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "organizationId": {
+                                "type": "integer"
+                            }
+                        },
+                        "required": ["organizationId"]
+                    }
+                }
+            ]
+        }
+    ]
+}
