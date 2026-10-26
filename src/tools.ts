@@ -21,6 +21,7 @@ import { tools as TeamsTools } from './endpoints/teams.tools.js';
 import { tools as OrganizationsTools } from './endpoints/organizations.tools.js';
 import { tools as UsersTools } from './endpoints/users.tools.js';
 import { tools as FunctionsTools } from './endpoints/functions.tools.js';
+import { tools as FunctionsV2Tools } from './endpoints/functions-v2.tools.js';
 import { tools as ExecutionsTools } from './endpoints/executions.tools.js';
 import { tools as HooksTools } from './endpoints/hooks.tools.js';
 import { tools as HookIncomingsTools } from './endpoints/hook-incomings.tools.js';
@@ -87,6 +88,10 @@ export type JSONSchema = {
     minItems?: number;
     /** Maximum number of items for arrays */
     maxItems?: number;
+    /** String format, such as uuid or date-time. */
+    format?: string;
+    /** Maximum number of properties in an object. */
+    maxProperties?: number;
     /** Pattern for string validation */
     pattern?: string;
     /** Whether properties not listed in `properties` are allowed on object types */
@@ -230,6 +235,7 @@ export const MakeTools = [
     ...FoldersTools,
     ...ScenarioLabelsTools,
     ...FunctionsTools,
+    ...FunctionsV2Tools,
     ...HooksTools,
     ...HookIncomingsTools,
     ...DevicesTools,

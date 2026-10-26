@@ -133,11 +133,11 @@ describe('MCP Tools', () => {
     it('Should have proper naming conventions', () => {
         MakeTools.forEach(tool => {
             // Tool names should follow the pattern: {endpoint}_{action} or sdk_{endpoint}_{action}
-            const namePattern = /^(sdk_)?[a-z_-]+_[a-z_-]+$/;
+            const namePattern = /^(sdk_)?[a-z][a-z0-9_-]*_[a-z0-9_-]+$/;
             expect(tool.name).toMatch(namePattern);
 
             // Categories should use dot notation for hierarchy
-            const categoryPattern = /^[a-z][a-z.-]*[a-z]$/;
+            const categoryPattern = /^[a-z][a-z0-9.-]*[a-z0-9]$/;
             expect(tool.category).toMatch(categoryPattern);
         });
 

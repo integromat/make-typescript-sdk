@@ -16,6 +16,7 @@ import { Connections } from './endpoints/connections.js';
 import { CredentialRequests } from './endpoints/credential-requests.js';
 import { Devices } from './endpoints/devices.js';
 import { Functions } from './endpoints/functions.js';
+import { FunctionsV2 } from './endpoints/functions-v2.js';
 import { Organizations } from './endpoints/organizations.js';
 import { Enums } from './endpoints/enums.js';
 import { OnPremAgents } from './endpoints/on-prem-agents.js';
@@ -182,6 +183,9 @@ export class Make {
      */
     public readonly functions: Functions;
 
+    /** Versioned Functions authoring and durable execution, separate from legacy Functions. */
+    public readonly functionsV2: FunctionsV2;
+
     /**
      * Access to organization-related endpoints
      * Organizations are top-level entities that contain teams and manage overall account settings
@@ -342,6 +346,7 @@ export class Make {
         this.connections = new Connections(this.fetch.bind(this));
         this.devices = new Devices(this.fetch.bind(this));
         this.functions = new Functions(this.fetch.bind(this));
+        this.functionsV2 = new FunctionsV2(this.fetch.bind(this));
         this.organizations = new Organizations(this.fetch.bind(this));
         this.enums = new Enums(this.fetch.bind(this));
         this.onPremAgents = new OnPremAgents(this.fetch.bind(this));
@@ -396,6 +401,7 @@ export class Make {
 
             // Success case
             if (res.status < 400) {
+                options?.onResponse?.(res);
                 return this.handleResponse<T>(res);
             }
 
@@ -404,7 +410,7 @@ export class Make {
             lastError = error;
 
             // Check if we should retry
-            const shouldRetry = this.shouldRetry(res.status, attempt);
+            const shouldRetry = options?.retry !== false && this.shouldRetry(res.status, attempt);
             if (!shouldRetry) {
                 throw error;
             }

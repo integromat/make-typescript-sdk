@@ -27,6 +27,10 @@ export type QueryValue =
  * Options for configuring API requests.
  */
 export type FetchOptions = {
+    /** Disable automatic retries for this request, even when enabled on the client. */
+    retry?: false;
+    /** Inspect successful response metadata before parsing. Must not consume the body. */
+    onResponse?: (response: Response) => void;
     /** HTTP headers to include with the request */
     headers?: Record<string, string>;
     /** Query parameters to append to the URL */
