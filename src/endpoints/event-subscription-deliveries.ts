@@ -14,13 +14,13 @@ export type EventSubscriptionDeliveryState = 'pending' | 'succeeded' | 'failed';
  *
  * - `endpoint_error` means the endpoint answered with an error status.
  * - `endpoint_unreachable` means the endpoint could not be reached.
- * - `subscription_failing` means the subscription stopped receiving events after repeated failures.
+ * - `subscription_suspended` means the subscription stopped receiving events after repeated failures.
  * - `platform_error` means Make could not send the event.
  */
 export type EventSubscriptionDeliveryFailureReason =
     | 'endpoint_error'
     | 'endpoint_unreachable'
-    | 'subscription_failing'
+    | 'subscription_suspended'
     | 'platform_error';
 
 /**

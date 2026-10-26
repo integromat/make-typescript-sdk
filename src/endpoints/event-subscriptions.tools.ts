@@ -72,7 +72,7 @@ export const tools: MakeTool[] = [
         name: 'event-subscriptions_list',
         title: 'List event subscriptions',
         description:
-            "List the event subscriptions of an organization. An event subscription sends selected Make events (for example scenario changes) to an HTTPS endpoint. Each subscription's status.state is active (receives events), inactive (disabled) or failing (stopped after repeated failed deliveries). Returns at most limit subscriptions; when you get exactly limit, call again with offset increased by limit to get the next page. Signing secrets are never returned.",
+            "List the event subscriptions of an organization. An event subscription sends selected Make events (for example scenario changes) to an HTTPS endpoint. Each subscription's status.state is active (receives events), inactive (disabled) or suspended (Make stopped sending after repeated failed deliveries). Returns at most limit subscriptions; when you get exactly limit, call again with offset increased by limit to get the next page. Signing secrets are never returned.",
         category: 'event-subscriptions',
         scope: 'event-subscriptions:read',
         scopeId: 'organizationId',
@@ -88,7 +88,7 @@ export const tools: MakeTool[] = [
                 organizationId: organizationIdProperty,
                 status: {
                     type: 'string',
-                    enum: ['active', 'inactive', 'failing'],
+                    enum: ['active', 'inactive', 'suspended'],
                     description: 'Return only subscriptions in this state',
                 },
                 sortBy: {
@@ -115,7 +115,7 @@ export const tools: MakeTool[] = [
             },
             required: ['organizationId'],
         },
-        examples: [{ organizationId: 3 }, { organizationId: 3, status: 'failing' }],
+        examples: [{ organizationId: 3 }, { organizationId: 3, status: 'suspended' }],
         execute: async (
             make: Make,
             args: {
@@ -283,7 +283,7 @@ export const tools: MakeTool[] = [
         name: 'event-subscriptions_enable',
         title: 'Enable event subscription',
         description:
-            'Start sending events to an inactive or failing event subscription again. Events that occurred while it was not receiving are not delivered later; resend specific recorded deliveries with event-subscription-deliveries_resend. Make does not test the URL. Enabling an active subscription has no effect and succeeds.',
+            'Start sending events to an inactive or suspended event subscription again. Events that occurred while it was not receiving are not delivered later; resend specific recorded deliveries with event-subscription-deliveries_resend. Make does not test the URL. Enabling an active subscription has no effect and succeeds.',
         category: 'event-subscriptions',
         scope: 'event-subscriptions:write',
         scopeId: 'organizationId',

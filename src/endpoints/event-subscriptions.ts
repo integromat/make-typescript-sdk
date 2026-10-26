@@ -6,9 +6,9 @@ import { EventSubscriptionDeliveries } from './event-subscription-deliveries.js'
  *
  * - `active` receives events.
  * - `inactive` was disabled and receives no events until it is enabled.
- * - `failing` stopped receiving events after repeated failed deliveries; enabling it resumes delivery.
+ * - `suspended` stopped receiving events after repeated failed deliveries; enabling it resumes delivery.
  */
-export type EventSubscriptionState = 'active' | 'inactive' | 'failing';
+export type EventSubscriptionState = 'active' | 'inactive' | 'suspended';
 
 /**
  * Which event types a subscription receives, as sent when creating or updating it.
@@ -62,7 +62,7 @@ export type EventSubscription = {
         /** Whether the subscription receives events */
         state: EventSubscriptionState;
         /**
-         * Why the subscription is `failing` (currently always `repeated_failures`), and `null` for
+         * Why the subscription is `suspended` (currently always `repeated_failures`), and `null` for
          * other states. New reasons may be added, so accept unknown values.
          */
         reason: string | null;
@@ -301,7 +301,7 @@ export class EventSubscriptions {
     }
 
     /**
-     * Enable an event subscription, including one that is `failing`. Enabling an active subscription has no effect.
+     * Enable an event subscription, including one that is `suspended`. Enabling an active subscription has no effect.
      * @param organizationId The ID of the organization that owns the subscription
      * @param subscriptionId The subscription ID to enable
      * @returns Promise with the enabled subscription

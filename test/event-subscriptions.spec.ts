@@ -28,13 +28,13 @@ describe('Endpoints: EventSubscriptions', () => {
 
     it('Should list event subscriptions with a status filter, sorting and pagination', async () => {
         mockFetch(
-            `GET ${BASE}/subscriptions?pg%5BsortBy%5D=name&pg%5BsortDir%5D=asc&pg%5Blimit%5D=10&pg%5Boffset%5D=20&status=failing`,
+            `GET ${BASE}/subscriptions?pg%5BsortBy%5D=name&pg%5BsortDir%5D=asc&pg%5Blimit%5D=10&pg%5Boffset%5D=20&status=suspended`,
             listMock,
         );
 
         const result = await make.eventSubscriptions.list(3, {
             pg: { sortBy: 'name', sortDir: 'asc', limit: 10, offset: 20 },
-            status: 'failing',
+            status: 'suspended',
         });
         expect(result).toStrictEqual(listMock.subscriptions);
     });

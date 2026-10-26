@@ -30,7 +30,7 @@
             "name": "Everything",
             "url": "https://example.com/all-events",
             "status": {
-                "state": "failing",
+                "state": "suspended",
                 "reason": "repeated_failures"
             },
             "events": {
