@@ -47,7 +47,7 @@ const make = new Make('your-api-key', 'eu2.make.com', {
 
 ## Functions v2
 
-Use `make.functionsV2` for versioned authoring, Endpoint discovery and durable Runs. The 17 `functions_v2_*` tools are exported through `MakeTools`. See the [Functions v2 guide](guides/functions-v2.md) for scopes, ETags, polling and uncertain execution outcomes. Legacy `make.functions` is unchanged.
+Use `make.functionsV2` for versioned authoring, Endpoint discovery and durable Runs. The 17 `functions_v2_*` tools are exported through `MakeTools`. Legacy `make.functions` is unchanged.
 
 ## Platform Endpoints
 
