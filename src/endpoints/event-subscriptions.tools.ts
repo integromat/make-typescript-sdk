@@ -14,6 +14,7 @@ const organizationIdProperty: JSONSchema = {
 
 const subscriptionIdProperty: JSONSchema = {
     type: 'string',
+    pattern: '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
     description: 'The ID (UUID) of the event subscription, as returned by event-subscriptions_list',
 };
 
@@ -72,7 +73,7 @@ export const tools: MakeTool[] = [
         name: 'event-subscriptions_list',
         title: 'List event subscriptions',
         description:
-            "List the event subscriptions of an organization. An event subscription sends selected Make events (for example scenario changes) to an HTTPS endpoint. Each subscription's status.state is active (receives events), inactive (disabled) or suspended (Make stopped sending after repeated failed deliveries). Returns at most limit subscriptions; when you get exactly limit, call again with offset increased by limit to get the next page. Signing secrets are never returned.",
+            'List the event subscriptions of an organization. status.state is active, inactive (disabled by a user) or suspended (Make stopped sending after repeated failed deliveries). For the next page, increase offset by limit.',
         category: 'event-subscriptions',
         scope: 'event-subscriptions:read',
         scopeId: 'organizationId',
@@ -137,7 +138,7 @@ export const tools: MakeTool[] = [
         name: 'event-subscriptions_get',
         title: 'Get event subscription',
         description:
-            'Get an event subscription and its current status: name, URL, state, subscribed event types with their payload versions, and team selection. The signing secret is never returned.',
+            'Get an event subscription: name, URL, status, event types with payload versions, and teams. The signing secret is not returned.',
         category: 'event-subscriptions',
         scope: 'event-subscriptions:read',
         scopeId: 'organizationId',
@@ -165,7 +166,7 @@ export const tools: MakeTool[] = [
         name: 'event-subscriptions_create',
         title: 'Create event subscription',
         description:
-            "Create an event subscription that sends the selected Make events of an organization to an HTTPS endpoint. It receives events immediately unless enabled is false. Make does not test the URL. Payload versions are assigned by Make. Fails with SUBSCRIPTION_LIMIT_REACHED when the organization's plan allows no more subscriptions. The result includes signingSecret, which this call returns once and no other tool returns: give it to the user so they can configure their endpoint to verify deliveries, and do not store, log or repeat it otherwise. If the call fails with a timeout or a 5xx error, check event-subscriptions_list before retrying, because retrying blindly can create a duplicate.",
+            "Create an event subscription that sends an organization's selected events to an HTTPS endpoint. Take event types from event-subscriptions_list-event-types. The signing secret is not returned: tell the user to copy it from the subscription's page in the Make web app.",
         category: 'event-subscriptions',
         scope: 'event-subscriptions:write',
         scopeId: 'organizationId',
@@ -201,14 +202,16 @@ export const tools: MakeTool[] = [
         ],
         execute: async (make: Make, args: { organizationId: number } & CreateEventSubscriptionBody) => {
             const { organizationId, ...body } = args;
-            return await make.eventSubscriptions.create(organizationId, body);
+            // The signing secret stays out of the model's context; the web app can reveal it.
+            const { subscription } = await make.eventSubscriptions.create(organizationId, body);
+            return subscription;
         },
     },
     {
         name: 'event-subscriptions_update',
         title: 'Update event subscription',
         description:
-            'Update an event subscription. Send only the fields to change; omitted fields keep their current value. events and teams each replace the whole selection, so send the complete list of event types or team IDs you want, not only additions. Changing url sends all future events to the new endpoint. To change whether the subscription receives events, use event-subscriptions_enable or event-subscriptions_disable. If the error is SUBSCRIPTION_RECREATION_REQUIRED, tell the user instead of deleting and recreating it yourself, because a new subscription gets a new signing secret.',
+            'Update an event subscription. Send only the fields to change; events and teams each replace the whole selection. Use event-subscriptions_enable or event-subscriptions_disable to turn it on or off. On SUBSCRIPTION_RECREATION_REQUIRED, tell the user instead of deleting and recreating it.',
         category: 'event-subscriptions',
         scope: 'event-subscriptions:write',
         scopeId: 'organizationId',
@@ -253,7 +256,7 @@ export const tools: MakeTool[] = [
         name: 'event-subscriptions_delete',
         title: 'Delete event subscription',
         description:
-            'Permanently delete an event subscription. It stops receiving events immediately and its delivery history becomes inaccessible. This cannot be undone: a replacement gets a new ID and a new signing secret, and its endpoint must be reconfigured. Confirm with the user before calling. Use event-subscriptions_disable to only stop events.',
+            'Permanently delete an event subscription and its delivery history. Confirm with the user first. To only stop events, use event-subscriptions_disable.',
         category: 'event-subscriptions',
         scope: 'event-subscriptions:write',
         scopeId: 'organizationId',
@@ -283,7 +286,7 @@ export const tools: MakeTool[] = [
         name: 'event-subscriptions_enable',
         title: 'Enable event subscription',
         description:
-            'Start sending events to an inactive or suspended event subscription again. Events that occurred while it was not receiving are not delivered later; resend specific recorded deliveries with event-subscription-deliveries_resend. Make does not test the URL. Enabling an active subscription has no effect and succeeds.',
+            'Start sending events to an inactive or suspended event subscription. Events missed meanwhile are not sent; resend recorded deliveries with event-subscription-deliveries_resend.',
         category: 'event-subscriptions',
         scope: 'event-subscriptions:write',
         scopeId: 'organizationId',
@@ -312,7 +315,7 @@ export const tools: MakeTool[] = [
         name: 'event-subscriptions_disable',
         title: 'Disable event subscription',
         description:
-            'Stop sending events to an event subscription until it is enabled again with event-subscriptions_enable. Events that occur meanwhile are not delivered later. Its configuration, signing secret and delivery history are kept. Disabling an inactive subscription has no effect and succeeds.',
+            'Stop sending events to an event subscription until it is enabled again. Events that occur meanwhile are not sent later.',
         category: 'event-subscriptions',
         scope: 'event-subscriptions:write',
         scopeId: 'organizationId',
@@ -341,7 +344,7 @@ export const tools: MakeTool[] = [
         name: 'event-subscriptions_list-event-types',
         title: 'List event subscription event types',
         description:
-            "List the event types an event subscription in the organization can receive, with the JSON Schema of each payload version's data. Use the exact type values in events.types when creating or updating a subscription. Availability differs between organizations and can change. supportsTeamSelection tells whether a subscription's teams selection filters that event type.",
+            "List the event types an organization's event subscriptions can receive, with the JSON Schema of each payload version. Use the type values in events.types.",
         category: 'event-subscriptions',
         scope: 'event-subscriptions:read',
         scopeId: 'organizationId',

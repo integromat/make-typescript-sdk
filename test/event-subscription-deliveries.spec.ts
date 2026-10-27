@@ -44,6 +44,13 @@ describe('Endpoints: EventSubscriptionDeliveries', () => {
         expect(result).toStrictEqual(deliveryGetMock.delivery);
     });
 
+    it('Should keep a crafted delivery ID inside the delivery path', async () => {
+        mockFetch(`POST ${BASE}/..%2F..%2Fdisable%3F/resend`, resendMock);
+
+        const result = await make.eventSubscriptions.deliveries.resend(3, SUBSCRIPTION_ID, '../../disable?');
+        expect(result).toStrictEqual(resendMock.resend);
+    });
+
     it('Should resend a delivery', async () => {
         mockFetch(`POST ${BASE}/${DELIVERY_ID}/resend`, resendMock);
 

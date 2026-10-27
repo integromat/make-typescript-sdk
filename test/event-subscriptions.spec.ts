@@ -100,6 +100,12 @@ describe('Endpoints: EventSubscriptions', () => {
         expect(result).toStrictEqual(eventTypesMock.eventTypes);
     });
 
+    it('Should keep a crafted subscription ID inside the subscription path', async () => {
+        mockFetch(`DELETE ${BASE}/subscriptions/..%2F..%2F..%2F..%2F..%2Fscenarios%2F5`, deleteMock);
+
+        await expect(make.eventSubscriptions.delete(3, '../../../../../scenarios/5')).resolves.toBeUndefined();
+    });
+
     it('Should surface API errors as MakeError', async () => {
         mockFetch(
             `GET ${BASE}/subscriptions/${SUBSCRIPTION_ID}`,

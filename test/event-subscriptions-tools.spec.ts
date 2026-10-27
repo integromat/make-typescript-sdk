@@ -103,9 +103,26 @@ describe('MCP tools: event-subscriptions', () => {
         });
     });
 
-    it('Should tell the model to hand over the signing secret once and not repeat it', () => {
-        expect(getTool('event-subscriptions_create').description).toMatch(/do not store, log or repeat it/);
-        expect(getTool('event-subscriptions_get').description).toMatch(/signing secret is never returned/);
+    it('Should point the user to the web app for the signing secret', () => {
+        expect(getTool('event-subscriptions_create').description).toMatch(/signing secret is not returned/);
+        expect(getTool('event-subscriptions_get').description).toMatch(/signing secret is not returned/);
+    });
+
+    it('Should accept only UUIDs as subscription and delivery IDs', () => {
+        const pattern = new RegExp(
+            getTool('event-subscription-deliveries_get').inputSchema.properties?.deliveryId?.pattern as string,
+        );
+        expect(pattern.test(DELIVERY_ID)).toBe(true);
+        expect(pattern.test('../../../../../scenarios/5')).toBe(false);
+
+        const idPatterns = MakeTools.filter(tool => tool.category.startsWith('event-subscription')).flatMap(tool =>
+            ['subscriptionId', 'deliveryId', 'last']
+                .map(name => tool.inputSchema.properties?.[name])
+                .filter(property => property !== undefined)
+                .map(property => property.pattern),
+        );
+        expect(idPatterns.length).toBeGreaterThan(0);
+        expect(new Set(idPatterns)).toStrictEqual(new Set([pattern.source]));
     });
 
     it('Should execute event-subscriptions_list with filters and pagination', async () => {
@@ -137,7 +154,7 @@ describe('MCP tools: event-subscriptions', () => {
         expect(result).toStrictEqual(getMock.subscription);
     });
 
-    it('Should execute event-subscriptions_create without sending organizationId in the body', async () => {
+    it('Should execute event-subscriptions_create without sending organizationId or returning the signing secret', async () => {
         const body = {
             name: 'Everything',
             url: 'https://example.com/make-events',
@@ -153,10 +170,7 @@ describe('MCP tools: event-subscriptions', () => {
             ...body,
         });
 
-        expect(result).toStrictEqual({
-            subscription: createMock.subscription,
-            signingSecret: createMock.signingSecret,
-        });
+        expect(result).toStrictEqual(createMock.subscription);
     });
 
     it('Should execute event-subscriptions_update with only the given fields', async () => {

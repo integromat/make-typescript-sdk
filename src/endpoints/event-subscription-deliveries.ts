@@ -185,7 +185,7 @@ export class EventSubscriptionDeliveries {
     ): Promise<EventSubscriptionDelivery[]> {
         return (
             await this.#fetch<ListDeliveriesResponse>(
-                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${subscriptionId}/deliveries`,
+                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${encodeURIComponent(subscriptionId)}/deliveries`,
                 {
                     query: {
                         pg: options?.pg,
@@ -212,7 +212,7 @@ export class EventSubscriptionDeliveries {
     ): Promise<EventSubscriptionDeliveryDetail> {
         return (
             await this.#fetch<GetDeliveryResponse>(
-                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${subscriptionId}/deliveries/${deliveryId}`,
+                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${encodeURIComponent(subscriptionId)}/deliveries/${encodeURIComponent(deliveryId)}`,
             )
         ).delivery;
     }
@@ -232,7 +232,7 @@ export class EventSubscriptionDeliveries {
     ): Promise<EventSubscriptionDeliveryResend> {
         return (
             await this.#fetch<ResendDeliveryResponse>(
-                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${subscriptionId}/deliveries/${deliveryId}/resend`,
+                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${encodeURIComponent(subscriptionId)}/deliveries/${encodeURIComponent(deliveryId)}/resend`,
                 {
                     method: 'POST',
                 },

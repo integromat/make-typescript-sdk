@@ -244,7 +244,7 @@ export class EventSubscriptions {
     async get(organizationId: number, subscriptionId: string): Promise<EventSubscription> {
         return (
             await this.#fetch<EventSubscriptionResponse>(
-                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${subscriptionId}`,
+                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${encodeURIComponent(subscriptionId)}`,
             )
         ).subscription;
     }
@@ -279,7 +279,7 @@ export class EventSubscriptions {
     ): Promise<EventSubscription> {
         return (
             await this.#fetch<EventSubscriptionResponse>(
-                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${subscriptionId}`,
+                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${encodeURIComponent(subscriptionId)}`,
                 {
                     method: 'PATCH',
                     body,
@@ -295,9 +295,12 @@ export class EventSubscriptions {
      * @returns Promise that resolves when the subscription is deleted
      */
     async delete(organizationId: number, subscriptionId: string): Promise<void> {
-        await this.#fetch(`/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${subscriptionId}`, {
-            method: 'DELETE',
-        });
+        await this.#fetch(
+            `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${encodeURIComponent(subscriptionId)}`,
+            {
+                method: 'DELETE',
+            },
+        );
     }
 
     /**
@@ -309,7 +312,7 @@ export class EventSubscriptions {
     async enable(organizationId: number, subscriptionId: string): Promise<EventSubscription> {
         return (
             await this.#fetch<EventSubscriptionResponse>(
-                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${subscriptionId}/enable`,
+                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${encodeURIComponent(subscriptionId)}/enable`,
                 {
                     method: 'POST',
                 },
@@ -326,7 +329,7 @@ export class EventSubscriptions {
     async disable(organizationId: number, subscriptionId: string): Promise<EventSubscription> {
         return (
             await this.#fetch<EventSubscriptionResponse>(
-                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${subscriptionId}/disable`,
+                `/event-subscriptions/v1/organizations/${organizationId}/subscriptions/${encodeURIComponent(subscriptionId)}/disable`,
                 {
                     method: 'POST',
                 },
