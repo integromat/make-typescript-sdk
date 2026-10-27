@@ -319,10 +319,12 @@ export class FunctionV2Runs {
                 error instanceof MakeError &&
                 [400, 401, 403, 404, 409, 422, 429].includes(error.statusCode ?? 0);
             if (confirmedRejection || error instanceof FunctionV2ExecutionUncertainError) throw error;
-            throw new FunctionV2ExecutionUncertainError(
+            const uncertainError = new FunctionV2ExecutionUncertainError(
                 runId,
                 error instanceof MakeError ? error.statusCode : undefined,
             );
+            if (error instanceof MakeError) uncertainError.apiError = error.apiError;
+            throw uncertainError;
         }
     }
 }

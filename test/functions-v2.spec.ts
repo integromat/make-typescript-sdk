@@ -224,6 +224,27 @@ describe('one-shot execution admission', () => {
                 expect(fetchMock).toHaveBeenCalledTimes(1);
             },
         );
+        it('preserves uncertain API diagnostics without serializing them or retrying', async () => {
+            const diagnostics = {
+                code: 'ADMISSION_UNAVAILABLE',
+                message: 'Admission could not be confirmed',
+                diagnostics: { source: 'customer source' },
+            };
+            respond(diagnostics, 503);
+            const error = await submit().catch((error: unknown) => error);
+            expect(error).toBeInstanceOf(FunctionV2ExecutionUncertainError);
+            expect(error).toMatchObject({
+                statusCode: 503,
+                code: 'FUNCTION_EXECUTION_UNCERTAIN',
+                sideEffectPossible: true,
+                apiError: diagnostics,
+                message: expect.stringContaining('Do not retry'),
+            });
+            expect(Object.getOwnPropertyDescriptor(error, 'apiError')?.enumerable).toBe(false);
+            expect(JSON.stringify(error)).not.toContain('apiError');
+            expect(JSON.stringify(error)).not.toContain('customer source');
+            expect(fetchMock).toHaveBeenCalledTimes(1);
+        });
         it.each([400, 401, 403, 404, 409, 422, 429])(
             'preserves confirmed HTTP %s rejection without retrying',
             async status => {
