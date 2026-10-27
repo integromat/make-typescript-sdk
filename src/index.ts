@@ -332,3 +332,5 @@ export type {
     DeleteCustomRoleBody,
 } from './endpoints/custom-roles.js';
 export type { User, Users } from './endpoints/users.js';
+
+export * from './endpoints/functions-v2.js';

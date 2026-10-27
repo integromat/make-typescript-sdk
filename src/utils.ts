@@ -1,4 +1,4 @@
-import type { QueryValue } from './types.js';
+import type { QueryValue, JSONValue } from './types.js';
 
 /** Regular expression to validate a UUIDv4 string format */
 const UUIDv4_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -76,7 +76,9 @@ export async function createMakeError(res: Response): Promise<MakeError> {
                         message += `\n - ${suberr.message}`;
                     });
             }
-            return new MakeError(message, res.status);
+            const error = new MakeError(message, res.status);
+            error.apiError = body as Record<string, JSONValue>;
+            return error;
         }
     } catch (err: unknown) {
         // Do nothing.
@@ -92,6 +94,8 @@ export async function createMakeError(res: Response): Promise<MakeError> {
 export class MakeError extends Error {
     /** HTTP status code returned by the API */
     statusCode?: number;
+    /** Original structured API error, including validation diagnostics. Never log blindly. */
+    apiError?: Record<string, JSONValue>;
     /** List of sub-errors if provided by the API */
     subErrors?: string[];
 
@@ -104,6 +108,13 @@ export class MakeError extends Error {
         super(message);
 
         this.name = 'MakeError';
+        // Diagnostics can contain customer data. Keep explicit access without adding them to ordinary JSON logs.
+        Object.defineProperty(this, 'apiError', {
+            value: undefined,
+            writable: true,
+            configurable: true,
+            enumerable: false,
+        });
         this.statusCode = statusCode;
     }
 }
