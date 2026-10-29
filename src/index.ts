@@ -30,6 +30,31 @@ export type {
     OrganizationAuditLogFilters,
     TeamAuditLogFilters,
 } from './endpoints/audit-logs.js';
+export type {
+    EventSubscription,
+    EventSubscriptions,
+    EventSubscriptionState,
+    EventSubscriptionEventsSelection,
+    EventSubscriptionTeamsSelection,
+    EventSubscriptionEventType,
+    EventSubscriptionsSortBy,
+    EventSubscriptionsPagination,
+    ListEventSubscriptionsOptions,
+    CreateEventSubscriptionBody,
+    UpdateEventSubscriptionBody,
+    CreatedEventSubscription,
+} from './endpoints/event-subscriptions.js';
+export type {
+    EventSubscriptionDelivery,
+    EventSubscriptionDeliveries,
+    EventSubscriptionDeliveryState,
+    EventSubscriptionDeliveryFailureReason,
+    EventSubscriptionDeliveryAttempt,
+    EventSubscriptionDeliveryDetail,
+    EventSubscriptionDeliveriesPagination,
+    ListEventSubscriptionDeliveriesOptions,
+    EventSubscriptionDeliveryResend,
+} from './endpoints/event-subscription-deliveries.js';
 export type { Blueprint, Blueprints, BlueprintNode, BlueprintRoute, BlueprintVersion } from './endpoints/blueprints.js';
 export type {
     Connection,

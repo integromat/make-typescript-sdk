@@ -1,0 +1,25 @@
+{
+    "subscription": {
+        "id": "1d9b7c3e-8a2f-4e5d-b6c7-0f1e2d3c4b5a",
+        "organizationId": 3,
+        "name": "Everything",
+        "url": "https://example.com/all-events",
+        "status": {
+            "state": "active",
+            "reason": null
+        },
+        "events": {
+            "mode": "all",
+            "payloadVersions": {
+                "scenario.created": 1,
+                "scenario.deleted": 1,
+                "scenario.updated": 2
+            }
+        },
+        "teams": {
+            "mode": "all"
+        },
+        "createdAt": "2026-09-20T12:00:00.000Z",
+        "updatedAt": "2026-10-05T16:45:00.000Z"
+    }
+}

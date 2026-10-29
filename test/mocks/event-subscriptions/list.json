@@ -1,0 +1,57 @@
+{
+    "subscriptions": [
+        {
+            "id": "7f2c1e9a-4b3d-4c1e-9a2b-6d5e4f3a2b1c",
+            "organizationId": 3,
+            "name": "Scenario changes",
+            "url": "https://example.com/make-events",
+            "status": {
+                "state": "active",
+                "reason": null
+            },
+            "events": {
+                "mode": "selected",
+                "types": ["scenario.created", "scenario.deleted"],
+                "payloadVersions": {
+                    "scenario.created": 1,
+                    "scenario.deleted": 1
+                }
+            },
+            "teams": {
+                "mode": "selected",
+                "ids": [212]
+            },
+            "createdAt": "2026-10-01T08:00:00.000Z",
+            "updatedAt": "2026-10-02T09:30:00.000Z"
+        },
+        {
+            "id": "1d9b7c3e-8a2f-4e5d-b6c7-0f1e2d3c4b5a",
+            "organizationId": 3,
+            "name": "Everything",
+            "url": "https://example.com/all-events",
+            "status": {
+                "state": "suspended",
+                "reason": "repeated_failures"
+            },
+            "events": {
+                "mode": "all",
+                "payloadVersions": {
+                    "scenario.created": 1,
+                    "scenario.deleted": 1,
+                    "scenario.updated": 2
+                }
+            },
+            "teams": {
+                "mode": "all"
+            },
+            "createdAt": "2026-09-20T12:00:00.000Z",
+            "updatedAt": "2026-10-05T16:45:00.000Z"
+        }
+    ],
+    "pg": {
+        "limit": 20,
+        "offset": 0,
+        "sortBy": "createdAt",
+        "sortDir": "desc"
+    }
+}
