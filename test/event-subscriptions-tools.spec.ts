@@ -108,6 +108,11 @@ describe('MCP tools: event-subscriptions', () => {
         expect(getTool('event-subscriptions_get').description).toMatch(/signing secret is not returned/);
     });
 
+    // make-cli registers --no-enabled only for a boolean that defaults to true, so enabled: false stays reachable.
+    it('Should declare that create enables the subscription by default', () => {
+        expect(getTool('event-subscriptions_create').inputSchema.properties?.enabled?.default).toBe(true);
+    });
+
     it('Should accept only UUIDs as subscription and delivery IDs', () => {
         const pattern = new RegExp(
             getTool('event-subscription-deliveries_get').inputSchema.properties?.deliveryId?.pattern as string,

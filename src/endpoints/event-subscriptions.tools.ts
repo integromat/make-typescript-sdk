@@ -184,6 +184,7 @@ export const tools: MakeTool[] = [
                 ...writableProperties,
                 enabled: {
                     type: 'boolean',
+                    default: true,
                     description:
                         'If false, the subscription is created inactive and receives no events until it is enabled. Defaults to true.',
                 },
