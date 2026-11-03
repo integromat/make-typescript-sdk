@@ -96,6 +96,17 @@ describe('Tools: data-table-records', () => {
         expect(result).toStrictEqual(recordsListMock.data);
     });
 
+    it('Should execute data-table-records_list with sort', async () => {
+        const sort = [{ field: 'name', direction: 'desc' as const }];
+        mockFetch(
+            `GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records?sort=${encodeURIComponent(JSON.stringify(sort))}`,
+            recordsListMock,
+        );
+
+        const result = await getTool('data-table-records_list').execute(make, { dataTableId: DATA_TABLE_ID, sort });
+        expect(result).toStrictEqual(recordsListMock.data);
+    });
+
     it('Should execute data-table-records_get', async () => {
         mockFetch(`GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records/customer-1`, recordsGetMock);
 

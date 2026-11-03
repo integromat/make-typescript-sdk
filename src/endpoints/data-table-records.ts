@@ -82,6 +82,14 @@ export type DataTableFilterPredicate = {
 export type DataTableFilter = DataTableFilterPredicate[][];
 
 /**
+ * One sort level. `field` is a column name, or `key` for the record key.
+ */
+export type DataTableRecordSort = {
+    field: string;
+    direction: 'asc' | 'desc';
+};
+
+/**
  * Options for listing or searching data table records.
  *
  * The data table service uses page-based pagination (`limit`/`page`) instead of the
@@ -102,9 +110,11 @@ export type ListDataTableRecordsOptions = {
     query?: string;
     /** Restrict the result to specific record keys */
     keys?: string[];
-    /** Column to sort results by */
+    /** Sort levels in priority order (1 to 3); empty values sort last */
+    sort?: DataTableRecordSort[];
+    /** @deprecated Use `sort`. Ignored when `sort` is set */
     sortBy?: string;
-    /** Sort direction (ascending or descending) */
+    /** @deprecated Use `sort`. Ignored when `sort` is set */
     sortDir?: 'asc' | 'desc';
 };
 
@@ -189,6 +199,12 @@ export class DataTableRecords {
      * @returns Promise with the list of records
      */
     async list(dataTableId: number, options?: ListDataTableRecordsOptions): Promise<DataTableRecord[]> {
+        // The API ignores `sortBy`/`sortDir`, so the deprecated pair is sent as a one-level `sort`.
+        const sort =
+            options?.sort ??
+            (options?.sortBy !== undefined
+                ? [{ field: options.sortBy, direction: options.sortDir ?? 'asc' }]
+                : undefined);
         return (
             await this.#fetch<ListDataTableRecordsResponse>(`/data-tables/${dataTableId}/records`, {
                 query: {
@@ -197,8 +213,7 @@ export class DataTableRecords {
                     filter: Array.isArray(options?.filter) ? JSON.stringify(options.filter) : options?.filter,
                     query: options?.query,
                     keys: options?.keys,
-                    sortBy: options?.sortBy,
-                    sortDir: options?.sortDir,
+                    sort: sort ? JSON.stringify(sort) : undefined,
                 },
             })
         ).data;

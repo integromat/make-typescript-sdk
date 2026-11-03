@@ -109,6 +109,7 @@ export type {
     DataTableFilter,
     DataTableFilterPredicate,
     DataTableFilterOperator,
+    DataTableRecordSort,
     ListDataTableRecordsOptions,
     CreateDataTableRecordBody,
     CreateDataTableRecordsBody,

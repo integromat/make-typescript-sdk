@@ -6,6 +6,7 @@ import type {
     CreateDataTableRecordsBody,
     DataTableFilter,
     DataTableRecord,
+    DataTableRecordSort,
     ValidateDataTableQueryBody,
 } from './data-table-records.js';
 
@@ -73,8 +74,7 @@ const filterSchema: JSONSchema = {
                         "Comparison operator; the prefix names the column-type family ('date:' covers both date and date_time columns), ':ci' variants compare case-insensitively",
                 },
                 value: {
-                    description:
-                        "Value to compare against; omit for unary operators like 'exist' or 'boolean:istrue'",
+                    description: "Value to compare against; omit for unary operators like 'exist' or 'boolean:istrue'",
                 },
             },
             required: ['columnName', 'operator'],
@@ -112,8 +112,20 @@ export const tools: MakeTool[] = [
                     items: { type: 'string' },
                     description: 'Restrict the result to specific record keys',
                 },
-                sortBy: { type: 'string', description: 'Column to sort results by' },
-                sortDir: { type: 'string', enum: ['asc', 'desc'], description: 'Sort direction' },
+                sort: {
+                    type: 'array',
+                    minItems: 1,
+                    maxItems: 3,
+                    items: {
+                        type: 'object',
+                        properties: {
+                            field: { type: 'string', description: 'Column name, or "key" for the record key' },
+                            direction: { type: 'string', enum: ['asc', 'desc'] },
+                        },
+                        required: ['field', 'direction'],
+                    },
+                    description: 'Sort levels in priority order; empty values sort last',
+                },
             },
             required: ['dataTableId'],
         },
@@ -130,8 +142,7 @@ export const tools: MakeTool[] = [
                 filter?: DataTableFilter;
                 query?: string;
                 keys?: string[];
-                sortBy?: string;
-                sortDir?: 'asc' | 'desc';
+                sort?: DataTableRecordSort[];
             },
         ) => {
             const { dataTableId, ...options } = args;
