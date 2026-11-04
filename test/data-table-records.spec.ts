@@ -28,8 +28,12 @@ describe('Endpoints: DataTableRecords', () => {
     });
 
     it('Should list data table records with search options', async () => {
+        const sort = [
+            { field: 'status', direction: 'asc' as const },
+            { field: 'name', direction: 'desc' as const },
+        ];
         mockFetch(
-            `GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records?limit=10&page=2&query=john&keys%5B%5D=customer-1&keys%5B%5D=customer-2&sortBy=name&sortDir=asc`,
+            `GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records?limit=10&page=2&query=john&keys%5B%5D=customer-1&keys%5B%5D=customer-2&sort=${encodeURIComponent(JSON.stringify(sort))}`,
             listMock,
         );
 
@@ -38,9 +42,41 @@ describe('Endpoints: DataTableRecords', () => {
             page: 2,
             query: 'john',
             keys: ['customer-1', 'customer-2'],
-            sortBy: 'name',
-            sortDir: 'asc',
+            sort,
         });
+        expect(result).toStrictEqual(listMock.data);
+    });
+
+    it('Should send deprecated sortBy and sortDir as a one-level sort', async () => {
+        const sort = [{ field: 'name', direction: 'desc' }];
+        mockFetch(
+            `GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records?sort=${encodeURIComponent(JSON.stringify(sort))}`,
+            listMock,
+        );
+
+        const result = await make.dataTables.records.list(DATA_TABLE_ID, { sortBy: 'name', sortDir: 'desc' });
+        expect(result).toStrictEqual(listMock.data);
+    });
+
+    it('Should default the deprecated sortDir to asc', async () => {
+        const sort = [{ field: 'name', direction: 'asc' }];
+        mockFetch(
+            `GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records?sort=${encodeURIComponent(JSON.stringify(sort))}`,
+            listMock,
+        );
+
+        const result = await make.dataTables.records.list(DATA_TABLE_ID, { sortBy: 'name' });
+        expect(result).toStrictEqual(listMock.data);
+    });
+
+    it('Should prefer sort over the deprecated sortBy and sortDir', async () => {
+        const sort = [{ field: 'status', direction: 'asc' as const }];
+        mockFetch(
+            `GET https://make.local/api/v2/data-tables/${DATA_TABLE_ID}/records?sort=${encodeURIComponent(JSON.stringify(sort))}`,
+            listMock,
+        );
+
+        const result = await make.dataTables.records.list(DATA_TABLE_ID, { sort, sortBy: 'name', sortDir: 'desc' });
         expect(result).toStrictEqual(listMock.data);
     });
 
