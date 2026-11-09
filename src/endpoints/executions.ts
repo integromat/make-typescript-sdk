@@ -137,6 +137,78 @@ export type GetExecutionDetailOptions = {
 type GetExecutionDetailResponse = ExecutionDetail;
 
 /**
+ * Field of an IO-data record that matched the search query.
+ */
+export type IoDataMatchedField = 'IO_DATA' | 'ERROR_MESSAGE' | 'WARNING_MESSAGE' | 'EXECUTION_ID';
+
+/**
+ * A single module input/output (IO) data record that matched an IO-data search.
+ * Besides the fields below, a record carries the bundle fields produced or consumed by the module.
+ */
+export type IoDataRecord = {
+    /** Kind of the IO record (for example `input`, `output`) */
+    kind: string;
+    /** ID of the scenario the record belongs to */
+    kindId: number;
+    /** ID of the execution the record belongs to */
+    executionId: string;
+    /** Free-form metadata captured alongside the IO record */
+    metadata?: Record<string, JSONValue>;
+    /** Snippets of the matched field, with the matched text wrapped in `<em>` markers */
+    highlight?: string[];
+    /** Which field(s) of the record matched the query */
+    matchedFields?: IoDataMatchedField[];
+    /** Bundle fields produced or consumed by the module */
+    [key: string]: JSONValue;
+};
+
+/**
+ * An execution that matched an IO-data search, with its matching IO-data records.
+ */
+export type IoDataSearchResult = {
+    /** Up to 5 IO-data records of the execution that matched the query */
+    ioData: IoDataRecord[];
+    /** Metadata of the execution; may be missing when it was not found in the searched time window */
+    execution?: Execution;
+};
+
+/**
+ * Options for the organization-wide IO-data search.
+ */
+export type SearchIoDataOptions = {
+    /** Free-text expression to match against module IO data (max 100 characters, quoted phrases are supported) */
+    query: string;
+    /** Restrict the search to a single team; all teams the user has access to are searched when omitted */
+    teamId?: number;
+    /** Lower bound of the time window in epoch milliseconds, applied at UTC-day granularity */
+    from?: number;
+    /** Upper bound of the time window in epoch milliseconds, applied at UTC-day granularity */
+    to?: number;
+    /** Restrict the search to these scenario IDs */
+    scenarioIds?: number[];
+    /** Restrict the search to executions that used any of these apps (by app name) */
+    appNames?: string[];
+    /** Restrict the search to executions that used any of these module names */
+    moduleNames?: string[];
+    /** Restrict the search to these execution IDs */
+    executionIds?: string[];
+    /** Execution outcomes to search: 1 = success, 2 = warning, 3 = error. All outcomes when omitted */
+    status?: (1 | 2 | 3)[];
+    /** Maximum number of executions to return (max 500, default 20) */
+    pageSize?: number;
+    /** Zero-based index of the page to return */
+    pageIndex?: number;
+};
+
+/**
+ * Response format for the organization-wide IO-data search.
+ */
+type SearchIoDataResponse = {
+    /** Matching executions with their matching IO-data records */
+    results: IoDataSearchResult[];
+};
+
+/**
  * Class providing methods for working with Make executions.
  * Executions represent the running instances of scenarios and provide
  * information about each time a scenario was executed.
@@ -232,5 +304,24 @@ export class Executions {
                 `/dlqs/${incompleteExecutionId}/logs/${executionId}`,
             )
         ).dlqLog;
+    }
+
+    /**
+     * Full-text search the module input/output data of executions across an organization.
+     * Available on the Pro plan and above.
+     * @param organizationId The organization ID to search in
+     * @param options Search expression and optional filters (team, time window, scenarios, apps, modules, status) and paging
+     * @returns Promise with the matching executions and their matching IO-data records
+     */
+    async searchIoData(organizationId: number, options: SearchIoDataOptions): Promise<IoDataSearchResult[]> {
+        return (
+            await this.#fetch<SearchIoDataResponse>(
+                `/organizations/${organizationId}/scenarios/executions/io-data/search`,
+                {
+                    method: 'POST',
+                    body: options,
+                },
+            )
+        ).results;
     }
 }
