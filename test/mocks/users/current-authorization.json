@@ -1,6 +1,7 @@
 {
     "authorization": {
         "authUsed": "token",
-        "scope": ["scenarios:read", "datastores:read"]
+        "scope": ["scenarios:read", "datastores:read"],
+        "organizationId": 11
     }
 }

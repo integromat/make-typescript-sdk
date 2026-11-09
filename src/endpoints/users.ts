@@ -29,9 +29,20 @@ export type User = {
     locale: string;
 };
 
+/**
+ * Represents the authorization used for the current request.
+ */
 export type Authorization = {
+    /** Authentication method used (e.g. 'token', 'oauth') */
     authUsed: string;
+    /** Scopes granted to the current authorization */
     scope: string[];
+    /**
+     * ID of the organization the authorization is bound to (an organization-scoped API token
+     * or an organization-bound OAuth token). `null` when the authorization can be used in every
+     * organization of the user. May be absent when the API does not provide this information yet.
+     */
+    organizationId?: number | null;
 };
 
 /**
@@ -74,8 +85,8 @@ export class Users {
     }
 
     /**
-     * Get the current authenticated user's information.
-     * @returns Promise with the current user's profile data
+     * Get information about the authorization used for the current request.
+     * @returns Promise with the authentication method, granted scopes and the bound organization
      */
     async currentAuthorization(): Promise<Authorization> {
         return (await this.#fetch<CurrentAuthorizationResponse>('/users/me/current-authorization')).authorization;
