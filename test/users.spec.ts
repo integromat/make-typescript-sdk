@@ -23,5 +23,17 @@ describe('Endpoints: Users', () => {
 
         const result = await make.users.currentAuthorization();
         expect(result).toStrictEqual(currentAuthorizationMock.authorization);
+        expect(result.organizationId).toBe(11);
+    });
+
+    it('Should receive current authorization not bound to an organization', async () => {
+        const unboundMock = {
+            authorization: { ...currentAuthorizationMock.authorization, organizationId: null },
+        };
+        mockFetch('GET https://make.local/api/v2/users/me/current-authorization', unboundMock);
+
+        const result = await make.users.currentAuthorization();
+        expect(result).toStrictEqual(unboundMock.authorization);
+        expect(result.organizationId).toBeNull();
     });
 });
