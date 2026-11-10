@@ -162,6 +162,10 @@ export type {
     Executions,
     ListExecutionsOptions,
     GetExecutionDetailOptions,
+    IoDataMatchedField,
+    IoDataRecord,
+    IoDataSearchResult,
+    SearchIoDataOptions,
 } from './endpoints/executions.js';
 export type {
     Folder,

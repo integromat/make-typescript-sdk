@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { Make } from '../src/make.js';
+import type { SearchIoDataOptions } from '../src/endpoints/executions.js';
 import { mockFetch } from './test.utils.js';
 
 import * as executionsListMock from './mocks/executions/list.json';
@@ -7,6 +8,7 @@ import * as executionsDlqListMock from './mocks/executions/dlq-list.json';
 import * as executionsGetMock from './mocks/executions/get.json';
 import * as executionsDlqGetMock from './mocks/executions/dlq-get.json';
 import * as executionsGetDetailMock from './mocks/executions/get-detail.json';
+import * as executionsSearchIoDataMock from './mocks/executions/search-io-data.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -35,6 +37,27 @@ describe('Endpoints: Executions', () => {
                 to: 1704153600000,
             });
             expect(result).toStrictEqual(executionsListMock.scenarioLogs);
+        });
+
+        it('Should search IO data across an organization', async () => {
+            const body: SearchIoDataOptions = {
+                query: '"order_id":"12345"',
+                teamId: 27,
+                status: [3],
+                pageSize: 5,
+                pageIndex: 1,
+            };
+            mockFetch(
+                'POST https://make.local/api/v2/organizations/11/scenarios/executions/io-data/search',
+                executionsSearchIoDataMock,
+                req => {
+                    expect(req.body).toStrictEqual(body);
+                    expect(req.headers.get('content-type')).toBe('application/json');
+                },
+            );
+
+            const result = await make.executions.searchIoData(11, body);
+            expect(result).toStrictEqual(executionsSearchIoDataMock.results);
         });
 
         it('Should get execution', async () => {

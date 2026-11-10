@@ -1,5 +1,9 @@
 import type { Make } from '../make.js';
 import type { MakeTool } from '../tools.js';
+import type { SearchIoDataOptions } from './executions.js';
+
+/** Keeps the default result set small enough for an LLM context; the API itself defaults to 20. */
+const DEFAULT_IO_DATA_SEARCH_PAGE_SIZE = 10;
 
 export const tools: MakeTool[] = [
     {
@@ -167,6 +171,91 @@ export const tools: MakeTool[] = [
         ],
         execute: async (make: Make, args: { incompleteExecutionId: string; executionId: string }) => {
             return await make.executions.getForIncompleteExecution(args.incompleteExecutionId, args.executionId);
+        },
+    },
+    {
+        name: 'executions_search-io-data',
+        title: 'Search execution data',
+        description:
+            'Full-text search the input/output data of scenario executions across an organization (all teams you can access, or one team via teamId). Returns matching executions, each with up to 5 matching module IO records and highlighted snippets. Use it to find which runs handled a given value (an order ID, an email, an error text). Wrap the query in double quotes for an exact phrase. from/to apply at UTC-day granularity, so narrow them to keep the search fast. Requires the Pro plan or above.',
+        category: 'executions',
+        scope: 'organizations:read',
+        scopeId: 'organizationId',
+        identifier: 'organizationId',
+        annotations: {
+            readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                organizationId: { type: 'number', description: 'The organization ID to search in' },
+                query: {
+                    type: 'string',
+                    maxLength: 100,
+                    description: 'Free-text expression to match against module IO data. Quoted phrases are supported.',
+                },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Restrict the search to a single team. All teams you can access are searched when omitted.',
+                },
+                from: {
+                    type: 'number',
+                    description: 'Start of the time window, in epoch milliseconds (UTC-day granularity)',
+                },
+                to: {
+                    type: 'number',
+                    description: 'End of the time window, in epoch milliseconds (UTC-day granularity)',
+                },
+                scenarioIds: {
+                    type: 'array',
+                    items: { type: 'number' },
+                    description: 'Restrict the search to these scenario IDs',
+                },
+                appNames: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Restrict the search to executions that used any of these apps (by app name)',
+                },
+                moduleNames: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Restrict the search to executions that used any of these module names',
+                },
+                executionIds: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Restrict the search to these execution IDs',
+                },
+                status: {
+                    type: 'array',
+                    items: { type: 'number', enum: [1, 2, 3] },
+                    description:
+                        'Which outcomes to search: 1 = successful, 2 = warning, 3 = error. All outcomes when omitted.',
+                },
+                pageSize: {
+                    type: 'number',
+                    minimum: 1,
+                    maximum: 100,
+                    default: 10,
+                    description: 'Maximum number of executions to return',
+                },
+                pageIndex: { type: 'number', minimum: 0, description: 'Zero-based index of the page to return' },
+            },
+            required: ['organizationId', 'query'],
+        },
+        examples: [
+            { organizationId: 5, query: '"order_id":"12345"' },
+            { organizationId: 5, query: 'timeout', status: [3], appNames: ['http'] },
+        ],
+        execute: async (make: Make, args: { organizationId: number } & SearchIoDataOptions) => {
+            const { organizationId, ...options } = args;
+            return await make.executions.searchIoData(organizationId, {
+                ...options,
+                pageSize: options.pageSize ?? DEFAULT_IO_DATA_SEARCH_PAGE_SIZE,
+            });
         },
     },
 ];

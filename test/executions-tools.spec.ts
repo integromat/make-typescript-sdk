@@ -5,6 +5,7 @@ import { mockFetch } from './test.utils.js';
 
 import * as executionsListMock from './mocks/executions/list.json';
 import * as executionsDlqListMock from './mocks/executions/dlq-list.json';
+import * as executionsSearchIoDataMock from './mocks/executions/search-io-data.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -44,5 +45,42 @@ describe('MCP tools: executions', () => {
         const result = await tool.execute(make, { incompleteExecutionId: '123456', limit: 10 });
 
         expect(result).toStrictEqual(executionsDlqListMock.dlqLogs);
+    });
+
+    it('Should execute executions_search-io-data with a small default page size', async () => {
+        mockFetch(
+            'POST https://make.local/api/v2/organizations/11/scenarios/executions/io-data/search',
+            executionsSearchIoDataMock,
+            req => {
+                expect(req.body).toStrictEqual({ query: 'timeout', status: [3], pageSize: 10 });
+            },
+        );
+
+        const tool = getTool('executions_search-io-data');
+        const result = await tool.execute(make, { organizationId: 11, query: 'timeout', status: [3] });
+
+        expect(result).toStrictEqual(executionsSearchIoDataMock.results);
+    });
+
+    it('Should keep an explicit page size for executions_search-io-data', async () => {
+        mockFetch(
+            'POST https://make.local/api/v2/organizations/11/scenarios/executions/io-data/search',
+            executionsSearchIoDataMock,
+            req => {
+                expect(req.body).toStrictEqual({ query: 'timeout', pageSize: 50 });
+            },
+        );
+
+        const tool = getTool('executions_search-io-data');
+        await tool.execute(make, { organizationId: 11, query: 'timeout', pageSize: 50 });
+    });
+
+    it('Should declare executions_search-io-data as a read-only, organization-scoped tool', () => {
+        const tool = getTool('executions_search-io-data');
+
+        expect(tool.scope).toBe('organizations:read');
+        expect(tool.scopeId).toBe('organizationId');
+        expect(tool.annotations?.readOnlyHint).toBe(true);
+        expect(tool.inputSchema.required).toStrictEqual(['organizationId', 'query']);
     });
 });
