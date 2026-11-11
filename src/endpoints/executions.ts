@@ -209,6 +209,89 @@ type SearchIoDataResponse = {
 };
 
 /**
+ * An execution returned by the organization-wide execution search.
+ */
+export type ExecutionSearchResult = Execution & {
+    /** Error message of the execution, if it failed */
+    errorMessage?: string | null;
+    /** Snippets of the error message that matched `errorMessage`, with the matched text wrapped in `<em>` markers */
+    highlight?: string[] | null;
+};
+
+/**
+ * Options for the organization-wide execution search.
+ */
+export type SearchExecutionsOptions = {
+    /** Restrict the search to a single team; all teams the user has access to are searched when omitted */
+    teamId?: number;
+    /** Lower bound of the time window in epoch milliseconds, applied at UTC-day granularity (defaults to 7 days before `to`) */
+    from?: number;
+    /** Upper bound of the time window in epoch milliseconds, applied at UTC-day granularity (defaults to now) */
+    to?: number;
+    /** Substring to match against the execution's error message */
+    errorMessage?: string;
+    /** Restrict the search to these scenario IDs */
+    scenarioIds?: number[];
+    /** Execution statuses to include: 1 = success, 2 = warning, 3 = error */
+    status?: (1 | 2 | 3)[];
+    /** Maximum number of executions to return (max 500, default 50) */
+    pageSize?: number;
+    /** Zero-based index of the page to return */
+    pageIndex?: number;
+};
+
+/**
+ * Response format for the organization-wide execution search.
+ */
+type SearchExecutionsResponse = {
+    /** Matching executions, newest first */
+    results: ExecutionSearchResult[];
+};
+
+/**
+ * Options for counting the executions whose IO data matches a query.
+ */
+export type CountIoDataMatchesOptions = Pick<
+    SearchIoDataOptions,
+    'query' | 'teamId' | 'from' | 'to' | 'scenarioIds' | 'status'
+>;
+
+/**
+ * Number of scenarios and executions whose IO data matched a query.
+ */
+export type IoDataMatchCounts = {
+    /** Number of distinct scenarios with matching IO data */
+    totalScenarios: number;
+    /** Number of distinct executions with matching IO data */
+    totalExecutions: number;
+    /** Number of matching executions per scenario */
+    scenarios: {
+        /** ID of the scenario */
+        scenarioId: number;
+        /** Number of distinct executions of the scenario that matched */
+        executionsCount: number;
+    }[];
+};
+
+/**
+ * Options for the IO-data search within a single execution.
+ */
+export type SearchExecutionIoDataOptions = Pick<
+    SearchIoDataOptions,
+    'query' | 'from' | 'to' | 'appNames' | 'moduleNames' | 'status'
+>;
+
+/**
+ * Result of the IO-data search within a single execution.
+ */
+export type ExecutionIoDataSearchResult = {
+    /** Every IO-data record of the execution that matched the query */
+    ioData: IoDataRecord[];
+    /** Metadata of the execution, or `null` when it was not found in the searched time window */
+    execution: Execution | null;
+};
+
+/**
  * Class providing methods for working with Make executions.
  * Executions represent the running instances of scenarios and provide
  * information about each time a scenario was executed.
@@ -323,5 +406,63 @@ export class Executions {
                 },
             )
         ).results;
+    }
+
+    /**
+     * Search executions across an organization by time window, status, scenario, or error message.
+     * @param organizationId The organization ID to search in
+     * @param options Optional filters (team, time window, error message, scenarios, status) and paging
+     * @returns Promise with the matching executions, newest first
+     */
+    async search(organizationId: number, options?: SearchExecutionsOptions): Promise<ExecutionSearchResult[]> {
+        return (
+            await this.#fetch<SearchExecutionsResponse>(
+                `/organizations/${organizationId}/scenarios/executions/search`,
+                {
+                    method: 'POST',
+                    body: options ?? {},
+                },
+            )
+        ).results;
+    }
+
+    /**
+     * Count the scenarios and executions across an organization whose module input/output data matches a query.
+     * @param organizationId The organization ID to search in
+     * @param options Search expression and optional filters (team, time window, scenarios, status)
+     * @returns Promise with the total and per-scenario counts
+     */
+    async countIoDataMatches(organizationId: number, options: CountIoDataMatchesOptions): Promise<IoDataMatchCounts> {
+        return await this.#fetch<IoDataMatchCounts>(
+            `/organizations/${organizationId}/scenarios/executions/io-data/counts`,
+            {
+                method: 'POST',
+                body: options,
+            },
+        );
+    }
+
+    /**
+     * Full-text search the module input/output data of a single execution.
+     * Available on the Pro plan and above.
+     * @param organizationId The organization ID the scenario belongs to
+     * @param scenarioId The scenario ID the execution belongs to
+     * @param executionId The execution ID to search in
+     * @param options Search expression and optional filters (time window, apps, modules, status)
+     * @returns Promise with every matching IO-data record and the execution's metadata
+     */
+    async searchIoDataInExecution(
+        organizationId: number,
+        scenarioId: number,
+        executionId: string,
+        options: SearchExecutionIoDataOptions,
+    ): Promise<ExecutionIoDataSearchResult> {
+        return await this.#fetch<ExecutionIoDataSearchResult>(
+            `/organizations/${organizationId}/scenarios/${scenarioId}/executions/${executionId}/io-data/search`,
+            {
+                method: 'POST',
+                body: options,
+            },
+        );
     }
 }

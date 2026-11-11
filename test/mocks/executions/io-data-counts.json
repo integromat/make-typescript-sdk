@@ -1,0 +1,8 @@
+{
+    "totalScenarios": 2,
+    "totalExecutions": 5,
+    "scenarios": [
+        { "scenarioId": 1229, "executionsCount": 3 },
+        { "scenarioId": 1542, "executionsCount": 2 }
+    ]
+}

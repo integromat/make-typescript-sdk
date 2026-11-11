@@ -141,6 +141,58 @@ export type ListHooksOptions = {
 };
 
 /**
+ * A hook returned when listing the hooks of an organization.
+ */
+export type OrganizationHook = {
+    /** Unique identifier of the hook */
+    id: number;
+    /** Name of the hook */
+    name: string;
+    /** ID of the team that owns the hook */
+    teamId: number;
+    /** ID of the organization the hook's team belongs to */
+    organizationId: number;
+    /** Type of hook (web, web-shared, or mail) */
+    type: string;
+    /** The hook type name related to the app for which it was created */
+    typeName?: string | null;
+    /** Theme color for the hook in UI */
+    theme?: string | null;
+    /** Whether the hook is enabled */
+    enabled: boolean;
+    /** Whether the hook is no longer accessible */
+    gone: boolean;
+    /** The webhook URL (or mailhook address) */
+    url: string;
+};
+
+/**
+ * Options for listing the hooks of an organization.
+ */
+export type ListOrganizationHooksOptions = {
+    /** Restrict results to one team of the organization */
+    teamId?: number;
+    /** Case-insensitive substring matched against the hook name */
+    name?: string;
+    /** Filter hooks by their type name (e.g. `gateway-webhook`, `gateway-mailhook`) */
+    typeName?: string;
+    /** Filter hooks by whether they are assigned to a scenario */
+    assigned?: boolean;
+    /** Filter hooks by whether they are enabled */
+    enabled?: boolean;
+    /** Pagination options (sortable by `id`, `name` or `hookName`) */
+    pg?: Partial<Pagination<{ id: number; name: string; hookName: string }>>;
+};
+
+/**
+ * Response format for listing the hooks of an organization.
+ */
+type ListOrganizationHooksResponse = {
+    /** List of hooks matching the query */
+    hooks: OrganizationHook[];
+};
+
+/**
  * Class providing methods for working with Make hooks.
  * Hooks refer to the webhooks and mailhooks available in Make that notify you
  * whenever a certain change occurs in the connected app or service.
@@ -176,6 +228,30 @@ export class Hooks {
                     typeName: options?.typeName,
                     assigned: options?.assigned,
                     viewForScenarioId: options?.viewForScenarioId,
+                    pg: options?.pg,
+                },
+            })
+        ).hooks;
+    }
+
+    /**
+     * List hooks across the teams of an organization that the user can view, including private spaces.
+     * @param organizationId The organization ID to list hooks for
+     * @param options Optional filters (team, name, type, assignment, enabled state) and paging
+     * @returns Promise with the list of hooks
+     */
+    async listForOrganization(
+        organizationId: number,
+        options?: ListOrganizationHooksOptions,
+    ): Promise<OrganizationHook[]> {
+        return (
+            await this.#fetch<ListOrganizationHooksResponse>(`/organizations/${organizationId}/hooks`, {
+                query: {
+                    teamId: options?.teamId,
+                    name: options?.name,
+                    typeName: options?.typeName,
+                    assigned: options?.assigned,
+                    enabled: options?.enabled,
                     pg: options?.pg,
                 },
             })

@@ -166,6 +166,12 @@ export type {
     IoDataRecord,
     IoDataSearchResult,
     SearchIoDataOptions,
+    ExecutionSearchResult,
+    SearchExecutionsOptions,
+    CountIoDataMatchesOptions,
+    IoDataMatchCounts,
+    SearchExecutionIoDataOptions,
+    ExecutionIoDataSearchResult,
 } from './endpoints/executions.js';
 export type {
     Folder,
@@ -203,7 +209,16 @@ export type {
     CheckFunctionResponse,
     ListFunctionsOptions,
 } from './endpoints/functions.js';
-export type { Hook, Hooks, CreateHookBody, UpdateHookBody, ListHooksOptions, HookPing } from './endpoints/hooks.js';
+export type {
+    Hook,
+    Hooks,
+    CreateHookBody,
+    UpdateHookBody,
+    ListHooksOptions,
+    HookPing,
+    OrganizationHook,
+    ListOrganizationHooksOptions,
+} from './endpoints/hooks.js';
 export type {
     HookIncoming,
     HookIncomingDetail,

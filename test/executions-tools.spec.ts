@@ -6,6 +6,9 @@ import { mockFetch } from './test.utils.js';
 import * as executionsListMock from './mocks/executions/list.json';
 import * as executionsDlqListMock from './mocks/executions/dlq-list.json';
 import * as executionsSearchIoDataMock from './mocks/executions/search-io-data.json';
+import * as executionsSearchMock from './mocks/executions/search.json';
+import * as executionsIoDataCountsMock from './mocks/executions/io-data-counts.json';
+import * as executionsSearchIoDataInExecutionMock from './mocks/executions/search-io-data-in-execution.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -82,5 +85,82 @@ describe('MCP tools: executions', () => {
         expect(tool.scopeId).toBe('organizationId');
         expect(tool.annotations?.readOnlyHint).toBe(true);
         expect(tool.inputSchema.required).toStrictEqual(['organizationId', 'query']);
+    });
+
+    it('Should execute executions_search with a small default page size', async () => {
+        mockFetch(
+            'POST https://make.local/api/v2/organizations/11/scenarios/executions/search',
+            executionsSearchMock,
+            req => {
+                expect(req.body).toStrictEqual({ status: [3], errorMessage: 'timeout', pageSize: 20 });
+            },
+        );
+
+        const tool = getTool('executions_search');
+        const result = await tool.execute(make, { organizationId: 11, status: [3], errorMessage: 'timeout' });
+
+        expect(result).toStrictEqual(executionsSearchMock.results);
+    });
+
+    it('Should keep an explicit page size for executions_search', async () => {
+        mockFetch(
+            'POST https://make.local/api/v2/organizations/11/scenarios/executions/search',
+            executionsSearchMock,
+            req => {
+                expect(req.body).toStrictEqual({ pageSize: 50, pageIndex: 2 });
+            },
+        );
+
+        const tool = getTool('executions_search');
+        await tool.execute(make, { organizationId: 11, pageSize: 50, pageIndex: 2 });
+    });
+
+    it('Should execute executions_count-io-data-matches', async () => {
+        mockFetch(
+            'POST https://make.local/api/v2/organizations/11/scenarios/executions/io-data/counts',
+            executionsIoDataCountsMock,
+            req => {
+                expect(req.body).toStrictEqual({ query: 'timeout', teamId: 27 });
+            },
+        );
+
+        const tool = getTool('executions_count-io-data-matches');
+        const result = await tool.execute(make, { organizationId: 11, query: 'timeout', teamId: 27 });
+
+        expect(result).toStrictEqual(executionsIoDataCountsMock);
+    });
+
+    it('Should execute executions_search-io-data-in-execution', async () => {
+        mockFetch(
+            'POST https://make.local/api/v2/organizations/11/scenarios/1229/executions/da518adcd14b4b64ac6358823ccb80ca/io-data/search',
+            executionsSearchIoDataInExecutionMock,
+            req => {
+                expect(req.body).toStrictEqual({ query: 'timeout', status: [3] });
+            },
+        );
+
+        const tool = getTool('executions_search-io-data-in-execution');
+        const result = await tool.execute(make, {
+            organizationId: 11,
+            scenarioId: 1229,
+            executionId: 'da518adcd14b4b64ac6358823ccb80ca',
+            query: 'timeout',
+            status: [3],
+        });
+
+        expect(result).toStrictEqual(executionsSearchIoDataInExecutionMock);
+    });
+
+    it.each([
+        ['executions_search', ['organizationId']],
+        ['executions_count-io-data-matches', ['organizationId', 'query']],
+        ['executions_search-io-data-in-execution', ['organizationId', 'scenarioId', 'executionId', 'query']],
+    ])('Should declare %s as a read-only, organization-scoped tool', (name, required) => {
+        const tool = getTool(name);
+
+        expect(tool.scope).toBe('organizations:read');
+        expect(tool.scopeId).toBe('organizationId');
+        expect(tool.annotations?.readOnlyHint).toBe(true);
+        expect(tool.inputSchema.required).toStrictEqual(required);
     });
 });

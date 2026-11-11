@@ -1,0 +1,17 @@
+{
+    "hooks": [
+        {
+            "id": 11,
+            "name": "My gateway-webhook webhook 1",
+            "teamId": 4,
+            "organizationId": 5,
+            "type": "web",
+            "typeName": "gateway-webhook",
+            "theme": "#c73a63",
+            "enabled": true,
+            "gone": false,
+            "url": "https://hook.make.com/1gqnexkk1vwxg2wpj39kg30pzp6uhe7h"
+        }
+    ],
+    "pg": { "sortBy": "id", "sortDir": "asc", "offset": 0, "limit": 50 }
+}
