@@ -9,6 +9,9 @@ import * as executionsGetMock from './mocks/executions/get.json';
 import * as executionsDlqGetMock from './mocks/executions/dlq-get.json';
 import * as executionsGetDetailMock from './mocks/executions/get-detail.json';
 import * as executionsSearchIoDataMock from './mocks/executions/search-io-data.json';
+import * as executionsSearchMock from './mocks/executions/search.json';
+import * as executionsIoDataCountsMock from './mocks/executions/io-data-counts.json';
+import * as executionsSearchIoDataInExecutionMock from './mocks/executions/search-io-data-in-execution.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -58,6 +61,66 @@ describe('Endpoints: Executions', () => {
 
             const result = await make.executions.searchIoData(11, body);
             expect(result).toStrictEqual(executionsSearchIoDataMock.results);
+        });
+
+        it('Should search executions across an organization', async () => {
+            const body = { teamId: 27, errorMessage: 'timeout', status: [3 as const], pageSize: 5, pageIndex: 1 };
+            mockFetch(
+                'POST https://make.local/api/v2/organizations/11/scenarios/executions/search',
+                executionsSearchMock,
+                req => {
+                    expect(req.body).toStrictEqual(body);
+                },
+            );
+
+            const result = await make.executions.search(11, body);
+            expect(result).toStrictEqual(executionsSearchMock.results);
+        });
+
+        it('Should search executions across an organization without filters', async () => {
+            mockFetch(
+                'POST https://make.local/api/v2/organizations/11/scenarios/executions/search',
+                executionsSearchMock,
+                req => {
+                    expect(req.body).toStrictEqual({});
+                },
+            );
+
+            const result = await make.executions.search(11);
+            expect(result).toStrictEqual(executionsSearchMock.results);
+        });
+
+        it('Should count IO-data matches across an organization', async () => {
+            const body = { query: '"order_id":"12345"', teamId: 27, scenarioIds: [1229], status: [1 as const] };
+            mockFetch(
+                'POST https://make.local/api/v2/organizations/11/scenarios/executions/io-data/counts',
+                executionsIoDataCountsMock,
+                req => {
+                    expect(req.body).toStrictEqual(body);
+                },
+            );
+
+            const result = await make.executions.countIoDataMatches(11, body);
+            expect(result).toStrictEqual(executionsIoDataCountsMock);
+        });
+
+        it('Should search IO data within a single execution', async () => {
+            const body = { query: '"order_id":"12345"', appNames: ['http'], moduleNames: ['ActionSendData'] };
+            mockFetch(
+                'POST https://make.local/api/v2/organizations/11/scenarios/1229/executions/da518adcd14b4b64ac6358823ccb80ca/io-data/search',
+                executionsSearchIoDataInExecutionMock,
+                req => {
+                    expect(req.body).toStrictEqual(body);
+                },
+            );
+
+            const result = await make.executions.searchIoDataInExecution(
+                11,
+                1229,
+                'da518adcd14b4b64ac6358823ccb80ca',
+                body,
+            );
+            expect(result).toStrictEqual(executionsSearchIoDataInExecutionMock);
         });
 
         it('Should get execution', async () => {

@@ -66,12 +66,12 @@ Use `make.functionsV2` for versioned authoring, Endpoint discovery and durable R
 - **Data Table Columns** - Column definitions of data tables (create, update, delete, reorder)
 - **Event Subscriptions** - Send selected Make events to an HTTPS endpoint, with the available event types
 - **Event Subscription Deliveries** - Delivery history of event subscriptions, attempt details, and resends
-- **Executions** - Scenario execution history and organization-wide full-text search of execution IO data
+- **Executions** - Scenario execution history, organization-wide execution search, and full-text search of execution IO data
 - **Folders** - Scenario categorization
 - **Scenario Labels** - Team-scoped tags assignable to scenarios
 - **Scenario Notes** - Annotations attached to a scenario, optionally anchored to modules
 - **Functions** - Custom JavaScript functions for scenarios
-- **Hooks** - Webhooks and mailhooks for external integrations
+- **Hooks** - Webhooks and mailhooks for external integrations, listed per team or across an organization
 - **Hook Incoming Queue** - Inspect and clear items queued for a webhook awaiting processing
 - **Incomplete Executions** - Failed or incomplete scenario runs
 - **Keys** - API keys and secrets

@@ -1,0 +1,25 @@
+{
+    "results": [
+        {
+            "imtId": "da518adcd14b4b64ac6358823ccb80ca",
+            "id": "da518adcd14b4b64ac6358823ccb80ca",
+            "kindId": 1229,
+            "scenarioId": 1229,
+            "scenarioName": "Sync orders to CRM",
+            "timestamp": "2024-11-15T04:35:44.497Z",
+            "type": "auto",
+            "instant": false,
+            "authorId": null,
+            "teamId": 27,
+            "organizationId": 11,
+            "duration": 19979,
+            "operations": 10,
+            "centicredits": 1000,
+            "transfer": 3942,
+            "status": 3,
+            "eventType": "scenario",
+            "errorMessage": "Request timed out after 30000ms",
+            "highlight": ["Request <em>timed</em> out after 30000ms"]
+        }
+    ]
+}

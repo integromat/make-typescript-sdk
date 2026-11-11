@@ -1,9 +1,22 @@
 import type { Make } from '../make.js';
-import type { MakeTool } from '../tools.js';
-import type { SearchIoDataOptions } from './executions.js';
+import type { JSONSchema, MakeTool } from '../tools.js';
+import type {
+    CountIoDataMatchesOptions,
+    SearchExecutionIoDataOptions,
+    SearchExecutionsOptions,
+    SearchIoDataOptions,
+} from './executions.js';
 
 /** Keeps the default result set small enough for an LLM context; the API itself defaults to 20. */
 const DEFAULT_IO_DATA_SEARCH_PAGE_SIZE = 10;
+
+/** Keeps the default result set small enough for an LLM context; the API itself defaults to 50. */
+const DEFAULT_EXECUTION_SEARCH_PAGE_SIZE = 20;
+
+const EXECUTION_STATUS_FILTER_SCHEMA: JSONSchema = {
+    type: 'array',
+    items: { type: 'number', enum: [1, 2, 3] },
+};
 
 export const tools: MakeTool[] = [
     {
@@ -255,6 +268,200 @@ export const tools: MakeTool[] = [
             return await make.executions.searchIoData(organizationId, {
                 ...options,
                 pageSize: options.pageSize ?? DEFAULT_IO_DATA_SEARCH_PAGE_SIZE,
+            });
+        },
+    },
+    {
+        name: 'executions_count-io-data-matches',
+        title: 'Count execution data matches',
+        description:
+            'Count how many scenarios and executions across an organization (all teams you can access, or one team via teamId) have input/output data matching a full-text query, with a per-scenario breakdown. Use it to size a search before calling executions_search-io-data, or to see which scenarios handled a given value. Wrap the query in double quotes for an exact phrase. from/to apply at UTC-day granularity; the last 7 days are searched when both are omitted.',
+        category: 'executions',
+        scope: 'organizations:read',
+        scopeId: 'organizationId',
+        identifier: 'organizationId',
+        annotations: {
+            readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                organizationId: { type: 'number', description: 'The organization ID to search in' },
+                query: {
+                    type: 'string',
+                    maxLength: 100,
+                    description: 'Free-text expression to match against module IO data. Quoted phrases are supported.',
+                },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Restrict the count to a single team. All teams you can access are counted when omitted.',
+                },
+                from: {
+                    type: 'number',
+                    description: 'Start of the time window, in epoch milliseconds (UTC-day granularity)',
+                },
+                to: {
+                    type: 'number',
+                    description: 'End of the time window, in epoch milliseconds (UTC-day granularity)',
+                },
+                scenarioIds: {
+                    type: 'array',
+                    items: { type: 'number' },
+                    description: 'Restrict the count to these scenario IDs',
+                },
+                status: {
+                    ...EXECUTION_STATUS_FILTER_SCHEMA,
+                    description:
+                        'Which outcomes to search: 1 = successful, 2 = warning, 3 = error. All outcomes when omitted.',
+                },
+            },
+            required: ['organizationId', 'query'],
+        },
+        examples: [{ organizationId: 5, query: '"order_id":"12345"' }],
+        execute: async (make: Make, args: { organizationId: number } & CountIoDataMatchesOptions) => {
+            const { organizationId, ...options } = args;
+            return await make.executions.countIoDataMatches(organizationId, options);
+        },
+    },
+    {
+        name: 'executions_search-io-data-in-execution',
+        title: 'Search data of one execution',
+        description:
+            'Full-text search the input/output data of a single execution and return every matching module IO record with highlighted snippets, plus the execution metadata. Use it after executions_search-io-data to see all matches in one run (that tool returns at most 5 per execution). Wrap the query in double quotes for an exact phrase. from/to apply at UTC-day granularity and default to the last 7 days, so pass a window that covers the execution for older runs. Requires the Pro plan or above.',
+        category: 'executions',
+        scope: 'organizations:read',
+        scopeId: 'organizationId',
+        identifier: 'organizationId',
+        resourceId: 'executionId',
+        annotations: {
+            readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                organizationId: { type: 'number', description: 'The organization ID the scenario belongs to' },
+                scenarioId: { type: 'number', description: 'The scenario ID the execution belongs to' },
+                executionId: {
+                    type: 'string',
+                    description:
+                        "The execution ID to search in — a 32-character lowercase hex string (e.g. 'a07e16f2ad134bf49cf83a00aa95c0a5')",
+                },
+                query: {
+                    type: 'string',
+                    maxLength: 100,
+                    description: 'Free-text expression to match against module IO data. Quoted phrases are supported.',
+                },
+                from: {
+                    type: 'number',
+                    description: 'Start of the time window, in epoch milliseconds (UTC-day granularity)',
+                },
+                to: {
+                    type: 'number',
+                    description: 'End of the time window, in epoch milliseconds (UTC-day granularity)',
+                },
+                appNames: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Restrict the search to IO data produced by any of these apps (by app name)',
+                },
+                moduleNames: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Restrict the search to these module names',
+                },
+                status: {
+                    ...EXECUTION_STATUS_FILTER_SCHEMA,
+                    description:
+                        'Which outcomes to search: 1 = successful, 2 = warning, 3 = error. All outcomes when omitted.',
+                },
+            },
+            required: ['organizationId', 'scenarioId', 'executionId', 'query'],
+        },
+        examples: [
+            {
+                organizationId: 5,
+                scenarioId: 925,
+                executionId: 'a07e16f2ad134bf49cf83a00aa95c0a5',
+                query: '"order_id":"12345"',
+            },
+        ],
+        execute: async (
+            make: Make,
+            args: { organizationId: number; scenarioId: number; executionId: string } & SearchExecutionIoDataOptions,
+        ) => {
+            const { organizationId, scenarioId, executionId, ...options } = args;
+            return await make.executions.searchIoDataInExecution(organizationId, scenarioId, executionId, options);
+        },
+    },
+    {
+        name: 'executions_search',
+        title: 'Search executions',
+        description:
+            'Search executions across an organization (all teams you can access, or one team via teamId), newest first, by time window, status, scenario, or a substring of the error message (matches are highlighted). Use it to find failed or warning runs across many scenarios at once; for a single scenario, executions_list is enough. from/to apply at UTC-day granularity; the last 7 days are searched by default.',
+        category: 'executions',
+        scope: 'organizations:read',
+        scopeId: 'organizationId',
+        identifier: 'organizationId',
+        annotations: {
+            readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                organizationId: { type: 'number', description: 'The organization ID to search in' },
+                teamId: {
+                    type: 'number',
+                    description:
+                        'Restrict the search to a single team. All teams you can access are searched when omitted.',
+                },
+                from: {
+                    type: 'number',
+                    description: 'Start of the time window, in epoch milliseconds (UTC-day granularity)',
+                },
+                to: {
+                    type: 'number',
+                    description: 'End of the time window, in epoch milliseconds (UTC-day granularity)',
+                },
+                errorMessage: {
+                    type: 'string',
+                    description: "Substring to match against the execution's error message",
+                },
+                scenarioIds: {
+                    type: 'array',
+                    items: { type: 'number' },
+                    description: 'Restrict the search to these scenario IDs',
+                },
+                status: {
+                    ...EXECUTION_STATUS_FILTER_SCHEMA,
+                    description: 'Execution statuses to include: 1 = successful, 2 = warning, 3 = error',
+                },
+                pageSize: {
+                    type: 'number',
+                    minimum: 1,
+                    maximum: 100,
+                    default: DEFAULT_EXECUTION_SEARCH_PAGE_SIZE,
+                    description: 'Maximum number of executions to return',
+                },
+                pageIndex: { type: 'number', minimum: 0, description: 'Zero-based index of the page to return' },
+            },
+            required: ['organizationId'],
+        },
+        examples: [
+            { organizationId: 5, status: [3] },
+            { organizationId: 5, errorMessage: 'timeout', teamId: 12 },
+        ],
+        execute: async (make: Make, args: { organizationId: number } & SearchExecutionsOptions) => {
+            const { organizationId, ...options } = args;
+            return await make.executions.search(organizationId, {
+                ...options,
+                pageSize: options.pageSize ?? DEFAULT_EXECUTION_SEARCH_PAGE_SIZE,
             });
         },
     },

@@ -1,0 +1,35 @@
+{
+    "ioData": [
+        {
+            "kind": "output",
+            "kindId": 1229,
+            "executionId": "da518adcd14b4b64ac6358823ccb80ca",
+            "moduleId": 3,
+            "bundle": { "order_id": "12345", "total": 42.5 },
+            "metadata": { "app": "http", "module": "ActionSendData" },
+            "highlight": ["...,\"order_id\":\"<em>12345</em>\",..."],
+            "matchedFields": ["IO_DATA"]
+        }
+    ],
+    "execution": {
+        "imtId": "da518adcd14b4b64ac6358823ccb80ca",
+        "id": "da518adcd14b4b64ac6358823ccb80ca",
+        "kindId": 1229,
+        "scenarioId": 1229,
+        "scenarioName": "Sync orders to CRM",
+        "timestamp": "2024-11-15T04:35:44.497Z",
+        "type": "auto",
+        "instant": false,
+        "authorId": null,
+        "teamId": 27,
+        "organizationId": 11,
+        "duration": 19979,
+        "operations": 10,
+        "centicredits": 1000,
+        "transfer": 3942,
+        "status": 1,
+        "eventType": "scenario",
+        "errorMessage": null,
+        "highlight": null
+    }
+}

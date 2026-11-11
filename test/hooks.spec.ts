@@ -3,6 +3,7 @@ import { Make } from '../src/make.js';
 import { mockFetch } from './test.utils.js';
 
 import * as hooksListMock from './mocks/hooks/list.json';
+import * as hooksListForOrganizationMock from './mocks/hooks/list-for-organization.json';
 import * as hookCreateMock from './mocks/hooks/create.json';
 import * as hookGetMock from './mocks/hooks/get.json';
 import * as hookUpdateMock from './mocks/hooks/update.json';
@@ -24,6 +25,30 @@ describe('Endpoints: Hooks', () => {
 
             const result = await make.hooks.list(4);
             expect(result).toStrictEqual(hooksListMock.hooks);
+        });
+
+        it('Should list hooks in organization', async () => {
+            mockFetch('GET https://make.local/api/v2/organizations/5/hooks', hooksListForOrganizationMock);
+
+            const result = await make.hooks.listForOrganization(5);
+            expect(result).toStrictEqual(hooksListForOrganizationMock.hooks);
+        });
+
+        it('Should list hooks in organization with filters and paging', async () => {
+            mockFetch(
+                'GET https://make.local/api/v2/organizations/5/hooks?teamId=4&name=order&typeName=gateway-webhook&assigned=true&enabled=false&pg%5Blimit%5D=10&pg%5Boffset%5D=20&pg%5BsortBy%5D=name',
+                hooksListForOrganizationMock,
+            );
+
+            const result = await make.hooks.listForOrganization(5, {
+                teamId: 4,
+                name: 'order',
+                typeName: 'gateway-webhook',
+                assigned: true,
+                enabled: false,
+                pg: { limit: 10, offset: 20, sortBy: 'name' },
+            });
+            expect(result).toStrictEqual(hooksListForOrganizationMock.hooks);
         });
 
         it('Should create a hook', async () => {

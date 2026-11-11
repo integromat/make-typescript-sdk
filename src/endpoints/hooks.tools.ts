@@ -29,6 +29,66 @@ export const tools: MakeTool[] = [
         },
     },
     {
+        name: 'hooks_list-for-organization',
+        title: 'List organization webhooks/mailhooks',
+        description:
+            'List webhooks/mailhooks across all teams of an organization that you can view, including private spaces, with their team ID and URL. Filter by team, a name substring, type, whether they are assigned to a scenario, or whether they are enabled. Returns 50 hooks by default; use limit and offset to page. Use it to find a hook when you do not know its team; for a single team, hooks_list is enough.',
+        category: 'hooks',
+        scope: 'hooks:read',
+        scopeId: 'organizationId',
+        identifier: 'organizationId',
+        annotations: {
+            readOnlyHint: true,
+            destructiveHint: false,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                organizationId: { type: 'number', description: 'The organization ID to list hooks for' },
+                teamId: { type: 'number', description: 'Restrict results to one team of the organization' },
+                name: {
+                    type: 'string',
+                    description: 'Case-insensitive substring matched against the hook name',
+                },
+                typeName: {
+                    type: 'string',
+                    description: "Hook type name, e.g. 'gateway-webhook' or 'gateway-mailhook'",
+                },
+                assigned: { type: 'boolean', description: 'Whether the hook is assigned to a scenario' },
+                enabled: { type: 'boolean', description: 'Whether the hook is enabled' },
+                limit: {
+                    type: 'number',
+                    minimum: 1,
+                    maximum: 100,
+                    description: 'Maximum number of hooks to return (default 50)',
+                },
+                offset: { type: 'number', minimum: 0, description: 'Number of hooks to skip' },
+            },
+            required: ['organizationId'],
+        },
+        examples: [{ organizationId: 5 }, { organizationId: 5, name: 'order', typeName: 'gateway-webhook' }],
+        execute: async (
+            make: Make,
+            args: {
+                organizationId: number;
+                teamId?: number;
+                name?: string;
+                typeName?: string;
+                assigned?: boolean;
+                enabled?: boolean;
+                limit?: number;
+                offset?: number;
+            },
+        ) => {
+            const { organizationId, limit, offset, ...filters } = args;
+            return await make.hooks.listForOrganization(organizationId, {
+                ...filters,
+                pg: limit !== undefined || offset !== undefined ? { limit, offset } : undefined,
+            });
+        },
+    },
+    {
         name: 'hooks_get',
         title: 'Get webhook/mailhook',
         description: 'Get details of a specific webhook/mailhook.',
