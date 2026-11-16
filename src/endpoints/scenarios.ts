@@ -119,7 +119,12 @@ export type ListScenariosOptions<C extends keyof Scenario = never> = {
     includeSubfolders?: boolean;
     /** Only return scenarios carrying at least one of the given scenario label IDs */
     labelIds?: number[];
-    /** Only return scenarios that group database writes, so a failed run undoes them. Team scope only. */
+    /**
+     * Only return scenarios that group database writes, so a failed run undoes them. Team scope only.
+     *
+     * Make is turning off "Commit after each module" (autoCommit) for these scenarios, so a failed
+     * run keeps database writes it already made. The option finds the scenarios affected by that change.
+     */
     databaseUpdates?: boolean;
 };
 

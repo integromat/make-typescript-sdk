@@ -151,7 +151,7 @@ export const tools: MakeTool[] = [
                 databaseUpdates: {
                     type: 'boolean',
                     description:
-                        'Only return scenarios that group database writes so that a failed run undoes them. Only applies to teams.',
+                        'Only return scenarios that group database writes, so a failed run undoes them. These are the scenarios affected by the "Commit after each module" sunset: on January 15, 2027 that setting turns on for every scenario, and a failed run keeps database writes it already made. Only applies to teams.',
                 },
             },
             required: ['teamId'],
