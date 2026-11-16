@@ -4,8 +4,8 @@ import type { MakeTool } from '../tools.js';
 export const tools: MakeTool[] = [
     {
         name: 'incomplete-executions_list',
-        title: 'List incomplete executions',
-        description: 'List all incomplete executions.',
+        title: 'List incomplete runs',
+        description: 'List all incomplete runs. A run is also called an execution.',
         category: 'incomplete-executions',
         scope: 'dlqs:read',
         scopeId: 'scenarioId',
@@ -18,7 +18,7 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                scenarioId: { type: 'number', description: 'The scenario ID to list incomplete executions for' },
+                scenarioId: { type: 'number', description: 'The scenario ID to list incomplete runs for' },
             },
             required: ['scenarioId'],
         },
@@ -29,8 +29,8 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'incomplete-executions_get',
-        title: 'Get incomplete execution',
-        description: 'Get details of a specific incomplete execution.',
+        title: 'Get incomplete run',
+        description: 'Get details of a specific incomplete run. A run is also called an execution.',
         category: 'incomplete-executions',
         scope: 'dlqs:read',
         scopeId: 'incompleteExecutionId',
@@ -44,7 +44,7 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                incompleteExecutionId: { type: 'string', description: 'The incomplete execution ID to retrieve' },
+                incompleteExecutionId: { type: 'string', description: 'The incomplete run ID to retrieve' },
             },
             required: ['incompleteExecutionId'],
         },

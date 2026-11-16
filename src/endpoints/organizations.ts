@@ -66,7 +66,7 @@ export type Organization = {
         dedicatedSso?: boolean;
         /** Audit logs retention period in days */
         auditLogsDays?: number;
-        /** Maximum execution time in seconds */
+        /** Maximum processing time in minutes. Each pause starts this limit over. Field name stays executionTime. */
         executionTime?: number;
         /** Restart period for subscriptions */
         restartPeriod?: string;
