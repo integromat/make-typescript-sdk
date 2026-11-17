@@ -221,9 +221,6 @@ All tools are organized into the following categories:
 - `data-stores`
 - `data-store-records`
 - `data-structures`
-- `data-tables`
-- `data-table-records`
-- `data-table-columns`
 - `enums`
 - `event-subscriptions`
 - `event-subscription-deliveries`
