@@ -21,8 +21,9 @@ const EXECUTION_STATUS_FILTER_SCHEMA: JSONSchema = {
 export const tools: MakeTool[] = [
     {
         name: 'executions_list',
-        title: 'List runs',
-        description: 'List runs for a scenario. A run is also called an execution.',
+        title: 'List scenario history',
+        description:
+            "List a scenario's history: its runs and scenario changes, newest first. A run is also called an execution.",
         category: 'executions',
         scope: 'scenarios:read',
         scopeId: 'scenarioId',
@@ -54,9 +55,9 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'executions_get-detail',
-        title: 'Get run log',
+        title: 'Get run status',
         description:
-            'Get the full per-module detail of a run: the inputs and outputs of each module, the failing module and its error. A run is also called an execution. ALWAYS call this after a failed or suspicious run BEFORE retrying or editing the scenario. For lightweight status/duration metadata only, use executions_get instead.',
+            'Get the status of a run: its outcome, declared outputs and the error if it failed. A run is also called an execution. ALWAYS call this after a failed or suspicious run BEFORE retrying or editing the scenario. For duration, operations and credits only, use executions_get instead.',
         category: 'executions',
         scope: 'scenarios:read',
         scopeId: 'scenarioId',
