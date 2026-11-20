@@ -21,8 +21,9 @@ const EXECUTION_STATUS_FILTER_SCHEMA: JSONSchema = {
 export const tools: MakeTool[] = [
     {
         name: 'executions_list',
-        title: 'List executions',
-        description: 'List executions for a scenario.',
+        title: 'List scenario history',
+        description:
+            "List a scenario's history: its runs and scenario changes, newest first. A run is also called an execution.",
         category: 'executions',
         scope: 'scenarios:read',
         scopeId: 'scenarioId',
@@ -35,11 +36,11 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                scenarioId: { type: 'number', description: 'The scenario ID to list executions for' },
+                scenarioId: { type: 'number', description: 'The scenario ID to list runs for' },
                 status: {
                     type: 'number',
                     description:
-                        'Filter by execution status (0 = pending, 1 = successful, 2 = successful with warnings, 3 = failed)',
+                        'Filter by run status (0 = pending, 1 = successful, 2 = successful with warnings, 3 = failed)',
                 },
                 from: { type: 'number', description: 'Start timestamp for filtering, in epoch milliseconds' },
                 to: { type: 'number', description: 'End timestamp for filtering, in epoch milliseconds' },
@@ -54,9 +55,9 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'executions_get-detail',
-        title: 'Get execution detail',
+        title: 'Get run status',
         description:
-            'Get the full per-module detail of an execution: the inputs and outputs of each module, the failing module and its error. ALWAYS call this after a failed or suspicious run BEFORE retrying or editing the scenario. For lightweight status/duration metadata only, use executions_get instead.',
+            'Get the status of a run: its outcome, declared outputs and the error if it failed. A run is also called an execution. ALWAYS call this after a failed or suspicious run BEFORE retrying or editing the scenario. For duration, operations and credits only, use executions_get instead.',
         category: 'executions',
         scope: 'scenarios:read',
         scopeId: 'scenarioId',
@@ -70,12 +71,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                scenarioId: { type: 'number', description: 'The scenario ID the execution belongs to' },
+                scenarioId: { type: 'number', description: 'The scenario ID the run belongs to' },
                 executionId: {
                     type: 'string',
                     pattern: '^[0-9a-f]{32}$',
                     description:
-                        "The execution ID to retrieve — a 32-character lowercase hex string as returned by scenarios_run or executions_list (e.g. 'a07e16f2ad134bf49cf83a00aa95c0a5')",
+                        "The run ID to retrieve — a 32-character lowercase hex string as returned by scenarios_run or executions_list (e.g. 'a07e16f2ad134bf49cf83a00aa95c0a5')",
                 },
             },
             required: ['scenarioId', 'executionId'],
@@ -87,9 +88,9 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'executions_get',
-        title: 'Get execution',
+        title: 'Get run',
         description:
-            'Get execution metadata only: status, duration, operations consumed and error class — NOT per-module inputs/outputs. To see what each module did or why a run failed, use executions_get-detail instead.',
+            'Get run metadata only: status, duration, operations consumed and error class — NOT per-module inputs/outputs. A run is also called an execution. To see what each module did or why a run failed, use executions_get-detail instead.',
         category: 'executions',
         scope: 'scenarios:read',
         scopeId: 'scenarioId',
@@ -103,12 +104,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                scenarioId: { type: 'number', description: 'The scenario ID the execution belongs to' },
+                scenarioId: { type: 'number', description: 'The scenario ID the run belongs to' },
                 executionId: {
                     type: 'string',
                     pattern: '^[0-9a-f]{32}$',
                     description:
-                        "The execution ID to retrieve — a 32-character lowercase hex string as returned by scenarios_run or executions_list (e.g. 'a07e16f2ad134bf49cf83a00aa95c0a5')",
+                        "The run ID to retrieve — a 32-character lowercase hex string as returned by scenarios_run or executions_list (e.g. 'a07e16f2ad134bf49cf83a00aa95c0a5')",
                 },
             },
             required: ['scenarioId', 'executionId'],
@@ -120,8 +121,8 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'executions_list-for-incomp-exec',
-        title: 'List executions for incomplete execution',
-        description: 'List executions for an incomplete execution.',
+        title: 'List runs for an incomplete run',
+        description: 'List runs for an incomplete run. A run is also called an execution.',
         category: 'executions',
         scope: 'dlqs:read',
         scopeId: 'incompleteExecutionId',
@@ -136,9 +137,9 @@ export const tools: MakeTool[] = [
             properties: {
                 incompleteExecutionId: {
                     type: 'string',
-                    description: 'The incomplete execution ID to list executions for',
+                    description: 'The incomplete run ID to list runs for',
                 },
-                limit: { type: 'number', description: 'Maximum number of executions to return' },
+                limit: { type: 'number', description: 'Maximum number of runs to return' },
             },
             required: ['incompleteExecutionId'],
         },
@@ -152,8 +153,8 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'executions_get-for-incomp-exec',
-        title: 'Get execution for incomplete execution',
-        description: 'Get execution details for an incomplete execution.',
+        title: 'Get run for an incomplete run',
+        description: 'Get run details for an incomplete run. A run is also called an execution.',
         category: 'executions',
         scope: 'dlqs:read',
         scopeId: 'incompleteExecutionId',
@@ -167,11 +168,11 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                incompleteExecutionId: { type: 'string', description: 'The incomplete execution ID' },
+                incompleteExecutionId: { type: 'string', description: 'The incomplete run ID' },
                 executionId: {
                     type: 'string',
                     description:
-                        "The execution ID from the incomplete execution record (see executions_list-for-incomp-exec) — may be UUID-formatted with dashes (e.g. '55602700-e840-45bf-b18c-0aef214dd967'), unlike scenario execution IDs",
+                        "The run ID from the incomplete run record (see executions_list-for-incomp-exec) — may be UUID-formatted with dashes (e.g. '55602700-e840-45bf-b18c-0aef214dd967'), unlike scenario run IDs",
                 },
             },
             required: ['incompleteExecutionId', 'executionId'],
@@ -188,9 +189,9 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'executions_search-io-data',
-        title: 'Search execution data',
+        title: 'Search run data',
         description:
-            'Full-text search the input/output data of scenario executions across an organization (all teams you can access, or one team via teamId). Returns matching executions, each with up to 5 matching module IO records and highlighted snippets. Use it to find which runs handled a given value (an order ID, an email, an error text). Wrap the query in double quotes for an exact phrase. from/to apply at UTC-day granularity, so narrow them to keep the search fast. Requires the Pro plan or above.',
+            'Full-text search the input/output data of scenario runs across an organization (all teams you can access, or one team via teamId). A run is also called an execution. Returns matching runs, each with up to 5 matching module IO records and highlighted snippets. Use it to find which runs handled a given value (an order ID, an email, an error text). Wrap the query in double quotes for an exact phrase. from/to apply at UTC-day granularity, so narrow them to keep the search fast. Requires the Pro plan or above.',
         category: 'executions',
         scope: 'organizations:read',
         scopeId: 'organizationId',
@@ -230,17 +231,17 @@ export const tools: MakeTool[] = [
                 appNames: {
                     type: 'array',
                     items: { type: 'string' },
-                    description: 'Restrict the search to executions that used any of these apps (by app name)',
+                    description: 'Restrict the search to runs that used any of these apps (by app name)',
                 },
                 moduleNames: {
                     type: 'array',
                     items: { type: 'string' },
-                    description: 'Restrict the search to executions that used any of these module names',
+                    description: 'Restrict the search to runs that used any of these module names',
                 },
                 executionIds: {
                     type: 'array',
                     items: { type: 'string' },
-                    description: 'Restrict the search to these execution IDs',
+                    description: 'Restrict the search to these run IDs',
                 },
                 status: {
                     type: 'array',
@@ -253,7 +254,7 @@ export const tools: MakeTool[] = [
                     minimum: 1,
                     maximum: 100,
                     default: 10,
-                    description: 'Maximum number of executions to return',
+                    description: 'Maximum number of runs to return',
                 },
                 pageIndex: { type: 'number', minimum: 0, description: 'Zero-based index of the page to return' },
             },
@@ -273,9 +274,9 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'executions_count-io-data-matches',
-        title: 'Count execution data matches',
+        title: 'Count run data matches',
         description:
-            'Count how many scenarios and executions across an organization (all teams you can access, or one team via teamId) have input/output data matching a full-text query, with a per-scenario breakdown. Use it to size a search before calling executions_search-io-data, or to see which scenarios handled a given value. Wrap the query in double quotes for an exact phrase. from/to apply at UTC-day granularity; the last 7 days are searched when both are omitted.',
+            'Count how many scenarios and runs across an organization (all teams you can access, or one team via teamId) have input/output data matching a full-text query, with a per-scenario breakdown. A run is also called an execution. Use it to size a search before calling executions_search-io-data, or to see which scenarios handled a given value. Wrap the query in double quotes for an exact phrase. from/to apply at UTC-day granularity; the last 7 days are searched when both are omitted.',
         category: 'executions',
         scope: 'organizations:read',
         scopeId: 'organizationId',
@@ -328,9 +329,9 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'executions_search-io-data-in-execution',
-        title: 'Search data of one execution',
+        title: 'Search data of one run',
         description:
-            'Full-text search the input/output data of a single execution and return every matching module IO record with highlighted snippets, plus the execution metadata. Use it after executions_search-io-data to see all matches in one run (that tool returns at most 5 per execution). Wrap the query in double quotes for an exact phrase. from/to apply at UTC-day granularity and default to the last 7 days, so pass a window that covers the execution for older runs. Requires the Pro plan or above.',
+            'Full-text search the input/output data of a single run and return every matching module IO record with highlighted snippets, plus the run metadata. A run is also called an execution. Use it after executions_search-io-data to see all matches in one run (that tool returns at most 5 per run). Wrap the query in double quotes for an exact phrase. from/to apply at UTC-day granularity and default to the last 7 days, so pass a window that covers the run for older runs. Requires the Pro plan or above.',
         category: 'executions',
         scope: 'organizations:read',
         scopeId: 'organizationId',
@@ -345,11 +346,11 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 organizationId: { type: 'number', description: 'The organization ID the scenario belongs to' },
-                scenarioId: { type: 'number', description: 'The scenario ID the execution belongs to' },
+                scenarioId: { type: 'number', description: 'The scenario ID the run belongs to' },
                 executionId: {
                     type: 'string',
                     description:
-                        "The execution ID to search in — a 32-character lowercase hex string (e.g. 'a07e16f2ad134bf49cf83a00aa95c0a5')",
+                        "The run ID to search in — a 32-character lowercase hex string (e.g. 'a07e16f2ad134bf49cf83a00aa95c0a5')",
                 },
                 query: {
                     type: 'string',
@@ -400,9 +401,9 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'executions_search',
-        title: 'Search executions',
+        title: 'Search runs',
         description:
-            'Search executions across an organization (all teams you can access, or one team via teamId), newest first, by time window, status, scenario, or a substring of the error message (matches are highlighted). Use it to find failed or warning runs across many scenarios at once; for a single scenario, executions_list is enough. from/to apply at UTC-day granularity; the last 7 days are searched by default.',
+            'Search runs across an organization (all teams you can access, or one team via teamId), newest first, by time window, status, scenario, or a substring of the error message (matches are highlighted). A run is also called an execution. Use it to find failed or warning runs across many scenarios at once; for a single scenario, executions_list is enough. from/to apply at UTC-day granularity; the last 7 days are searched by default.',
         category: 'executions',
         scope: 'organizations:read',
         scopeId: 'organizationId',
@@ -431,7 +432,7 @@ export const tools: MakeTool[] = [
                 },
                 errorMessage: {
                     type: 'string',
-                    description: "Substring to match against the execution's error message",
+                    description: "Substring to match against the run's error message",
                 },
                 scenarioIds: {
                     type: 'array',
@@ -440,14 +441,14 @@ export const tools: MakeTool[] = [
                 },
                 status: {
                     ...EXECUTION_STATUS_FILTER_SCHEMA,
-                    description: 'Execution statuses to include: 1 = successful, 2 = warning, 3 = error',
+                    description: 'Run statuses to include: 1 = successful, 2 = warning, 3 = error',
                 },
                 pageSize: {
                     type: 'number',
                     minimum: 1,
                     maximum: 100,
                     default: DEFAULT_EXECUTION_SEARCH_PAGE_SIZE,
-                    description: 'Maximum number of executions to return',
+                    description: 'Maximum number of runs to return',
                 },
                 pageIndex: { type: 'number', minimum: 0, description: 'Zero-based index of the page to return' },
             },
