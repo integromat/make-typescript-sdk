@@ -46,6 +46,18 @@ describe('MCP tools: scenarios', () => {
         expect(result).toStrictEqual(scenariosMock.scenarios);
     });
 
+    it('Should execute scenarios_list with the database updates filter', async () => {
+        mockFetch(
+            `GET https://make.local/api/v2/scenarios?teamId=${TEAM_ID}&databaseUpdates=true&cols%5B%5D=*`,
+            scenariosMock,
+        );
+
+        const tool = getTool('scenarios_list');
+        const result = await tool.execute(make, { teamId: TEAM_ID, databaseUpdates: true });
+
+        expect(result).toStrictEqual(scenariosMock.scenarios);
+    });
+
     it('Should declare the scenarios_list filter parameters as optional', () => {
         const tool = getTool('scenarios_list');
 
@@ -55,7 +67,9 @@ describe('MCP tools: scenarios', () => {
             'folderId',
             'includeSubfolders',
             'labelIds',
+            'databaseUpdates',
         ]);
         expect(tool.inputSchema.properties?.labelIds?.items?.type).toBe('number');
+        expect(tool.inputSchema.properties?.databaseUpdates?.type).toBe('boolean');
     });
 });

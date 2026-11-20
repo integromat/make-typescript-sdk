@@ -123,7 +123,7 @@ export const tools: MakeTool[] = [
         name: 'scenarios_list',
         title: 'List scenarios',
         description:
-            'List all scenarios for a team. Results can be narrowed to one folder (optionally including its subfolders) and/or to scenarios carrying at least one of the given scenario labels. Returned scenarios include their assigned labels.',
+            'List all scenarios for a team. Results can be narrowed to one folder (optionally including its subfolders), to scenarios carrying at least one of the given scenario labels, and/or to scenarios that group database writes (databaseUpdates). Returned scenarios include their assigned labels.',
         category: 'scenarios',
         scope: 'scenarios:read',
         scopeId: 'teamId',
@@ -148,6 +148,11 @@ export const tools: MakeTool[] = [
                     description:
                         'Only return scenarios carrying at least one of these scenario label IDs. Use scenario-labels_list to discover label IDs.',
                 },
+                databaseUpdates: {
+                    type: 'boolean',
+                    description:
+                        'Only return scenarios that group database writes, so a failed run undoes them. These are the scenarios affected by the "Commit after each module" sunset: on January 15, 2027 that setting turns on for every scenario, and a failed run keeps database writes it already made. Only applies to teams.',
+                },
             },
             required: ['teamId'],
         },
@@ -155,10 +160,17 @@ export const tools: MakeTool[] = [
             { teamId: 5 },
             { teamId: 5, folderId: 1576, includeSubfolders: true },
             { teamId: 5, labelIds: [42, 43] },
+            { teamId: 5, databaseUpdates: true },
         ],
         execute: async (
             make: Make,
-            args: { teamId: number; folderId?: number; includeSubfolders?: boolean; labelIds?: number[] },
+            args: {
+                teamId: number;
+                folderId?: number;
+                includeSubfolders?: boolean;
+                labelIds?: number[];
+                databaseUpdates?: boolean;
+            },
         ) => {
             const { teamId, ...filters } = args;
             return await make.scenarios.list(teamId, { ...filters, cols: ['*'] });
