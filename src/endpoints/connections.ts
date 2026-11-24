@@ -1,4 +1,11 @@
 import type { FetchFunction, JSONValue, PickColumns } from '../types.js';
+import type {
+    EntityAcl,
+    EntityColumn,
+    EntityVisibility,
+    EntityVisibilityChange,
+    PickEntityColumns,
+} from './locked-entities.js';
 
 /**
  * Represents a connection in Make.
@@ -40,6 +47,13 @@ export type Connection = {
     connectedSystemId: string | null;
     /** Scenarios that use this connection */
     scenarioUsages?: Array<{ id: number; name: string }>;
+    /** Who can see the connection: the whole team, or only its access list */
+    visibility?: EntityVisibility;
+    /**
+     * The caller's own access to a locked connection. Not a column: present only on locked connections in a
+     * list whose columns include both `id` and `visibility`.
+     */
+    acl?: EntityAcl;
 };
 
 /**
@@ -62,20 +76,27 @@ export type ConnectionWithScopes = Connection & {
  * Options for listing connections.
  * @template C Keys of the Connection type to include in the response
  */
-export type ListConnectionsOptions<C extends keyof Connection = never> = {
+export type ListConnectionsOptions<C extends EntityColumn<Connection> = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
     /** Filter connections by type */
     type?: string[];
     /** Scopes that need to be present on the particular connection type */
     scopes?: Record<string, string[]>;
+    /** Return only the connections with this visibility */
+    visibility?: EntityVisibility;
+    /**
+     * `true` returns the connections the caller can use in scenarios (team-visible, or locked with the caller's
+     * `entity use`); `false` the locked ones the caller cannot use.
+     */
+    usable?: boolean;
 };
 
 /**
  * Options for retrieving a connection.
  * @template C Keys of the ConnectionWithScopes type to include in the response
  */
-export type GetConnectionOptions<C extends keyof ConnectionWithScopes = never> = {
+export type GetConnectionOptions<C extends EntityColumn<ConnectionWithScopes> = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
 };
@@ -84,7 +105,7 @@ export type GetConnectionOptions<C extends keyof ConnectionWithScopes = never> =
  * Options for renaming a connection.
  * @template C Keys of the Connection type to include in the response
  */
-export type RenameConnectionOptions<C extends keyof Connection = never> = {
+export type RenameConnectionOptions<C extends EntityColumn<Connection> = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
 };
@@ -116,15 +137,15 @@ export type UpdateConnectionBody = {
 /**
  * Response format for listing connections.
  */
-type ListConnectionsResponse<C extends keyof Connection = never> = {
+type ListConnectionsResponse<C extends EntityColumn<Connection> = never> = {
     /** List of connections matching the query */
-    connections: PickColumns<Connection, C>[];
+    connections: PickEntityColumns<Connection, C>[];
 };
 
 /**
  * Response format for getting a connection.
  */
-type GetConnectionResponse<C extends keyof ConnectionWithScopes = never> = {
+type GetConnectionResponse<C extends EntityColumn<ConnectionWithScopes> = never> = {
     /** The requested connection with scope information */
     connection: PickColumns<ConnectionWithScopes, C>;
 };
@@ -148,7 +169,7 @@ type UpdateConnectionResponse = {
 /**
  * Response format for renaming a connection.
  */
-type RenameConnectionResponse<C extends keyof Connection = never> = {
+type RenameConnectionResponse<C extends EntityColumn<Connection> = never> = {
     /** The updated connection */
     connection: PickColumns<Connection, C>;
     /** The new name that was applied */
@@ -183,6 +204,14 @@ type EditableParametersResponse = {
 };
 
 /**
+ * Response format for changing a connection's visibility.
+ */
+type ConnectionVisibilityChangeResponse<V extends EntityVisibility> = {
+    /** The connection's ID and its new visibility */
+    connection: EntityVisibilityChange<V>;
+};
+
+/**
  * Class providing methods for working with Make connections.
  * Connections link Make to external apps and services, allowing
  * scenarios to interact with them through APIs.
@@ -204,16 +233,18 @@ export class Connections {
      * @param options Optional parameters for filtering and pagination
      * @returns Promise with the list of connections
      */
-    async list<C extends keyof Connection = never>(
+    async list<C extends EntityColumn<Connection> = never>(
         teamId: number,
         options?: ListConnectionsOptions<C>,
-    ): Promise<PickColumns<Connection, C>[]> {
+    ): Promise<PickEntityColumns<Connection, C>[]> {
         return (
             await this.#fetch<ListConnectionsResponse<C>>('/connections', {
                 query: {
                     teamId,
                     type: options?.type,
                     cols: options?.cols,
+                    visibility: options?.visibility,
+                    usable: options?.usable,
                     ...options?.scopes,
                 },
             })
@@ -226,7 +257,7 @@ export class Connections {
      * @param options Optional parameters for filtering the returned fields
      * @returns Promise with the connection details including scope information
      */
-    async get<C extends keyof ConnectionWithScopes = never>(
+    async get<C extends EntityColumn<ConnectionWithScopes> = never>(
         connectionId: number,
         options?: GetConnectionOptions<C>,
     ): Promise<PickColumns<ConnectionWithScopes, C>> {
@@ -287,7 +318,7 @@ export class Connections {
      * @param options Optional parameters for filtering the returned fields
      * @returns Promise with the updated connection
      */
-    async rename<C extends keyof Connection = never>(
+    async rename<C extends EntityColumn<Connection> = never>(
         connectionId: number,
         name: string,
         options?: RenameConnectionOptions<C>,
@@ -344,6 +375,39 @@ export class Connections {
     async listEditableParameters(connectionId: number): Promise<string[]> {
         return (await this.#fetch<EditableParametersResponse>(`/connections/${connectionId}/editable-data-schema`))
             .editableParameters;
+    }
+
+    /**
+     * Lock a connection: only the members of its access list can see it, and the caller becomes its sole admin.
+     * Only the connection's author can lock it. The API answers `400` (`IM903`) where locked connections are off
+     * for the organization.
+     * @param connectionId The connection ID to lock
+     * @returns Promise with the connection's ID and its new visibility
+     */
+    async makeLocked(connectionId: number): Promise<EntityVisibilityChange<'locked'>> {
+        return (
+            await this.#fetch<ConnectionVisibilityChangeResponse<'locked'>>(
+                `/connections/${connectionId}/make-locked`,
+                {
+                    method: 'POST',
+                },
+            )
+        ).connection;
+    }
+
+    /**
+     * Make a locked connection visible to the whole team again and clear its access list. Only an admin of the
+     * locked connection can do this. The API answers `400` (`IM903`) where locked connections are off for the
+     * organization.
+     * @param connectionId The connection ID to make team-visible
+     * @returns Promise with the connection's ID and its new visibility
+     */
+    async makeTeam(connectionId: number): Promise<EntityVisibilityChange<'team'>> {
+        return (
+            await this.#fetch<ConnectionVisibilityChangeResponse<'team'>>(`/connections/${connectionId}/make-team`, {
+                method: 'POST',
+            })
+        ).connection;
     }
 
     /**

@@ -142,6 +142,47 @@ describe('Integration: Connections', () => {
         // The actual parameters will depend on the connection type
     });
 
+    it('Should list connections by visibility and usability', async () => {
+        const teamVisible = await make.connections.list(MAKE_TEAM, { visibility: 'team' });
+        const usable = await make.connections.list(MAKE_TEAM, { usable: true });
+
+        expect(teamVisible.some(c => c.id === connectionId)).toBe(true);
+        expect(usable.some(c => c.id === connectionId)).toBe(true);
+    });
+
+    // The test created the connection, so it may lock it and becomes its sole admin. The flow ends with
+    // `makeTeam`, so a failed run leaves at most one locked connection, which its admin can still delete.
+    it('Should lock a connection', async () => {
+        const connection = await make.connections.makeLocked(connectionId);
+        expect(connection).toStrictEqual({ id: connectionId, visibility: 'locked' });
+    });
+
+    it('Should list the locked connection with the caller as its admin', async () => {
+        const connections = await make.connections.list(MAKE_TEAM, { visibility: 'locked' });
+        const ourConnection = connections.find(c => c.id === connectionId);
+
+        expect(ourConnection?.visibility).toBe('locked');
+        expect(ourConnection?.acl?.permissions).toContain('entity manage');
+    });
+
+    it('Should list the locked connection among the locked entities of the team', async () => {
+        const entities = await make.lockedEntities.list(MAKE_TEAM);
+        expect(entities.find(e => e.type === 'connection' && e.id === connectionId)).toBeDefined();
+    });
+
+    it('Should lock an already locked connection without a change', async () => {
+        const connection = await make.connections.makeLocked(connectionId);
+        expect(connection).toStrictEqual({ id: connectionId, visibility: 'locked' });
+    });
+
+    it('Should make the connection available to the team', async () => {
+        const connection = await make.connections.makeTeam(connectionId);
+        expect(connection).toStrictEqual({ id: connectionId, visibility: 'team' });
+
+        const locked = await make.connections.list(MAKE_TEAM, { visibility: 'locked' });
+        expect(locked.some(c => c.id === connectionId)).toBe(false);
+    });
+
     it('Should delete a connection', async () => {
         await make.connections.delete(connectionId);
     });

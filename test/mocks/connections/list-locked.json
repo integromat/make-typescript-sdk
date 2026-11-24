@@ -1,0 +1,27 @@
+{
+    "connections": [
+        {
+            "id": 15,
+            "name": "My Google connection",
+            "accountName": "google",
+            "accountLabel": "Google",
+            "packageName": null,
+            "expire": null,
+            "metadata": null,
+            "teamId": 22,
+            "theme": "#4286f4",
+            "upgradeable": false,
+            "scopesCnt": 4,
+            "scoped": true,
+            "accountType": "oauth",
+            "editable": true,
+            "uid": null,
+            "connectedSystemId": null,
+            "visibility": "locked",
+            "acl": {
+                "permissions": ["entity use"],
+                "isOrphaned": false
+            }
+        }
+    ]
+}

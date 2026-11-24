@@ -1,0 +1,17 @@
+{
+    "keys": [
+        {
+            "id": 9,
+            "name": "Finance API key",
+            "typeName": "apikeyauth",
+            "teamId": 22,
+            "packageName": null,
+            "theme": "#7c7c7c",
+            "visibility": "locked",
+            "acl": {
+                "permissions": [],
+                "isOrphaned": false
+            }
+        }
+    ]
+}

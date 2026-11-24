@@ -67,6 +67,17 @@ export type {
     RenameConnectionOptions,
 } from './endpoints/connections.js';
 export type {
+    LockedEntity,
+    LockedEntities,
+    LockedEntityAclMember,
+    EntityVisibility,
+    LockedEntityPermission,
+    EntityAcl,
+    EntityVisibilityChange,
+    EntityColumn,
+    PickEntityColumns,
+} from './endpoints/locked-entities.js';
+export type {
     CredentialRequest,
     CredentialRequests,
     CreateCredentialRequestBody,

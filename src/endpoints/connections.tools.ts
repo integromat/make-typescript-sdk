@@ -1,12 +1,14 @@
 import type { Make } from '../make.js';
 import type { JSONValue } from '../types.js';
 import type { MakeTool } from '../tools.js';
+import type { EntityVisibility } from './locked-entities.js';
 
 export const tools: MakeTool[] = [
     {
         name: 'connections_list',
         title: 'List connections',
-        description: 'List connections for a team.',
+        description:
+            'List connections for a team. Each has a `visibility`: `team`, or `locked` (only its access list can see it); a locked one also carries `acl.permissions`, your own permissions on it. To pick a connection for a scenario, list with `usable: true`.',
         category: 'connections',
         scope: 'connections:read',
         scopeId: 'teamId',
@@ -33,15 +35,36 @@ export const tools: MakeTool[] = [
                         },
                     },
                 },
+                visibility: {
+                    type: 'string',
+                    enum: ['team', 'locked'],
+                    description: 'Return only the connections with this visibility',
+                },
+                usable: {
+                    type: 'boolean',
+                    description:
+                        '`true` returns the connections you can use in scenarios (team-visible, or locked with your `entity use`); `false` the locked ones you cannot use.',
+                },
             },
             required: ['teamId'],
         },
         examples: [
             { teamId: 5 },
             { teamId: 5, type: ['google'], scopes: { google: ['https://www.googleapis.com/auth/drive'] } },
+            { teamId: 5, usable: true },
         ],
-        execute: async (make: Make, args: { teamId: number; type?: string[]; scopes?: Record<string, string[]> }) => {
-            return await make.connections.list(args.teamId, { type: args.type, scopes: args.scopes, cols: ['*'] });
+        execute: async (
+            make: Make,
+            args: {
+                teamId: number;
+                type?: string[];
+                scopes?: Record<string, string[]>;
+                visibility?: EntityVisibility;
+                usable?: boolean;
+            },
+        ) => {
+            const { teamId, ...options } = args;
+            return await make.connections.list(teamId, { ...options, cols: ['*'] });
         },
     },
     {
@@ -179,6 +202,62 @@ export const tools: MakeTool[] = [
             return (await make.connections.verify(args.connectionId))
                 ? 'Connection is valid.'
                 : 'Connection is not valid.';
+        },
+    },
+    {
+        name: 'connections_make-locked',
+        title: 'Lock connection',
+        description:
+            "Lock a connection so that only the members of its access list can see and use it; you become its sole admin. Only the connection's author can lock it. Fails with 400 (IM903) where locked connections are off for the organization.",
+        category: 'connections',
+        scope: 'connections:write',
+        scopeId: 'connectionId',
+        identifier: 'connectionId',
+        resourceId: 'connectionId',
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                connectionId: { type: 'number', description: 'The connection ID to lock' },
+            },
+            required: ['connectionId'],
+        },
+        examples: [{ connectionId: 2 }],
+        execute: async (make: Make, args: { connectionId: number }) => {
+            return await make.connections.makeLocked(args.connectionId);
+        },
+    },
+    {
+        name: 'connections_make-team',
+        title: 'Make connection available to team',
+        description:
+            'Make a locked connection visible to the whole team again and clear its access list. Only an admin of the locked connection can do this. Fails with 400 (IM903) where locked connections are off for the organization.',
+        category: 'connections',
+        scope: 'connections:write',
+        scopeId: 'connectionId',
+        identifier: 'connectionId',
+        resourceId: 'connectionId',
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                connectionId: { type: 'number', description: 'The connection ID to make visible to the team' },
+            },
+            required: ['connectionId'],
+        },
+        examples: [{ connectionId: 2 }],
+        execute: async (make: Make, args: { connectionId: number }) => {
+            return await make.connections.makeTeam(args.connectionId);
         },
     },
     {

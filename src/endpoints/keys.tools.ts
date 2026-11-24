@@ -1,12 +1,14 @@
 import type { Make } from '../make.js';
 import type { JSONValue } from '../types.js';
 import type { MakeTool } from '../tools.js';
+import type { EntityVisibility } from './locked-entities.js';
 
 export const tools: MakeTool[] = [
     {
         name: 'keys_list',
         title: 'List keys',
-        description: 'List all keys for a team.',
+        description:
+            'List all keys for a team. Each has a `visibility`: `team`, or `locked` (only its access list can see it); a locked one also carries `acl.permissions`, your own permissions on it. To pick a key for a scenario, list with `usable: true`.',
         category: 'keys',
         scope: 'keys:read',
         scopeId: 'teamId',
@@ -20,12 +22,23 @@ export const tools: MakeTool[] = [
             type: 'object',
             properties: {
                 teamId: { type: 'number', description: 'The team ID to list keys for' },
+                visibility: {
+                    type: 'string',
+                    enum: ['team', 'locked'],
+                    description: 'Return only the keys with this visibility',
+                },
+                usable: {
+                    type: 'boolean',
+                    description:
+                        '`true` returns the keys you can use in scenarios (team-visible, or locked with your `entity use`); `false` the locked ones you cannot use.',
+                },
             },
             required: ['teamId'],
         },
-        examples: [{ teamId: 5 }],
-        execute: async (make: Make, args: { teamId: number }) => {
-            return await make.keys.list(args.teamId, { cols: ['*'] });
+        examples: [{ teamId: 5 }, { teamId: 5, usable: true }],
+        execute: async (make: Make, args: { teamId: number; visibility?: EntityVisibility; usable?: boolean }) => {
+            const { teamId, ...options } = args;
+            return await make.keys.list(teamId, { ...options, cols: ['*'] });
         },
     },
     {
@@ -122,6 +135,62 @@ export const tools: MakeTool[] = [
             const { keyId, ...body } = args;
             await make.keys.update(keyId, body);
             return `Key has been updated.`;
+        },
+    },
+    {
+        name: 'keys_make-locked',
+        title: 'Lock key',
+        description:
+            "Lock a key so that only the members of its access list can see and use it; you become its sole admin. Only the key's author can lock it. Fails with 400 (IM903) where locked connections are off for the organization.",
+        category: 'keys',
+        scope: 'keys:write',
+        scopeId: 'keyId',
+        identifier: 'keyId',
+        resourceId: 'keyId',
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                keyId: { type: 'number', description: 'The key ID to lock' },
+            },
+            required: ['keyId'],
+        },
+        examples: [{ keyId: 1 }],
+        execute: async (make: Make, args: { keyId: number }) => {
+            return await make.keys.makeLocked(args.keyId);
+        },
+    },
+    {
+        name: 'keys_make-team',
+        title: 'Make key available to team',
+        description:
+            'Make a locked key visible to the whole team again and clear its access list. Only an admin of the locked key can do this. Fails with 400 (IM903) where locked connections are off for the organization.',
+        category: 'keys',
+        scope: 'keys:write',
+        scopeId: 'keyId',
+        identifier: 'keyId',
+        resourceId: 'keyId',
+        annotations: {
+            readOnlyHint: false,
+            destructiveHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
+        },
+        inputSchema: {
+            type: 'object',
+            properties: {
+                keyId: { type: 'number', description: 'The key ID to make visible to the team' },
+            },
+            required: ['keyId'],
+        },
+        examples: [{ keyId: 1 }],
+        execute: async (make: Make, args: { keyId: number }) => {
+            return await make.keys.makeTeam(args.keyId);
         },
     },
     {

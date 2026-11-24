@@ -10,6 +10,10 @@ import * as renameMock from './mocks/connections/rename.json';
 import * as verifyMock from './mocks/connections/verify.json';
 import * as scopedMock from './mocks/connections/scoped.json';
 import * as editableParametersMock from './mocks/connections/editable-parameters.json';
+import * as listLockedMock from './mocks/connections/list-locked.json';
+import * as listUnusableMock from './mocks/connections/list-unusable.json';
+import * as makeLockedMock from './mocks/connections/make-locked.json';
+import * as makeTeamMock from './mocks/connections/make-team.json';
 
 const MAKE_API_KEY = 'api-key';
 const MAKE_ZONE = 'make.local';
@@ -22,6 +26,51 @@ describe('Endpoints: Connections', () => {
 
         const connections = await make.connections.list(123);
         expect(connections).toStrictEqual(listMock.connections);
+    });
+
+    it('should list the usable locked connections', async () => {
+        mockFetch('GET https://make.local/api/v2/connections?teamId=22&visibility=locked&usable=true', listLockedMock);
+
+        const connections = await make.connections.list(22, { visibility: 'locked', usable: true });
+        expect(connections).toStrictEqual(listLockedMock.connections);
+    });
+
+    it('should list the connections the caller cannot use', async () => {
+        mockFetch('GET https://make.local/api/v2/connections?teamId=22&usable=false', listUnusableMock);
+
+        const connections = await make.connections.list(22, { usable: false });
+        expect(connections).toStrictEqual(listUnusableMock.connections);
+    });
+
+    it('should type acl on the rows listed with both id and visibility', async () => {
+        mockFetch('GET https://make.local/api/v2/connections?teamId=22&cols%5B%5D=id&cols%5B%5D=visibility', {
+            connections: [{ id: 15, visibility: 'locked', acl: { permissions: ['entity use'], isOrphaned: false } }],
+        });
+
+        const connections = await make.connections.list(22, { cols: ['id', 'visibility'] });
+        expect(connections[0]?.acl?.permissions).toStrictEqual(['entity use']);
+    });
+
+    it('should not type acl on the rows listed without id', async () => {
+        mockFetch('GET https://make.local/api/v2/connections?teamId=22&cols%5B%5D=visibility', {
+            connections: [{ visibility: 'locked' }],
+        });
+
+        const connections = await make.connections.list(22, { cols: ['visibility'] });
+        // @ts-expect-error without `id` the API sends no `acl`
+        expect(connections[0]?.acl).toBeUndefined();
+    });
+
+    it('should not accept acl as a column', async () => {
+        mockFetch(
+            'GET https://make.local/api/v2/connections?teamId=22&cols%5B%5D=acl',
+            { message: 'Validation of query columns failed' },
+            400,
+        );
+
+        // @ts-expect-error `acl` is derived by the API, not a column
+        const request = make.connections.list(22, { cols: ['acl'] });
+        await expect(request).rejects.toMatchObject({ statusCode: 400 });
     });
 
     it('should list connections of a particular type with scopes', async () => {
@@ -122,6 +171,20 @@ describe('Endpoints: Connections', () => {
 
         const params = await make.connections.listEditableParameters(88);
         expect(params).toStrictEqual(editableParametersMock.editableParameters);
+    });
+
+    it('should lock a connection', async () => {
+        mockFetch('POST https://make.local/api/v2/connections/15/make-locked', makeLockedMock);
+
+        const connection = await make.connections.makeLocked(15);
+        expect(connection).toStrictEqual(makeLockedMock.connection);
+    });
+
+    it('should make a connection available to the team', async () => {
+        mockFetch('POST https://make.local/api/v2/connections/15/make-team', makeTeamMock);
+
+        const connection = await make.connections.makeTeam(15);
+        expect(connection).toStrictEqual(makeTeamMock.connection);
     });
 
     it('should delete a connection', async () => {

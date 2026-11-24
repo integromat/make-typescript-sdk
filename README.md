@@ -54,7 +54,7 @@ Use `make.functionsV2` for versioned authoring, Endpoint discovery and durable R
 - **Enums** - Standardized lists (countries, regions, timezones)
 - **Audit Logs** - Organization and team audit trail, its filter options, and per-entry detail (read-only)
 - **Blueprit** - Blueprint management
-- **Connections** - External service connections and authentication
+- **Connections** - External service connections and authentication, including locking a connection to its access list
 - **Connected Systems** - On-prem connections linking agents to external apps (HTTP, SAP, etc.)
 - **Credential Requests** - Credential authorization requests and management
 - **Custom Properties** - Organization-level custom property structures/items and per-scenario custom properties data
@@ -74,7 +74,8 @@ Use `make.functionsV2` for versioned authoring, Endpoint discovery and durable R
 - **Hooks** - Webhooks and mailhooks for external integrations, listed per team or across an organization
 - **Hook Incoming Queue** - Inspect and clear items queued for a webhook awaiting processing
 - **Incomplete Executions** - Failed or incomplete scenario runs
-- **Keys** - API keys and secrets
+- **Keys** - API keys and secrets, including locking a key to its access list
+- **Locked Entities** - A team's locked connections and keys, with the caller's permissions and their access lists (read-only)
 - **On-Prem Agents** - On-prem bridge agents running on customer infrastructure
 - **Organizations** - Top-level account and billing management
 - **Private Spaces** - Per-user private workspaces within an organization (list, get, update)
@@ -231,6 +232,7 @@ All tools are organized into the following categories:
 - `hook-incomings`
 - `incomplete-executions`
 - `keys`
+- `locked-entities`
 - `scenario-labels`
 - `on-prem-agent`
 - `organizations`
