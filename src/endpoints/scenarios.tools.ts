@@ -423,7 +423,7 @@ export const tools: MakeTool[] = [
         name: 'scenarios_run',
         title: 'Run scenario',
         description:
-            "Execute a scenario with optional input data. The scenario must be ACTIVE — a run of an inactive scenario fails with 'Scenario is not activated', so call scenarios_activate first (newly created scenarios start inactive). Returns an executionId: after a failed or suspicious run, inspect it with executions_get-detail BEFORE retrying or editing the scenario. A scenario cannot run twice concurrently — on 'Scenario is already being executed', wait for the running execution instead of retrying.",
+            "Run a scenario with optional input data. A run is also called an execution. The scenario must be ACTIVE — a run of an inactive scenario fails with 'Scenario is not activated', so call scenarios_activate first (newly created scenarios start inactive). Returns an executionId: after a failed or suspicious run, inspect it with executions_get-detail BEFORE retrying or editing the scenario. A scenario cannot run twice concurrently — on 'Scenario is already being executed', wait for the run in progress instead of retrying.",
         category: 'scenarios',
         scope: 'scenarios:run',
         scopeId: 'scenarioId',
@@ -446,9 +446,9 @@ export const tools: MakeTool[] = [
                 responsive: {
                     type: 'boolean',
                     description:
-                        'When true, waits for the execution to finish and returns its outputs; when false, the run is only queued and the executionId is returned immediately',
+                        'When true, waits for the run to finish and returns its outputs; when false, the run is only queued and the executionId is returned immediately',
                 },
-                callbackUrl: { type: 'string', description: 'URL to call once the scenario execution finishes' },
+                callbackUrl: { type: 'string', description: 'URL to call once the scenario run finishes' },
             },
             required: ['scenarioId'],
         },
@@ -463,9 +463,9 @@ export const tools: MakeTool[] = [
     },
     {
         name: 'scenarios_replay',
-        title: 'Replay scenario execution',
+        title: 'Replay scenario run',
         description:
-            "Replay a past execution of a scenario, re-running it with the trigger data the original execution received. Get candidate execution IDs from executions_list. Only executions whose input data is still stored can be replayed — 'Execution is not replayable' means that execution's data has expired or was never stored, so try a MORE RECENT execution instead of retrying the same one. Only the first ID in executionIds is replayed. The scenario must be ACTIVE. A replay starts a real execution and consumes operations exactly like scenarios_run; it returns the executionId of the NEW execution, which you can inspect with executions_get-detail.",
+            "Replay a past run of a scenario, re-running it with the trigger data the original run received. A run is also called an execution. Get candidate run IDs from executions_list. Only runs whose input data is still stored can be replayed — 'Execution is not replayable' means that run's data has expired or was never stored, so try a MORE RECENT run instead of retrying the same one. Only the first ID in executionIds is replayed. The scenario must be ACTIVE. A replay starts a real run and consumes operations exactly like scenarios_run; it returns the executionId of the NEW run, which you can inspect with executions_get-detail.",
         category: 'scenarios',
         scope: 'scenarios:run',
         scopeId: 'scenarioId',
@@ -479,12 +479,12 @@ export const tools: MakeTool[] = [
         inputSchema: {
             type: 'object',
             properties: {
-                scenarioId: { type: 'number', description: 'The ID of the scenario the execution belongs to' },
+                scenarioId: { type: 'number', description: 'The ID of the scenario the run belongs to' },
                 executionIds: {
                     type: 'array',
                     items: { type: 'string' },
                     description:
-                        'Execution IDs to replay, as returned by executions_list. Currently only the first one is replayed.',
+                        'Run IDs to replay, as returned by executions_list. Currently only the first one is replayed.',
                 },
             },
             required: ['scenarioId', 'executionIds'],
