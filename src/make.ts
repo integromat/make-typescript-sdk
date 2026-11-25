@@ -12,6 +12,7 @@ import { Teams } from './endpoints/teams.js';
 import { IncompleteExecutions } from './endpoints/incomplete-executions.js';
 import { Keys } from './endpoints/keys.js';
 import { Connections } from './endpoints/connections.js';
+import { LockedEntities } from './endpoints/locked-entities.js';
 import { CredentialRequests } from './endpoints/credential-requests.js';
 import { Devices } from './endpoints/devices.js';
 import { Functions } from './endpoints/functions.js';
@@ -170,6 +171,12 @@ export class Make {
      * Connections link Make to external apps and services
      */
     public readonly connections: Connections;
+
+    /**
+     * Access to locked-entity-related endpoints
+     * Locked connections and keys are visible only to the members of their access list
+     */
+    public readonly lockedEntities: LockedEntities;
 
     /**
      * Access to credential request-related endpoints
@@ -343,6 +350,7 @@ export class Make {
         this.incompleteExecutions = new IncompleteExecutions(this.fetch.bind(this));
         this.keys = new Keys(this.fetch.bind(this));
         this.connections = new Connections(this.fetch.bind(this));
+        this.lockedEntities = new LockedEntities(this.fetch.bind(this));
         this.devices = new Devices(this.fetch.bind(this));
         this.functions = new Functions(this.fetch.bind(this));
         this.functionsV2 = new FunctionsV2(this.fetch.bind(this));

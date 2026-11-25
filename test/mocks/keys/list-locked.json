@@ -1,0 +1,17 @@
+{
+    "keys": [
+        {
+            "id": 8,
+            "name": "My webhook key",
+            "typeName": "basicauth",
+            "teamId": 22,
+            "packageName": null,
+            "theme": "#7c7c7c",
+            "visibility": "locked",
+            "acl": {
+                "permissions": ["entity use", "entity manage"],
+                "isOrphaned": false
+            }
+        }
+    ]
+}

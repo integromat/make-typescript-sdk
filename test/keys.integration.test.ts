@@ -97,6 +97,48 @@ describe('Integration: Keys', () => {
         expect(key.name).toBe(updatedName);
     });
 
+    it('Should list keys by visibility and usability', async () => {
+        const teamVisible = await make.keys.list(MAKE_TEAM, { visibility: 'team' });
+        const usable = await make.keys.list(MAKE_TEAM, { usable: true });
+
+        expect(teamVisible.some(k => k.id === keyId)).toBe(true);
+        expect(usable.some(k => k.id === keyId)).toBe(true);
+    });
+
+    // The test created the key, so it may lock it and becomes its sole admin. The flow ends with `makeTeam`,
+    // so a failed run leaves at most one locked key, which its admin can still delete.
+    it('Should lock a key', async () => {
+        const key = await make.keys.makeLocked(keyId);
+        expect(key).toStrictEqual({ id: keyId, visibility: 'locked' });
+    });
+
+    it('Should list the locked key with the caller as its admin', async () => {
+        // `acl` comes only with both `id` and `visibility` among the columns.
+        const keys = await make.keys.list(MAKE_TEAM, { visibility: 'locked', cols: ['id', 'visibility'] });
+        const ourKey = keys.find(k => k.id === keyId);
+
+        expect(ourKey?.visibility).toBe('locked');
+        expect(ourKey?.acl?.permissions).toContain('entity manage');
+    });
+
+    it('Should list the locked key among the locked entities of the team', async () => {
+        const entities = await make.lockedEntities.list(MAKE_TEAM);
+        expect(entities.find(e => e.type === 'key' && e.id === keyId)).toBeDefined();
+    });
+
+    it('Should lock an already locked key without a change', async () => {
+        const key = await make.keys.makeLocked(keyId);
+        expect(key).toStrictEqual({ id: keyId, visibility: 'locked' });
+    });
+
+    it('Should make the key available to the team', async () => {
+        const key = await make.keys.makeTeam(keyId);
+        expect(key).toStrictEqual({ id: keyId, visibility: 'team' });
+
+        const locked = await make.keys.list(MAKE_TEAM, { visibility: 'locked' });
+        expect(locked.some(k => k.id === keyId)).toBe(false);
+    });
+
     it('Should delete a key', async () => {
         await make.keys.delete(keyId);
 

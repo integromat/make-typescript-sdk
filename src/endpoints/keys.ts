@@ -1,4 +1,11 @@
 import type { FetchFunction, JSONValue, PickColumns } from '../types.js';
+import type {
+    EntityAcl,
+    EntityColumn,
+    EntityVisibility,
+    EntityVisibilityChange,
+    PickEntityColumns,
+} from './locked-entities.js';
 import type { DataStructureField } from './data-structures.js';
 
 /**
@@ -19,6 +26,13 @@ export type Key = {
     packageName?: string | null;
     /** Theme color for the key in UI */
     theme?: string;
+    /** Who can see the key: the whole team, or only its access list */
+    visibility?: EntityVisibility;
+    /**
+     * The caller's own access to a locked key. Not a column: present only on locked keys in a list whose
+     * columns include both `id` and `visibility`.
+     */
+    acl?: EntityAcl;
 };
 
 /**
@@ -48,13 +62,20 @@ export type KeyType = {
  * Options for listing keys.
  * @template C Keys of the Key type to include in the response
  */
-export type ListKeysOptions<C extends keyof Key = never> = {
+export type ListKeysOptions<C extends EntityColumn<Key> = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
     /** Team ID to filter keys by (can override the main parameter) */
     teamId?: number;
     /** Filter keys by type */
     typeName?: string;
+    /** Return only the keys with this visibility */
+    visibility?: EntityVisibility;
+    /**
+     * `true` returns the keys the caller can use in scenarios (team-visible, or locked with the caller's
+     * `entity use`); `false` the locked ones the caller cannot use.
+     */
+    usable?: boolean;
 };
 
 /**
@@ -84,15 +105,15 @@ export type UpdateKeyBody = {
 /**
  * Response format for listing keys.
  */
-type ListKeysResponse<C extends keyof Key = never> = {
+type ListKeysResponse<C extends EntityColumn<Key> = never> = {
     /** List of keys matching the query */
-    keys: PickColumns<Key, C>[];
+    keys: PickEntityColumns<Key, C>[];
 };
 
 /**
  * Options for retrieving a key.
  */
-export type GetKeyOptions<C extends keyof Key = never> = {
+export type GetKeyOptions<C extends EntityColumn<Key> = never> = {
     /** Specific columns/fields to include in the response */
     cols?: C[] | ['*'];
 };
@@ -100,7 +121,7 @@ export type GetKeyOptions<C extends keyof Key = never> = {
 /**
  * Response format for getting a key.
  */
-type GetKeyResponse<C extends keyof Key = never> = {
+type GetKeyResponse<C extends EntityColumn<Key> = never> = {
     /** The requested key */
     key: PickColumns<Key, C>;
 };
@@ -130,6 +151,14 @@ type ListKeyTypesResponse = {
 };
 
 /**
+ * Response format for changing a key's visibility.
+ */
+type KeyVisibilityChangeResponse<V extends EntityVisibility> = {
+    /** The key's ID and its new visibility */
+    key: EntityVisibilityChange<V>;
+};
+
+/**
  * Class providing methods for working with Make keys.
  * Keys allow secure storage of sensitive information like API keys,
  * passwords, and tokens that can be used in apps without exposing
@@ -148,20 +177,24 @@ export class Keys {
 
     /**
      * List keys for a team.
+     * Without `cols` the API returns only `id` and `name`. Request `id` together with `visibility` (or `['*']`)
+     * to also get `visibility` and, on locked keys, `acl`.
      * @param teamId The team ID to list keys for
      * @param options Optional parameters for filtering
      * @returns Promise with the list of keys
      */
-    async list<C extends keyof Key = never>(
+    async list<C extends EntityColumn<Key> = never>(
         teamId: number,
         options?: ListKeysOptions<C>,
-    ): Promise<PickColumns<Key, C>[]> {
+    ): Promise<PickEntityColumns<Key, C>[]> {
         return (
             await this.#fetch<ListKeysResponse<C>>('/keys', {
                 query: {
                     teamId,
                     cols: options?.cols,
                     typeName: options?.typeName,
+                    visibility: options?.visibility,
+                    usable: options?.usable,
                 },
             })
         ).keys;
@@ -173,7 +206,10 @@ export class Keys {
      * @param options Optional parameters for filtering the returned fields
      * @returns Promise with the key details
      */
-    async get<C extends keyof Key = never>(keyId: number, options?: GetKeyOptions<C>): Promise<PickColumns<Key, C>> {
+    async get<C extends EntityColumn<Key> = never>(
+        keyId: number,
+        options?: GetKeyOptions<C>,
+    ): Promise<PickColumns<Key, C>> {
         return (
             await this.#fetch<GetKeyResponse<C>>(`/keys/${keyId}`, {
                 query: {
@@ -208,6 +244,35 @@ export class Keys {
             await this.#fetch<UpdateKeyResponse>(`/keys/${keyId}`, {
                 method: 'PATCH',
                 body,
+            })
+        ).key;
+    }
+
+    /**
+     * Lock a key: only the members of its access list can see it, and the caller becomes its sole admin.
+     * Only the key's author can lock it. The API answers `400` (`IM903`) where locked connections are off for
+     * the organization.
+     * @param keyId The key ID to lock
+     * @returns Promise with the key's ID and its new visibility
+     */
+    async makeLocked(keyId: number): Promise<EntityVisibilityChange<'locked'>> {
+        return (
+            await this.#fetch<KeyVisibilityChangeResponse<'locked'>>(`/keys/${keyId}/make-locked`, {
+                method: 'POST',
+            })
+        ).key;
+    }
+
+    /**
+     * Make a locked key visible to the whole team again and clear its access list. Only an admin of the locked
+     * key can do this. The API answers `400` (`IM903`) where locked connections are off for the organization.
+     * @param keyId The key ID to make team-visible
+     * @returns Promise with the key's ID and its new visibility
+     */
+    async makeTeam(keyId: number): Promise<EntityVisibilityChange<'team'>> {
+        return (
+            await this.#fetch<KeyVisibilityChangeResponse<'team'>>(`/keys/${keyId}/make-team`, {
+                method: 'POST',
             })
         ).key;
     }

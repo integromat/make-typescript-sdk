@@ -24,6 +24,7 @@ import { tools as HooksTools } from './endpoints/hooks.tools.js';
 import { tools as HookIncomingsTools } from './endpoints/hook-incomings.tools.js';
 import { tools as DevicesTools } from './endpoints/devices.tools.js';
 import { tools as KeysTools } from './endpoints/keys.tools.js';
+import { tools as LockedEntitiesTools } from './endpoints/locked-entities.tools.js';
 import { tools as FoldersTools } from './endpoints/folders.tools.js';
 import { tools as ScenarioLabelsTools } from './endpoints/scenario-labels.tools.js';
 import { tools as IncompleteExecutionsTools } from './endpoints/incomplete-executions.tools.js';
@@ -241,6 +242,7 @@ export const MakeTools = [
     ...DataStructuresTools,
     ...ConnectionsTools,
     ...KeysTools,
+    ...LockedEntitiesTools,
     ...CredentialRequestsTools,
     ...DataStoresTools,
     ...DataStoreRecordsTools,

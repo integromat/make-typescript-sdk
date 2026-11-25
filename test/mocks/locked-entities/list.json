@@ -1,0 +1,41 @@
+{
+    "lockedEntities": [
+        {
+            "type": "connection",
+            "id": 4711,
+            "name": "My CRM connection",
+            "permissions": ["entity use"],
+            "acl": [
+                {
+                    "id": 128,
+                    "membershipType": "user",
+                    "name": "Jane Doe",
+                    "email": "jane.doe@example.com",
+                    "permissions": ["entity use", "entity manage"]
+                },
+                {
+                    "id": 214,
+                    "membershipType": "user",
+                    "name": "John Smith",
+                    "email": "john.smith@example.com",
+                    "permissions": ["entity use"]
+                }
+            ]
+        },
+        {
+            "type": "key",
+            "id": 88,
+            "name": "My webhook key",
+            "permissions": [],
+            "acl": [
+                {
+                    "id": 128,
+                    "membershipType": "user",
+                    "name": "Jane Doe",
+                    "email": "jane.doe@example.com",
+                    "permissions": ["entity use", "entity manage"]
+                }
+            ]
+        }
+    ]
+}

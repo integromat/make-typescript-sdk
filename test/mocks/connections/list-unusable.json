@@ -1,0 +1,27 @@
+{
+    "connections": [
+        {
+            "id": 16,
+            "name": "Finance Slack connection",
+            "accountName": "slack",
+            "accountLabel": "Slack",
+            "packageName": null,
+            "expire": null,
+            "metadata": null,
+            "teamId": 22,
+            "theme": "#4a154b",
+            "upgradeable": false,
+            "scopesCnt": 2,
+            "scoped": true,
+            "accountType": "oauth",
+            "editable": true,
+            "uid": null,
+            "connectedSystemId": null,
+            "visibility": "locked",
+            "acl": {
+                "permissions": [],
+                "isOrphaned": false
+            }
+        }
+    ]
+}
