@@ -11,10 +11,12 @@ export type FunctionV2Endpoint = {
     endpointName: string;
     connectionKey?: string;
 };
-/** Source and contracts for an immutable Function version or an inline Run. */
+/** Source-defined contract for a new immutable version or inline Run. */
 export type FunctionV2Content = {
     source: string;
-    inputSchema: FunctionV2Schema;
+    /** @deprecated Omit: derived from main's input type and documentation comments. If supplied, must match exactly. */
+    inputSchema?: FunctionV2Schema;
+    /** @deprecated Omit: derived from main's return type and documentation comments. If supplied, must match exactly. */
     outputSchema?: FunctionV2Schema;
     connections?: Record<string, number>;
     endpoints?: FunctionV2Endpoint[];
