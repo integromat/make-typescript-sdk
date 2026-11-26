@@ -30,7 +30,7 @@ const schema: JSONSchema = {
     type: 'object',
     properties: {},
     additionalProperties: true,
-    description: 'Bounded JSON Schema Draft 2020-12 contract. Use {} for a permissive contract.',
+    description: 'Optional compatibility assertion. Omit: the server generates this contract from main\'s types and leading /** description */ comments. If supplied, it must exactly match the generated schema.',
 };
 const endpointIdentity = {
     appName: { type: 'string', minLength: 1, maxLength: 256 },
@@ -40,11 +40,11 @@ const endpointIdentity = {
 const content: JSONSchema = {
     type: 'object',
     additionalProperties: false,
-    required: ['source', 'inputSchema'],
+    required: ['source'],
     description:
-        'TypeScript source and declared contracts, Connections and Endpoints. Source calls declared Endpoints by app/version/name and uses declared connection labels.',
+        'TypeScript source with locally declared Input and Output types, Connections and Endpoints. Source calls declared Endpoints by app/version/name and uses declared connection labels.',
     properties: {
-        source: { type: 'string', description: 'Complete TypeScript Function source.' },
+        source: { type: 'string', description: 'Complete TypeScript Function source. Type main(input: Input): Promise<Output>; add leading /** description */ field comments. Schemas are generated; nullable unions preserve null.' },
         inputSchema: schema,
         outputSchema: schema,
         connections: {
@@ -200,8 +200,7 @@ export const tools: MakeTool[] = [
                 teamId: 7,
                 name: 'Echo',
                 content: {
-                    source: 'export default async function main(input: unknown) { return input; }',
-                    inputSchema: {},
+                    source: 'interface Input { /** Message to echo. */ message: string } type Output = Input; export default async function main(input: Input): Promise<Output> { return input; }',
                 },
             },
         ],
@@ -358,8 +357,7 @@ export const tools: MakeTool[] = [
                 functionId: 42,
                 expectedLatestVersion: 1,
                 content: {
-                    source: 'export default async function main(input: unknown) { return input; }',
-                    inputSchema: {},
+                    source: 'interface Input { /** Message to echo. */ message: string } type Output = Input; export default async function main(input: Input): Promise<Output> { return input; }',
                 },
             },
         ],
@@ -450,8 +448,7 @@ export const tools: MakeTool[] = [
             {
                 teamId: 7,
                 content: {
-                    source: 'export default async function main(input: unknown) { return input; }',
-                    inputSchema: {},
+                    source: 'interface Input { /** Message to echo. */ message: string } type Output = Input; export default async function main(input: Input): Promise<Output> { return input; }',
                 },
                 data: { value: false },
             },

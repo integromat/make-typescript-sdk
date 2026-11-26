@@ -77,6 +77,28 @@ describe('Functions v2 HTTP contracts', () => {
         respond({ function: fn });
         expect(await make.functionsV2.get(42)).toEqual({ function: fn });
     });
+    it('authors source without a second contract and advertises schemas as optional assertions', async () => {
+        const authored = {
+            source: 'interface Input { /** Optional note. */ note?: string | null } type Output = Input; export default async function main(input: Input): Promise<Output> { return input; }',
+        };
+        respond({ function: fn }, 201);
+        await make.functionsV2.create(7, { name: 'Source contract', content: authored });
+        expect(request().body.content).toEqual(authored);
+        for (const name of [
+            'functions_v2_create',
+            'functions_v2_versions_publish',
+            'functions_v2_runs_create_inline',
+        ]) {
+            const tool = MakeTools.find(tool => tool.name === name)!;
+            const contentSchema = tool.inputSchema.properties!.content as {
+                required: string[];
+                properties: Record<string, { description: string }>;
+            };
+            expect(contentSchema.required).toEqual(['source']);
+            expect(contentSchema.properties.inputSchema?.description).toContain('Omit');
+            expect(contentSchema.properties.source?.description).toContain('description');
+        }
+    });
     it('creates with team scope and initial content', async () => {
         respond({ function: fn }, 201, { ETag: '"new"' });
         expect(await make.functionsV2.create(7, { name: 'Echo', content })).toEqual({ function: fn, etag: '"new"' });
